@@ -36,4 +36,42 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * If the user is global system admin this will be true
+     * 
+     * @var boolean
+     */
+    public function isAdmin()
+    {
+        return $this->is_admin == true;
+    }
+    
+    /**
+     * If the user can add a new conference
+     * 
+     * @var boolean
+     */
+    public function canAddConference()
+    {
+        if ($this->isAdmin()) { // or map table lookup
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * If the user can manage the provided conference
+     * 
+     * @var boolean
+     */
+    public function canManageConference(Conference $conference)
+    {
+        if ($this->isAdmin()) { // or map table lookup
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
