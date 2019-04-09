@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateGroupUser extends Migration
+class CreateConferenceAdmin extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateGroupUser extends Migration
      */
     public function up()
     {
-        Schema::create('group_user', function (Blueprint $table) {
-            $table->integer('group_id')->unsigned()->index();
+        Schema::create('conference_admin', function (Blueprint $table) {
+            $table->integer('conference_id')->unsigned()->index();
             $table->integer('user_id')->unsigned()->index();
-            $table->primary(['group_id', 'user_id']);
+            $table->primary(['conference_id', 'user_id']);
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('group_id')->references('id')->on('groups');
+            $table->foreign('conference_id')->references('id')->on('conferences');
         });
     }
 
@@ -29,6 +29,6 @@ class CreateGroupUser extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('group_user');
+        Schema::dropIfExists('conference_admin');
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -37,6 +37,10 @@ class User extends Authenticatable
     ];
 
     /**
+     *  Group Management
+     */
+
+    /**
      * The groups that belong to the user.
      */
     public function groups()
@@ -44,33 +48,89 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Group');
     }
 
-    /**
-     * If the user is global system admin this will be true
-     *
-     * @var boolean
-     */
-    public function isAdmin()
+    public function addToGroup(Group $group)
     {
-        return;
+        try {
+            $this->groups()->attach($group->id);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function removeFromGroup(Group $group)
+    {
+        try {
+            return ($this->groups()->detach($group->id) > 0) ? true : false;
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 
     /**
-     * If the user can add a new conference
-     *
-     * @var boolean
+     *  Conference Admin Section 
      */
-    public function canAddConference()
+
+    public function isAdminForConferences()
     {
-        return;
+        return $this->belongsToMany('App\Conference', 'conference_admin');
     }
 
-    /**
-     * If the user can manage the provided conference
-     *
-     * @var boolean
-     */
-    public function canManageConference(Conference $conference)
+    public function isAdminForConference(Conference $conference)
     {
-        return;
+        return $this->isAdminForConferences->contains($conference);
+    }
+
+    public function addAsAdminForConference(Conference $conference)
+    {
+        try {
+            $this->isAdminForConferences()->attach($conference->id);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function removeAsAdminForConference(Conference $conference)
+    {
+        try {
+            return $this->isAdminForConferences()->detach($conference->id);
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+
+    /**
+     *  Student Volunteer Section 
+     */
+
+    public function isSvForConferences()
+    {
+        return $this->belongsToMany('App\Conference', 'conference_sv');
+    }
+
+    public function isSvForConference(Conference $conference)
+    {
+        return $this->isSvForConferences->contains($conference);
+    }
+
+    public function addAsSvForConference(Conference $conference)
+    {
+        try {
+            $this->isSvForConferences()->attach($conference->id);
+            return true;
+        } catch (\Throwable $th) {
+            return false;
+        }
+    }
+
+    public function removeAsSvForConference(Conference $conference)
+    {
+        try {
+            return $this->isSvForConferences()->detach($conference->id);
+        } catch (\Throwable $th) {
+            return false;
+        }
     }
 }
