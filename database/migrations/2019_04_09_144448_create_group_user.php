@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddIsadminField extends Migration
+class CreateGroupUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddIsadminField extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->boolean('is_admin')->after('name')->default(false);
+        Schema::create('group_user', function (Blueprint $table) {
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('group_id')->unsigned()->index();
         });
     }
 
@@ -25,8 +26,6 @@ class AddIsadminField extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('is_admin');
-        });
+        Schema::dropIfExists('group_user');
     }
 }
