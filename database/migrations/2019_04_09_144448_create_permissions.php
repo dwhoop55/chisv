@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateConferenceSv extends Migration
+class CreatePermissions extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,13 @@ class CreateConferenceSv extends Migration
      */
     public function up()
     {
-        Schema::create('conference_sv', function (Blueprint $table) {
-            $table->integer('conference_id')->unsigned()->index();
+        Schema::create('permissions', function (Blueprint $table) {
             $table->integer('user_id')->unsigned()->index();
-            $table->primary(['conference_id', 'user_id']);
+            $table->integer('role_id')->unsigned()->index();
+            $table->integer('conference_id')->unsigned()->index()->nullable()->comment('Restrict to this conference');
+            $table->primary(['user_id', 'role_id', 'conference_id']);
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->foreign('conference_id')->references('id')->on('conferences');
         });
     }
@@ -29,6 +31,6 @@ class CreateConferenceSv extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('conference_sv');
+        Schema::dropIfExists('permissions');
     }
 }

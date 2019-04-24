@@ -41,96 +41,109 @@ class User extends Authenticatable
      */
 
     /**
-     * The groups that belong to the user.
+     * The roles that belong to the user.
      */
-    public function groups()
+    public function roles()
     {
-        return $this->belongsToMany('App\Group');
+        return $this->belongsToMany('App\Role', 'permissions')
+            ->as('permission')
+            ->using('App\Permission')
+            ->withPivot('conference_id');
     }
 
-    public function addToGroup(Group $group)
+    public function grant(Role $role, Conference $scope)
     {
         try {
-            $this->groups()->attach($group->id);
+            $this->roles()->attach($role->id, ['conference_id' => $scope->id]);
             return true;
         } catch (\Throwable $th) {
             return false;
         }
     }
 
-    public function removeFromGroup(Group $group)
+    public function revoke(Role $role, Conference $scope)
     {
-        try {
-            return ($this->groups()->detach($group->id) > 0) ? true : false;
-        } catch (\Throwable $th) {
+        $matchingScopedRoles = $this->roles()->where('id', $role->id)->where('conference_id', $scope->id);
+        if ($matchingScopedRoles->count() > 0) {
+            try {
+                return ($this->roles()->detach($role->id, ['conference_id' => $scope->id]) > 0) ? true : false;
+            } catch (\Throwable $th) {
+                return false;
+            }
+        } else {
             return false;
         }
     }
 
-    /**
-     *  Conference Admin Section 
-     */
+    // public function can(Role $role, Conference $scope)
+    // {
+    //     return $this->roles->where('id', $role->id)->where('conference_id', $scope->id);
+    // }
 
-    public function isAdminForConferences()
-    {
-        return $this->belongsToMany('App\Conference', 'conference_admin');
-    }
+    //     /**
+    //      *  Conference Admin Section 
+    //      */
 
-    public function isAdminForConference(Conference $conference)
-    {
-        return $this->isAdminForConferences->contains($conference);
-    }
+    //     public function isAdminForConferences()
+    //     {
+    //         return $this->belongsToMany('App\Conference', 'conference_admin');
+    //     }
 
-    public function addAsAdminForConference(Conference $conference)
-    {
-        try {
-            $this->isAdminForConferences()->attach($conference->id);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
+    //     public function isAdminForConference(Conference $conference)
+    //     {
+    //         return $this->isAdminForConferences->contains($conference);
+    //     }
 
-    public function removeAsAdminForConference(Conference $conference)
-    {
-        try {
-            return $this->isAdminForConferences()->detach($conference->id);
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
+    //     public function addAsAdminForConference(Conference $conference)
+    //     {
+    //         try {
+    //             $this->isAdminForConferences()->attach($conference->id);
+    //             return true;
+    //         } catch (\Throwable $th) {
+    //             return false;
+    //         }
+    //     }
+
+    //     public function removeAsAdminForConference(Conference $conference)
+    //     {
+    //         try {
+    //             return $this->isAdminForConferences()->detach($conference->id);
+    //         } catch (\Throwable $th) {
+    //             return false;
+    //         }
+    //     }
 
 
-    /**
-     *  Student Volunteer Section 
-     */
+    //     /**
+    //      *  Student Volunteer Section 
+    //      */
 
-    public function isSvForConferences()
-    {
-        return $this->belongsToMany('App\Conference', 'conference_sv');
-    }
+    //     public function isSvForConferences()
+    //     {
+    //         return $this->belongsToMany('App\Conference', 'conference_sv');
+    //     }
 
-    public function isSvForConference(Conference $conference)
-    {
-        return $this->isSvForConferences->contains($conference);
-    }
+    //     public function isSvForConference(Conference $conference)
+    //     {
+    //         return $this->isSvForConferences->contains($conference);
+    //     }
 
-    public function addAsSvForConference(Conference $conference)
-    {
-        try {
-            $this->isSvForConferences()->attach($conference->id);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
+    //     public function addAsSvForConference(Conference $conference)
+    //     {
+    //         try {
+    //             $this->isSvForConferences()->attach($conference->id);
+    //             return true;
+    //         } catch (\Throwable $th) {
+    //             return false;
+    //         }
+    //     }
 
-    public function removeAsSvForConference(Conference $conference)
-    {
-        try {
-            return $this->isSvForConferences()->detach($conference->id);
-        } catch (\Throwable $th) {
-            return false;
-        }
-    }
+    //     public function removeAsSvForConference(Conference $conference)
+    //     {
+    //         try {
+    //             return $this->isSvForConferences()->detach($conference->id);
+    //         } catch (\Throwable $th) {
+    //             return false;
+    //         }
+    //     }
 }

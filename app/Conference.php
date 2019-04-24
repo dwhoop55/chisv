@@ -14,7 +14,7 @@ class Conference extends Model
      */
     public function getRouteKeyName()
     {
-        return 'slug';
+        return 'key';
     }
 
     /**
@@ -23,8 +23,6 @@ class Conference extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'slug', 'location', 'description', 'date'
+        'name', 'key', 'location', 'description', 'date'
     ];
-
-    
 }

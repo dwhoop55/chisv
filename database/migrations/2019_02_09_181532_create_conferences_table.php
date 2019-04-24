@@ -16,7 +16,7 @@ class CreateConferencesTable extends Migration
         Schema::create('conferences', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 100);
-            $table->string('slug', 30)->unique()->index();
+            $table->string('key', 30)->unique()->index();
             $table->string('location', 100)->nullable()->default(null);
             $table->string('date', 100)->nullable()->default(null);
             $table->text('description')->nullable()->default(null);
