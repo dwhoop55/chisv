@@ -1,5 +1,6 @@
 <?php
 
+use App\State;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -20,6 +21,10 @@ class CreateConferencesTable extends Migration
             $table->string('location', 100)->nullable()->default(null);
             $table->string('date', 100)->nullable()->default(null);
             $table->text('description')->nullable()->default(null);
+            $table->integer('state_id')->default(1)->nullable(false);
+
+            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

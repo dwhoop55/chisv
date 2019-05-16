@@ -15,7 +15,20 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('firstname');
+            $table->string('lastname');
+
+            $table->integer('country_id');
+            $table->integer('university_id');
+            $table->enum('shirt_cut', ['straight', 'tailored']);
+            $table->enum('shirt_size', ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl']);
+            $table->enum('degree', ['bachelor', 'master', 'phd']);
+            $table->json('languages')->nullable();
+            $table->text('image')->nullable(); // Will be stored as base64
+
+            $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');

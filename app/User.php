@@ -36,9 +36,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     *  Group Management
-     */
+    public function country()
+    {
+        return $this->hasOne('App\Country', 'id');
+    }
 
     /**
      * The roles that belong to the user.
@@ -53,8 +54,13 @@ class User extends Authenticatable
 
     public function grant(Role $role, Conference $scope)
     {
+        $state = null;
+        if ($role == Role::byName('sv')) {
+            // Assigned role is sv, so we need to set state to enrolled
+            $state = State::byName('enrolled');
+        }
         try {
-            $this->roles()->attach($role->id, ['conference_id' => $scope->id]);
+            $this->roles()->attach($role->id, ['conference_id' => $scope->id, 'state_id' => $state->id]);
             return true;
         } catch (\Throwable $th) {
             return false;

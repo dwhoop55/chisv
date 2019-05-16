@@ -16,8 +16,8 @@ class Role extends Model
         return $this->belongsToMany('App\User', 'permissions')->as('permission');
     }
 
-    public static function byKey($key)
+    public static function byName($name)
     {
-        return Role::where('key', $key)->first();
+        return Role::where('name', $name)->first();
     }
 }
