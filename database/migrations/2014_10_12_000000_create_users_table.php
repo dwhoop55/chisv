@@ -20,10 +20,8 @@ class CreateUsersTable extends Migration
 
             $table->integer('country_id');
             $table->integer('university_id');
-            $table->enum('shirt_cut', ['straight', 'tailored']);
-            $table->enum('shirt_size', ['xs', 's', 'm', 'l', 'xl', 'xxl', 'xxxl']);
-            $table->enum('degree', ['bachelor', 'master', 'phd']);
-            $table->json('languages')->nullable();
+            $table->integer('shirt_id');
+            $table->integer('degree_id');
             $table->text('image')->nullable(); // Will be stored as base64
 
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL')->onUpdate('cascade');

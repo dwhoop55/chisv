@@ -36,9 +36,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function languages()
+    {
+        return $this->belongsToMany('App\Language');
+    }
+
+    public function degree()
+    {
+        return $this->belongsTo('App\Degree');
+    }
+
+    public function shirt()
+    {
+        return $this->belongsTo('App\Shirt');
+    }
+
     public function country()
     {
-        return $this->hasOne('App\Country', 'id');
+        return $this->belongsTo('App\Country');
     }
 
     /**

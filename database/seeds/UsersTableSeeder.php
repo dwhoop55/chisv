@@ -22,9 +22,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 1,
                 'country_id' => 83,
-                'shirt_cut' => 'straight',
-                'shirt_size' => 'l',
-                'degree' => 'phd',
+                'shirt_id' => 1,
+                'degree_id' => 2,
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now()
@@ -38,9 +37,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 1,
                 'country_id' => 83,
-                'shirt_cut' => 'straight',
-                'shirt_size' => 'l',
-                'degree' => 'master',
+                'shirt_id' => 3,
+                'degree_id' => 1,
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now()
@@ -54,9 +52,8 @@ class UsersTableSeeder extends Seeder
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 1,
                 'country_id' => 83,
-                'shirt_cut' => 'straight',
-                'shirt_size' => 'l',
-                'degree' => 'master',
+                'shirt_id' => 13,
+                'degree_id' => 3,
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now()
