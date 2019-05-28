@@ -61,45 +61,49 @@ class User extends Authenticatable
         return $this->belongsTo('App\University');
     }
 
-    /**
-     * The roles that belong to the user.
-     */
-    public function roles()
+    public function permissions()
     {
-        return $this->belongsToMany('App\Role', 'permissions')
-            ->as('permission')
-            ->using('App\Permission')
-            ->withPivot('conference_id');
+        return $this->hasMany('App\Permission');
     }
 
-    public function grant(Role $role, Conference $scope)
+    public function grant(Role $role, Conference $conference, State $state = null)
     {
-        $state = null;
-        if ($role == Role::byName('sv')) {
-            // Assigned role is sv, so we need to set state to enrolled
-            $state = State::byName('enrolled');
-        }
-        try {
-            $this->roles()->attach($role->id, ['conference_id' => $scope->id, 'state_id' => $state->id]);
-            return true;
-        } catch (\Throwable $th) {
-            return false;
-        }
+        $permission = new Permission;
+        $permission->user()->associate($this);
+        $permission->role()->associate($role);
+        $permission->conference()->associate($conference);
+        $permission->state()->associate($state);
+        return $permission->save();
     }
 
-    public function revoke(Role $role, Conference $scope)
-    {
-        $matchingScopedRoles = $this->roles()->where('id', $role->id)->where('conference_id', $scope->id);
-        if ($matchingScopedRoles->count() > 0) {
-            try {
-                return ($this->roles()->detach($role->id, ['conference_id' => $scope->id]) > 0) ? true : false;
-            } catch (\Throwable $th) {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
+    // public function grant(Role $role, Conference $scope)
+    // {
+    //     $state = null;
+    //     if ($role == Role::byName('sv')) {
+    //         // Assigned role is sv, so we need to set state to enrolled
+    //         $state = State::byName('enrolled');
+    //     }
+    //     try {
+    //         $this->roles()->attach($role->id, ['conference_id' => $scope->id, 'state_id' => $state->id]);
+    //         return true;
+    //     } catch (\Throwable $th) {
+    //         return false;
+    //     }
+    // }
+
+    // public function revoke(Role $role, Conference $scope)
+    // {
+    //     $matchingScopedRoles = $this->roles()->where('id', $role->id)->where('conference_id', $scope->id);
+    //     if ($matchingScopedRoles->count() > 0) {
+    //         try {
+    //             return ($this->roles()->detach($role->id, ['conference_id' => $scope->id]) > 0) ? true : false;
+    //         } catch (\Throwable $th) {
+    //             return false;
+    //         }
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     // public function can(Role $role, Conference $scope)
     // {

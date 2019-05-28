@@ -13,4 +13,14 @@ class State extends Model
     {
         return State::where('name', $name)->first();
     }
+
+    public function conferences()
+    {
+        return $this->hasMany('App\Conference');
+    }
+
+    public function users()
+    {
+        return $this->hasMany('App\Conference');
+    }
 }

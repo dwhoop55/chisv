@@ -25,4 +25,9 @@ class Conference extends Model
     protected $fillable = [
         'name', 'key', 'location', 'description', 'date'
     ];
+
+    public function state()
+    {
+        return $this->belongsTo('App\State');
+    }
 }
