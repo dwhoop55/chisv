@@ -17,8 +17,6 @@ class CreateUniversitiesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->index()->unique();
         });
-
-        DB::insert("INSERT INTO universities (id, name) VALUES (1, 'RWTH Aachen Univerity')");
     }
 
 

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             LanguageTableSeeder::class,
             ShirtTableSeeder::class,
             DegreeTableSeeder::class,
+            UniversityTableSeeder::class,
 
             UsersTableSeeder::class,
 
