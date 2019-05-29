@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('lastname');
 
             $table->integer('country_id');
-            $table->integer('university_id');
+            $table->integer('university_id')->nullable();
             $table->integer('shirt_id');
-            $table->integer('degree_id');
+            $table->integer('degree_id')->nullable();
             $table->text('image')->nullable(); // Will be stored as base64
 
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('SET NULL')->onUpdate('cascade');
