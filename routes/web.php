@@ -13,10 +13,10 @@
 
 Route::get('/', function () {
     return redirect('/home');
-
 });
 
-Auth::routes();
+Auth::routes(['register' => true]);
+// Route::get('/register/university', 'RegisterController@')
 
 Route::get('/home', 'HomeController@index')->name('home');
 

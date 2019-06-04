@@ -14,7 +14,7 @@ class ConferenceController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('isConferenceAdmin')->except(['index', 'show']);
+        // $this->middleware('isConferenceAdmin')->except(['index', 'show']);
     }
 
     /**
@@ -48,7 +48,7 @@ class ConferenceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|unique:conferences|max:100',
-            'slug' => 'required|unique:conferences|max:30',
+            'tag' => 'required|unique:conferences|max:30',
             'location' => 'max:100',
             'date' => 'max:100',
             'description' => 'max:1000',
@@ -91,7 +91,7 @@ class ConferenceController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:100',
-            'slug' => 'required|max:30',
+            'tag' => 'required|max:30',
             'location' => 'max:100',
             'date' => 'max:100',
             'description' => 'max:1000',
