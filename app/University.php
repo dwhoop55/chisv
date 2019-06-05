@@ -15,7 +15,7 @@ class University extends Model
 
     public static function byDomain($domain)
     {
-        return University::ByPattern($domain, false);
+        return University::byPattern($domain, false);
     }
 
     public static function byEmail($email)
@@ -34,7 +34,7 @@ class University extends Model
         return $university;
     }
 
-    public static function ByPattern($pattern, $name = true, $domain = true)
+    public static function byPattern($pattern, $name = true, $domain = true)
     {
         $query = DB::table('universities')->where("id", "-1");
 
