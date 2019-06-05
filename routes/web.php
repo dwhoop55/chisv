@@ -19,10 +19,11 @@ Auth::routes(['register' => false]);
 Route::prefix('register')->group(function () {
     Route::get('', function () {
         return redirect(route('registerOne'));
-    });
+    })->name('register');
     Route::get('1', 'Auth\RegisterController@indexOne')->name('registerOne');
     Route::get('2', 'Auth\RegisterController@indexTwo')->name('registerTwo');
     Route::get('3', 'Auth\RegisterController@indexThree')->name('registerThree');
 });
 
+Route::get('home', 'HomeController@index');
 Route::resource('conference', 'ConferenceController');
