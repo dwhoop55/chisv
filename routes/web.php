@@ -15,9 +15,14 @@ Route::get('/', function () {
     return redirect('/home');
 });
 
-Auth::routes(['register' => true]);
-// Route::get('/register/university', 'RegisterController@')
-
-Route::get('/home', 'HomeController@index')->name('home');
+Auth::routes(['register' => false]);
+Route::prefix('register')->group(function () {
+    Route::get('', function () {
+        return redirect(route('registerOne'));
+    });
+    Route::get('1', 'Auth\RegisterController@indexOne')->name('registerOne');
+    Route::get('2', 'Auth\RegisterController@indexTwo')->name('registerTwo');
+    Route::get('3', 'Auth\RegisterController@indexThree')->name('registerThree');
+});
 
 Route::resource('conference', 'ConferenceController');

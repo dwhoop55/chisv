@@ -79,4 +79,9 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
         ]);
     }
+
+    protected function indexOne()
+    {
+        return view('auth.registerOne');
+    }
 }
