@@ -20,7 +20,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -44,137 +44,61 @@
 
             <div id="navMenu" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item">
+                    <a class="navbar-item" href="{{ route('home.index') }}">
                         Home
                     </a>
 
-                    <a class="navbar-item">
-                        Documentation
+                    <a class="navbar-item" href="{{ route('conference.index') }}">
+                        Conferences
                     </a>
+                </div>
+            </div>
 
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            More
-                        </a>
+            <div class="navbar-end">
+                @guest
+                <div class="navbar-item">
+                    <div class="field is-grouped">
 
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                About
+                        <p class="control">
+                            <a class="button is-primary-inverted" href="{{ route('register') }}">
+                                {{ __('Register') }}
                             </a>
-                            <a class="navbar-item">
-                                Jobs
+                        </p>
+
+                        <p class="control">
+                            <a class="button is-primary-inverted" href="{{ route('login') }}">
+                                <strong>{{ __('Login') }}</strong>
                             </a>
-                            <a class="navbar-item">
-                                Contact
-                            </a>
-                            <hr class="navbar-divider">
-                            <a class="navbar-item">
-                                Report an issue
-                            </a>
-                        </div>
+                        </p>
                     </div>
                 </div>
+                @else
+                <div class="navbar-item has-dropdown is-hoverable">
+                    <a class="navbar-link">
+                        {{ Auth::user()->firstname }} <span class="caret"></span>
+                    </a>
 
-                <div class="navbar-end">
-                    @guest
-                    <div class="buttons">
-                        <a class="button is-primary" href="{{ route('register') }}">
-                            {{ __('Register') }}
-                        </a>
-                        <a class="button is-light" href="{{ route('login') }}">
-                            <strong>{{ __('Login') }}</strong>
-                        </a>
-                    </div>
-                    @else
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <a class="navbar-link">
-                            {{ Auth::user()->firstname }} <span class="caret"></span>
-                        </a>
-
-                        <div class="navbar-dropdown">
-                            <a class="navbar-item">
-                                <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                    <div class="navbar-dropdown">
+                        <a class="navbar-item">
+                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST"
-                                    style="display: none;">
-                                    @csrf
-                                </form>
+                                {{ __('Logout') }}
                             </a>
-                        </div>
+
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </a>
                     </div>
-                    @endguest
                 </div>
+                @endguest
             </div>
-    </div>
-    </nav>
-    {{-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-    {{ config('app.name', 'Laravel') }}
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+        </nav>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!-- Left Side Of Navbar -->
-        <ul class="navbar-nav mr-auto">
-            @auth
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('conference.index') }}">{{ __('Conferences') }}</a>
-            </li>
-            @endauth
-        </ul>
-
-        <!-- Right Side Of Navbar -->
-        <ul class="navbar-nav ml-auto">
-            <!-- Authentication Links -->
-            @guest
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-            </li>
-            @if (Route::has('register'))
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-            </li>
-            @endif
-            @else
-            <li class="nav-item dropdown">
-                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false" v-pre>
-                    {{ Auth::user()->name }} <span class="caret"></span>
-                </a>
-
-                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                        {{ __('Logout') }}
-                    </a>
-
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                        @csrf
-                    </form>
-                </div>
-            </li>
-            @endguest
-        </ul>
-    </div>
-    </div>
-    </nav> --}}
-
-    <main class="py-4">
         <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-10">
-                    @yield('content')
-                </div>
-            </div>
+            <example-component></example-component>
+            @yield('content')
         </div>
-    </main>
     </div>
 </body>
 

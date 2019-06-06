@@ -25,5 +25,5 @@ Route::prefix('register')->group(function () {
     Route::get('3', 'Auth\RegisterController@indexThree')->name('registerThree');
 });
 
-Route::get('home', 'HomeController@index');
+Route::get('home', 'HomeController@index')->name('home.index');
 Route::resource('conference', 'ConferenceController');
