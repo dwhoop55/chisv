@@ -11,10 +11,10 @@
         <div class="content">
             <form action="{{ route('login') }}" method="POST">
                 @csrf
-                <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}"
+                <input id="auth-email" type="email" placeholder="{{ __('E-Mail Address') }}"
                     class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
                     value="{{ old('email') }}" required autofocus>
-                <input id="password" placeholder="{{ __('Password') }}" type="password"
+                <input id="auth-password" placeholder="{{ __('Password') }}" type="password"
                     class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
 
                 @if ($errors->has('email'))
