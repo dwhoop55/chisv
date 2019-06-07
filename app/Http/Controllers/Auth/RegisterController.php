@@ -7,6 +7,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+use App\University;
+use Illuminate\Support\Collection;
 
 class RegisterController extends Controller
 {
@@ -80,8 +83,94 @@ class RegisterController extends Controller
         ]);
     }
 
-    protected function indexOne()
+    public function indexOne()
     {
         return view('auth.registerOne');
+    }
+
+    public function storeOne(Request $request)
+    {
+        $validatedData = $request->validate([
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        ]);
+
+        // Get universities based on the email and remove the http and www stuff
+        $universities = University::byEmail($validatedData['email'])->map(function ($item) {
+            $item['shortedUrl'] = preg_replace('#^https?://(www\.)?#', '', rtrim($item['url'], '/'));
+            return $item;
+        });
+
+        $request->session()->put('firstname', $validatedData['firstname']);
+        $request->session()->put('lastname', $validatedData['lastname']);
+        $request->session()->put('email', $validatedData['email']);
+
+        // If there are universities based on the email go to the selection
+        // If not skip to the search and selection view
+        if ($universities->count() > 0) {
+            $request->session()->put('universities', $universities);
+            $request->session()->put('by', 'email');
+            return redirect()->route('register.index.two');
+        } else {
+            return redirect()->route('register.index.three');
+        }
+    }
+
+    public function indexTwo()
+    {
+        $email = session()->get('email');
+        $universities = session()->get('universities');
+        if (!$email) {
+            // Step one has not been completed redirect back
+            return redirect()->route('register.index.one');
+        } else if (!$universities) {
+            // This view is for selecting universities. Need to got to step three
+            return redirect()->route('register.index.three');
+        }
+        return view('auth.registerTwo', ["email" => $email, "universities" => $universities]);
+    }
+
+    public function storeTwo(Request $request)
+    {
+        $validatedData = $request->validate(['university' => 'required']);
+        $university = $validatedData['university'];
+        if ($university === "none") {
+            return redirect()->route('register.index.three');
+        } else {
+            $request->session()->put('university', $validatedData['university']);
+            return redirect()->route('register.index.four');
+        }
+    }
+
+    public function indexThree()
+    {
+        $email = session()->get('email');
+        if (!$email) {
+            // Step one has not been completed redirect back
+            return redirect()->route('register.index.one');
+        }
+        return view('auth.registerThree');
+    }
+
+    public function storeThree(Request $request)
+    {
+        $validatedData = $request->validate(['search' => 'required|min:3|max:20']);
+        $universities = University::byPattern($validatedData['search']);
+
+        if ($universities->count() == 0) { // none found
+            return redirect()->back()->withErrors(['noResults' => true])->withInput();
+        } else {
+            // Found one ore more        
+            // Get universities based on the email and remove the http and www stuff
+            $universities = University::byPattern($validatedData['search'])->map(function ($item) {
+                $item['shortedUrl'] = preg_replace('#^https?://(www\.)?#', '', rtrim($item['url'], '/'));
+                return $item;
+            });
+            $request->session()->put('universities', $universities);
+            $request->session()->put('by', 'pattern');
+            $request->session()->put('search', $validatedData['search']);
+            return redirect()->route('register.index.two');
+        }
     }
 }

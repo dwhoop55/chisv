@@ -61,7 +61,7 @@
 
                         <p class="control">
                             <a class="button is-primary-inverted" href="{{ route('register') }}">
-                                {{ __('Register') }}
+                                {{ __('Sign up') }}
                             </a>
                         </p>
 
@@ -96,7 +96,6 @@
         </nav>
 
         <div class="container">
-            <example-component></example-component>
             @yield('content')
         </div>
     </div>
