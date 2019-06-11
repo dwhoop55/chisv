@@ -17,9 +17,7 @@ Route::get('/', function () {
 
 Auth::routes(['register' => false]);
 Route::prefix('register')->group(function () {
-    Route::get('', function () {
-        return redirect(route('register.index.one'));
-    })->name('register');
+    Route::get('', 'Auth\RegisterController@index')->name('register');
     Route::get('name', 'Auth\RegisterController@indexOne')->name('register.index.one');
     Route::post('name', 'Auth\RegisterController@storeOne')->name('register.store.one');
     Route::get('chooseUniversity', 'Auth\RegisterController@indexTwo')->name('register.index.two');

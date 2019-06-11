@@ -83,6 +83,11 @@ class RegisterController extends Controller
         ]);
     }
 
+    public function index()
+    {
+        return view('auth.register');
+    }
+
     public function indexOne()
     {
         return view('auth.registerOne');

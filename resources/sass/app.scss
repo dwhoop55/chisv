@@ -65,7 +65,8 @@ $link-focus-border: $primary;
 @import "~buefy/src/scss/buefy";
 
 // Login/register
-@import "auth";
+// @import "auth";
+@import "form";
 
 html {
   background-color: $body-bg;
