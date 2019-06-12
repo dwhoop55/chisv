@@ -3,6 +3,6 @@
 
 
 <div class="container">
-    <register-component :title="'Sign Up'"></register-component>
+    <register :title="'Sign Up'"></register>
 </div>
 @endsection

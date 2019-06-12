@@ -15,8 +15,8 @@
             <b-input v-model="lastname" value></b-input>
           </b-field>
 
-          <b-field label="Email" type="is-danger" message="This email is invalid">
-            <b-input type="email" value="john@" maxlength="30"></b-input>
+          <b-field label="Email" :type="{ 'is-danger': emailMessage }" :message="emailMessage">
+            <b-input type="email" v-model="email" maxlength="64"></b-input>
           </b-field>
         </div>
       </div>
@@ -27,6 +27,12 @@
 <script>
 export default {
   props: ["title"],
+  data: {
+    firstname: "",
+    lastname: "",
+    emailMessage: "1",
+    email: ""
+  },
   mounted() {
     console.log("Component mounted.");
   }
