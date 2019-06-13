@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "buefy": "^0.7.7",
-        "bulma": "^0.7.5"
+        "bulma": "^0.7.5",
+        "lodash.debounce": "^4.0.8",
+        "vue-resource": "^1.5.1"
     }
 }
