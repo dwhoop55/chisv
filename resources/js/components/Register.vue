@@ -70,7 +70,7 @@ export default {
   },
   methods: {
     getAsyncData: debounce(function(name) {
-      if (!name.length) {
+      if (!name.length || name.length < 2) {
         this.locResidence = [];
         return;
       }
