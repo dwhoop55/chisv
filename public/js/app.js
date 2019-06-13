@@ -1754,13 +1754,25 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ["title"],
-  data: {
-    firstname: "",
-    lastname: "",
-    emailMessage: "1",
-    email: ""
+  data: function data() {
+    return {
+      firstname: "",
+      lastname: "",
+      emailMessage: "",
+      email: "",
+      country: ""
+    };
   },
   mounted: function mounted() {
     console.log("Component mounted.");
@@ -51798,36 +51810,43 @@ var render = function() {
           [
             _c(
               "b-field",
-              { attrs: { label: "Firstname" } },
+              { attrs: { grouped: "" } },
               [
-                _c("b-input", {
-                  attrs: { value: "" },
-                  model: {
-                    value: _vm.firstname,
-                    callback: function($$v) {
-                      _vm.firstname = $$v
-                    },
-                    expression: "firstname"
-                  }
-                })
-              ],
-              1
-            ),
-            _vm._v(" "),
-            _c(
-              "b-field",
-              { attrs: { label: "Lastname" } },
-              [
-                _c("b-input", {
-                  attrs: { value: "" },
-                  model: {
-                    value: _vm.lastname,
-                    callback: function($$v) {
-                      _vm.lastname = $$v
-                    },
-                    expression: "lastname"
-                  }
-                })
+                _c(
+                  "b-field",
+                  { attrs: { label: "Firstname", expanded: "" } },
+                  [
+                    _c("b-input", {
+                      attrs: { value: "" },
+                      model: {
+                        value: _vm.firstname,
+                        callback: function($$v) {
+                          _vm.firstname = $$v
+                        },
+                        expression: "firstname"
+                      }
+                    })
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-field",
+                  { attrs: { label: "Lastname", expanded: "" } },
+                  [
+                    _c("b-input", {
+                      attrs: { value: "" },
+                      model: {
+                        value: _vm.lastname,
+                        callback: function($$v) {
+                          _vm.lastname = $$v
+                        },
+                        expression: "lastname"
+                      }
+                    })
+                  ],
+                  1
+                )
               ],
               1
             ),
@@ -51852,6 +51871,35 @@ var render = function() {
                     expression: "email"
                   }
                 })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "b-field",
+              [
+                _c(
+                  "b-select",
+                  {
+                    attrs: { placeholder: "Country", icon: "earth" },
+                    model: {
+                      value: _vm.country,
+                      callback: function($$v) {
+                        _vm.country = $$v
+                      },
+                      expression: "country"
+                    }
+                  },
+                  [
+                    _c("option", { attrs: { value: "1" } }, [
+                      _vm._v("Option 1")
+                    ]),
+                    _vm._v(" "),
+                    _c("option", { attrs: { value: "2" } }, [
+                      _vm._v("Option 2")
+                    ])
+                  ]
+                )
               ],
               1
             )
