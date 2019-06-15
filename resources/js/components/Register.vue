@@ -24,14 +24,23 @@
           <b-field label="City of residence">
             <b-autocomplete
               :data="locResidence"
-              placeholder="e.g. Aachen"
+              placeholder="e.g. Berlin"
               field="city.name"
               :loading="locIsFetching"
               @typing="getAsyncData"
               @select="option => locSelected = option"
               icon="magnify"
             >
-              <template slot="empty">No results found</template>
+              <template slot="empty">
+                <div v-if="!locIsFetching" class="content has-text-grey has-text-centered">
+                  <b-icon icon="emoticon-sad"></b-icon>
+                  <p>No results found. Try a city near by.</p>
+                </div>
+                <div v-if="locIsFetching" class="content has-text-grey has-text-centered">
+                  <b-icon icon="emoticon-loading"></b-icon>
+                  <p>Loading..</p>
+                </div>
+              </template>
               <template slot-scope="props">
                 <div>{{ props.option.city.name }}</div>
                 <small>{{ props.option.region.name }}, {{ props.option.country.name }}</small>

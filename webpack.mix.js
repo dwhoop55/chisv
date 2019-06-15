@@ -12,5 +12,22 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css')
-    .version();
+    .sass('resources/sass/app.scss', 'public/css');
+// .version();
+
+Mix.listen('configReady', (webpackConfig) => {
+    if (Mix.isUsing('hmr')) {
+        // Remove leading '/' from entry keys
+        webpackConfig.entry = Object.keys(webpackConfig.entry).reduce((entries, entry) => {
+            entries[entry.replace(/^\//, '')] = webpackConfig.entry[entry];
+            return entries;
+        }, {});
+
+        // Remove leading '/' from ExtractTextPlugin instances
+        webpackConfig.plugins.forEach((plugin) => {
+            if (plugin.constructor.name === 'ExtractTextPlugin') {
+                plugin.filename = plugin.filename.replace(/^\//, '');
+            }
+        });
+    }
+});
