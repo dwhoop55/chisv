@@ -2,7 +2,9 @@
 
 use Illuminate\Http\Request;
 use App\Http\Resources\Locations;
+use App\Http\Resources\Universities;
 use App\City;
+use App\University;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +28,9 @@ Route::get('/city/search/{pattern}', function ($pattern) {
         $locations->push($match->location());
     }
     return new Locations($locations);
+});
+
+Route::get('/university/search/{pattern}', function ($pattern) {
+    $matches = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%')->orderBy('name', 'asc')->get();
+    return new Universities($matches);
 });

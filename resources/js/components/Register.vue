@@ -3,7 +3,7 @@
     <div class="form-container">
       <div class="form-card">
         <div class="form-title">
-          <h1>{{ title }}</h1>
+          <h1>Sign up</h1>
         </div>
 
         <div class="form-content">
@@ -21,36 +21,31 @@
             <b-input type="email" v-model="email" maxlength="64"></b-input>
           </b-field>
 
-          <b-field label="City of residence">
-            <b-autocomplete
-              :data="locResidence"
-              placeholder="e.g. Berlin"
-              field="city.name"
-              :loading="locIsFetching"
-              @typing="getAsyncData"
-              @select="option => locSelected = option"
-              icon="magnify"
-            >
-              <template slot="empty">
-                <div v-if="!locIsFetching" class="content has-text-grey has-text-centered">
-                  <b-icon icon="emoticon-sad"></b-icon>
-                  <p>No results found. Try a city near by.</p>
-                </div>
-                <div v-if="locIsFetching" class="content has-text-grey has-text-centered">
-                  <b-icon icon="emoticon-loading"></b-icon>
-                  <p>Loading..</p>
-                </div>
-              </template>
-              <template slot-scope="props">
-                <div>{{ props.option.city.name }}</div>
-                <small>{{ props.option.region.name }}, {{ props.option.country.name }}</small>
-              </template>
-            </b-autocomplete>
+          <autocomplete-fetched
+            :type="'city'"
+            :field="'city.name'"
+            :url="'/api/city/search/'"
+            :title="'City of residence'"
+            :placeholder="'e.g. Berlin'"
+            :notFoundText="'No results found. Try a city near by.'"
+            @selected="locSelected = $event"
+          ></autocomplete-fetched>
+
+          <autocomplete-fetched
+            :type="'university'"
+            :field="'name'"
+            :url="'/api/university/search/'"
+            :title="'University'"
+            :placeholder="'e.g. RWTH'"
+            :notFoundText="'No results found. Leave it blank'"
+            @selected="uniSelected = $event"
+          ></autocomplete-fetched>
+
+          <b-field>&nbsp;</b-field>
+
+          <b-field grouped position="is-right">
+            <b-button type="is-primary">Sign Up</b-button>
           </b-field>
-          <p
-            class="help"
-            v-if="locSelected"
-          >{{ locSelected.region.name }}, {{ locSelected.country.name }}</p>
         </div>
       </div>
     </div>
@@ -58,47 +53,19 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-
 export default {
-  props: ["title"],
+  name: "register",
   data() {
     return {
       firstname: "",
       lastname: "",
       emailMessage: "",
       email: "",
-      locResidence: [],
       locSelected: null,
-      locIsFetching: false,
-      locCityName: ""
+      uniSelected: null
     };
   },
-  mounted() {
-    console.log("Component mounted.");
-  },
-  methods: {
-    getAsyncData: debounce(function(name) {
-      if (!name.length || name.length < 2) {
-        this.locResidence = [];
-        return;
-      }
-      this.locIsFetching = true;
-      this.$http
-        .get(`/api/city/search/${name}`)
-        .then(({ data }) => {
-          this.locResidence = [];
-          console.log(data[0]);
-          data.data.forEach(location => this.locResidence.push(location));
-        })
-        .catch(error => {
-          this.locResidence = [];
-          throw error;
-        })
-        .finally(() => {
-          this.locIsFetching = false;
-        });
-    }, 500)
-  }
+  mounted() {},
+  methods: {}
 };
 </script>
