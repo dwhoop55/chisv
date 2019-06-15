@@ -6,6 +6,7 @@
         :placeholder="placeholder"
         :field="field"
         :loading="isFetching"
+        :keep-first="true"
         @typing="getAsyncData"
         @select="emitSelected"
         icon="magnify"

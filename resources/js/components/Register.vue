@@ -27,20 +27,20 @@
             :url="'/api/city/search/'"
             :title="'City of residence'"
             :placeholder="'e.g. Berlin'"
-            :notFoundText="'No results found. Try a city near by.'"
+            :notFoundText="'No results found. Try a city close by.'"
             @selected="locSelected = $event"
           ></autocomplete-fetched>
-
+          {{ locSelected }}
           <autocomplete-fetched
             :type="'university'"
             :field="'name'"
             :url="'/api/university/search/'"
             :title="'University'"
             :placeholder="'e.g. RWTH'"
-            :notFoundText="'No results found. Leave it blank'"
+            :notFoundText="'No results found. Type your choice'"
             @selected="uniSelected = $event"
           ></autocomplete-fetched>
-
+          {{ uniSelected }}
           <b-field>&nbsp;</b-field>
 
           <b-field grouped position="is-right">
