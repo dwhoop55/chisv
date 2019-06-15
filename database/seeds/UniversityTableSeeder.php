@@ -11,7 +11,7 @@ class UniversityTableSeeder extends Seeder
      */
     public function run()
     {
-        $jsonFile = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "UnivCcParser.json";
+        $jsonFile = __DIR__ . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "univ.cc" . DIRECTORY_SEPARATOR . "UnivCcParser.json";
         if (file_exists($jsonFile)) {
             $json = json_decode(file_get_contents($jsonFile), true);
             echo "Loading $jsonFile with " . count($json['universities']) . " universities generated " . $json['generated'] . "\n";

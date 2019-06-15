@@ -1,3 +1,5 @@
+/app/database/geonames.org/*.txt
+/app/database/geonames.org/*.zip
 /node_modules
 /public/hot
 /public/storage
