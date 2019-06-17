@@ -21,6 +21,8 @@
             <b-input type="email" v-model="email" maxlength="64"></b-input>
           </b-field>
 
+          <language-picker></language-picker>
+
           <autocomplete-fetched
             :type="'city'"
             :field="'city.name'"
