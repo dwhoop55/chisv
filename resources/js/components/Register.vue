@@ -32,6 +32,7 @@
             :notFoundText="'No results found. Try a city close by.'"
             @selected="locSelected = $event"
           ></autocomplete-fetched>
+
           {{ locSelected }}
           <autocomplete-fetched
             :type="'university'"
@@ -42,6 +43,7 @@
             :notFoundText="'No results found. Type your choice'"
             @selected="uniSelected = $event"
           ></autocomplete-fetched>
+
           {{ uniSelected }}
           <b-field>&nbsp;</b-field>
 

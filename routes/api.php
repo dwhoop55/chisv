@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/city/search/{pattern}', function ($pattern) {
+    // $unUmlautedPattern = 
     $matches = City::where('name', 'LIKE', '%' . $pattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
     $locations = collect();
     foreach ($matches as $match) {
