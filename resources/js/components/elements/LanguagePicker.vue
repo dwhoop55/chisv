@@ -1,17 +1,26 @@
 <template>
   <section>
-    <b-field label="Language">
-      <b-taginput
-        v-model="tags"
-        :data="filteredTags"
-        autocomplete
-        field="name"
-        icon="label"
-        attached="true"
-        placeholder="Which language(s) do you speak?"
-        @typing="getLanguage"
-        @input="emitChanged"
-      ></b-taginput>
+    <b-field expanded>
+      <template slot="label">
+        Languages
+        <b-tooltip label="Please choose all languages that you speak">
+          <b-icon size="is-small" icon="help-circle-outline"></b-icon>
+        </b-tooltip>
+      </template>
+      <b-notification class="notification-no-padding" :closable="false">
+        <b-taginput
+          v-model="tags"
+          :data="filteredTags"
+          autocomplete
+          field="name"
+          icon="label"
+          :attached="true"
+          placeholder="Which language(s) do you speak?"
+          @typing="getLanguage"
+          @input="emitChanged"
+        ></b-taginput>
+        <b-loading :is-full-page="false" :active="isFetching" :can-cancel="false"></b-loading>
+      </b-notification>
     </b-field>
   </section>
 </template>
@@ -35,7 +44,7 @@ export default {
       this.$emit("changed", this.tags);
     },
     getLanguage: debounce(function(text) {
-      if (!text.length || text.length < 2) {
+      if (!text.length) {
         this.filteredTags = [];
         return;
       }
@@ -53,7 +62,14 @@ export default {
         .finally(() => {
           this.isFetching = false;
         });
-    }, 250)
+    }, 10)
   }
 };
 </script>
+
+<style scoped>
+.notification-no-padding {
+  padding: 0 !important;
+}
+</style>
+

@@ -1,6 +1,12 @@
 <template>
   <div class="field">
-    <b-field :label="title">
+    <b-field>
+      <template slot="label">
+        {{ title }}
+        <b-tooltip :label="tooltip">
+          <b-icon size="is-small" icon="help-circle-outline"></b-icon>
+        </b-tooltip>
+      </template>
       <b-autocomplete
         :data="rows"
         :placeholder="placeholder"
@@ -51,7 +57,8 @@ export default {
     "field",
     "notFoundText",
     "selectedFooter",
-    "type"
+    "type",
+    "tooltip"
   ],
   data() {
     return {

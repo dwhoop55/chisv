@@ -4,9 +4,13 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Locations;
 use App\Http\Resources\Universities;
 use App\Http\Resources\Languages;
+
+use App\User;
 use App\City;
 use App\University;
 use App\Language;
+use Illuminate\Database\Eloquent\Collection;
+use PharIo\Manifest\Email;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,11 +38,28 @@ Route::get('/city/search/{pattern}', function ($pattern) {
 });
 
 Route::get('/university/search/{pattern}', function ($pattern) {
-    $matches = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%')->orderBy('name', 'asc')->get();
+    $patterns = preg_split("/\ |\-|,|;/", $pattern);
+    $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
+    foreach ($patterns as $item) {
+        $query = $query->where('name', 'LIKE', '%' . $item . '%');
+        $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
+    }
+    $matches = $query->orderBy('name', 'asc')->get();
     return new Universities($matches);
 });
 
 Route::get('/language/search/{pattern}', function ($pattern) {
     $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
     return new Languages($matches);
+});
+
+Route::prefix('email')->group(function () {
+    Route::get('exists/{email}', function ($email) {
+        $emailExists = User::where('email', $email)->get()->count() == 1;
+        if ($emailExists) {
+            return response()->json(['result' => true]);
+        } else {
+            return response()->json(['result' => false]);
+        };
+    });
 });
