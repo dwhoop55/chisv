@@ -17,7 +17,7 @@
             <p>{{ notFoundText }}</p>
           </div>
           <div v-if="isFetching" class="content has-text-grey has-text-centered">
-            <b-icon icon="emoticon-loading"></b-icon>
+            <b-icon icon="timer-sand"></b-icon>
             <p>Loading..</p>
           </div>
         </template>
@@ -84,7 +84,7 @@ export default {
         .finally(() => {
           this.isFetching = false;
         });
-    }, 500)
+    }, 250)
   }
 };
 </script>

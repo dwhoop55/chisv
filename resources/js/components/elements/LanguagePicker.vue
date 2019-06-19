@@ -1,46 +1,59 @@
 <template>
   <section>
-    <div class="block">
-      <b-switch v-model="allowNew">Allow new tags</b-switch>
-    </div>
-    <b-field label="Enter some tags">
+    <b-field label="Language">
       <b-taginput
         v-model="tags"
         :data="filteredTags"
         autocomplete
-        :allow-new="allowNew"
-        field="user.first_name"
+        field="name"
         icon="label"
-        placeholder="Add a tag"
-        @typing="getFilteredTags"
+        attached="true"
+        placeholder="Which language(s) do you speak?"
+        @typing="getLanguage"
+        @input="emitChanged"
       ></b-taginput>
     </b-field>
-    <pre style="max-height: 400px"><b>Tags:</b>{{ tags }}</pre>
   </section>
 </template>
 
 <script>
+import debounce from "lodash/debounce";
+
 export default {
   name: "language-picker",
+  props: ["url"],
   data() {
     return {
-      filteredTags: data,
+      filteredTags: [],
       isSelectOnly: false,
-      tags: [],
-      allowNew: false
+      isFetching: false,
+      tags: []
     };
   },
   methods: {
-    getFilteredTags(text) {
-      this.filteredTags = data.filter(option => {
-        return (
-          option.user.first_name
-            .toString()
-            .toLowerCase()
-            .indexOf(text.toLowerCase()) >= 0
-        );
-      });
-    }
+    emitChanged: function() {
+      this.$emit("changed", this.tags);
+    },
+    getLanguage: debounce(function(text) {
+      if (!text.length || text.length < 2) {
+        this.filteredTags = [];
+        return;
+      }
+      this.isFetching = true;
+      this.$http
+        .get(`${this.url}${text}`)
+        .then(({ data }) => {
+          this.filteredTags = [];
+          data.data.forEach(entry => this.filteredTags.push(entry));
+        })
+        .catch(error => {
+          this.rows = [];
+          throw error;
+        })
+        .finally(() => {
+          this.isFetching = false;
+        });
+    }, 250)
   }
 };
 </script>

@@ -21,7 +21,8 @@
             <b-input type="email" v-model="email" maxlength="64"></b-input>
           </b-field>
 
-          <language-picker></language-picker>
+          <language-picker :url="'/api/language/search/'" @changed="languages = $event"></language-picker>
+          <pre>{{ languages }}</pre>
 
           <autocomplete-fetched
             :type="'city'"
@@ -30,10 +31,9 @@
             :title="'City of residence'"
             :placeholder="'e.g. Berlin'"
             :notFoundText="'No results found. Try a city close by.'"
-            @selected="locSelected = $event"
+            @selected="location = $event"
           ></autocomplete-fetched>
-
-          {{ locSelected }}
+          <pre>{{ location }}</pre>
           <autocomplete-fetched
             :type="'university'"
             :field="'name'"
@@ -41,10 +41,9 @@
             :title="'University'"
             :placeholder="'e.g. RWTH'"
             :notFoundText="'No results found. Type your choice'"
-            @selected="uniSelected = $event"
+            @selected="university = $event"
           ></autocomplete-fetched>
-
-          {{ uniSelected }}
+          <pre>{{ university }}</pre>
           <b-field>&nbsp;</b-field>
 
           <b-field grouped position="is-right">
@@ -65,8 +64,9 @@ export default {
       lastname: "",
       emailMessage: "",
       email: "",
-      locSelected: null,
-      uniSelected: null
+      location: null,
+      university: null,
+      languages: null
     };
   },
   mounted() {},
