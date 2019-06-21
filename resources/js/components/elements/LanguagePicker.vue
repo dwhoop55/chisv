@@ -1,28 +1,26 @@
 <template>
-  <section>
-    <b-field expanded>
-      <template slot="label">
-        Languages
-        <b-tooltip label="Please choose all languages that you speak">
-          <b-icon size="is-small" icon="help-circle-outline"></b-icon>
-        </b-tooltip>
-      </template>
-      <b-notification class="notification-no-padding" :closable="false">
-        <b-taginput
-          v-model="tags"
-          :data="filteredTags"
-          autocomplete
-          field="name"
-          icon="label"
-          :attached="true"
-          placeholder="Which language(s) do you speak?"
-          @typing="getLanguage"
-          @input="emitChanged"
-        ></b-taginput>
-        <b-loading :is-full-page="false" :active="isFetching" :can-cancel="false"></b-loading>
-      </b-notification>
-    </b-field>
-  </section>
+  <b-field horizontal expanded>
+    <template slot="label">
+      Languages
+      <b-tooltip position="is-right" label="Please choose all languages that you speak">
+        <b-icon size="is-small" icon="help-circle-outline"></b-icon>
+      </b-tooltip>
+    </template>
+    <!-- <b-notification class="notification-no-padding" :closable="false"> -->
+    <b-taginput
+      v-model="tags"
+      :data="filteredTags"
+      autocomplete
+      field="name"
+      icon="label"
+      :attached="true"
+      placeholder="Which language(s) do you speak?"
+      @typing="getLanguage"
+      @input="emitChanged"
+    ></b-taginput>
+    <!-- <b-loading :is-full-page="false" :active="isFetching" :can-cancel="false"></b-loading> -->
+    <!-- </b-notification> -->
+  </b-field>
 </template>
 
 <script>

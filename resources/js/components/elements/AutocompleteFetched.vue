@@ -1,48 +1,46 @@
 <template>
-  <div class="field">
-    <b-field>
-      <template slot="label">
-        {{ title }}
-        <b-tooltip :label="tooltip">
-          <b-icon size="is-small" icon="help-circle-outline"></b-icon>
-        </b-tooltip>
+  <b-field horizontal>
+    <template slot="label">
+      {{ title }}
+      <b-tooltip position="is-right" :label="tooltip">
+        <b-icon size="is-small" icon="help-circle-outline"></b-icon>
+      </b-tooltip>
+    </template>
+    <b-autocomplete
+      :data="rows"
+      :placeholder="placeholder"
+      :field="field"
+      :loading="isFetching"
+      :keep-first="true"
+      @typing="getAsyncData"
+      @select="emitSelected"
+      icon="magnify"
+    >
+      <template slot="empty">
+        <div v-if="!isFetching" class="content has-text-grey has-text-centered">
+          <b-icon icon="emoticon-sad"></b-icon>
+          <p>{{ notFoundText }}</p>
+        </div>
+        <div v-if="isFetching" class="content has-text-grey has-text-centered">
+          <b-icon icon="timer-sand"></b-icon>
+          <p>Loading..</p>
+        </div>
       </template>
-      <b-autocomplete
-        :data="rows"
-        :placeholder="placeholder"
-        :field="field"
-        :loading="isFetching"
-        :keep-first="true"
-        @typing="getAsyncData"
-        @select="emitSelected"
-        icon="magnify"
-      >
-        <template slot="empty">
-          <div v-if="!isFetching" class="content has-text-grey has-text-centered">
-            <b-icon icon="emoticon-sad"></b-icon>
-            <p>{{ notFoundText }}</p>
-          </div>
-          <div v-if="isFetching" class="content has-text-grey has-text-centered">
-            <b-icon icon="timer-sand"></b-icon>
-            <p>Loading..</p>
-          </div>
-        </template>
-        <template slot-scope="props">
-          <div v-if="type=='university'">
-            <div v-html="props.option.name"></div>
-            <small>{{ props.option.url }}</small>
-          </div>
-          <div v-else-if="type=='city'">
-            <div v-html="props.option.city.name"></div>
-            <small>{{ props.option.region.name }}, {{ props.option.country.name }}</small>
-          </div>
-          <div v-else>
-            <div>{{ props.option.name }}</div>
-          </div>
-        </template>
-      </b-autocomplete>
-    </b-field>
-  </div>
+      <template slot-scope="props">
+        <div v-if="type=='university'">
+          <div class="has-text-weight-medium" v-html="props.option.name"></div>
+          <p>{{ props.option.url }}</p>
+        </div>
+        <div v-else-if="type=='city'">
+          <div class="has-text-weight-medium" v-html="props.option.city.name"></div>
+          <p>{{ props.option.region.name }}, {{ props.option.country.name }}</p>
+        </div>
+        <div v-else>
+          <div>{{ props.option.name }}</div>
+        </div>
+      </template>
+    </b-autocomplete>
+  </b-field>
 </template>
 
 <script>
