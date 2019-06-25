@@ -94,7 +94,7 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="section">
             @yield('content')
         </div>
     </div>

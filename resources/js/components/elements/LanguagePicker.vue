@@ -6,7 +6,6 @@
         <b-icon size="is-small" icon="help-circle-outline"></b-icon>
       </b-tooltip>
     </template>
-    <!-- <b-notification class="notification-no-padding" :closable="false"> -->
     <b-taginput
       v-model="tags"
       :data="filteredTags"
@@ -16,10 +15,8 @@
       :attached="true"
       placeholder="Which language(s) do you speak?"
       @typing="getLanguage"
-      @input="emitChanged"
+      @input="$emit('update:tags', $event)"
     ></b-taginput>
-    <!-- <b-loading :is-full-page="false" :active="isFetching" :can-cancel="false"></b-loading> -->
-    <!-- </b-notification> -->
   </b-field>
 </template>
 
@@ -32,15 +29,11 @@ export default {
   data() {
     return {
       filteredTags: [],
-      isSelectOnly: false,
       isFetching: false,
       tags: []
     };
   },
   methods: {
-    emitChanged: function() {
-      this.$emit("changed", this.tags);
-    },
     getLanguage: debounce(function(text) {
       if (!text.length) {
         this.filteredTags = [];

@@ -4,11 +4,16 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Locations;
 use App\Http\Resources\Universities;
 use App\Http\Resources\Languages;
+use App\Http\Resources\Degrees;
+use App\Http\Resources\Shirts;
 
 use App\User;
 use App\City;
 use App\University;
 use App\Language;
+use App\Degree;
+use App\Shirt;
+
 use Illuminate\Database\Eloquent\Collection;
 use PharIo\Manifest\Email;
 
@@ -51,6 +56,14 @@ Route::get('/university/search/{pattern}', function ($pattern) {
 Route::get('/language/search/{pattern}', function ($pattern) {
     $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
     return new Languages($matches);
+});
+
+Route::get('/degree', function () {
+    return new Degrees(Degree::all());
+});
+
+Route::get('/shirt', function () {
+    return new Shirts(Shirt::all());
 });
 
 Route::prefix('email')->group(function () {

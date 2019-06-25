@@ -7,13 +7,14 @@
       </b-tooltip>
     </template>
     <b-autocomplete
+      required
       :data="rows"
       :placeholder="placeholder"
       :field="field"
       :loading="isFetching"
       :keep-first="true"
       @typing="getAsyncData"
-      @select="emitSelected"
+      @select="$emit('update:id', $event)"
       icon="magnify"
     >
       <template slot="empty">
@@ -61,15 +62,10 @@ export default {
   data() {
     return {
       rows: [],
-      isFetching: false,
-      selected: null
+      isFetching: false
     };
   },
   methods: {
-    emitSelected: function(option) {
-      this.selected = option;
-      this.$emit("selected", this.selected);
-    },
     getAsyncData: debounce(function(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
