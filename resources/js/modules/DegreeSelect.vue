@@ -20,7 +20,7 @@ export default {
     return { degrees: [] };
   },
   mounted() {
-    this.$http
+    axios
       .get(this.url)
       .then(({ data }) => {
         this.degrees = [];

@@ -40,7 +40,7 @@ export default {
         return;
       }
       this.isFetching = true;
-      this.$http
+      axios
         .get(`${this.url}${text}`)
         .then(({ data }) => {
           this.filteredTags = [];

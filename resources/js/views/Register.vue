@@ -6,7 +6,7 @@
           <h1>Sign up</h1>
         </div>
         <div class="form-content">
-          <form @submit="formSubmit">
+          <form @submit.prevent="formSubmit($data)">
             <section class="section">
               <b-field horizontal label="Name">
                 <b-input
@@ -62,6 +62,7 @@
 
               <autocomplete-fetched
                 :id.sync="university"
+                :value.sync="universityString"
                 :type="'university'"
                 :field="'name'"
                 :url="'/api/university/search/'"
@@ -92,14 +93,23 @@
             <section class="section">
               <b-field horizontal label="Password">
                 <b-input
+                  v-model="password1"
                   type="password"
-                  placeholder="Password reveal input"
-                  password-reveal
+                  placeholder="Password for your account"
+                  required
+                ></b-input>
+              </b-field>
+
+              <b-field horizontal label="Confirm">
+                <b-input
+                  v-model="password2"
+                  type="password"
+                  placeholder="Confirm your password"
                   required
                 ></b-input>
               </b-field>
             </section>
-
+            {{ password1 + " " + password2}}
             <b-field>&nbsp;</b-field>
 
             <b-field grouped position="is-right">
@@ -119,8 +129,9 @@
 </template>
 
 <script>
+import { log } from "util";
 export default {
-  name: "register",
+  name: "Register",
   data() {
     return {
       isSubmitting: false,
@@ -131,28 +142,56 @@ export default {
       emailMessage: "",
       location: null,
       university: null,
+      universityString: null,
       languages: null,
       degreeId: null,
       pastConferences: null,
       pastConferencesAsSV: null,
       shirtId: null,
+      password1: null,
+      password2: null,
       errors: []
     };
   },
   mounted() {},
   methods: {
-    formSubmit: function(e) {
-      e.preventDefault();
+    formSubmit: function() {
       if (this.checkForm) {
+        let payload = {
+          firstname: this.firstname.trim(),
+          lastname: this.lastname.trim(),
+          email: this.email,
+          cityId: this.location.city.id,
+          universityId: this.university ? this.university.id : undefined,
+          universityString: this.universityString.trim(),
+          languageIds: this.languages.map(a => a.id),
+          degreeId: this.degree,
+          pastConferences: this.pastConferences.trim(),
+          pastConferencesAsSV: this.pastConferencesAsSV.trim(),
+          shirtId: this.shirtId
+        };
+
         this.isSubmitting = true;
-        this.$http
-          .post("/register", null)
+        axios
+          .post("/register", payload)
           .then()
-          .catch()
+          .catch(function(error) {
+            Toast.open({
+              duration: 5000,
+              message: error,
+              type: "is-danger"
+            });
+          })
           .finally((this.isSubmitting = false));
       } else {
         //
       }
+    },
+
+    toTitleCase: function(str) {
+      return str.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
     },
 
     checkForm: function() {
@@ -186,12 +225,12 @@ export default {
         return;
       }
       this.emailChecking = true;
-      this.$http
+      axios
         .get(`/api/email/exists/${this.email}`)
         .then(({ data }) => {
           if (data.result == true) {
             this.emailMessage =
-              "Address is in use, try resetting your password";
+              "Looks like you already have an account with this email address, try resetting your password";
           } else {
             this.emailMessage = "";
           }
