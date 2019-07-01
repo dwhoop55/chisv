@@ -7,13 +7,13 @@
 require("./bootstrap");
 // window.Vue = require('vue');
 import Vue from "vue";
-import VueRouter from 'vue-router'
+// import VueRouter from 'vue-router'
 import Buefy from "buefy";
 // import Axios from "axios";
 // import VueResource from "vue-resource";
 import Toast from 'buefy/dist/components/toast'
 
-Vue.use(VueRouter);
+// Vue.use(VueRouter);
 Vue.use(Buefy);
 // Vue.use(VueResource);
 
