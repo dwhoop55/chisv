@@ -18,10 +18,8 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
-Route::prefix('register')->group(function () {
-    Route::get('', 'Auth\RegisterController@index')->name('register');
-    Route::post('', 'Auth\RegisterController@create')->name('register.create');
-});
+Route::get('register', 'Auth\RegisterController@index')->name('register');
+Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
 Route::get('home', 'HomeController@index')->name('home.index');
 Route::resource('conference', 'ConferenceController');

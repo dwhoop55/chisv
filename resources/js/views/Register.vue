@@ -142,14 +142,14 @@ export default {
       emailMessage: "",
       location: null,
       university: null,
-      universityString: null,
+      universityString: "",
       languages: null,
       degreeId: null,
-      pastConferences: null,
-      pastConferencesAsSV: null,
+      pastConferences: "",
+      pastConferencesAsSV: "",
       shirtId: null,
-      password1: null,
-      password2: null,
+      password1: "",
+      password2: "",
       errors: []
     };
   },
@@ -161,27 +161,34 @@ export default {
           firstname: this.firstname.trim(),
           lastname: this.lastname.trim(),
           email: this.email,
-          cityId: this.location.city.id,
+          cityId: this.location ? this.location.city.id : undefined,
           universityId: this.university ? this.university.id : undefined,
           universityString: this.universityString.trim(),
-          languageIds: this.languages.map(a => a.id),
-          degreeId: this.degree,
+          languageIds: this.languages
+            ? this.languages.map(a => a.id)
+            : undefined,
+          degreeId: this.degreeId,
           pastConferences: this.pastConferences.trim(),
           pastConferencesAsSV: this.pastConferencesAsSV.trim(),
-          shirtId: this.shirtId
+          shirtId: this.shirtId,
+          password: this.password1,
+          password_confirmation: this.password2
         };
 
         this.isSubmitting = true;
         axios
           .post("/register", payload)
           .then()
-          .catch(function(error) {
-            Toast.open({
-              duration: 5000,
-              message: error,
-              type: "is-danger"
-            });
-          })
+          .catch(
+            function(error) {
+              console.log(this);
+              this.$toast.open({
+                duration: 5000,
+                message: error.message,
+                type: "is-danger"
+              });
+            }.bind(this)
+          )
           .finally((this.isSubmitting = false));
       } else {
         //

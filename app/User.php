@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'firstname', 'lastname', 'email', 'password', 'city_id', 'shirt_id', 'degree_id', 'university_id'
     ];
 
     /**
@@ -51,15 +51,17 @@ class User extends Authenticatable
         return $this->belongsTo('App\Shirt');
     }
 
-    public function country()
+    public function city()
     {
-        return $this->belongsTo('App\Country');
+        return $this->belongsTo('App\City');
     }
 
     public function university()
     {
+        // TODO: add fallback case for no id attached
         return $this->belongsTo('App\University');
     }
+
 
     public function permissions()
     {

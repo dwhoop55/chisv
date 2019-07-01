@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use App\University;
-use Illuminate\Support\Collection;
 
 class RegisterController extends Controller
 {
@@ -44,44 +42,56 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'country_id' => ['required', 'integer'],
-            'university_id' => ['required', 'integer'],
-            'shirt_id' => ['required', 'integer'],
-            'degree_id' => ['required', 'integer'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-        ]);
-    }
-
-    /**
      * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
+     * @param  Request  $request
      * @return \App\User
      */
-    protected function create(array $data)
+    protected function create(Request $request)
     {
-        dd($data);
-        return User::create([
+        $data = $request->validate([
+            'firstname' => ['required', 'string', 'max:255'],
+            'lastname' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'languageIds' => ['required', 'array', 'exists:languages,id'],
+            'cityId' => ['required', 'integer', 'exists:cities,id'],
+            'universityId' => ['integer', 'exists:universities,id'],
+            'universityString' => ['string'],
+            'degreeId' => ['required', 'integer', 'exists:degrees,id'],
+            'shirtId' => ['required', 'integer', 'exists:shirts,id'],
+            'password' => ['required', 'string', 'min:6', 'confirmed'],
+        ]);
+
+        $user = [
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
-            'country_id' => $data['country_id'],
-            'university_id' => $data['university_id'],
-            'shirt_id' => $data['shirt_id'],
-            'degree_id' => $data['degree_id'],
             'email' => $data['email'],
+            'city_id' => $data['cityId'],
+            'shirt_id' => $data['shirtId'],
+            'degree_id' => $data['degreeId'],
             'password' => Hash::make($data['password']),
-        ]);
+        ];
+
+        if ($data['universityId']) {
+            $user['university_id'] = $data['universityId'];
+        } else {
+            $user['university_fallback'] = $data['universityString'];
+        }
+
+        // Add languages
+        // add past / pastSV
+        // dd($user);
+        return User::create($user);
+        // [
+        //     'firstname' => $data['firstname'],
+        //     'lastname' => $data['lastname'],
+        //     'email' => $data['email'],
+        //     'city_id' => $data['cityId'],
+        //     'university_id' => $data['universityId'],
+        //     'shirt_id' => $data['shirtId'],
+        //     'degree_id' => $data['degree_id'],
+        //     'password' => Hash::make($data['password']),
+        // ]);
     }
 
     public function index()
