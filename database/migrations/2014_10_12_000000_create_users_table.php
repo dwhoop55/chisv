@@ -25,6 +25,9 @@ class CreateUsersTable extends Migration
             $table->integer('degree_id')->nullable();
             $table->text('image')->nullable(); // Will be stored as base64
 
+            $table->string('past_conferences')->nullable()->default(null);
+            $table->string('past_conferences_sv')->nullable()->default(null);
+
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
             $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
 

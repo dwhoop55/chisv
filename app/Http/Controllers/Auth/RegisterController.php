@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -60,38 +61,40 @@ class RegisterController extends Controller
             'degreeId' => ['required', 'integer', 'exists:degrees,id'],
             'shirtId' => ['required', 'integer', 'exists:shirts,id'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'pastConferences' => ['string'],
+            'pastConferencesSV' => ['string'],
         ]);
 
-        $user = [
+        $userData = [
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
             'city_id' => $data['cityId'],
             'shirt_id' => $data['shirtId'],
             'degree_id' => $data['degreeId'],
+            'past_conferences' => $data['pastConferences'],
+            'past_conferences_sv' => $data['pastConferencesSV'],
             'password' => Hash::make($data['password']),
         ];
 
+
         if ($data['universityId']) {
-            $user['university_id'] = $data['universityId'];
+            $userData['university_id'] = $data['universityId'];
         } else {
-            $user['university_fallback'] = $data['universityString'];
+            $userData['university_fallback'] = $data['universityString'];
         }
 
+        $user = new User($userData);
+        // Required to have an id on the user, for setting language references
+        $user->save();
+
         // Add languages
-        // add past / pastSV
-        // dd($user);
-        return User::create($user);
-        // [
-        //     'firstname' => $data['firstname'],
-        //     'lastname' => $data['lastname'],
-        //     'email' => $data['email'],
-        //     'city_id' => $data['cityId'],
-        //     'university_id' => $data['universityId'],
-        //     'shirt_id' => $data['shirtId'],
-        //     'degree_id' => $data['degree_id'],
-        //     'password' => Hash::make($data['password']),
-        // ]);
+        foreach ($data['languageIds'] as $lang) {
+            $user->languages()->attach($lang);
+        }
+
+        Auth::login($user);
+        return $user;
     }
 
     public function index()

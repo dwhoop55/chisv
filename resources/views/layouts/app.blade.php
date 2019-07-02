@@ -43,7 +43,7 @@
 
             <div id="navMenu" class="navbar-menu">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="{{ route('home.index') }}">
+                    <a class="navbar-item" href="{{ route('home') }}">
                         Home
                     </a>
 

@@ -83,7 +83,7 @@
               </b-field>
 
               <b-field horizontal label="Past conferences you have attended as SV">
-                <b-input v-model="pastConferencesAsSV" maxlength="255" icon="pencil"></b-input>
+                <b-input v-model="pastConferencesSV" maxlength="255" icon="pencil"></b-input>
               </b-field>
 
               <shirt-select :id.sync="shirtId" :url="'/api/shirt'"></shirt-select>
@@ -95,6 +95,7 @@
                 <b-input
                   v-model="password1"
                   type="password"
+                  minlength="6"
                   placeholder="Password for your account"
                   required
                 ></b-input>
@@ -104,13 +105,12 @@
                 <b-input
                   v-model="password2"
                   type="password"
+                  minlength="6"
                   placeholder="Confirm your password"
                   required
                 ></b-input>
               </b-field>
             </section>
-            {{ password1 + " " + password2}}
-            <b-field>&nbsp;</b-field>
 
             <b-field grouped position="is-right">
               <b-button
@@ -146,7 +146,7 @@ export default {
       languages: null,
       degreeId: null,
       pastConferences: "",
-      pastConferencesAsSV: "",
+      pastConferencesSV: "",
       shirtId: null,
       password1: "",
       password2: "",
@@ -169,7 +169,7 @@ export default {
             : undefined,
           degreeId: this.degreeId,
           pastConferences: this.pastConferences.trim(),
-          pastConferencesAsSV: this.pastConferencesAsSV.trim(),
+          pastConferencesSV: this.pastConferencesSV.trim(),
           shirtId: this.shirtId,
           password: this.password1,
           password_confirmation: this.password2
@@ -178,15 +178,25 @@ export default {
         this.isSubmitting = true;
         axios
           .post("/register", payload)
-          .then()
+          .then(function(response) {
+            if (response.status == 201) {
+            }
+          })
           .catch(
             function(error) {
-              console.log(this);
-              this.$toast.open({
-                duration: 5000,
-                message: error.message,
-                type: "is-danger"
-              });
+              if (error.response.status == 422) {
+                this.$toast.open({
+                  duration: 5000,
+                  message: `${error.response.data.message} (${error.response.status})`,
+                  type: "is-danger"
+                });
+              } else {
+                this.$toast.open({
+                  duration: 5000,
+                  message: `The request failed. Please try again (${error.response.status})`,
+                  type: "is-danger"
+                });
+              }
             }.bind(this)
           )
           .finally((this.isSubmitting = false));

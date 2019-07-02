@@ -21,5 +21,5 @@ Auth::routes(['register' => false]);
 Route::get('register', 'Auth\RegisterController@index')->name('register');
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
-Route::get('home', 'HomeController@index')->name('home.index');
+Route::get('home', 'HomeController@index')->name('home');
 Route::resource('conference', 'ConferenceController');
