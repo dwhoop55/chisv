@@ -26,7 +26,7 @@ export default {
     x;
   },
   mounted() {
-    this.$http
+    axios
       .get(this.url)
       .then(({ data }) => {
         this.shirts = [];

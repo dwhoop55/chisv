@@ -8,10 +8,8 @@ require("./bootstrap");
 // window.Vue = require('vue');
 import Vue from "vue";
 import Buefy from "buefy";
-import VueResource from "vue-resource";
 
 Vue.use(Buefy);
-Vue.use(VueResource);
 
 /**
  * The following block of code may be used to automatically register your
@@ -33,6 +31,23 @@ files.keys().map(key =>
 
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+// const router = new VueRouter({
+//     mode: 'history',
+//     routes: [
+//         {
+//             path: '/',
+//             name: 'home',
+//             component: Home
+//         },
+//         {
+//             path: '/register',
+//             name: 'register',
+//             component: Register,
+//         },
+//     ],
+// });
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -40,5 +55,7 @@ files.keys().map(key =>
  */
 
 const app = new Vue({
-    el: "#app"
+    el: "#app",
+    // components: { App },
+    // router,
 });

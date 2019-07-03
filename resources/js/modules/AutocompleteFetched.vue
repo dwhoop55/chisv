@@ -15,6 +15,7 @@
       :keep-first="true"
       @typing="getAsyncData"
       @select="$emit('update:id', $event)"
+      @input="$emit('update:value', $event)"
       icon="magnify"
     >
       <template slot="empty">
@@ -72,7 +73,7 @@ export default {
         return;
       }
       this.isFetching = true;
-      this.$http
+      axios
         .get(`${this.url}${name}`)
         .then(({ data }) => {
           this.rows = [];

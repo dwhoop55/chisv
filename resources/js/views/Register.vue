@@ -6,7 +6,7 @@
           <h1>Sign up</h1>
         </div>
         <div class="form-content">
-          <form @submit="formSubmit">
+          <form @submit.prevent="formSubmit($data)">
             <section class="section">
               <b-field horizontal label="Name">
                 <b-input
@@ -62,6 +62,7 @@
 
               <autocomplete-fetched
                 :id.sync="university"
+                :value.sync="universityString"
                 :type="'university'"
                 :field="'name'"
                 :url="'/api/university/search/'"
@@ -82,7 +83,7 @@
               </b-field>
 
               <b-field horizontal label="Past conferences you have attended as SV">
-                <b-input v-model="pastConferencesAsSV" maxlength="255" icon="pencil"></b-input>
+                <b-input v-model="pastConferencesSV" maxlength="255" icon="pencil"></b-input>
               </b-field>
 
               <shirt-select :id.sync="shirtId" :url="'/api/shirt'"></shirt-select>
@@ -92,15 +93,24 @@
             <section class="section">
               <b-field horizontal label="Password">
                 <b-input
+                  v-model="password1"
                   type="password"
-                  placeholder="Password reveal input"
-                  password-reveal
+                  minlength="6"
+                  placeholder="Password for your account"
+                  required
+                ></b-input>
+              </b-field>
+
+              <b-field horizontal label="Confirm">
+                <b-input
+                  v-model="password2"
+                  type="password"
+                  minlength="6"
+                  placeholder="Confirm your password"
                   required
                 ></b-input>
               </b-field>
             </section>
-
-            <b-field>&nbsp;</b-field>
 
             <b-field grouped position="is-right">
               <b-button
@@ -119,8 +129,9 @@
 </template>
 
 <script>
+import { log } from "util";
 export default {
-  name: "register",
+  name: "Register",
   data() {
     return {
       isSubmitting: false,
@@ -131,28 +142,73 @@ export default {
       emailMessage: "",
       location: null,
       university: null,
+      universityString: "",
       languages: null,
       degreeId: null,
-      pastConferences: null,
-      pastConferencesAsSV: null,
+      pastConferences: "",
+      pastConferencesSV: "",
       shirtId: null,
+      password1: "",
+      password2: "",
       errors: []
     };
   },
   mounted() {},
   methods: {
-    formSubmit: function(e) {
-      e.preventDefault();
+    formSubmit: function() {
       if (this.checkForm) {
+        let payload = {
+          firstname: this.firstname.trim(),
+          lastname: this.lastname.trim(),
+          email: this.email,
+          cityId: this.location ? this.location.city.id : undefined,
+          universityId: this.university ? this.university.id : undefined,
+          universityString: this.universityString.trim(),
+          languageIds: this.languages
+            ? this.languages.map(a => a.id)
+            : undefined,
+          degreeId: this.degreeId,
+          pastConferences: this.pastConferences.trim(),
+          pastConferencesSV: this.pastConferencesSV.trim(),
+          shirtId: this.shirtId,
+          password: this.password1,
+          password_confirmation: this.password2
+        };
+
         this.isSubmitting = true;
-        this.$http
-          .post("/register", null)
-          .then()
-          .catch()
+        axios
+          .post("/register", payload)
+          .then(function(response) {
+            if (response.status == 201) {
+            }
+          })
+          .catch(
+            function(error) {
+              if (error.response.status == 422) {
+                this.$toast.open({
+                  duration: 5000,
+                  message: `${error.response.data.message} (${error.response.status})`,
+                  type: "is-danger"
+                });
+              } else {
+                this.$toast.open({
+                  duration: 5000,
+                  message: `The request failed. Please try again (${error.response.status})`,
+                  type: "is-danger"
+                });
+              }
+            }.bind(this)
+          )
           .finally((this.isSubmitting = false));
       } else {
         //
       }
+    },
+
+    toTitleCase: function(str) {
+      return str.replace(/\w\S*/g, function(txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+      });
     },
 
     checkForm: function() {
@@ -186,12 +242,12 @@ export default {
         return;
       }
       this.emailChecking = true;
-      this.$http
+      axios
         .get(`/api/email/exists/${this.email}`)
         .then(({ data }) => {
           if (data.result == true) {
             this.emailMessage =
-              "Address is in use, try resetting your password";
+              "Looks like you already have an account with this email address, try resetting your password";
           } else {
             this.emailMessage = "";
           }

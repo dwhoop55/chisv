@@ -5,11 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
-use App\University;
-use Illuminate\Support\Collection;
 
 class RegisterController extends Controller
 {
@@ -44,25 +43,29 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Create a new user instance after a valid registration.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @param  Request  $request
+     * @return \App\User
      */
-    protected function validator(array $data)
+    protected function create(Request $request)
     {
-        return Validator::make($data, [
+        $data = $request->validate([
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'country_id' => ['required', 'integer'],
-            'university_id' => ['required', 'integer'],
-            'shirt_id' => ['required', 'integer'],
-            'degree_id' => ['required', 'integer'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'languageIds' => ['required', 'array', 'exists:languages,id'],
+            'cityId' => ['required', 'integer', 'exists:cities,id'],
+            'universityId' => ['integer', 'exists:universities,id'],
+            'universityString' => ['string'],
+            'degreeId' => ['required', 'integer', 'exists:degrees,id'],
+            'shirtId' => ['required', 'integer', 'exists:shirts,id'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'pastConferences' => ['string'],
+            'pastConferencesSV' => ['string'],
         ]);
-    }
 
+<<<<<<< .merge_file_tuA8cp
     /**
      * Create a new user instance after a valid registration.
      *
@@ -73,15 +76,42 @@ class RegisterController extends Controller
     {
         dd($data);
         return User::create([
+=======
+        $userData = [
+>>>>>>> .merge_file_XarYxK
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
-            'country_id' => $data['country_id'],
-            'university_id' => $data['university_id'],
-            'shirt_id' => $data['shirt_id'],
-            'degree_id' => $data['degree_id'],
             'email' => $data['email'],
+            'city_id' => $data['cityId'],
+            'shirt_id' => $data['shirtId'],
+            'degree_id' => $data['degreeId'],
+            'past_conferences' => $data['pastConferences'],
+            'past_conferences_sv' => $data['pastConferencesSV'],
             'password' => Hash::make($data['password']),
+<<<<<<< .merge_file_tuA8cp
         ]);
+=======
+        ];
+
+
+        if ($data['universityId']) {
+            $userData['university_id'] = $data['universityId'];
+        } else {
+            $userData['university_fallback'] = $data['universityString'];
+        }
+
+        $user = new User($userData);
+        // Required to have an id on the user, for setting language references
+        $user->save();
+
+        // Add languages
+        foreach ($data['languageIds'] as $lang) {
+            $user->languages()->attach($lang);
+        }
+
+        Auth::login($user);
+        return $user;
+>>>>>>> .merge_file_XarYxK
     }
 
     public function index()
