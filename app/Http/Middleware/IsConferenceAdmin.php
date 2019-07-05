@@ -15,10 +15,10 @@ class IsConferenceAdmin
      */
     public function handle($request, Closure $next)
     {
-        if (auth()->user() && ( auth()->user()->isAdmin() /*|| hasPermissionForEditingThisConference */) ) {
+        if (auth()->user() && (auth()->user()->isAdmin() /*|| hasPermissionForEditingThisConference */)) {
             return $next($request);
         } else {
-            return abort(403, 'You cannot manage conferences');
+            return abort(403, 'You cannot manage this conference');
         }
     }
 }

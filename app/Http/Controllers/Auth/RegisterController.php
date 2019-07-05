@@ -65,20 +65,7 @@ class RegisterController extends Controller
             'pastConferencesSV' => ['string'],
         ]);
 
-<<<<<<< .merge_file_tuA8cp
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        dd($data);
-        return User::create([
-=======
         $userData = [
->>>>>>> .merge_file_XarYxK
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
             'email' => $data['email'],
@@ -88,9 +75,6 @@ class RegisterController extends Controller
             'past_conferences' => $data['pastConferences'],
             'past_conferences_sv' => $data['pastConferencesSV'],
             'password' => Hash::make($data['password']),
-<<<<<<< .merge_file_tuA8cp
-        ]);
-=======
         ];
 
 
@@ -108,10 +92,9 @@ class RegisterController extends Controller
         foreach ($data['languageIds'] as $lang) {
             $user->languages()->attach($lang);
         }
-
+        // event(new Registered($user));
         Auth::login($user);
         return $user;
->>>>>>> .merge_file_XarYxK
     }
 
     public function index()

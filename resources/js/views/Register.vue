@@ -31,7 +31,7 @@
                 horizontal
                 label="Email"
                 :message="emailMessage"
-                :type="{ 'is-danger' : emailMessage }"
+                :class="{ 'is-invalid' : emailMessage }"
               >
                 <b-input
                   @blur="emailBlur"
@@ -149,86 +149,61 @@ export default {
       pastConferencesSV: "",
       shirtId: null,
       password1: "",
-      password2: "",
-      errors: []
+      password2: ""
     };
   },
   mounted() {},
   methods: {
     formSubmit: function() {
-      if (this.checkForm) {
-        let payload = {
-          firstname: this.firstname.trim(),
-          lastname: this.lastname.trim(),
-          email: this.email,
-          cityId: this.location ? this.location.city.id : undefined,
-          universityId: this.university ? this.university.id : undefined,
-          universityString: this.universityString.trim(),
-          languageIds: this.languages
-            ? this.languages.map(a => a.id)
-            : undefined,
-          degreeId: this.degreeId,
-          pastConferences: this.pastConferences.trim(),
-          pastConferencesSV: this.pastConferencesSV.trim(),
-          shirtId: this.shirtId,
-          password: this.password1,
-          password_confirmation: this.password2
-        };
+      let payload = {
+        firstname: this.firstname.trim(),
+        lastname: this.lastname.trim(),
+        email: this.email,
+        cityId: this.location ? this.location.city.id : undefined,
+        universityId: this.university ? this.university.id : undefined,
+        universityString: this.universityString.trim(),
+        languageIds: this.languages ? this.languages.map(a => a.id) : undefined,
+        degreeId: this.degreeId,
+        pastConferences: this.pastConferences.trim(),
+        pastConferencesSV: this.pastConferencesSV.trim(),
+        shirtId: this.shirtId,
+        password: this.password1,
+        password_confirmation: this.password2
+      };
 
-        this.isSubmitting = true;
-        axios
-          .post("/register", payload)
-          .then(function(response) {
-            if (response.status == 201) {
+      this.isSubmitting = true;
+      axios
+        .post("/api/register", payload)
+        .then(function(response) {
+          console.log(response);
+          if (response.status == 201) {
+            this.goTo("/home");
+          }
+        })
+        .catch(
+          function(error) {
+            if (error.response.status == 422) {
+              this.$toast.open({
+                duration: 5000,
+                message: `${error.response.data.message} (${error.response.status})`,
+                type: "is-danger"
+              });
+            } else {
+              this.$toast.open({
+                duration: 5000,
+                message: `The request failed. Please try again (${error.response.status})`,
+                type: "is-danger"
+              });
             }
-          })
-          .catch(
-            function(error) {
-              if (error.response.status == 422) {
-                this.$toast.open({
-                  duration: 5000,
-                  message: `${error.response.data.message} (${error.response.status})`,
-                  type: "is-danger"
-                });
-              } else {
-                this.$toast.open({
-                  duration: 5000,
-                  message: `The request failed. Please try again (${error.response.status})`,
-                  type: "is-danger"
-                });
-              }
-            }.bind(this)
-          )
-          .finally((this.isSubmitting = false));
-      } else {
-        //
-      }
+          }.bind(this)
+        )
+        .finally((this.isSubmitting = false));
     },
 
     toTitleCase: function(str) {
       return str.replace(/\w\S*/g, function(txt) {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
       });
-    },
-
-    checkForm: function() {
-      this.errors = [];
-
-      if (!this.firstname) {
-        this.errors.push("Firstname required");
-      }
-      if (!this.lastname) {
-        this.errors.push("Lastname required");
-      }
-      if (!this.email) {
-        this.errors.push("Email required");
-      } else if (!this.validEmail(this.email)) {
-        this.errors.push("Valid email required.");
-      }
-
-      if (!this.errors.length) {
-        return true;
-      }
     },
 
     validEmail: function(email) {

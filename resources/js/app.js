@@ -8,9 +8,12 @@ require("./bootstrap");
 // window.Vue = require('vue');
 import Vue from "vue";
 import Buefy from "buefy";
+import { Form, HasError, AlertError } from 'vform'
 
 Vue.use(Buefy);
 
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -29,23 +32,14 @@ files.keys().map(key =>
     )
 );
 
-// Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.mixin({
+    methods: {
+        goTo: function (path) {
+            window.location.href = path;
+        }
+    }
+});
 
-// const router = new VueRouter({
-//     mode: 'history',
-//     routes: [
-//         {
-//             path: '/',
-//             name: 'home',
-//             component: Home
-//         },
-//         {
-//             path: '/register',
-//             name: 'register',
-//             component: Register,
-//         },
-//     ],
-// });
 
 
 /**
@@ -56,6 +50,4 @@ files.keys().map(key =>
 
 const app = new Vue({
     el: "#app",
-    // components: { App },
-    // router,
 });

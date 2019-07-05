@@ -76,3 +76,5 @@ Route::prefix('email')->group(function () {
         };
     });
 });
+
+Route::post('register', 'Auth\RegisterController@create')->name('register.create');
