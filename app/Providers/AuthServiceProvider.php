@@ -25,6 +25,8 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('create-conference', function ($user) {
+            return $user->permissions->where('role_id', 1)->where('conference_id', null)->isNotEmpty();
+        });
     }
 }

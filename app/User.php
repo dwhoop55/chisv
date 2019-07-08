@@ -78,6 +78,7 @@ class User extends Authenticatable
         return $permission->save();
     }
 
+
     // public function grant(Role $role, Conference $scope)
     // {
     //     $state = null;
@@ -107,10 +108,6 @@ class User extends Authenticatable
     //     }
     // }
 
-    // public function can(Role $role, Conference $scope)
-    // {
-    //     return $this->roles->where('id', $role->id)->where('conference_id', $scope->id);
-    // }
 
     //     /**
     //      *  Conference Admin Section 

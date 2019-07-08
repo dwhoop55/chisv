@@ -1,44 +1,75 @@
 @extends('layouts.app')
 
 @section('content')
-<div id="auth">
-    <div class="auth-card auth-card-small">
 
-        <div class="card-title">
-            <h1>Please Sign In</h1>
-        </div>
+<div class="columns is-centered">
+    <div class="column is-half">
+        <div class="form-card">
+            <div class="form-title">
+                <h1>Sign In</h1>
+            </div>
+            <div class="form-content">
 
-        <div class="content">
-            <form action="{{ route('login') }}" method="POST">
-                @csrf
-                <input id="auth-email" type="email" placeholder="{{ __('E-Mail Address') }}"
-                    class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email"
-                    value="{{ old('email') }}" required autofocus>
-                <input id="auth-password" placeholder="{{ __('Password') }}" type="password"
-                    class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                <div class="field">
+                    <form action="{{ route('login') }}" method="POST">
+                        @csrf
 
-                @if ($errors->has('email'))
-                <span class="help is-danger" role="alert">
-                    {{ $errors->first('email') }}
-                </span>
-                @endif
-                @if ($errors->has('password'))
-                <span class="help is-danger" role="alert">
-                    {{ $errors->first('password') }}
-                </span>
-                @endif
+                        <div class="field">
+                            <p class="control has-icons-left has-icons-right">
+                                <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}"
+                                    class="input {{ $errors->has('email') ? 'is-danger' : '' }}" name="email"
+                                    value="{{ old('email') }}" required autofocus>
+                                <i class="icon mdi mdi-at"></i>
+                            </p>
+                        </div>
 
-                <div class="level options">
-                    <label class="checkbox-inline"><input class="regular-checkbox" type="checkbox" name="remember"
-                            id="remember" {{ old('remember') ? 'checked' : '' }}> {{ __('Remember Me') }}</label>
+                        <div class="field">
+                            <p class="control has-icons-left">
+                                <input id="password" placeholder="{{ __('Password') }}" type="password"
+                                    class="input {{ $errors->has('password') ? 'is-danger' : '' }}" name="password"
+                                    required>
+                                <i class="icon mdi mdi-key"></i>
+                            </p>
+                        </div>
 
-                    <a class="btn btn-link level-right"
-                        href="{{ route('password.request') }}">{{ __('Forgot Your Password?') }}</a>
+                        @if ($errors->has('email'))
+                        <span class="help is-danger" role="alert">
+                            {{ $errors->first('email') }}
+                        </span>
+                        @endif
+                        @if ($errors->has('password'))
+                        <span class="help is-danger" role="alert">
+                            {{ $errors->first('password') }}
+                        </span>
+                        @endif
+
+                        <div class="field">
+                            <div class="field">
+                                <div class="control">
+                                    <label id="remember" class="checkbox">
+                                        <input type="checkbox" {{ old('remember') ? 'checked' : '' }}>
+                                        Remember Me
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="field">
+                            <a href="{{ route('password.request') }}">Forgot Your Password?</a>
+                        </div>
+
+                        <div class="field is-grouped is-grouped-right">
+                            <p class="control">
+                                <button type="submit" class="button is-primary">
+                                    Login
+                                </button>
+                            </p>
+                        </div>
                 </div>
-
-                <button type="submit" class="btn btn-primary" value="{{ __('Login') }}">Login</button>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 </div>
 @endsection
