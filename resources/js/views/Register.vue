@@ -49,6 +49,9 @@
 
             <section class="section">
               <autocomplete-fetched
+                @update:value="locationUpdateValue($event)"
+                @update:id="locationUpdateId($event)"
+                :message="locationMessage"
                 :id.sync="location"
                 :type="'city'"
                 :field="'city.name'"
@@ -141,6 +144,7 @@ export default {
       emailChecking: false,
       emailMessage: "",
       location: null,
+      locationMessage: null,
       university: null,
       universityString: "",
       languages: null,
@@ -173,13 +177,15 @@ export default {
 
       this.isSubmitting = true;
       axios
-        .post("/api/register", payload)
-        .then(function(response) {
-          console.log(response);
-          if (response.status == 201) {
-            this.goTo("/home");
-          }
-        })
+        .post("/register", payload)
+        .then(
+          function(response) {
+            console.log(response);
+            if (response.status == 201) {
+              this.goTo("/home");
+            }
+          }.bind(this)
+        )
         .catch(
           function(error) {
             if (error.response.status == 422) {
@@ -210,6 +216,17 @@ export default {
       var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return re.test(email);
     },
+
+    locationUpdateValue: function($event) {
+      if (this.location) {
+        this.locationMessage = "";
+      } else {
+        this.locationMessage =
+          "Please select a city from the list. Choose the closest.";
+      }
+    },
+
+    locationUpdateId: function($event) {},
 
     emailBlur: function() {
       // Valid email-like string

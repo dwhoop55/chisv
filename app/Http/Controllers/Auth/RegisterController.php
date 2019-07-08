@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -22,8 +21,6 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
-    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -43,14 +40,14 @@ class RegisterController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Get a validator for an incoming registration request.
      *
-     * @param  Request  $request
-     * @return \App\User
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
      */
-    protected function create(Request $request)
+    protected function validator(array $data)
     {
-        $data = $request->validate([
+        return Validator::make($data, [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -64,24 +61,35 @@ class RegisterController extends Controller
             'pastConferences' => ['string'],
             'pastConferencesSV' => ['string'],
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function create(Request $request)
+    {
+        $this->validator($request->all())->validate();
 
         $userData = [
-            'firstname' => $data['firstname'],
-            'lastname' => $data['lastname'],
-            'email' => $data['email'],
-            'city_id' => $data['cityId'],
-            'shirt_id' => $data['shirtId'],
-            'degree_id' => $data['degreeId'],
-            'past_conferences' => $data['pastConferences'],
-            'past_conferences_sv' => $data['pastConferencesSV'],
-            'password' => Hash::make($data['password']),
+            'firstname' => $request['firstname'],
+            'lastname' => $request['lastname'],
+            'email' => $request['email'],
+            'city_id' => $request['cityId'],
+            'shirt_id' => $request['shirtId'],
+            'degree_id' => $request['degreeId'],
+            'past_conferences' => $request['pastConferences'],
+            'past_conferences_sv' => $request['pastConferencesSV'],
+            'password' => Hash::make($request['password']),
         ];
 
 
-        if ($data['universityId']) {
-            $userData['university_id'] = $data['universityId'];
+        if ($request['universityId']) {
+            $userData['university_id'] = $request['universityId'];
         } else {
-            $userData['university_fallback'] = $data['universityString'];
+            $userData['university_fallback'] = $request['universityString'];
         }
 
         $user = new User($userData);
@@ -89,13 +97,20 @@ class RegisterController extends Controller
         $user->save();
 
         // Add languages
-        foreach ($data['languageIds'] as $lang) {
+        foreach ($request['languageIds'] as $lang) {
             $user->languages()->attach($lang);
         }
-        // event(new Registered($user));
-        Auth::login($user);
-        return $user;
+
+        event(new Registered($user));
+
+        \Auth::guard()->login($user);
+
+        return response()->json([
+            'status' => true,
+            'user' => $user,
+        ], 201);
     }
+
 
     public function index()
     {

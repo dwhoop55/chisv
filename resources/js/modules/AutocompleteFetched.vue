@@ -1,5 +1,5 @@
 <template>
-  <b-field horizontal>
+  <b-field horizontal :message="message" :type="{'is-danger' : message }">
     <template slot="label">
       {{ title }}
       <b-tooltip position="is-right" :label="tooltip">
@@ -58,7 +58,8 @@ export default {
     "notFoundText",
     "selectedFooter",
     "type",
-    "tooltip"
+    "tooltip",
+    "message"
   ],
   data() {
     return {
