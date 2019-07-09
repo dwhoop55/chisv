@@ -14,7 +14,7 @@ class ConferenceController extends Controller
      */
     public function __construct()
     {
-        // $this->middleware('isConferenceAdmin')->except(['index', 'show']);
+        $this->authorizeResource(Conference::class);
     }
 
     /**

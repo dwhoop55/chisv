@@ -68,6 +68,16 @@ class User extends Authenticatable
         return $this->hasMany('App\Permission');
     }
 
+    public function isAdmin()
+    {
+        return $this->hasPermission(Role::byName('admin'));
+    }
+
+    public function isChair(Conference $conference)
+    {
+        return $this->hasPermission(Role::byName('chair'), $conference);
+    }
+
     public function grant(Role $role, Conference $conference, State $state = null)
     {
         $permission = new Permission;
@@ -76,6 +86,15 @@ class User extends Authenticatable
         $permission->conference()->associate($conference);
         $permission->state()->associate($state);
         return $permission->save();
+    }
+
+    public function hasPermission(Role $role, Conference $conference = null)
+    {
+        if ($conference) {
+            return $this->permissions->where('role_id', $role->id)->where('conference_id', $conference->id)->isNotEmpty();
+        } else {
+            return $this->permissions->where('role_id', $role->id)->isNotEmpty();
+        }
     }
 
 
