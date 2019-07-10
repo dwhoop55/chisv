@@ -11,6 +11,18 @@ class ConferencePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can list all conferences.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function index(User $user)
+    {
+        // Everyone logged in should be able to list conferences
+        return $user ? true : false;
+    }
+
+    /**
      * Determine whether the user can view the conference.
      *
      * @param  \App\User  $user

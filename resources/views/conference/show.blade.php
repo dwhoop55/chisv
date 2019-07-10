@@ -1,14 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-@if ( Auth::user() && Auth::user()->canAddConference() )
-    <a name="editBtn" id="editBtn" class="float-right btn btn-primary" href="{{ route('conference.edit', $conference->slug) }}" role="button">Edit</a>
-@endif
 
-<div class="jumbotron">
-    <h1 class="display-3">{{ $conference->name }}</h1>
-    <p class="lead">{{ $conference->location }}, {{ $conference->date }}</p>
-    <hr class="my-2">
-    <p>{{ $conference->description }}</p>
+@can('update', $conference)
+<div class="container">
+    <div class="field">
+        <a class="button is-pulled-right" href="{{ route('conference.edit', $conference->key) }}">Edit</a>
+    </div>
 </div>
+@endcan
+
+<section class="hero">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                {{ $conference->name }}
+            </h1>
+            <h2 class="subtitle">
+                <small><i>{{ ucwords($conference->state->name) }}</i> –
+                    {{ $conference->location }} – {{ $conference->date }}</small>
+            </h2>
+        </div>
+        <p class="has-padding-t-7">{{ $conference->description }}</p>
+    </div>
+</section>
+
 @endsection

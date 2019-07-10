@@ -23,6 +23,7 @@
         "vue-template-compiler": "^2.6.4"
     },
     "dependencies": {
+        "bulma-utilities": "^0.3.6",
         "vform": "^1.0.1"
     }
 }

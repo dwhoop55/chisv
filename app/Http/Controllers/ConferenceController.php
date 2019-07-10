@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
+use App\User;
 use Illuminate\Http\Request;
 
 class ConferenceController extends Controller
@@ -24,7 +25,7 @@ class ConferenceController extends Controller
      */
     public function index()
     {
-        $conferences = Conference::all();
+        $conferences = Conference::with('State')->get();
         return view('conference.index', compact('conferences'));
     }
 

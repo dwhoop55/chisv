@@ -7,6 +7,9 @@
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
 
+// Import Bulma utilities
+@import "~bulma-utilities/sass/bulma-utilities";
+
 // Set your colors
 $primary-invert: findColorInvert($primary);
 $twitter-invert: findColorInvert($twitter);
