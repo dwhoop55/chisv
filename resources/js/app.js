@@ -50,4 +50,7 @@ Vue.mixin({
 
 const app = new Vue({
     el: "#app",
+    data: {
+        showMobileNav: false
+    }
 });

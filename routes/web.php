@@ -11,15 +11,17 @@
 |
 */
 
-// Route::get('/{any}', 'SpaController@index')->where('any', '.*');
-
+// Landing
 Route::get('/', function () {
     return redirect('/home');
 });
+Route::get('home', 'HomeController@index')->name('home');
 
+// Auth routes
 Auth::routes(['register' => false]);
 Route::get('register', 'Auth\RegisterController@index')->name('register');
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
-Route::get('home', 'HomeController@index')->name('home');
+// Resources
 Route::resource('conference', 'ConferenceController')->middleware('auth');
+Route::resource('user', 'UserController')->middleware('auth');

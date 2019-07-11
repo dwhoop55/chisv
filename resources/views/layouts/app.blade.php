@@ -8,11 +8,10 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @hasSection('title')
-    <title>@yield('title') - {{ config('app.name') }}</title>
-    @else
-    <title>{{ config('app.name') }}</title>
-    @endif
+    <title> @isset($title)
+        {{ $title }} |
+        @endisset {{ config('app.name') }}
+    </title>
 
     <!-- Scripts -->
 
@@ -29,68 +28,60 @@
     <div id="app">
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-item" href="{{ url('/home') }}">
+                    {{ config('app.name', 'chisv') }}
                 </a>
 
-                <a role="button" class="navbar-burger burger" aria-label="{{ __('Toggle navigation') }}"
-                    aria-expanded="false" data-target="navMenu">
+                <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
+                    @click="showMobileNav = !showMobileNav" :class="{ 'is-active': showMobileNav }">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
                 </a>
             </div>
 
-            <div id="navMenu" class="navbar-menu">
+            <div class="navbar-menu" :class="{ 'is-active': showMobileNav }">
                 <div class="navbar-start">
-                    <a class="navbar-item" href="{{ route('home') }}">
-                        Home
-                    </a>
-
                     <a class="navbar-item" href="{{ route('conference.index') }}">
                         Conferences
                     </a>
                 </div>
-            </div>
 
-            <div class="navbar-end">
-                @guest
-                <div class="navbar-item">
-                    <div class="field is-grouped">
-
-                        <p class="control">
-                            <a class="button is-primary-inverted" href="{{ route('register') }}">
-                                {{ __('Sign up') }}
+                <div class="navbar-end">
+                    @guest
+                    <div class="navbar-item">
+                        <div class="buttons">
+                            <a class="button is-primary" href="{{ route('register') }}">
+                                <strong>Sign up</strong>
                             </a>
-                        </p>
-
-                        <p class="control">
-                            <a class="button is-primary-inverted" href="{{ route('login') }}">
-                                <strong>{{ __('Login') }}</strong>
+                            <a class="button is-light" href="{{ route('login') }}">
+                                Log in
                             </a>
-                        </p>
+                        </div>
                     </div>
-                </div>
-                @else
-                <div class="navbar-item has-dropdown is-hoverable">
-                    <a class="navbar-link">
-                        {{ Auth::user()->firstname }} <span class="caret"></span>
-                    </a>
-
-                    <div class="navbar-dropdown">
-                        <a class="navbar-item">
-                            <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                            document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
+                    @else
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            {{ Auth::user()->firstname }}
+                        </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="{{ route('user.show', Auth::user()->id) }}">
+                                My Profile
                             </a>
-
+                            <hr class="navbar-divider">
+                            <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
+                            document.getElementById('logout-form').submit();">
+                                Logout
+                            </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
-                        </a>
+
+                        </div>
                     </div>
+                    @endguest
                 </div>
-                @endguest
+
             </div>
         </nav>
 
