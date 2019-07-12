@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input :name="inputName" class="3is-hidden" :value="date" />
+    <input :name="inputName" class="is-hidden" :value="date.toMySqlDate()" />
     <b-datepicker
       v-model="date"
       mobile-native

@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             CountryTableSeeder::class,
             RegionTableSeeder::class,
             CityTableSeeder::class,
+            TimezoneTableSeeder::class,
 
             LanguageTableSeeder::class,
             ShirtTableSeeder::class,

@@ -29,7 +29,10 @@
                     {{ str_limit($conference->description, 250, $end = '...') }}
                 </p>
             </div>
-            <a class="button is-primary" href="{{ route('conference.show', $conference) }}">&gt;</a>
+            <a class="button is-primary" href="{{ route('conference.show', $conference) }}">More</a>
+            @can('update', $conference)
+            <a class="button" href="{{ route('conference.edit', $conference) }}">Settings</a>
+            @endcan
         </div>
     </article>
     @endforeach

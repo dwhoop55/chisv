@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 class Conference extends Model
 {
 
+    protected $with = ['timezone', 'state'];
+
+
     /**
      * Get the route key for the model.
      *
@@ -29,5 +32,10 @@ class Conference extends Model
     public function state()
     {
         return $this->belongsTo('App\State');
+    }
+
+    public function timezone()
+    {
+        return $this->belongsTo('App\Timezone');
     }
 }

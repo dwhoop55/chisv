@@ -23,4 +23,9 @@ class State extends Model
     {
         return $this->hasMany('App\Conference');
     }
+
+    public function isFor($class)
+    {
+        return app($this->for) == app($class);
+    }
 }

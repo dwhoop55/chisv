@@ -5,6 +5,7 @@
  */
 
 require("./bootstrap");
+require("./helpers");
 
 import Vue from "vue";
 import Buefy from "buefy";
