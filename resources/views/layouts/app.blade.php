@@ -42,9 +42,11 @@
 
             <div class="navbar-menu" :class="{ 'is-active': showMobileNav }">
                 <div class="navbar-start">
+                    @auth
                     <a class="navbar-item" href="{{ route('conference.index') }}">
                         Conferences
                     </a>
+                    @endauth
                 </div>
 
                 <div class="navbar-end">

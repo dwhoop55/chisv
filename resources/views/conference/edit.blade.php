@@ -70,7 +70,7 @@
                         <label class="label">Start Date (in timezone above)</label>
                         <div class="control">
                             <day-picker :value="'{{ old('start_date', $conference->start_date) }}'"
-                                :input-name="'state_date'">
+                                :input-name="'start_date'">
                             </day-picker>
                         </div>
                         @error('start_date')
