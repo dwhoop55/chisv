@@ -24,8 +24,8 @@ class ConferenceUpdateRequest extends FormRequest
             'start_date' => 'date',
             'end_date' => 'date',
             'description' => 'max:350',
-            'timezone_id' => 'integer|exists:timezones',
-            'state_id' => 'integer|exists:states',
+            'timezone_id' => 'integer|exists:timezones,id',
+            'state_id' => 'integer|exists:states,id',
         ];
     }
 }

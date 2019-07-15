@@ -8,7 +8,7 @@ class Conference extends Model
 {
 
     protected $with = ['timezone', 'state'];
-
+    protected $guarded = [];
 
     /**
      * Get the route key for the model.
@@ -19,17 +19,6 @@ class Conference extends Model
     {
         return 'key';
     }
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name', 'key', 'location', 'description',
-        'timezone_id', 'start_date', 'end_date',
-        'state_id'
-    ];
 
     public function state()
     {

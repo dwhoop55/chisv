@@ -129,17 +129,17 @@
                 <div class="field">
                     <label class="label">State</label>
                     <div class="select">
-                        <select>
-                            @foreach (App\State::all() as $state)
-                            @if ($state->isFor('App\Conference'))
-                            <option value="{{ $state->id }}">{{ ucwords($state->name) }}</option>
-                            @endif
+                        <select name="state_id" required>
+                            @foreach ($states as $state)
+                            <option value="{{ $state->id }}"
+                                {{ $conference->state_id == $state->id ? 'selected="selected"' : '' }}>
+                                {{ ucwords($state->name) }}</option>
                             @endforeach
                         </select>
                     </div>
                 </div>
 
-                <button type=" submit"
+                <button type="submit"
                     class="button is-primary is-pulled-right has-margin-t-5 has-margin-b-5">Save</button>
         </form>
 

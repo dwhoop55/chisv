@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conference;
 use App\User;
+use App\State;
 use Illuminate\Http\Request;
 use App\Http\Requests\ConferenceUpdateRequest;
 
@@ -72,7 +73,8 @@ class ConferenceController extends Controller
      */
     public function edit(Conference $conference)
     {
-        return view('conference.edit', compact("conference"));
+        $states = State::where('for', 'App\Conference')->get();
+        return view('conference.edit', compact("conference", "states"));
     }
 
     /**
@@ -84,7 +86,6 @@ class ConferenceController extends Controller
      */
     public function update(ConferenceUpdateRequest $request, Conference $conference)
     {
-        dd($conference);
         $validated = $request->validated();
         $conference->update($validated);
         return redirect()->route('conference.show', $conference->key);
