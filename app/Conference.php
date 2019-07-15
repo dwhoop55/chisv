@@ -26,7 +26,9 @@ class Conference extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'key', 'location', 'description', 'date'
+        'name', 'key', 'location', 'description',
+        'timezone_id', 'start_date', 'end_date',
+        'state_id'
     ];
 
     public function state()

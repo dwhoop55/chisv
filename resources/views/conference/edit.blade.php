@@ -12,14 +12,38 @@
 </div>
 @endif
 
+
+
 <div class="columns is-centered">
     <div class="column is-two-thirds">
         <form action="{{ route('conference.update', $conference->key) }}" method="post">
             @method('PUT')
             @csrf
 
-            <div class="has-text-right">Created {{ $conference->created_at }}<br /> Last updated
-                {{ $conference->updated_at }}</div>
+            <p class="buttons is-pulled-left has-margin-6">
+                <a class="button is-rounded" href="{{ url()->previous() }}">
+                    <span class="icon">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </span>
+                </a>
+            </p>
+
+            <h1 class="title">{{ $conference->name }}</h1>
+            <div class="subtitle field is-grouped is-grouped-multiline">
+                <div class="control">
+                    <div class="tags has-addons">
+                        <span class="tag is-light">created</span>
+                        <span class="tag is-white">{{ date('d/m/Y H:m', strtotime($conference->created_at)) }}</span>
+                    </div>
+                </div>
+
+                <div class="control">
+                    <div class="tags has-addons">
+                        <span class="tag is-light">updated</span>
+                        <span class="tag is-white">{{ date('d/m/Y H:m', strtotime($conference->updated_at)) }}</span>
+                    </div>
+                </div>
+            </div>
 
             <input type="hidden" name="id" value="{{ $conference->id }}">
             <div class="field">
@@ -95,28 +119,28 @@
             <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                    <textarea class="textarea" name="description"
-                        placeholder="Give your SVs some small insight about the topics of the conference">{{ old('description', $conference->description) }}</textarea>
+                    <text-field :placeholder="'Give your SVs some small insight about the topics of the conference'"
+                        :maxlength="'350'" :text="'{{ old('description', $conference->description) }}'"></text-field>
+                    @error('description')
+                    <p class="help is-danger">{{ $message }}</p>
+                    @enderror
                 </div>
-                @error('description')
-                <p class="help is-danger">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="field">
-                <label class="label">State</label>
-                <div class="select">
-                    <select>
-                        @foreach (App\State::all() as $state)
-                        @if ($state->isFor('App\Conference'))
-                        <option value="{{ $state->id }}">{{ ucwords($state->name) }}</option>
-                        @endif
-                        @endforeach
-                    </select>
+                {{-- {{ old('description', $conference->description) }} --}}
+                <div class="field">
+                    <label class="label">State</label>
+                    <div class="select">
+                        <select>
+                            @foreach (App\State::all() as $state)
+                            @if ($state->isFor('App\Conference'))
+                            <option value="{{ $state->id }}">{{ ucwords($state->name) }}</option>
+                            @endif
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
-            </div>
 
-            <button type=" submit" class="button is-primary is-pulled-right has-margin-t-5 has-margin-b-5">Save</button>
+                <button type=" submit"
+                    class="button is-primary is-pulled-right has-margin-t-5 has-margin-b-5">Save</button>
         </form>
 
         <form action="{{ route('conference.destroy', $conference->key) }}" method="post">

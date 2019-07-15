@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Conference;
 use App\User;
 use Illuminate\Http\Request;
+use App\Http\Requests\ConferenceUpdateRequest;
 
 class ConferenceController extends Controller
 {
@@ -45,17 +46,10 @@ class ConferenceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ConferenceRequest $request)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|unique:conferences|max:100',
-            'tag' => 'required|unique:conferences|max:30',
-            'location' => 'max:100',
-            'date' => 'max:100',
-            'description' => 'max:1000',
-        ]);
-
-        Conference::create($validatedData);
+        $validated = $request->validated();
+        Conference::create($validated);
         return redirect()->route('conference.index');
     }
 
@@ -88,18 +82,12 @@ class ConferenceController extends Controller
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Conference $conference)
+    public function update(ConferenceUpdateRequest $request, Conference $conference)
     {
-        $validatedData = $request->validate([
-            'name' => 'required|max:100',
-            'tag' => 'required|max:30',
-            'location' => 'max:100',
-            'date' => 'max:100',
-            'description' => 'max:1000',
-        ]);
-
-        $conference->update($validatedData);
-        return redirect()->route('conference.show', $conference->slug);
+        dd($conference);
+        $validated = $request->validated();
+        $conference->update($validated);
+        return redirect()->route('conference.show', $conference->key);
     }
 
     /**

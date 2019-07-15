@@ -26,7 +26,7 @@
                     <small><i>{{ ucwords($conference->state->name) }}</i> –
                         {{ $conference->location }} – {{ $conference->date }}</small>
                     <br>
-                    {{ str_limit($conference->description, 250, $end = '...') }}
+                    {{ str_limit($conference->description, 350, $end = '...') }}
                 </p>
             </div>
             <a class="button is-primary" href="{{ route('conference.show', $conference) }}">More</a>
