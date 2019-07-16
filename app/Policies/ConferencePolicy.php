@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\User;
 use App\Conference;
+use App\State;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ConferencePolicy
@@ -31,8 +32,15 @@ class ConferencePolicy
      */
     public function view(User $user, Conference $conference)
     {
-        // Everyone logged in should be able to view a conference
-        return $user ? true : false;
+        if ($conference->state == State::byName('planning')) {
+            // Conference is in planning phase,
+            // only admins and the associated chair
+            // is allowed to access
+            return ($user->isAdmin() || $user->isChair($conference));
+        } else {
+            // Otherwise, everyone logged in is allowed
+            return $user ? true : false;
+        }
     }
 
     /**

@@ -16,7 +16,7 @@ class StatesTableSeeder extends Seeder
             ["id" => 1, "for" => "App\Conference", "name" => "planning", "description" => "The conference is invisible to students (only open for administrative purposes)"],
             ["id" => 2, "for" => "App\Conference", "name" => "enrollment", "description" => "Students can enroll in the conference"],
             ["id" => 3, "for" => "App\Conference", "name" => "registration", "description" => "The lottery was run and we are waiting for student registrations"],
-            ["id" => 4, "for" => "App\Conference", "name" => "bidding", "description" => "The tasks are prepared and can be bid for"],
+            // ["id" => 4, "for" => "App\Conference", "name" => "bidding", "description" => "The tasks are prepared and can be bid for"],
             ["id" => 5, "for" => "App\Conference", "name" => "running", "description" => "The conference is running"],
             ["id" => 6, "for" => "App\Conference", "name" => "over", "description" => "The conference is over"],
 

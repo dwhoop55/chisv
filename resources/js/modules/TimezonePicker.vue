@@ -1,6 +1,6 @@
 <template>
   <section>
-    <input class="is-hidden" name="timezone_id" :value="selectedId" />
+    <input class="is-hidden" :name="inputName" :value="selectedId" />
     <b-autocomplete
       v-model="name"
       :data="filteredDataArray"
@@ -19,18 +19,17 @@
 <script>
 export default {
   name: "timezone-picker",
-  props: ["timezones", "id"],
+  props: ["inputName", "timezones", "id"],
   data() {
     return {
       name: "",
       selected: null
     };
   },
-  created: function() {
+  created() {
     if (this.id) {
-      this.selected = this.timezones[this.id];
+      this.selected = this.timezones[this.id - 1];
       this.name = this.selected.name;
-      console.log(this.timezones[this.id]);
     }
   },
   computed: {

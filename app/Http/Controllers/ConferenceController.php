@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
-use App\User;
 use App\State;
-use Illuminate\Http\Request;
-use App\Http\Requests\ConferenceUpdateRequest;
+use App\Timezone;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\ConferenceRequest;
 
 class ConferenceController extends Controller
 {
@@ -25,10 +26,16 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(User $user)
     {
-        $conferences = Conference::with('State')->get();
-        return view('conference.index', compact('conferences'));
+        $conferences = Conference::all()->filter(function ($conference) {
+            return Auth::user()->can('view', $conference);
+        });
+
+        $overState = State::byName('over');
+        $planningState = State::byName('planning');
+
+        return view('conference.index', compact('conferences', 'overState', 'planningState'));
     }
 
     /**
@@ -62,6 +69,7 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
+
         return view('conference.show', compact('conference'));
     }
 
@@ -74,7 +82,8 @@ class ConferenceController extends Controller
     public function edit(Conference $conference)
     {
         $states = State::where('for', 'App\Conference')->get();
-        return view('conference.edit', compact("conference", "states"));
+        $timezones = Timezone::all();
+        return view('conference.edit', compact("conference", "states", "timezones"));
     }
 
     /**
@@ -84,9 +93,10 @@ class ConferenceController extends Controller
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
-    public function update(ConferenceUpdateRequest $request, Conference $conference)
+    public function update(ConferenceRequest $request, Conference $conference)
     {
         $validated = $request->validated();
+        if (!$request->has('enable_bidding')) $validated['enable_bidding'] = 0;
         $conference->update($validated);
         return redirect()->route('conference.show', $conference->key);
     }

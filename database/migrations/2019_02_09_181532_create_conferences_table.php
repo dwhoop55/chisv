@@ -23,7 +23,8 @@ class CreateConferencesTable extends Migration
             $table->date('start_date')->nullable()->default(null);
             $table->date('end_date')->nullable()->default(null);
             $table->text('description')->nullable()->default(null);
-            $table->integer('state_id')->default(1)->nullable(false);
+            $table->integer('state_id')->default(1);
+            $table->integer('enable_bidding')->default(0);
 
             $table->foreign('state_id')->references('id')->on('states')->onUpdate('cascade');
             $table->foreign('timezone_id')->references('id')->on('timezones')->onUpdate('cascade');

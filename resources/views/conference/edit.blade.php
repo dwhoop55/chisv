@@ -1,27 +1,23 @@
 @extends('layouts.app', ['title' => $conference->name])
 
 @section('content')
-
-@if($errors->any())
-<div class="alert alert-danger">
-    <ul>
-        @foreach ($errors->all() as $error)
-        <li> {{ $error}} </li>
-        @endforeach
-    </ul>
-</div>
-@endif
-
-
-
 <div class="columns is-centered">
     <div class="column is-two-thirds">
+        @if($errors->any())
+        <div class="notification is-danger">
+            <p class="is-size-5 has-text-weight-bold">Some fields are invalid</p>
+            @foreach ($errors->all() as $error)
+            <p class="has-padding-l-5 haspadding-r-5"> {{ $error}} </p>
+            @endforeach
+        </div>
+        @endif
+
         <form action="{{ route('conference.update', $conference->key) }}" method="post">
             @method('PUT')
             @csrf
 
             <p class="buttons is-pulled-left has-margin-6">
-                <a class="button is-rounded" href="{{ url()->previous() }}">
+                <a class="button is-rounded" href="{{ route('conference.show', $conference->key) }}">
                     <span class="icon">
                         <i class="mdi mdi-arrow-left"></i>
                     </span>
@@ -46,6 +42,7 @@
             </div>
 
             <input type="hidden" name="id" value="{{ $conference->id }}">
+
             <div class="field">
                 <label class="label">Name</label>
                 <div class="control is-expanded">
@@ -83,7 +80,8 @@
             <div class="field">
                 <label class="label">Timezone of Conference</label>
                 <div class="control">
-                    <timezone-picker :id="{{ $conference->timezone->id }}" :timezones="{{ App\Timezone::all() }}">
+                    <timezone-picker :input-name="'timezone_id'"
+                        :id="{{ old('timezone_id', $conference->timezone->id) }}" :timezones="{{ $timezones }}">
                     </timezone-picker>
                 </div>
             </div>
@@ -119,24 +117,32 @@
             <div class="field">
                 <label class="label">Description</label>
                 <div class="control">
-                    <text-field :placeholder="'Give your SVs some small insight about the topics of the conference'"
+                    <text-field :input-name="'description'"
+                        :placeholder="'Give your SVs some small insight about the topics of the conference'"
                         :maxlength="'350'" :text="'{{ old('description', $conference->description) }}'"></text-field>
                     @error('description')
                     <p class="help is-danger">{{ $message }}</p>
                     @enderror
                 </div>
-                {{-- {{ old('description', $conference->description) }} --}}
+
                 <div class="field">
                     <label class="label">State</label>
                     <div class="select">
                         <select name="state_id" required>
                             @foreach ($states as $state)
                             <option value="{{ $state->id }}"
-                                {{ $conference->state_id == $state->id ? 'selected="selected"' : '' }}>
-                                {{ ucwords($state->name) }}</option>
+                                {{ old('state_id', $conference->state_id) == $state->id ? 'selected="selected"' : '' }}>
+                                {{ ucwords($state->name) }} - {{ $state->description }}</option>
                             @endforeach
                         </select>
                     </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Bidding</label>
+                    <simple-switch :input-name="'enable_bidding'"
+                        :value="{{ old('enable_bidding', $conference->enable_bidding) ? "true" : "false" }}">
+                    </simple-switch>
                 </div>
 
                 <button type="submit"

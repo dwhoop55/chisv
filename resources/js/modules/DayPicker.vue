@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  props: ["value", "inputName"],
+  props: ["input-name", "value"],
   name: "day-picker",
   data() {
     return {

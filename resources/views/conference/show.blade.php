@@ -5,7 +5,7 @@
 @can('update', $conference)
 <div class="container">
     <div class="field">
-        <a class="button is-pulled-right" href="{{ route('conference.edit', $conference->key) }}">Edit</a>
+        <a class="button is-pulled-right" href="{{ route('conference.edit', $conference->key) }}">Settings</a>
     </div>
 </div>
 @endcan
