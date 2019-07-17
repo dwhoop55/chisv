@@ -34,4 +34,9 @@ class Conference extends Model
     {
         return $this->morphOne('App\Image', 'imageable');
     }
+
+    public function icon()
+    {
+        return $this->morphOne('App\Image', 'imageable');
+    }
 }

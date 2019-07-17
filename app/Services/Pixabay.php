@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\File;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
 
 class Pixabay
 {
@@ -45,12 +46,14 @@ class Pixabay
 
     private function handleResponse($res)
     {
-        if ($res->getStatusCode() == 429) {
-            // https://pixabay.com/api/docs/#api_rate_limit
-            throw new ThrottleRequestsException("API request exceeded hourly limit: https://pixabay.com/api/docs/#api_rate_limit");
-        } else if ($res->getStatusCode() == 200) {
+        if ($res->getStatusCode() == 200) {
             // Got result ok
             return collect(json_decode($res->getBody()->getContents()));
+        } else if ($res->getStatusCode() == 429) {
+            // https://pixabay.com/api/docs/#api_rate_limit
+            throw new ThrottleRequestsException("API request exceeded hourly limit: https://pixabay.com/api/docs/#api_rate_limit");
+        } else if ($res->getStatusCode() == 400) {
+            throw new InvalidParameterException("Invalid or missing API key: https://pixabay.com/api/docs/");
         }
     }
 

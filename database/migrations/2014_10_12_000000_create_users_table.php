@@ -23,12 +23,9 @@ class CreateUsersTable extends Migration
             $table->string('university_fallback')->nullable()->default(null);
             $table->integer('shirt_id');
             $table->integer('degree_id')->nullable();
-            $table->text('image')->nullable(); // Will be stored as base64
 
             $table->string('past_conferences')->nullable()->default(null);
             $table->string('past_conferences_sv')->nullable()->default(null);
-
-            $table->integer('image_id')->nullable()->index();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
@@ -37,7 +34,6 @@ class CreateUsersTable extends Migration
 
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
             $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->foreign('image_id')->references('id')->on('images')->onUpdate('cascade');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
