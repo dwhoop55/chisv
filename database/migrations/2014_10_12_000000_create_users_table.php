@@ -28,13 +28,16 @@ class CreateUsersTable extends Migration
             $table->string('past_conferences')->nullable()->default(null);
             $table->string('past_conferences_sv')->nullable()->default(null);
 
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->integer('image_id')->nullable()->index();
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
+
+            $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('image_id')->references('id')->on('images')->onUpdate('cascade');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

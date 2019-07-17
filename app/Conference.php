@@ -29,4 +29,9 @@ class Conference extends Model
     {
         return $this->belongsTo('App\Timezone');
     }
+
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
+    }
 }

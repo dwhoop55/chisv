@@ -62,10 +62,14 @@ class User extends Authenticatable
         return $this->belongsTo('App\University');
     }
 
-
     public function permissions()
     {
         return $this->hasMany('App\Permission');
+    }
+
+    public function image()
+    {
+        return $this->morphOne('App\Image', 'imageable');
     }
 
     public function isAdmin()

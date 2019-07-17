@@ -25,9 +25,11 @@ class CreateConferencesTable extends Migration
             $table->text('description')->nullable()->default(null);
             $table->integer('state_id')->default(1);
             $table->integer('enable_bidding')->default(0);
+            $table->integer('image_id')->nullable()->index();
 
             $table->foreign('state_id')->references('id')->on('states')->onUpdate('cascade');
             $table->foreign('timezone_id')->references('id')->on('timezones')->onUpdate('cascade');
+            $table->foreign('image_id')->references('id')->on('images')->onUpdate('cascade');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
