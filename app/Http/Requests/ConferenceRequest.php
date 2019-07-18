@@ -19,6 +19,8 @@ class ConferenceRequest extends FormRequest
         $rules = [
             'name' => 'required|max:100|unique:conferences,name',
             'key' => 'required|max:30|unique:conferences,key',
+            'icon' => 'file|image|mimes:jpeg,png,gif,webp|max:1024',
+            'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
             'location' => 'required|max:100',
             'start_date' => 'date',
             'end_date' => 'date',
@@ -26,6 +28,7 @@ class ConferenceRequest extends FormRequest
             'timezone_id' => 'integer|exists:timezones,id',
             'state_id' => 'integer|exists:states,id',
             'enable_bidding' => 'integer',
+            'delete_icon' => 'integer',
         ];
 
         // Check if the request is a PUT (update) request

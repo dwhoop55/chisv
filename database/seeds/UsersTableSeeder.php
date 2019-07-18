@@ -25,6 +25,7 @@ class UsersTableSeeder extends Seeder
                 'shirt_id' => 1,
                 'degree_id' => 2,
                 'remember_token' => Str::random(10),
+                'timezone_id' => 297,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -40,6 +41,7 @@ class UsersTableSeeder extends Seeder
                 'shirt_id' => 3,
                 'degree_id' => 1,
                 'remember_token' => Str::random(10),
+                'timezone_id' => 297,
                 'created_at' => now(),
                 'updated_at' => now()
             ],
@@ -55,6 +57,7 @@ class UsersTableSeeder extends Seeder
                 'shirt_id' => 13,
                 'degree_id' => 3,
                 'remember_token' => Str::random(10),
+                'timezone_id' => 297,
                 'created_at' => now(),
                 'updated_at' => now()
             ]

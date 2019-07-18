@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use Illuminate\Support\Facades\File;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Illuminate\Support\Facades\Storage;
 
 class Pixabay
 {
@@ -20,7 +21,7 @@ class Pixabay
         $this->apiKey = $apiKey;
     }
 
-    public function search($query, $category = "nature,places,transportation,buildings,travel", $editorsChoice = "false", $perPage = "10", $page = "1", $type = "photo", $minWidth = 640, $minHeight = 480)
+    public function search($query, $category = "all", $editorsChoice = "false", $perPage = "10", $page = "1", $type = "photo", $minWidth = 640, $minHeight = 480)
     {
         $client = new Client();
         $res = $client->request(
@@ -73,16 +74,18 @@ class Pixabay
     public function download($id)
     {
         $image = $this->byId($id);
-        $name = basename($image->largeImageURL);
-        $path = public_path('images') . '/' . env('IMAGES_CONFERENCE', 'conference') . '/' . env('IMAGES_PIXABAY', 'pixabay') . '/';
-        $relativePath = 'images/' . env('IMAGES_CONFERENCE', 'conference') . '/' . env('IMAGES_PIXABAY', 'pixabay') . '/' . $name;
-        if (!File::exists($path)) {
-            File::makeDirectory($path, 0755, true);
-        }
-        $fileWithPath =  $path . $name;
-        $file = fopen($fileWithPath, 'w');
+        $name = $image->id . '.' . pathinfo($image->largeImageURL)['extension'];
+        $filename = env('IMAGES_PIXABAY', 'pixabay') . '-' . $name;
+        // $path = '/public/storage/images/' . env('IMAGES_CONFERENCE', 'conference') . '/' . env('IMAGES_PIXABAY', 'pixabay') . '/' . $name;
+
         $client = new Client();
-        $res = $client->get($image->largeImageURL, ['save_to' => $file]);
-        return ['name' => $name, 'file' => $relativePath];
+        $res = $client->get($image->largeImageURL);
+        $content = $res->getBody()->getContents();
+
+        if (Storage::put('public/' . $filename, $content)) {
+            return ['name' => $name, 'file' => "storage/$filename"];
+        } else {
+            return;
+        }
     }
 }

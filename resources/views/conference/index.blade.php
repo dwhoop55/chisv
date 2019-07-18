@@ -15,7 +15,11 @@
     <article class="media">
         <figure class="media-left">
             <p class="image is-128x128">
-                <img src="https://bulma.io/images/placeholders/128x128.png">
+                @if ($conference->icon)
+                <img src="{{ $conference->icon->path }}">
+                @else
+                <img src="https://robohash.org/{{ $conference->key }}">
+                @endif
             </p>
         </figure>
         <div class="media-content">

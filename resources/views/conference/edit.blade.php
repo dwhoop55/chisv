@@ -12,7 +12,7 @@
         </div>
         @endif
 
-        <form action="{{ route('conference.update', $conference->key) }}" method="post">
+        <form action="{{ route('conference.update', $conference->key) }}" enctype="multipart/form-data" method="post">
             @method('PUT')
             @csrf
 
@@ -29,14 +29,16 @@
                 <div class="control">
                     <div class="tags has-addons">
                         <span class="tag is-light">created</span>
-                        <span class="tag is-white">{{ date('d/m/Y H:m', strtotime($conference->created_at)) }}</span>
+                        <span class="tag is-white">
+                            {{ $user->dateFormat($conference->created_at) }}
+                        </span>
                     </div>
                 </div>
 
                 <div class="control">
                     <div class="tags has-addons">
                         <span class="tag is-light">updated</span>
-                        <span class="tag is-white">{{ date('d/m/Y H:m', strtotime($conference->updated_at)) }}</span>
+                        <span class="tag is-white">{{ $user->dateFormat($conference->updated_at) }}</span>
                     </div>
                 </div>
             </div>
@@ -55,7 +57,7 @@
             </div>
 
             <div class="field">
-                <label class="label">Key (part of url)</label>
+                <label class="label">Url</label>
                 <div class="control">
                     <input required class="input" type="text" name="key" class="@error('key') is-danger @enderror"
                         value="{{ old('key', $conference->key) }}">
@@ -63,6 +65,38 @@
                 @error('key')
                 <p class="help is-danger">{{ $message }}</p>
                 @enderror
+            </div>
+
+            <div class="field">
+                <label class="label">Icon (use at least 128x128 or more, but 1:1 aspect ratio!)</label>
+                <div class="control">
+                    <input type="file" name="icon" accept="image/png, image/jpeg" />
+                    @if ($conference->icon)
+                    <figure class="image is-128x128">
+                        <img src="{{ $conference->icon->path}}">
+                    </figure>
+                    <simple-switch :input-name="'delete_icon'"
+                        :value="{{ old('delete_icon',false) ? "true" : "false" }}" :enabled-text="'Delete Icon'"
+                        :disabled-text="''"></simple-switch>
+                    @else
+                    @endif
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">Artwork</label>
+                <div class="control">
+                    <input type="file" name="image" accept="image/jpeg" />
+                    @if ($conference->image)
+                    <figure class="image is-128x128">
+                        <img src="{{ $conference->image->path}}">
+                    </figure>
+                    <simple-switch :input-name="'delete_image'"
+                        :value="{{ old('delete_image',false) ? "true" : "false" }}" :enabled-text="'Delete Image'"
+                        :disabled-text="''"></simple-switch>
+                    @else
+                    @endif
+                </div>
             </div>
 
             <div class="field">
@@ -141,7 +175,8 @@
                 <div class="field">
                     <label class="label">Bidding</label>
                     <simple-switch :input-name="'enable_bidding'"
-                        :value="{{ old('enable_bidding', $conference->enable_bidding) ? "true" : "false" }}">
+                        :value="{{ old('enable_bidding', $conference->enable_bidding) ? "true" : "false" }}"
+                        :enabled-text="'Enabled'" :disabled-text="'Disabled'">
                     </simple-switch>
                 </div>
 

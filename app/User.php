@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Carbon\Carbon;
 
 class User extends Authenticatable
 {
@@ -67,6 +68,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Permission');
     }
 
+    public function timezone()
+    {
+        return $this->belongsTo('App\Timezone');
+    }
+
     public function image()
     {
         return $this->morphOne('App\Image', 'imageable');
@@ -99,6 +105,22 @@ class User extends Authenticatable
         } else {
             return $this->permissions->where('role_id', $role->id)->isNotEmpty();
         }
+    }
+
+    public function toTimezone($date)
+    {
+        $timezone = $this->timezone;
+        $carbonDate = new Carbon($date);
+        $carbonDate->timezone = $timezone->name;
+        return $carbonDate;
+    }
+
+    public function dateFormat($date, $format = null)
+    {
+        if (!$format) {
+            $format = $this->date_format . ' ' . $this->time_format;
+        }
+        return $this->toTimezone($date)->format($format);
     }
 
 

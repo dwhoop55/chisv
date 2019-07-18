@@ -8,7 +8,10 @@ class Conference extends Model
 {
 
     protected $with = ['timezone', 'state'];
-    protected $guarded = [];
+
+    // We guard there properties, such that they don't get assigned
+    // when we mass-update the conference with an request
+    protected $guarded = ['icon', 'image'];
 
     /**
      * Get the route key for the model.

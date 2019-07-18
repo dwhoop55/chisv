@@ -27,13 +27,19 @@ class CreateUsersTable extends Migration
             $table->string('past_conferences')->nullable()->default(null);
             $table->string('past_conferences_sv')->nullable()->default(null);
 
+            $table->string('date_format')->default('d.m.Y');
+            $table->string('time_sec_format')->default('H:i:s');
+            $table->string('time_format')->default('H:i');
+
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->integer('timezone_id')->default(291); // This is UTC/ETC
             $table->rememberToken();
 
             $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
             $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
+            $table->foreign('timezone_id')->references('id')->on('timezones')->onUpdate('cascade');
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
