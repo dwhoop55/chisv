@@ -5,6 +5,8 @@
 
 <div class="hero-container">
 
+    <img class="hero-img-blur"
+        src="@if ($conference->image) {{$conference->image->path}} @else /images/conference-default.jpg @endif" />
     <img class="hero-img"
         src="@if ($conference->image) {{$conference->image->path}} @else /images/conference-default.jpg @endif" />
 
