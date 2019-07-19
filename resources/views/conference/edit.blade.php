@@ -30,7 +30,7 @@
                     <div class="tags has-addons">
                         <span class="tag is-light">created</span>
                         <span class="tag is-white">
-                            {{ $user->dateFormat($conference->created_at) }}
+                            {{ $user->formatDate($conference->created_at) }}
                         </span>
                     </div>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="control">
                     <div class="tags has-addons">
                         <span class="tag is-light">updated</span>
-                        <span class="tag is-white">{{ $user->dateFormat($conference->updated_at) }}</span>
+                        <span class="tag is-white">{{ $user->formatDate($conference->updated_at) }}</span>
                     </div>
                 </div>
             </div>
@@ -153,7 +153,7 @@
                 <div class="control">
                     <text-field :input-name="'description'"
                         :placeholder="'Give your SVs some small insight about the topics of the conference'"
-                        :maxlength="'350'" :text="'{{ old('description', $conference->description) }}'"></text-field>
+                        :maxlength="'1000'" :text="'{{ old('description', $conference->description) }}'"></text-field>
                     @error('description')
                     <p class="help is-danger">{{ $message }}</p>
                     @enderror

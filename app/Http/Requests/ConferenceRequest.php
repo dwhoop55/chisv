@@ -24,11 +24,12 @@ class ConferenceRequest extends FormRequest
             'location' => 'required|max:100',
             'start_date' => 'date',
             'end_date' => 'date',
-            'description' => 'max:350',
+            'description' => 'max:1000',
             'timezone_id' => 'integer|exists:timezones,id',
             'state_id' => 'integer|exists:states,id',
             'enable_bidding' => 'integer',
             'delete_icon' => 'integer',
+            'delete_image' => 'integer',
         ];
 
         // Check if the request is a PUT (update) request

@@ -76,14 +76,13 @@ class Pixabay
         $image = $this->byId($id);
         $name = $image->id . '.' . pathinfo($image->largeImageURL)['extension'];
         $filename = env('IMAGES_PIXABAY', 'pixabay') . '-' . $name;
-        // $path = '/public/storage/images/' . env('IMAGES_CONFERENCE', 'conference') . '/' . env('IMAGES_PIXABAY', 'pixabay') . '/' . $name;
 
         $client = new Client();
         $res = $client->get($image->largeImageURL);
         $content = $res->getBody()->getContents();
 
-        if (Storage::put('public/' . $filename, $content)) {
-            return ['name' => $name, 'file' => "storage/$filename"];
+        if (Storage::disk('public')->put($filename, $content)) {
+            return ['name' => $filename, 'file' => "/storage/$filename"];
         } else {
             return;
         }

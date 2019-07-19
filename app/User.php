@@ -75,7 +75,7 @@ class User extends Authenticatable
 
     public function image()
     {
-        return $this->morphOne('App\Image', 'imageable');
+        return $this->morphOne('App\Image', 'owner');
     }
 
     public function isAdmin()
@@ -115,7 +115,7 @@ class User extends Authenticatable
         return $carbonDate;
     }
 
-    public function dateFormat($date, $format = null)
+    public function formatDate($date, $format = null)
     {
         if (!$format) {
             $format = $this->date_format . ' ' . $this->time_format;

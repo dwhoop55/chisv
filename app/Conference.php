@@ -35,11 +35,11 @@ class Conference extends Model
 
     public function image()
     {
-        return $this->morphOne('App\Image', 'imageable');
+        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'image');
     }
 
     public function icon()
     {
-        return $this->morphOne('App\Image', 'imageable');
+        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'icon');;
     }
 }

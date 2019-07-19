@@ -47,8 +47,9 @@
                     @endif
                 </h3>
 
-                <small> {{ $conference->location }}&nbsp; {{ date('d.m', strtotime($conference->start_date)) }} –
-                    {{date('d.m.Y', strtotime($conference->end_date))}}</small>
+                <small> {{ $conference->location }}&nbsp;
+                    {{ $user->formatDate($conference->start_date, $user->date_format) }} –
+                    {{ $user->formatDate($conference->end_date, $user->date_format) }}</small>
                 <br>
                 {{ str_limit($conference->description, 350, $end = '...') }}
                 </p>

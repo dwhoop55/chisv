@@ -6,7 +6,6 @@ use App\Conference;
 use App\State;
 use App\Timezone;
 use App\User;
-use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ConferenceRequest;
 use Dotenv\Exception\InvalidFileException;
 use App\Image;
@@ -32,13 +31,14 @@ class ConferenceController extends Controller
     public function index(User $user)
     {
         $conferences = Conference::all()->filter(function ($conference) {
-            return Auth::user()->can('view', $conference);
+            return auth()->user()->can('view', $conference);
         });
 
+        $user = auth()->user();
         $overState = State::byName('over');
         $planningState = State::byName('planning');
 
-        return view('conference.index', compact('conferences', 'overState', 'planningState'));
+        return view('conference.index', compact('user', 'conferences', 'overState', 'planningState'));
     }
 
     /**
@@ -72,8 +72,11 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
-
-        return view('conference.show', compact('conference'));
+        $overState = State::byName('over');
+        $planningState = State::byName('planning');
+        $user = auth()->user();
+        $fullContent = true;
+        return view('conference.show', compact('fullContent', 'user', 'conference', 'overState', 'planningState'));
     }
 
     /**
@@ -104,21 +107,44 @@ class ConferenceController extends Controller
         // Process icon upload
         if (isset($validated['icon'])) {
             $file = $validated['icon'];
-            $filename = 'conference-icon-' . $conference->id . "." . $file->extension();
-            if (Storage::disk('public')->put($filename, $file->get())) {
-                $dbImage = new Image();
-                $dbImage->name = $filename;
-                $dbImage->path =  '/storage/images/' . $filename;
+            $name = 'conference-icon-' . $conference->id . "." . $file->extension();
+            $path = "/storage/$name";
+            $type = 'icon';
+            if (Storage::disk('public')->put($name, $file->get())) {
+                $dbImage = new Image(compact('name', 'path', 'type'));
                 $conference->icon()->delete();
                 $conference->icon()->save($dbImage);
             } else {
                 throw new InvalidFileException("The icon could not be stored");
             }
-        } else if (isset($validated['delete_icon'])) {
+        }
+
+        // Process image upload
+        if (isset($validated['image'])) {
+            $file = $validated['image'];
+            $name = 'conference-image-' . $conference->id . "." . $file->extension();
+            $path = "/storage/$name";
+            $type = 'image';
+            if (Storage::disk('public')->put($name, $file->get())) {
+                $dbImage = new Image(compact('name', 'path', 'type'));
+                $conference->image()->delete();
+                $conference->image()->save($dbImage);
+            } else {
+                throw new InvalidFileException("The image could not be stored");
+            }
+        }
+
+        if (isset($validated['delete_icon'])) {
             unset($validated['delete_icon']);
+            $name = $conference->icon->name;
+            Storage::disk('public')->delete($name);
             $conference->icon()->delete();
-        } else if (isset($validated['delete_image'])) {
+        }
+
+        if (isset($validated['delete_image'])) {
             unset($validated['delete_image']);
+            $name = $conference->image->name;
+            Storage::disk('public')->delete($name);
             $conference->image()->delete();
         }
 

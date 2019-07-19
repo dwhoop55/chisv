@@ -87,7 +87,7 @@
             </div>
         </nav>
 
-        <div class="section">
+        <div class="@if (!isset($fullContent)) section @endif">
             @yield('content')
         </div>
     </div>
