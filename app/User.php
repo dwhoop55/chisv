@@ -37,6 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function conferencesByRole(Role $role)
+    {
+        return $this->hasManyThrough('App\Conference', 'App\Permission', 'user_id', 'id', 'id', 'conference_id')->where('role_id', $role->id)->get();
+    }
+
     public function languages()
     {
         return $this->belongsToMany('App\Language');
@@ -83,9 +88,14 @@ class User extends Authenticatable
         return $this->hasPermission(Role::byName('admin'));
     }
 
-    public function isChair(Conference $conference)
+    public function isChair(Conference $conference = null)
     {
         return $this->hasPermission(Role::byName('chair'), $conference);
+    }
+
+    public function isCaptain(Conference $conference = null)
+    {
+        return $this->hasPermission(Role::byName('captain'), $conference);
     }
 
     public function grant(Role $role, Conference $conference, State $state = null)
@@ -96,6 +106,12 @@ class User extends Authenticatable
         $permission->conference()->associate($conference);
         $permission->state()->associate($state);
         return $permission->save();
+    }
+
+    public function revoke(Role $role, Conference $conference)
+    {
+        //TODO
+        return $this->permissions->where('role_id', $role->id)->where('conference_id', $conference->id)->get();
     }
 
     public function hasPermission(Role $role, Conference $conference = null)

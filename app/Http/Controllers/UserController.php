@@ -8,13 +8,28 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(User::class);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        //
+
+        // Get all the users the logged in user can view
+        $users = User::all()->filter(function ($user) {
+            return auth()->user()->can('view', $user);
+        });
+        return view('user.index', compact('users'));
     }
 
     /**
