@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use Illuminate\Database\QueryException;
+use App\Exceptions\PermissionExistsException;
 
 class User extends Authenticatable
 {
@@ -98,6 +100,11 @@ class User extends Authenticatable
         return $this->hasPermission(Role::byName('captain'), $conference);
     }
 
+    public function isSv(Conference $conference = null)
+    {
+        return $this->hasPermission(Role::byName('sv'), $conference);
+    }
+
     public function grant(Role $role, Conference $conference, State $state = null)
     {
         $permission = new Permission;
@@ -105,13 +112,32 @@ class User extends Authenticatable
         $permission->role()->associate($role);
         $permission->conference()->associate($conference);
         $permission->state()->associate($state);
-        return $permission->save();
+
+        try {
+            return $permission->save();
+        } catch (QueryException $th) {
+            return false;
+        }
     }
 
     public function revoke(Role $role, Conference $conference)
     {
-        //TODO
-        return $this->permissions->where('role_id', $role->id)->where('conference_id', $conference->id)->get();
+        // We can call first() here because the can only be one row
+        // from the query, since we defined the columns to be unique
+        $permission = $this->permissions
+            ->where('role_id', $role->id)
+            ->where('conference_id', $conference->id)
+            ->first();
+
+        if ($permission) {
+            try {
+                return $permission->delete();
+            } catch (QueryException $th) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     public function hasPermission(Role $role, Conference $conference = null)

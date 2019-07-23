@@ -20,6 +20,8 @@ class ConferenceController extends Controller
      */
     public function __construct()
     {
+        // This will only authorize CRUD, not the index
+        // we authorize it manually
         $this->authorizeResource(Conference::class);
     }
 
@@ -30,6 +32,10 @@ class ConferenceController extends Controller
      */
     public function index(User $user)
     {
+
+        // Ask the ConferencePolicy if index is allowed for that user
+        $this->authorize('index', Conference::class);
+
         $conferences = Conference::all()->filter(function ($conference) {
             return auth()->user()->can('view', $conference);
         });

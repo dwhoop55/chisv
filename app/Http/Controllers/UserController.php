@@ -14,6 +14,8 @@ class UserController extends Controller
      */
     public function __construct()
     {
+        // This will only authorize CRUD, not the index
+        // we authorize it manually
         $this->authorizeResource(User::class);
     }
 
@@ -25,10 +27,14 @@ class UserController extends Controller
     public function index()
     {
 
+        // Ask the UserPolicy if index is allowed for that user
+        $this->authorize('index', User::class);
+
         // Get all the users the logged in user can view
-        $users = User::all()->filter(function ($user) {
+        $users = User::with('degree', 'shirt', 'university')->get();
+        $users = $users->filter(function ($user) {
             return auth()->user()->can('view', $user);
-        });
+        })->values();
         return view('user.index', compact('users'));
     }
 

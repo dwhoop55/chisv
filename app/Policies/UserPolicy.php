@@ -34,7 +34,7 @@ class UserPolicy
         // Note, this only is for if the user can access
         // the index page. Which user is displayed is
         // up to the view method below
-        return $user->isAdmin() || $user->isChair();
+        return $user->isAdmin() || $user->isChair() || $user->isCaptain();
     }
 
     /**
@@ -56,17 +56,11 @@ class UserPolicy
             // This is more tricky:
             // Only allow view for users which are
             // enrolled for a conference the user
-            // has the chair/daycaptain role for
+            // has the chair/captain role for
             $conferencesAsSv = $model->conferencesByRole(Role::byName('sv'));
-            $conferencesAsChair = $user->conferencesByRole(Role::byName('chair'));
-            foreach ($conferencesAsChair as $conferenceChair) {
-                if ($conferencesAsSv->contains($conferenceChair)) {
-                    // As soon as the user can view at least one
-                    // model we return true. Which conference we later show
-                    // will be handled somewhere else
-                    return true;
-                }
-            }
+            $manageableConferences = $user->conferencesByRole(Role::byName('chair'))->merge($user->conferencesByRole(Role::byName('captain')));
+            $conferencesTheyShare = $conferencesAsSv->intersect($manageableConferences);
+            return $conferencesTheyShare->isNotEmpty();
         }
     }
 
@@ -78,7 +72,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -90,7 +84,9 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        // When someone can view a user
+        // updating should also be possible
+        return $this->view($user, $model);
     }
 
     /**
@@ -102,7 +98,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -114,7 +110,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model)
     {
-        //
+        return $user->isAdmin();
     }
 
     /**
@@ -126,6 +122,6 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model)
     {
-        //
+        return $user->isAdmin();
     }
 }

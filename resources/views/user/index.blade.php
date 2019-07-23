@@ -2,10 +2,6 @@
 
 @section('content')
 
-<div class="section">
-    @foreach ($users as $user)
-    <pre>{{ $user }}</pre>
-    @endforeach
-</div>
+<users-table :users="{{ $users }}"></users-table>
 
 @endsection

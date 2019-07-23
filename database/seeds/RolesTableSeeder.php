@@ -14,7 +14,7 @@ class RolesTableSeeder extends Seeder
         $roles = [
             ['id' => 1, 'name' => 'admin', 'description' => 'Can do anything'],
             ['id' => 2, 'name' => 'chair', 'description' => 'Can manage conference details, tasks and assignments'],
-            ['id' => 3, 'name' => 'daycaptain', 'description' => 'Can manage tasks and assignments'],
+            ['id' => 3, 'name' => 'captain', 'description' => 'Can manage tasks and assignments'],
             ['id' => 10, 'name' => 'sv', 'description' => 'Can enroll for conferences as SV'],
         ];
 
