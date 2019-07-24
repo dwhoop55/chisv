@@ -1,7 +1,7 @@
 <template>
   <section>
     <b-field grouped group-multiline>
-      <b-select v-model="perPage">
+      <b-select @input="loadAsyncData" v-model="perPage">
         <option value="5">5 per page</option>
         <option value="10">10 per page</option>
         <option value="15">15 per page</option>
@@ -17,40 +17,48 @@
       :loading="loading"
       paginated
       backend-pagination
+      backend-sorting
       :total="total"
       :per-page="perPage"
+      @click="goTo(`/user/${$event.id}`)"
       @page-change="onPageChange"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
-      backend-sorting
       :default-sort-direction="defaultSortOrder"
       :default-sort="[sortField, sortOrder]"
       @sort="onSort"
     >
       <template slot-scope="props">
-        <b-table-column field="original_title" label="Title" sortable>{{ props.row.original_title }}</b-table-column>
-
-        <b-table-column field="vote_average" label="Vote Average" numeric sortable>
-          <span class="tag" :class="type(props.row.vote_average)">{{ props.row.vote_average }}</span>
-        </b-table-column>
-
         <b-table-column
-          field="vote_count"
-          label="Vote Count"
-          numeric
+          class="is-clickable"
+          field="firstname"
+          label="Firstname"
           sortable
-        >{{ props.row.vote_count }}</b-table-column>
-
+        >{{ props.row.firstname }}</b-table-column>
         <b-table-column
-          field="release_date"
-          label="Release Date"
+          class="is-clickable"
+          field="lastname"
+          label="Lastname"
           sortable
-          centered
-        >{{ props.row.release_date ? new Date(props.row.release_date).toLocaleDateString() : '' }}</b-table-column>
+        >{{ props.row.lastname }}</b-table-column>
+        <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
+        <b-table-column
+          field="university.name"
+          label="University"
+        >{{ props.row.university.name ? props.row.university.name : props.row.university_fallback }}</b-table-column>
+      </template>
 
-        <b-table-column label="Overview" width="500">{{ props.row.overview | truncate(80) }}</b-table-column>
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon icon="emoticon-sad" size="is-large"></b-icon>
+            </p>
+            <p>Nothing here.</p>
+          </div>
+        </section>
       </template>
     </b-table>
   </section>
@@ -64,11 +72,11 @@ export default {
       data: [],
       total: 0,
       loading: false,
-      sortField: "vote_count",
-      sortOrder: "desc",
-      defaultSortOrder: "desc",
+      sortField: "firstname",
+      sortOrder: "asc",
+      defaultSortOrder: "asc",
       page: 1,
-      perPage: 20
+      perPage: 5
     };
   },
   methods: {
@@ -77,24 +85,21 @@ export default {
      */
     loadAsyncData() {
       const params = [
-        `sort_by=${this.sortField}.${this.sortOrder}`,
-        `page=${this.page}`
+        `sort_by=${this.sortField}`,
+        `sort_order=${this.sortOrder}`,
+        `page=${this.page}`,
+        `per_page=${this.perPage}`
       ].join("&");
 
       this.loading = true;
       axios
         .get(`/api/user?${params}`)
         .then(({ data }) => {
-          // api.themoviedb.org manage max 1000 pages
           this.data = [];
-          let currentTotal = data.total_results;
-          if (data.total_results / this.perPage > 1000) {
-            currentTotal = this.perPage * 1000;
-          }
-          this.total = currentTotal;
-          data.results.forEach(item => {
-            item.release_date = item.release_date.replace(/-/g, "/");
-            this.data.push(item);
+          this.total = data.meta.total;
+          data.data.forEach(user => {
+            // Change user infos here
+            this.data.push(user);
           });
           this.loading = false;
         })
@@ -119,19 +124,6 @@ export default {
       this.sortField = field;
       this.sortOrder = order;
       this.loadAsyncData();
-    },
-    /*
-     * Type style in relation to the value
-     */
-    type(value) {
-      const number = parseFloat(value);
-      if (number < 6) {
-        return "is-danger";
-      } else if (number >= 6 && number < 8) {
-        return "is-warning";
-      } else if (number >= 8) {
-        return "is-success";
-      }
     }
   },
   filters: {

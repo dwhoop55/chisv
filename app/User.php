@@ -6,11 +6,11 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
-use App\Exceptions\PermissionExistsException;
+use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use HasApiTokens, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -149,17 +149,17 @@ class User extends Authenticatable
         }
     }
 
-    public function setSvState(State $state, Conference $conference) {
+    public function setSvState(State $state, Conference $conference)
+    {
         $permission = $this->permissions()
-        ->where('conference_id', $conference->id)
+            ->where('conference_id', $conference->id)
             ->where('role_id', Role::byName('sv')->id)->first();
-        
+
         if ($permission) {
             return $permission->update(['state_id' => $state->id]);
         } else {
             return false;
         }
-   
     }
 
     public function toTimezone($date)

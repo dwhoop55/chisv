@@ -1,19 +1,14 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Lato");
-
 // Variables
 @import "variables";
-
 // Import Bulma's core
 @import "~bulma/sass/utilities/_all";
-
 // Import Bulma utilities
 @import "~bulma-utilities/sass/bulma-utilities";
-
 // Set your colors
 $primary-invert: findColorInvert($primary);
 $twitter-invert: findColorInvert($twitter);
-
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
   "white": (
@@ -57,19 +52,15 @@ $colors: (
     $twitter-invert
   )
 );
-
 // Links
 $link: $link-color;
 $link-invert: findColorInvert($link);
 $link-focus-border: $primary;
-
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
-
 // Login/register
 @import "form";
-
 html {
   background-color: $body-bg;
   font-size: $font-size-base;
@@ -119,4 +110,8 @@ h3 {
   top: 0;
   width: 100%;
   height: 100%;
+}
+
+.is-clickable {
+  cursor: pointer;
 }

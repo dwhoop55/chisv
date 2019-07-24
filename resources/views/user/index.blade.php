@@ -2,6 +2,6 @@
 
 @section('content')
 
-<users-table :users="{{ $users }}"></users-table>
+<users-table></users-table>
 
 @endsection

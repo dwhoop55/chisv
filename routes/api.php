@@ -30,9 +30,6 @@ use App\Http\Resources\Users;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::get('/city/search/{pattern}', function ($pattern) {
     $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
@@ -79,8 +76,17 @@ Route::prefix('email')->group(function () {
     });
 });
 
-Route::middleware('auth')->get('user', function () {
-    dd(auth()->user());
-});
-
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
+
+
+
+Route::group(['middleware' => ['auth:api']], function () {
+
+    Route::middleware('can:index,App\User')
+        ->get('user', function () {
+            $users = User::with('university')
+                ->orderBy(request()->sort_by, request()->sort_order)
+                ->paginate(request()->per_page);
+            return new Users($users);
+        });
+});
