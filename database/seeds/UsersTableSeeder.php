@@ -2,6 +2,10 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
+use App\Language;
+use App\Role;
+use App\State;
+use App\Conference;
 
 class UsersTableSeeder extends Seeder
 {
@@ -15,7 +19,7 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 "id" => 1,
-                'firstname' => 'Milton',
+                'firstname' => 'ADMIN Milton',
                 'lastname' => 'Waddams',
                 'email' => 'milton@cs.rwth-aachen.de',
                 'email_verified_at' => now(),
@@ -31,7 +35,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 "id" => 2,
-                'firstname' => 'Florian',
+                'firstname' => 'CHAIR+CAPTAIN Florian',
                 'lastname' => 'Busch',
                 'email' => 'busch@cs.rwth-aachen.de',
                 'email_verified_at' => now(),
@@ -47,7 +51,7 @@ class UsersTableSeeder extends Seeder
             ],
             [
                 "id" => 3,
-                'firstname' => 'Florian',
+                'firstname' => 'SV Florian',
                 'lastname' => 'Busch',
                 'email' => 'florian.busch@rwth-aachen.de',
                 'email_verified_at' => now(),
@@ -63,5 +67,15 @@ class UsersTableSeeder extends Seeder
             ]
         ];
         DB::table('users')->insert($users);
+
+        factory(App\User::class, 10)->create()->each(function ($user) {
+            $state = State::where('id', '>', '10')->orderByRaw('RANDOM()')->take(1)->first();
+            $conference = Conference::orderByRaw('RANDOM()')->take(1)->first();
+            $language = Language::orderByRaw('RANDOM()')->take(3)->get();
+            $role = Role::byName('sv');
+
+            $user->languages()->attach($language);
+            $user->grant($role, $conference, $state);
+        });
     }
 }

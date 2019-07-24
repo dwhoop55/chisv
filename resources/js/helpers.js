@@ -10,10 +10,28 @@ function twoDigits(d) {
 /**
  * Prototype to output MySQL date format
  **/
-Date.prototype.toMySqlDate = function () {
-    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate());
+Date.prototype.toMySqlDate = function() {
+    return (
+        this.getFullYear() +
+        "-" +
+        twoDigits(1 + this.getMonth()) +
+        "-" +
+        twoDigits(this.getDate())
+    );
 };
 
-Date.prototype.toMySqlDateTime = function () {
-    return this.getFullYear() + "-" + twoDigits(1 + this.getMonth()) + "-" + twoDigits(this.getDate()) + " " + twoDigits(this.getHours()) + ":" + twoDigits(this.getMinutes()) + ":" + twoDigits(this.getSeconds());
+Date.prototype.toMySqlDateTime = function() {
+    return (
+        this.getFullYear() +
+        "-" +
+        twoDigits(1 + this.getMonth()) +
+        "-" +
+        twoDigits(this.getDate()) +
+        " " +
+        twoDigits(this.getHours()) +
+        ":" +
+        twoDigits(this.getMinutes()) +
+        ":" +
+        twoDigits(this.getSeconds())
+    );
 };

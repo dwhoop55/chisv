@@ -16,20 +16,19 @@ class DatabaseSeeder extends Seeder
             RegionTableSeeder::class,
             CityTableSeeder::class,
             TimezoneTableSeeder::class,
-
+            RolesTableSeeder::class,
+            StatesTableSeeder::class,
             LanguageTableSeeder::class,
             ShirtTableSeeder::class,
             DegreeTableSeeder::class,
+
             UniversityTableSeeder::class,
+            ConferenceTableSeeder::class,
 
             UsersTableSeeder::class,
-
-            StatesTableSeeder::class,
-            ConferenceTableSeeder::class,
-            RolesTableSeeder::class,
+            LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
-            LanguageUserSeeder::class,
 
         ]);
     }

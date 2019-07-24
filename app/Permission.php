@@ -8,6 +8,7 @@ class Permission extends Model
 {
 
     protected $with = ['role', 'user', 'conference', 'state'];
+    protected $guarded = [];
 
     public function role()
     {

@@ -149,6 +149,19 @@ class User extends Authenticatable
         }
     }
 
+    public function setSvState(State $state, Conference $conference) {
+        $permission = $this->permissions()
+        ->where('conference_id', $conference->id)
+            ->where('role_id', Role::byName('sv')->id)->first();
+        
+        if ($permission) {
+            return $permission->update(['state_id' => $state->id]);
+        } else {
+            return false;
+        }
+   
+    }
+
     public function toTimezone($date)
     {
         $timezone = $this->timezone;

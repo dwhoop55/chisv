@@ -16,6 +16,8 @@ use App\Shirt;
 
 use Illuminate\Database\Eloquent\Collection;
 use PharIo\Manifest\Email;
+use Illuminate\Auth\Access\Gate;
+use App\Http\Resources\Users;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,9 +30,9 @@ use PharIo\Manifest\Email;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
 Route::get('/city/search/{pattern}', function ($pattern) {
     $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
@@ -75,6 +77,10 @@ Route::prefix('email')->group(function () {
             return response()->json(['result' => false]);
         };
     });
+});
+
+Route::middleware('auth')->get('user', function () {
+    dd(auth()->user());
 });
 
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');

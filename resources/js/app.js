@@ -9,12 +9,12 @@ require("./helpers");
 
 import Vue from "vue";
 import Buefy from "buefy";
-import { Form, HasError, AlertError } from 'vform'
+import { Form, HasError, AlertError } from "vform";
 
 Vue.use(Buefy);
 
-Vue.component(HasError.name, HasError)
-Vue.component(AlertError.name, AlertError)
+Vue.component(HasError.name, HasError);
+Vue.component(AlertError.name, AlertError);
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -35,13 +35,11 @@ files.keys().map(key =>
 
 Vue.mixin({
     methods: {
-        goTo: function (path) {
+        goTo: function(path) {
             window.location.href = path;
         }
     }
 });
-
-
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
