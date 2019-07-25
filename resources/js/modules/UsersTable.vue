@@ -1,6 +1,8 @@
 <template>
   <section>
     <b-field grouped group-multiline>
+      <p></p>
+      <b-field horizontal :label="`${total} Users`"></b-field>
       <b-select @input="loadAsyncData" v-model="perPage">
         <option value="5">5 per page</option>
         <option value="10">10 per page</option>
@@ -9,13 +11,22 @@
         <option value="50">50 per page</option>
         <option value="75">75 per page</option>
         <option value="100">100 per page</option>
+        <option value="9999999">All</option>
       </b-select>
+
+      <b-input
+        expanded
+        @input="debounceLoadAsyncData"
+        placeholder="search.."
+        v-model="searchString"
+      ></b-input>
     </b-field>
 
     <b-table
       :data="data"
       :loading="loading"
       paginated
+      narrowed
       backend-pagination
       backend-sorting
       :total="total"
@@ -37,6 +48,7 @@
           label="Firstname"
           sortable
         >{{ props.row.firstname }}</b-table-column>
+
         <b-table-column
           class="is-clickable"
           field="lastname"
@@ -44,10 +56,28 @@
           sortable
         >{{ props.row.lastname }}</b-table-column>
         <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
+
         <b-table-column
           field="university.name"
           label="University"
         >{{ props.row.university.name ? props.row.university.name : props.row.university_fallback }}</b-table-column>
+
+        <b-table-column width="200" field="permissions" label="Permissions">
+          <div class="field is-grouped is-grouped-multiline">
+            <div class="control" :key="permission.id" v-for="permission in props.row.permissions">
+              <div class="tags has-addons">
+                <span
+                  class="tag"
+                  :class="{ 'is-danger' : permission.role.name == 'admin', 'is-light' : permission.role.name == 'sv', 'is-dark' : permission.role.name == 'chair', 'is-primary' : permission.role.name == 'captain'}"
+                >{{ permission.role.name }}</span>
+                <span
+                  v-if="permission.conference"
+                  class="tag is-success"
+                >{{ permission.conference.key.substring(0,20) }}</span>
+              </div>
+            </div>
+          </div>
+        </b-table-column>
       </template>
 
       <template slot="empty">
@@ -66,6 +96,8 @@
 
 
 <script>
+import debounce from "lodash/debounce";
+
 export default {
   data() {
     return {
@@ -74,21 +106,23 @@ export default {
       loading: false,
       sortField: "firstname",
       sortOrder: "asc",
+      searchString: "",
       defaultSortOrder: "asc",
       page: 1,
-      perPage: 5
+      perPage: 25
     };
   },
   methods: {
-    /*
-     * Load async data
-     */
+    debounceLoadAsyncData: debounce(function() {
+      this.loadAsyncData();
+    }, 250),
     loadAsyncData() {
       const params = [
         `sort_by=${this.sortField}`,
         `sort_order=${this.sortOrder}`,
         `page=${this.page}`,
-        `per_page=${this.perPage}`
+        `per_page=${this.perPage}`,
+        `search_string=${this.searchString}`
       ].join("&");
 
       this.loading = true;

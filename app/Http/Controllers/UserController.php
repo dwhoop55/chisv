@@ -29,13 +29,7 @@ class UserController extends Controller
 
         // Ask the UserPolicy if index is allowed for that user
         $this->authorize('index', User::class);
-
-        // Get all the users the logged in user can view
-        $users = User::with('degree', 'shirt', 'university')->get();
-        $users = $users->filter(function ($user) {
-            return auth()->user()->can('view', $user);
-        })->values();
-        return view('user.index', compact('users'));
+        return view('user.index');
     }
 
     /**

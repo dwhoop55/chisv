@@ -47,6 +47,11 @@
                         Conferences
                     </a>
                     @endauth
+                    @can('index', App\User::class)
+                        <a class="navbar-item" href="{{ route('user.index') }}">
+                        Users
+                    </a>
+                    @endcan
                 </div>
 
                 <div class="navbar-end">

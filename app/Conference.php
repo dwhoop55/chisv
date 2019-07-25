@@ -42,4 +42,9 @@ class Conference extends Model
     {
         return $this->morphOne('App\Image', 'owner')->where('type', '=', 'icon');;
     }
+
+    public function users()
+    {
+        return $this->hasManyThrough('App\User', 'App\Permission', 'conference_id', 'id', 'id', 'user_id');
+    }
 }

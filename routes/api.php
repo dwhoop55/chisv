@@ -82,11 +82,5 @@ Route::post('register', 'Auth\RegisterController@create')->name('register.create
 
 Route::group(['middleware' => ['auth:api']], function () {
 
-    Route::middleware('can:index,App\User')
-        ->get('user', function () {
-            $users = User::with('university')
-                ->orderBy(request()->sort_by, request()->sort_order)
-                ->paginate(request()->per_page);
-            return new Users($users);
-        });
+    Route::resource('user', 'UserApiController');
 });

@@ -39,6 +39,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function conferencesAsChairOrCaptain()
+    {
+        return $this->conferencesByRole(Role::byName('chair'))
+            ->merge($this->conferencesByRole(Role::byName('captain')));
+    }
+
     public function conferencesByRole(Role $role)
     {
         return $this->hasManyThrough('App\Conference', 'App\Permission', 'user_id', 'id', 'id', 'conference_id')->where('role_id', $role->id)->get();
