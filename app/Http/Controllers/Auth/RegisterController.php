@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
+use App\Degree;
+use App\Shirt;
 
 class RegisterController extends Controller
 {
@@ -51,10 +53,16 @@ class RegisterController extends Controller
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'languageIds' => ['required', 'array', 'exists:languages,id'],
-            'cityId' => ['required', 'integer', 'exists:cities,id'],
-            'universityId' => ['integer', 'exists:universities,id'],
-            'universityString' => ['string'],
+
+            'languages' => ['required', 'json'],
+            'languages.*.id' => ['required', 'integer', 'exists:languages,id'],
+
+            'location' => ['required', 'json'],
+            'location.city.id' => ['required', 'integer', 'exists:cities,id'],
+
+            'university' => ['required', 'json'],
+            'university.id' => ['exists:universities,id'],
+
             'degreeId' => ['required', 'integer', 'exists:degrees,id'],
             'shirtId' => ['required', 'integer', 'exists:shirts,id'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
@@ -114,6 +122,8 @@ class RegisterController extends Controller
 
     public function index()
     {
-        return view('auth.register');
+        $degrees = Degree::all();
+        $shirts = Shirt::all();
+        return view('auth.register', compact('degrees', 'shirts'));
     }
 }

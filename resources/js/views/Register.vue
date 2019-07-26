@@ -43,38 +43,26 @@
                 ></b-input>
               </b-field>
 
-              <language-picker :url="'/api/language/search/'" @update:tags="languages = $event"></language-picker>
-              <!-- <pre>{{ languages }}</pre> -->
+              <b-field horizontal label="Languages">
+                <language-picker :url="'/api/search/language/'" @update:tags="languages = $event"></language-picker>
+                <!-- <pre>{{ languages }}</pre> -->
+              </b-field>
             </section>
 
             <section class="section">
-              <autocomplete-fetched
-                @update:value="locationUpdateValue($event)"
-                @update:id="locationUpdateId($event)"
-                :message="locationMessage"
-                :id.sync="location"
-                :type="'city'"
-                :field="'city.name'"
-                :url="'/api/city/search/'"
-                :title="'City of residence'"
-                :placeholder="'e.g. Berlin'"
-                :notFoundText="'No results found. Try a city close by.'"
-                :tooltip="'Choose the city closest to you when yours isn\'t in the list'"
-              ></autocomplete-fetched>
-              <!-- <pre>{{ location }}</pre> -->
+              <b-field horizontal label="City of residence (choose closest)">
+                <location-picker
+                  @update:value="locationUpdateValue($event)"
+                  @update:id="locationUpdateId($event)"
+                  :id.sync="location"
+                ></location-picker>
+                <!-- <pre>{{ location }}</pre> -->
+              </b-field>
 
-              <autocomplete-fetched
-                :id.sync="university"
-                :value.sync="universityString"
-                :type="'university'"
-                :field="'name'"
-                :url="'/api/university/search/'"
-                :title="'University'"
-                :placeholder="'e.g. RWTH'"
-                :notFoundText="'No results found. Type your choice'"
-                :tooltip="'If your university isn\'t in the list just type it in'"
-              ></autocomplete-fetched>
-              <!-- <pre>{{ university }}</pre> -->
+              <b-field horizontal label="University">
+                <university-picker :id.sync="university" :value.sync="universityString"></university-picker>
+                <!-- <pre>{{ university }}</pre> -->
+              </b-field>
 
               <degree-select :id.sync="degreeId" :url="'/api/degree'"></degree-select>
               <!-- <pre>{{ degreeId }}</pre> -->

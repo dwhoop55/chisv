@@ -1,11 +1,6 @@
 <template>
-  <b-field horizontal expanded>
-    <template slot="label">
-      Languages
-      <b-tooltip position="is-right" label="Please choose all languages that you speak">
-        <b-icon size="is-small" icon="help-circle-outline"></b-icon>
-      </b-tooltip>
-    </template>
+  <div>
+    <input type="hiddent" name="languages" :value="JSON.stringify(tags)" />
     <b-taginput
       v-model="tags"
       :data="filteredTags"
@@ -17,7 +12,7 @@
       @typing="getLanguage"
       @input="$emit('update:tags', $event)"
     ></b-taginput>
-  </b-field>
+  </div>
 </template>
 
 <script>
@@ -25,12 +20,12 @@ import debounce from "lodash/debounce";
 
 export default {
   name: "language-picker",
-  props: ["url"],
+  props: ["url", "selected"],
   data() {
     return {
       filteredTags: [],
       isFetching: false,
-      tags: []
+      tags: this.selected
     };
   },
   methods: {
@@ -41,7 +36,7 @@ export default {
       }
       this.isFetching = true;
       axios
-        .get(`${this.url}${text}`)
+        .get(`/api/search/language/${text}`)
         .then(({ data }) => {
           this.filteredTags = [];
           data.data.forEach(entry => this.filteredTags.push(entry));

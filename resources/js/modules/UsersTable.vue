@@ -31,7 +31,7 @@
       backend-sorting
       :total="total"
       :per-page="perPage"
-      @click="goTo(`/user/${$event.id}`)"
+      @click="goTo(`/user/${$event.id}/edit`)"
       @page-change="onPageChange"
       aria-next-label="Next page"
       aria-previous-label="Previous page"

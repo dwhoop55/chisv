@@ -72,7 +72,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        //
+        $authUser = auth()->user();
+        return view("user.edit", compact('authUser', 'user'));
     }
 
     /**

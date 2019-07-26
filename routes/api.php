@@ -30,31 +30,33 @@ use App\Http\Resources\Users;
 |
 */
 
+Route::prefix('search')->group(function () {
 
-Route::get('/city/search/{pattern}', function ($pattern) {
-    $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
-    $matches = City::where('name', 'LIKE', $pattern . '%')->orWhere('name', 'LIKE', $unUmlautedPattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
-    $locations = collect();
-    foreach ($matches as $match) {
-        $locations->push($match->location());
-    }
-    return new Locations($locations);
-});
+    Route::get('location/{pattern}', function ($pattern) {
+        $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
+        $matches = City::where('name', 'LIKE', $pattern . '%')->orWhere('name', 'LIKE', $unUmlautedPattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
+        $locations = collect();
+        foreach ($matches as $match) {
+            $locations->push($match->location());
+        }
+        return new Locations($locations);
+    });
 
-Route::get('/university/search/{pattern}', function ($pattern) {
-    $patterns = preg_split("/\ |\-|,|;/", $pattern);
-    $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
-    foreach ($patterns as $item) {
-        $query = $query->where('name', 'LIKE', '%' . $item . '%');
-        $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
-    }
-    $matches = $query->orderBy('name', 'asc')->get();
-    return new Universities($matches);
-});
+    Route::get('university/{pattern}', function ($pattern) {
+        $patterns = preg_split("/\ |\-|,|;/", $pattern);
+        $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
+        foreach ($patterns as $item) {
+            $query = $query->where('name', 'LIKE', '%' . $item . '%');
+            $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
+        }
+        $matches = $query->orderBy('name', 'asc')->get();
+        return new Universities($matches);
+    });
 
-Route::get('/language/search/{pattern}', function ($pattern) {
-    $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
-    return new Languages($matches);
+    Route::get('language/{pattern}', function ($pattern) {
+        $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
+        return new Languages($matches);
+    });
 });
 
 Route::get('/degree', function () {
@@ -65,19 +67,16 @@ Route::get('/shirt', function () {
     return new Shirts(Shirt::all());
 });
 
-Route::prefix('email')->group(function () {
-    Route::get('exists/{email}', function ($email) {
-        $emailExists = User::where('email', $email)->get()->count() == 1;
-        if ($emailExists) {
-            return response()->json(['result' => true]);
-        } else {
-            return response()->json(['result' => false]);
-        };
-    });
+Route::get('email/exists/{email}', function ($email) {
+    $emailExists = User::where('email', $email)->get()->count() == 1;
+    if ($emailExists) {
+        return response()->json(['result' => true]);
+    } else {
+        return response()->json(['result' => false]);
+    };
 });
 
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
-
 
 
 Route::group(['middleware' => ['auth:api']], function () {
