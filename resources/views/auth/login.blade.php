@@ -15,21 +15,21 @@
                         @csrf
 
                         <div class="field">
-                            <p class="control has-icons-left has-icons-right">
+                            <div class="control has-icons-left has-icons-right">
                                 <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}"
                                     class="input {{ $errors->has('email') ? 'is-danger' : '' }}" name="email"
                                     value="{{ old('email') }}" required autofocus>
                                 <i class="icon mdi mdi-at"></i>
-                            </p>
+                            </div>
                         </div>
 
                         <div class="field">
-                            <p class="control has-icons-left">
+                            <div class="control has-icons-left">
                                 <input id="password" placeholder="{{ __('Password') }}" type="password"
                                     class="input {{ $errors->has('password') ? 'is-danger' : '' }}" name="password"
                                     required>
                                 <i class="icon mdi mdi-key"></i>
-                            </p>
+                            </div>
                         </div>
 
                         @if ($errors->has('email'))

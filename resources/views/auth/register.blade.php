@@ -43,12 +43,12 @@
                         </div>
 
 
-                        <div class="field is-grouped">
-                            <div class="control is-expanded">
-                                <label class="label">Email</label>
+                        <div class="field">
+                            <p class="control has-icon has-icons-left">
+                                <label class="label">E-Mail</label>
                                 <input required class="input" type="email" name="email"
                                     class="@error('email') is-danger @enderror" value="{{ old('email') }}">
-                            </div>
+                            </p>
                             @error('email')
                             <p class="help is-danger">{{ $message }}</p>
                             @enderror
@@ -137,7 +137,7 @@
                                         <option>Choose..</option>
                                         @foreach ($shirts as $shirt)
                                         <option value="{{ $shirt->id }}"
-                                            {{ old('shirt_id') == $degree->id ? 'selected' : '' }}>>{{ $shirt->cut }}
+                                            {{ old('shirt_id') == $degree->id ? 'selected' : '' }}>{{ $shirt->cut }}
                                             {{ $shirt->size }}</option>
                                         @endforeach
                                     </select>
