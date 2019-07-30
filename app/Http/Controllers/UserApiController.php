@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Users;
+use Illuminate\Http\JsonResponse;
 
 class UserApiController extends Controller
 {
@@ -138,6 +139,7 @@ class UserApiController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $result = $user->delete();
+        return ["result" => true, "error" => null];
     }
 }

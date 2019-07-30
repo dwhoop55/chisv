@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="hiddent" name="location" :value="JSON.stringify(selectedRow)" />
+    <input type="hidden" name="location" :value="JSON.stringify(selectedRow)" />
     <b-autocomplete
       required
       :data="rows"

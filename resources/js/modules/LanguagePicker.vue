@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="hiddent" name="languages" :value="JSON.stringify(tags)" />
+    <input type="hidden" name="languages" :value="JSON.stringify(tags)" />
     <b-taginput
       v-model="tags"
       :data="filteredTags"

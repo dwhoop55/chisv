@@ -44,7 +44,7 @@
 
 
                         <div class="field">
-                            <p class="control has-icon has-icons-left">
+                            <p class="control">
                                 <label class="label">E-Mail</label>
                                 <input required class="input" type="email" name="email"
                                     class="@error('email') is-danger @enderror" value="{{ old('email') }}">
@@ -110,21 +110,21 @@
                         <div class="field is-grouped">
                             <div class="control is-expanded">
                                 <label class="label">Past conferences you have attended</label>
-                                <input class="input" name="pastConferences" type="text"
-                                    class="@error('pastConferences') is-danger @enderror"
-                                    value="{{ old('pastConferences') }}">
+                                <input class="input" name="past_conferences" type="text"
+                                    class="@error('past_conferences') is-danger @enderror"
+                                    value="{{ old('past_conferences') }}">
                             </div>
-                            @error('pastConferences')
+                            @error('past_conferences')
                             <p class="help is-danger">{{ $message }}</p>
                             @enderror
 
                             <div class="control is-expanded">
                                 <label class="label">Past conferences you have attended as SV</label>
-                                <input class="input" name="pastConferencesAsSv" type="text"
-                                    class="@error('pastConferencesAsSv') is-danger @enderror"
-                                    value="{{ old('pastConferencesAsSv') }}">
+                                <input class="input" name="past_conferences_sv" type="text"
+                                    class="@error('past_conferences_sv') is-danger @enderror"
+                                    value="{{ old('past_conferences_sv') }}">
                             </div>
-                            @error('pastConferencesAsSv')
+                            @error('past_conferences_sv')
                             <p class="help is-danger">{{ $message }}</p>
                             @enderror
                         </div>
@@ -137,7 +137,7 @@
                                         <option>Choose..</option>
                                         @foreach ($shirts as $shirt)
                                         <option value="{{ $shirt->id }}"
-                                            {{ old('shirt_id') == $degree->id ? 'selected' : '' }}>{{ $shirt->cut }}
+                                            {{ old('shirt_id') == $shirt->id ? 'selected' : '' }}>{{ $shirt->cut }}
                                             {{ $shirt->size }}</option>
                                         @endforeach
                                     </select>
@@ -154,18 +154,14 @@
                                 <input required class="input" type="password" name="password"
                                     class="@error('password') is-danger @enderror">
                             </div>
-                            @error('password')
-                            <p class="help is-danger">{{ $message }}</p>
-                            @enderror
                             <div class="control is-expanded">
                                 <label class="label">Confirm Password</label>
-                                <input required class="input" type="password" name="password_confirmation"
-                                    class="@error('password_confirmation') is-danger @enderror">
+                                <input required class="input" type="password" name="password_confirmation">
                             </div>
-                            @error('password_confirmation')
-                            <p class="help is-danger">{{ $message }}</p>
-                            @enderror
                         </div>
+                        @error('password')
+                        <p class="help is-danger">{{ $message }}</p>
+                        @enderror
 
                         <button class="button is-pulled-right is-primary" type="submit">Sign up</button>
 

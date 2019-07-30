@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use App\Degree;
+use App\Shirt;
 
 class UserController extends Controller
 {
@@ -73,7 +75,9 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $authUser = auth()->user();
-        return view("user.edit", compact('authUser', 'user'));
+        $degrees = Degree::all();
+        $shirts = Shirt::all();
+        return view("user.edit", compact('authUser', 'user', 'degrees', 'shirts'));
     }
 
     /**

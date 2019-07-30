@@ -48,7 +48,7 @@
                     </a>
                     @endauth
                     @can('index', App\User::class)
-                        <a class="navbar-item" href="{{ route('user.index') }}">
+                    <a class="navbar-item" href="{{ route('user.index') }}">
                         Users
                     </a>
                     @endcan
@@ -97,6 +97,7 @@
         </div>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
+    @stack('js')
 </body>
 
 </html>

@@ -67,12 +67,12 @@
             </div>
 
 
-            <div class="field is-grouped">
-                <div class="control is-expanded">
-                    <label class="label">Email</label>
-                    <input required class="input" type="text" name="email" class="@error('email') is-danger @enderror"
+            <div class="field">
+                <p class="control">
+                    <label class="label">E-Mail</label>
+                    <input required class="input" type="email" name="email" class="@error('email') is-danger @enderror"
                         value="{{ old('email', $user->email) }}">
-                </div>
+                </p>
                 @error('email')
                 <p class="help is-danger">{{ $message }}</p>
                 @enderror
@@ -81,7 +81,7 @@
             <div class="field is-grouped">
                 <div class="control is-expanded">
                     <label class="label">Languages</label>
-                    <language-picker :selected={{ old('languages', $user->languages) }}>
+                    <language-picker :selected="{{ old('languages', $user->languages) }}">
                     </language-picker>
                 </div>
                 @error('languages')
@@ -103,16 +103,84 @@
             <div class="field is-grouped">
                 <div class="control is-expanded">
                     <label class="label">University</label>
-                    <university-picker :selected="{{ old('university', $user->university) }}>
+                    <university-picker :selected="{{ old('university', $user->university) }}">
                     </university-picker>
                 </div>
                 @error('university')
                 <p class=" help is-danger">{{ $message }}</p>
-                        @enderror
-                </div>
+                @enderror
+            </div>
 
+            <div class="field">
+                <div class="control is-expanded">
+                    <label class="label">Degree program</label>
+                    <div class="select">
+                        <select name="degree_id">
+                            <option>Choose..</option>
+                            @foreach ($degrees as $degree)
+                            <option value="{{ $degree->id }}"
+                                {{ old('degree_id', $user->degree_id) == $degree->id ? 'selected' : '' }}>
+                                {{ $degree->name }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @error('degree_id')
+                <p class=" help is-danger">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="field is-grouped">
+                <div class="control is-expanded">
+                    <label class="label">Past conferences you have attended</label>
+                    <input class="input" name="past_conferences" type="text"
+                        class="@error('past_conferences') is-danger @enderror"
+                        value="{{ old('past_conferences', $user->past_conferences) }}">
+                </div>
+                @error('past_conferences')
+                <p class="help is-danger">{{ $message }}</p>
+                @enderror
+
+                <div class="control is-expanded">
+                    <label class="label">Past conferences you have attended as SV</label>
+                    <input class="input" name="past_conferences_sv" type="text"
+                        class="@error('past_conferences_sv') is-danger @enderror"
+                        value="{{ old('past_conferences_sv', $user->past_conferences_sv) }}">
+                </div>
+                @error('past_conferences_sv')
+                <p class="help is-danger">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="field">
+                <div class="control is-expanded">
+                    <label class="label">T-Shirt</label>
+                    <div class="select">
+                        <select name="shirt_id">
+                            <option>Choose..</option>
+                            @foreach ($shirts as $shirt)
+                            <option value="{{ $shirt->id }}"
+                                {{ old('shirt_id', $user->shirt_id) == $shirt->id ? 'selected' : '' }}>
+                                {{ $shirt->cut }}
+                                {{ $shirt->size }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @error('shirt_id')
+                <p class=" help is-danger">{{ $message }}</p>
+                @enderror
+            </div>
+
+            <div class="buttons is-right">
+                <delete-button :return="'{{ route('user.index') }}'" :resource="'user'" :id="{{ $user->id }}"
+                    :label="'Delete User'" :title="'Title'" :message="'Lorem'">
+                </delete-button>
+                <button class="button is-success" type="submit">Save</button>
+            </div>
         </form>
+
     </div>
 </div>
-
 @endsection

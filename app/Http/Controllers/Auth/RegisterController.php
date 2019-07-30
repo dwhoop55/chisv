@@ -10,6 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Degree;
 use App\Shirt;
+use App\Http\Requests\UserRequest;
 
 class RegisterController extends Controller
 {
@@ -42,62 +43,32 @@ class RegisterController extends Controller
     }
 
     /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'firstname' => ['required', 'string', 'max:255'],
-            'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-
-            'languages' => ['required', 'json'],
-            'languages.*.id' => ['required', 'integer', 'exists:languages,id'],
-
-            'location' => ['required', 'json'],
-            'location.city.id' => ['required', 'integer', 'exists:cities,id'],
-
-            'university' => ['required', 'json'],
-            'university.id' => ['exists:universities,id'],
-
-            'degreeId' => ['required', 'integer', 'exists:degrees,id'],
-            'shirtId' => ['required', 'integer', 'exists:shirts,id'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
-            'pastConferences' => ['string'],
-            'pastConferencesSV' => ['string'],
-        ]);
-    }
-
-    /**
      * Handle a registration request for the application.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(UserRequest $request)
     {
-        $this->validator($request->all())->validate();
+        $validated = $request->validated();
 
         $userData = [
-            'firstname' => $request['firstname'],
-            'lastname' => $request['lastname'],
-            'email' => $request['email'],
-            'city_id' => $request['cityId'],
-            'shirt_id' => $request['shirtId'],
-            'degree_id' => $request['degreeId'],
-            'past_conferences' => $request['pastConferences'],
-            'past_conferences_sv' => $request['pastConferencesSV'],
-            'password' => Hash::make($request['password']),
+            'firstname' => $validated['firstname'],
+            'lastname' => $validated['lastname'],
+            'email' => $validated['email'],
+            'city_id' => json_decode($validated['location'])->city->id,
+            'shirt_id' => $validated['shirt_id'],
+            'degree_id' => $validated['degree_id'],
+            'past_conferences' => $validated['past_conferences'],
+            'past_conferences_sv' => $validated['past_conferences_sv'],
+            'password' => Hash::make($validated['password']),
         ];
 
-
-        if ($request['universityId']) {
-            $userData['university_id'] = $request['universityId'];
+        $university = json_decode($validated['university']);
+        if ($university->id) {
+            $userData['university_id'] = $university->id;
         } else {
-            $userData['university_fallback'] = $request['universityString'];
+            $userData['university_fallback'] = $university->name;
         }
 
         $user = new User($userData);
@@ -105,18 +76,16 @@ class RegisterController extends Controller
         $user->save();
 
         // Add languages
-        foreach ($request['languageIds'] as $lang) {
-            $user->languages()->attach($lang);
+        $languages = json_decode($validated['languages']);
+        foreach ($languages as $language) {
+            $user->languages()->attach($language->id);
         }
 
         event(new Registered($user));
 
-        \Auth::guard()->login($user);
+        auth()->guard()->login($user);
 
-        return response()->json([
-            'status' => true,
-            'user' => $user,
-        ], 201);
+        return redirect(route('home'));
     }
 
 

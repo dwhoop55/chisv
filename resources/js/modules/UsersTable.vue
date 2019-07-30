@@ -1,8 +1,6 @@
 <template>
   <section>
     <b-field grouped group-multiline>
-      <p></p>
-      <b-field horizontal :label="`${total} Users`"></b-field>
       <b-select @input="loadAsyncData" v-model="perPage">
         <option value="5">5 per page</option>
         <option value="10">10 per page</option>
@@ -17,7 +15,7 @@
       <b-input
         expanded
         @input="debounceLoadAsyncData"
-        placeholder="search.."
+        :placeholder="`search in ${total} users..`"
         v-model="searchString"
       ></b-input>
     </b-field>
@@ -31,7 +29,6 @@
       backend-sorting
       :total="total"
       :per-page="perPage"
-      @click="goTo(`/user/${$event.id}/edit`)"
       @page-change="onPageChange"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
@@ -42,25 +39,33 @@
       @sort="onSort"
     >
       <template slot-scope="props">
-        <b-table-column
-          class="is-clickable"
-          field="firstname"
-          label="Firstname"
-          sortable
-        >{{ props.row.firstname }}</b-table-column>
+        <b-table-column width="200" label="Actions">
+          <div class="buttons">
+            <b-button
+              type="is-primary"
+              outlined
+              @click="goTo(`/user/${props.row.id}/tasks`)"
+              icon-left="format-list-checks"
+            >tasks</b-button>
+            <b-button
+              type="is-primary"
+              outlined
+              @click="goTo(`/user/${props.row.id}/edit`)"
+              icon-left="account-edit"
+            >edit</b-button>
+          </div>
+        </b-table-column>
 
-        <b-table-column
-          class="is-clickable"
-          field="lastname"
-          label="Lastname"
-          sortable
-        >{{ props.row.lastname }}</b-table-column>
+        <b-table-column field="firstname" label="Firstname" sortable>{{ props.row.firstname }}</b-table-column>
+
+        <b-table-column field="lastname" label="Lastname" sortable>{{ props.row.lastname }}</b-table-column>
+
         <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
 
         <b-table-column
           field="university.name"
           label="University"
-        >{{ props.row.university.name ? props.row.university.name : props.row.university_fallback }}</b-table-column>
+        >{{ props.row.university ? props.row.university.name : props.row.university_fallback }}</b-table-column>
 
         <b-table-column width="200" field="permissions" label="Permissions">
           <div class="field is-grouped is-grouped-multiline">
