@@ -19,9 +19,6 @@ class CreateLanguageUserTable extends Migration
             $table->integer('user_id')->unsigned()->index();
 
             $table->unique(['language_id', 'user_id']);
-
-            $table->foreign('language_id')->references('id')->on('languages')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
         });
     }
 

@@ -22,11 +22,6 @@ class CreatePermissions extends Migration
 
             $table->unique(['user_id', 'role_id', 'conference_id']);
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('conference_id')->references('id')->on('conferences')->onDelete('cascade')->onUpdate('cascade');
-            $table->foreign('state_id')->references('id')->on('states')->onDelete('cascade')->onUpdate('cascade');
-
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });

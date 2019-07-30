@@ -37,10 +37,6 @@ class CreateUsersTable extends Migration
             $table->integer('timezone_id')->default(291); // This is UTC/ETC
             $table->rememberToken();
 
-            $table->foreign('city_id')->references('id')->on('cities')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->foreign('university_id')->references('id')->on('universities')->onDelete('SET NULL')->onUpdate('cascade');
-            $table->foreign('timezone_id')->references('id')->on('timezones')->onUpdate('cascade');
-
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();
         });
