@@ -72,7 +72,7 @@
                             {{ Auth::user()->firstname }}
                         </a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item" href="{{ route('user.show', Auth::user()->id) }}">
+                            <a class="navbar-item" href="{{ route('user.edit', Auth::user()->id) }}">
                                 My Profile
                             </a>
                             <hr class="navbar-divider">
