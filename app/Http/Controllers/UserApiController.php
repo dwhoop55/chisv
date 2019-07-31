@@ -36,7 +36,6 @@ class UserApiController extends Controller
         $userQuery = User::with('degree', 'shirt', 'university', 'permissions.conference', 'permissions.role')
             ->orderBy(request()->sort_by, request()->sort_order);
 
-
         // Now we need to distunguish beween the roles and limit
         // the users we will query for if the authUser is anything
         // but an admin

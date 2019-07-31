@@ -12,6 +12,14 @@
         <option value="9999999">All</option>
       </b-select>
 
+      <!-- This will have the backend to be able to sort for foreign key'ed objected -->
+      <!-- <b-select v-model="roleName">
+        <option value="chair">Show only Chairs</option>
+        <option value="captain">Show only Captains</option>
+        <option value="sv">Show only SVs</option>
+        <option value="all">Show all roles</option>
+      </b-select>-->
+
       <b-input
         expanded
         @input="debounceLoadAsyncData"
@@ -27,6 +35,7 @@
       narrowed
       backend-pagination
       backend-sorting
+      :selected.sync="selected"
       :total="total"
       :per-page="perPage"
       @page-change="onPageChange"
@@ -42,13 +51,12 @@
         <b-table-column width="200" label="Actions">
           <div class="buttons">
             <b-button
-              type="is-primary"
-              outlined
+              type="is-inverted"
               @click="goTo(`/user/${props.row.id}/tasks`)"
               icon-left="format-list-checks"
             >tasks</b-button>
             <b-button
-              type="is-primary"
+              type="is-inverted"
               outlined
               @click="goTo(`/user/${props.row.id}/edit`)"
               icon-left="account-edit"
@@ -72,13 +80,20 @@
             <div class="control" :key="permission.id" v-for="permission in props.row.permissions">
               <div class="tags has-addons">
                 <span
-                  class="tag"
-                  :class="{ 'is-danger' : permission.role.name == 'admin', 'is-light' : permission.role.name == 'sv', 'is-dark' : permission.role.name == 'chair', 'is-primary' : permission.role.name == 'captain'}"
+                  class="tag has-text-weight-medium"
+                  :class="{ 'is-light' : permission.role.name == 'sv', 'is-dark' : permission.role.name == 'chair', 'is-primary' : permission.role.name == 'captain'}"
                 >{{ permission.role.name }}</span>
+
                 <span
                   v-if="permission.conference"
-                  class="tag is-success"
+                  class="tag is-light has-text-weight-light"
                 >{{ permission.conference.key.substring(0,20) }}</span>
+
+                <span
+                  v-if="permission.state"
+                  :class="{ 'is-success' : permission.state.name == 'accepted', 'is-danger' : permission.state.name == 'dropped', 'is-light' : permission.state.name == 'enrolled', 'is-warning' : permission.state.name == 'waitlisted' }"
+                  class="tag"
+                >{{ permission.state.name }}</span>
               </div>
             </div>
           </div>
@@ -111,8 +126,10 @@ export default {
       loading: false,
       sortField: "firstname",
       sortOrder: "asc",
+      roleName: "sv",
       searchString: "",
       defaultSortOrder: "asc",
+      selected: null,
       page: 1,
       perPage: 25
     };
@@ -127,7 +144,8 @@ export default {
         `sort_order=${this.sortOrder}`,
         `page=${this.page}`,
         `per_page=${this.perPage}`,
-        `search_string=${this.searchString}`
+        `search_string=${this.searchString}`,
+        `role_name=${this.roleName}`
       ].join("&");
 
       this.loading = true;

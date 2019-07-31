@@ -36,8 +36,12 @@ foreach ($counts as $key => $value) {
             $name = $entry[2];
             $url = $entry[1];
             // The hash will be calculated from the lowercased alphanumeric string
+            // We replace non ascii chars like ž with their ascii representative: z
             // This will strip universities with same name
-            $nameHash = hash('sha512', strtolower(preg_replace("/[^A-Za-z0-9 ]/", '', $name)));
+            echo "$name\n";
+            $hashSafeName = iconv('UTF-8', 'ASCII//TRANSLIT', $name);
+            $hashSafeName =  strtolower(preg_replace("/[^A-Za-z0-9 ]/", '', $hashSafeName));
+            $nameHash = hash('sha512', $hashSafeName);
             $universities[$nameHash] = ["name" => $name, "url" => $url];
         }
     }

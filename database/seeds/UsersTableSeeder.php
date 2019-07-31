@@ -21,7 +21,7 @@ class UsersTableSeeder extends Seeder
                 "id" => 1,
                 'firstname' => 'ADMIN Milton',
                 'lastname' => 'Waddams',
-                'email' => 'milton@cs.rwth-aachen.de',
+                'email' => 'admin@chisv.org',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
@@ -37,7 +37,7 @@ class UsersTableSeeder extends Seeder
                 "id" => 2,
                 'firstname' => 'CHAIR+CAPTAIN Florian',
                 'lastname' => 'Busch',
-                'email' => 'busch@cs.rwth-aachen.de',
+                'email' => 'chair@chisv.org',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
@@ -53,7 +53,7 @@ class UsersTableSeeder extends Seeder
                 "id" => 3,
                 'firstname' => 'SV Florian',
                 'lastname' => 'Busch',
-                'email' => 'florian.busch@rwth-aachen.de',
+                'email' => 'sv@chisv.org',
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
@@ -69,9 +69,15 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert($users);
 
         factory(App\User::class, 10)->create()->each(function ($user) {
-            $state = State::where('id', '>', '10')->orderByRaw('RANDOM()')->take(1)->first();
-            $conference = Conference::orderByRaw('RANDOM()')->take(1)->first();
-            $language = Language::orderByRaw('RANDOM()')->take(3)->get();
+            $randomStateId = 10 + rand(1, State::where('id', '>', '10')->count());
+            $state = State::find($randomStateId);
+
+            $randomConferenceId = rand(1, Conference::count());
+            $conference = Conference::find($randomConferenceId);
+
+            $randomLanguageId = rand(1, Language::count());
+            $language = Language::find($randomLanguageId);
+
             $role = Role::byName('sv');
 
             $user->languages()->attach($language);
