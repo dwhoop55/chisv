@@ -10,6 +10,7 @@ use App\Http\Requests\ConferenceRequest;
 use Dotenv\Exception\InvalidFileException;
 use App\Image;
 use Illuminate\Support\Facades\Storage;
+use App\Role;
 
 class ConferenceController extends Controller
 {
@@ -23,6 +24,42 @@ class ConferenceController extends Controller
         // This will only authorize CRUD, not the index
         // we authorize it manually
         $this->authorizeResource(Conference::class);
+    }
+
+    /** 
+     * Enrolls a user to be an SV for the conference
+     * 
+     * @param \App\Conference conference
+     * @return \Illuminate\Http\Response
+     */
+    public function enroll(Conference $conference)
+    {
+        $user = auth()->user();
+        if ($user->can('enroll', $conference)) {
+            if ($user->grant(Role::byName('sv'), $conference, State::byName('enrolled'))) {
+                return back()->with('success', 'Your are now enrolled for ' . $conference->name);
+            }
+        } else {
+            return back()->withErrors(['error', 'You cannot enroll for this conference']);
+        }
+    }
+
+    /** 
+     * Unenrolls a user from the conference
+     * 
+     * @param \App\Conference conference
+     * @return \Illuminate\Http\Response
+     */
+    public function unenroll(Conference $conference)
+    {
+        $user = auth()->user();
+        if ($user->can('unenroll', $conference)) {
+            if ($user->revoke(Role::byName('sv'), $conference)) {
+                return back()->with('success', 'Your are no longer enrolled for ' . $conference->name);
+            }
+        } else {
+            return back()->withErrors(['error', 'You cannot unenroll from this conference']);
+        }
     }
 
     /**
@@ -54,6 +91,7 @@ class ConferenceController extends Controller
      */
     public function create()
     {
+        return redirect(route('conference.index'))->with('error', 'Not implemented');
         return view('conference.create');
     }
 
@@ -81,7 +119,7 @@ class ConferenceController extends Controller
         $overState = State::byName('over');
         $planningState = State::byName('planning');
         $user = auth()->user();
-        $fullContent = true;
+        // $fullContent = true;
         return view('conference.show', compact('fullContent', 'user', 'conference', 'overState', 'planningState'));
     }
 

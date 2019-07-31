@@ -18,7 +18,7 @@
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/2.5.94/css/materialdesignicons.min.css">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/3.8.95/css/materialdesignicons.min.css">
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
@@ -26,6 +26,9 @@
 
 <body>
     <div id="app">
+        {{-- Flash any messages --}}
+        @include('flash-message')
+
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="{{ url('/home') }}">
@@ -77,7 +80,7 @@
                             </a>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                            document.getElementById('logout-form').submit();">
+                            $('#logout-form').submit();">
                                 Logout
                             </a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
@@ -97,7 +100,6 @@
         </div>
     </div>
     <script src="{{ mix('js/app.js') }}"></script>
-    @stack('js')
 </body>
 
 </html>

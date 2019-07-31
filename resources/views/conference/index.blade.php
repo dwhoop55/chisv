@@ -14,18 +14,19 @@
     @foreach ($conferences as $conference)
     <article class="media">
         <figure class="media-left">
-            <p class="image is-128x128">
+            <a href="{{ route('conference.show', $conference) }}" class="image is-128x128">
                 @if ($conference->icon)
                 <img src="{{ $conference->icon->path }}">
                 @else
-                <img src="https://robohash.org/{{ $conference->key }}">
+                <img href="{{ route('conference.show', $conference) }}"
+                    src="https://robohash.org/{{ $conference->key }}">
                 @endif
-            </p>
+            </a>
         </figure>
         <div class="media-content">
             <div class="content">
                 <h3 class="is-marginless columns is-vcentered">
-                    {{ $conference->name }}
+                    <a href="{{ route('conference.show', $conference) }}">{{ $conference->name }}</a>
 
                     @if ($conference->enable_bidding)
                     <div class="tags has-addons">
@@ -54,7 +55,6 @@
                 {{ str_limit($conference->description, 350, $end = '...') }}
                 </p>
             </div>
-            <a class="button is-primary" href="{{ route('conference.show', $conference) }}">More</a>
             @can('update', $conference)
             <a class="button" href="{{ route('conference.edit', $conference) }}">Settings</a>
             @endcan

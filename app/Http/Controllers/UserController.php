@@ -89,7 +89,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        return redirect(route('user.index'))->with('error', 'Not implemented');
     }
 
     /**
@@ -100,6 +100,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $name = $user->firstname . " " . $user->lastname;
+        $user->delete();
+        return redirect(route('user.index'))->with('success', $name . ' deleted!');
     }
 }

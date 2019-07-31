@@ -8,7 +8,7 @@
         <div class="notification is-danger">
             <p class="is-size-5 has-text-weight-bold">Some fields are invalid</p>
             @foreach ($errors->all() as $error)
-            <p class="has-padding-l-5 haspadding-r-5"> {{ $error}} </p>
+            <p class="has-padding-l-5 haspadding-r-5"> {{ $error }} </p>
             @endforeach
         </div>
         @endif
@@ -173,14 +173,19 @@
                 @enderror
             </div>
 
-            <div class="buttons is-right">
-                <delete-button :return="'{{ route('user.index') }}'" :resource="'user'" :id="{{ $user->id }}"
-                    :label="'Delete User'" :title="'Title'" :message="'Lorem'">
-                </delete-button>
-                <button class="button is-success" type="submit">Save</button>
-            </div>
+            <button type="submit" class="button is-success is-pulled-right has-margin-t-5 has-margin-b-5">Save</button>
         </form>
+
+        @can('delete', $user)
+        <button onclick="event.preventDefault(); $('#destroy-form').submit();"
+            class="button is-danger is-pulled-right has-margin-5">Delete</button>
+        @endcan
 
     </div>
 </div>
+
+<form id="destroy-form" action="{{ route('user.destroy', $user->id) }}" method="POST" style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection

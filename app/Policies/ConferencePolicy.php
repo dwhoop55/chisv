@@ -12,6 +12,46 @@ class ConferencePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can enroll for the conferences.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function enroll(User $user, Conference $conference)
+    {
+        if ($user->isSv($conference)) {
+            // A user can only enroll once for a conference
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether the user can unenroll from the conferences.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function unenroll(User $user, Conference $conference)
+    {
+        if (
+            $user->isSv($conference)
+            && ($user->svStateFor($conference) == State::byName('enrolled')
+                || $user->svStateFor($conference) == State::byName('accepted')
+                || $user->svStateFor($conference) == State::byName('waitlisted'))
+        ) {
+            // A user can only unenroll when enrolled
+            // or..
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine whether the user can list all conferences.
      *
      * @param  \App\User  $user

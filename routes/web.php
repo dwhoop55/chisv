@@ -22,6 +22,11 @@ Auth::routes(['register' => false]);
 Route::get('register', 'Auth\RegisterController@index')->name('register');
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
-// Resources
-Route::resource('conference', 'ConferenceController')->middleware('auth');
-Route::resource('user', 'UserController')->middleware('auth');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('conference', 'ConferenceController');
+    Route::resource('user', 'UserController');
+
+    Route::post('conference/{conference}/enroll', 'ConferenceController@enroll')->name('conference.enroll');
+    Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')->name('conference.unenroll');
+});

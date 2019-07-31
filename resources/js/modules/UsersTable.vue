@@ -84,10 +84,12 @@
                   :class="{ 'is-light' : permission.role.name == 'sv', 'is-dark' : permission.role.name == 'chair', 'is-primary' : permission.role.name == 'captain'}"
                 >{{ permission.role.name }}</span>
 
-                <span
-                  v-if="permission.conference"
-                  class="tag is-light has-text-weight-light"
-                >{{ permission.conference.key.substring(0,20) }}</span>
+                <span v-if="permission.conference" class="tag is-light has-text-weight-light">
+                  <a
+                    :href="'/conference/' + permission.conference.key"
+                    class="href"
+                  >{{ permission.conference.key.substring(0,20) }}</a>
+                </span>
 
                 <span
                   v-if="permission.state"

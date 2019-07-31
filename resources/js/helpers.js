@@ -10,7 +10,7 @@ function twoDigits(d) {
 /**
  * Prototype to output MySQL date format
  **/
-Date.prototype.toMySqlDate = function() {
+Date.prototype.toMySqlDate = function () {
     return (
         this.getFullYear() +
         "-" +
@@ -20,7 +20,7 @@ Date.prototype.toMySqlDate = function() {
     );
 };
 
-Date.prototype.toMySqlDateTime = function() {
+Date.prototype.toMySqlDateTime = function () {
     return (
         this.getFullYear() +
         "-" +
@@ -36,8 +36,8 @@ Date.prototype.toMySqlDateTime = function() {
     );
 };
 
-Array.prototype.column = function(column) {
-    return this.map(function(value, index) {
+Array.prototype.column = function (column) {
+    return this.map(function (value, index) {
         return value[column];
     });
 }

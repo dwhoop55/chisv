@@ -184,13 +184,17 @@
                     class="button is-primary is-pulled-right has-margin-t-5 has-margin-b-5">Save</button>
         </form>
 
-        <form action="{{ route('conference.destroy', $conference->key) }}" method="post">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="button is-danger is-pulled-right has-margin-5">Delete</button>
-        </form>
+        @can('delete', $conference)
+        <button onclick="event.preventDefault(); $('#destroy-form').submit();"
+            class="button is-danger is-pulled-right has-margin-5">Delete</button>
+        @endcan
+
     </div>
 </div>
 
-
+<form id="destroy-form" action="{{ route('conference.destroy', $conference->key) }}" method="POST"
+    style="display: none;">
+    @csrf
+    @method('DELETE')
+</form>
 @endsection

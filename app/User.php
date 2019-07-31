@@ -155,7 +155,16 @@ class User extends Authenticatable
         }
     }
 
-    public function setSvState(State $state, Conference $conference)
+    public function svStateFor(Conference $conference)
+    {
+        $permission = $this->permissions()
+            ->where('conference_id', $conference->id)
+            ->where('role_id', Role::byName('sv')->id)->first();
+
+        return $permission ? $permission->state : null;
+    }
+
+    public function setSvStateFor(State $state, Conference $conference)
     {
         $permission = $this->permissions()
             ->where('conference_id', $conference->id)
@@ -183,102 +192,4 @@ class User extends Authenticatable
         }
         return $this->toTimezone($date)->format($format);
     }
-
-
-    // public function grant(Role $role, Conference $scope)
-    // {
-    //     $state = null;
-    //     if ($role == Role::byName('sv')) {
-    //         // Assigned role is sv, so we need to set state to enrolled
-    //         $state = State::byName('enrolled');
-    //     }
-    //     try {
-    //         $this->roles()->attach($role->id, ['conference_id' => $scope->id, 'state_id' => $state->id]);
-    //         return true;
-    //     } catch (\Throwable $th) {
-    //         return false;
-    //     }
-    // }
-
-    // public function revoke(Role $role, Conference $scope)
-    // {
-    //     $matchingScopedRoles = $this->roles()->where('id', $role->id)->where('conference_id', $scope->id);
-    //     if ($matchingScopedRoles->count() > 0) {
-    //         try {
-    //             return ($this->roles()->detach($role->id, ['conference_id' => $scope->id]) > 0) ? true : false;
-    //         } catch (\Throwable $th) {
-    //             return false;
-    //         }
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-
-    //     /**
-    //      *  Conference Admin Section 
-    //      */
-
-    //     public function isAdminForConferences()
-    //     {
-    //         return $this->belongsToMany('App\Conference', 'conference_admin');
-    //     }
-
-    //     public function isAdminForConference(Conference $conference)
-    //     {
-    //         return $this->isAdminForConferences->contains($conference);
-    //     }
-
-    //     public function addAsAdminForConference(Conference $conference)
-    //     {
-    //         try {
-    //             $this->isAdminForConferences()->attach($conference->id);
-    //             return true;
-    //         } catch (\Throwable $th) {
-    //             return false;
-    //         }
-    //     }
-
-    //     public function removeAsAdminForConference(Conference $conference)
-    //     {
-    //         try {
-    //             return $this->isAdminForConferences()->detach($conference->id);
-    //         } catch (\Throwable $th) {
-    //             return false;
-    //         }
-    //     }
-
-
-    //     /**
-    //      *  Student Volunteer Section 
-    //      */
-
-    //     public function isSvForConferences()
-    //     {
-    //         return $this->belongsToMany('App\Conference', 'conference_sv');
-    //     }
-
-    //     public function isSvForConference(Conference $conference)
-    //     {
-    //         return $this->isSvForConferences->contains($conference);
-    //     }
-
-    //     public function addAsSvForConference(Conference $conference)
-    //     {
-    //         try {
-    //             $this->isSvForConferences()->attach($conference->id);
-    //             return true;
-    //         } catch (\Throwable $th) {
-    //             return false;
-    //         }
-    //     }
-
-    //     public function removeAsSvForConference(Conference $conference)
-    //     {
-    //         try {
-    //             return $this->isSvForConferences()->detach($conference->id);
-    //         } catch (\Throwable $th) {
-    //             return false;
-    //         }
-    //     }
 }
