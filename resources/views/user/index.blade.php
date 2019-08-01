@@ -2,6 +2,6 @@
 
 @section('content')
 
-<users-table></users-table>
+<user-index></user-index>
 
 @endsection

@@ -9,7 +9,11 @@ require("./helpers");
 
 import Vue from "vue";
 import Buefy from "buefy";
-import { NotificationProgrammatic as Notification } from 'buefy/dist/components/notification'
+import { Form, HasError, AlertError } from 'vform'
+
+Vue.component(HasError.name, HasError)
+Vue.component(AlertError.name, AlertError)
+Vue.component(Form.name, Form)
 
 Vue.use(Buefy);
 

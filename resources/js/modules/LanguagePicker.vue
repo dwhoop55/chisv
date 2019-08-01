@@ -1,8 +1,8 @@
 <template>
   <div>
-    <input type="hidden" name="languages" :value="JSON.stringify(tags)" />
+    <input type="hidden" size="150" name="languages" :value="JSON.stringify(value)" />
     <b-taginput
-      v-model="tags"
+      v-model="value"
       :data="filteredTags"
       autocomplete
       field="name"
@@ -10,7 +10,6 @@
       :attached="true"
       placeholder="Which language(s) do you speak?"
       @typing="getLanguage"
-      @input="$emit('update:tags', $event)"
     ></b-taginput>
   </div>
 </template>
@@ -19,13 +18,11 @@
 import debounce from "lodash/debounce";
 
 export default {
-  name: "language-picker",
-  props: ["url", "selected"],
+  props: ["value"],
   data() {
     return {
       filteredTags: [],
-      isFetching: false,
-      tags: this.selected
+      isFetching: false
     };
   },
   methods: {

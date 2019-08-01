@@ -46,6 +46,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
+        // if ($model->id == 12) return abort(403);
         if ($user->id == $model->id) {
             // A user can always view itself
             return true;

@@ -65,7 +65,7 @@ class RegisterController extends Controller
         ];
 
         $university = json_decode($validated['university']);
-        if ($university->id) {
+        if (isset($university->id)) {
             $userData['university_id'] = $university->id;
         } else {
             $userData['university_fallback'] = $university->name;

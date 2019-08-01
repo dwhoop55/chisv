@@ -1,16 +1,16 @@
 <template>
   <div>
-    <input type="hidden" name="location" :value="JSON.stringify(selectedRow)" />
+    <input type="hiddene" size="150" name="location" :value="json" />
     <b-autocomplete
       required
+      :value="city"
       :data="rows"
-      :value="computeValue"
       :placeholder="'e.g. Berlin'"
       :field="'city.name'"
       :loading="isFetching"
       :keep-first="true"
       @typing="getAsyncData"
-      @select="selectedRow=$event"
+      @select="select"
       icon="magnify"
     >
       <template slot="empty">
@@ -33,24 +33,33 @@
 
 <script>
 export default {
-  props: ["selected"],
+  props: ["value"],
+
   data() {
     return {
       rows: [],
-      isFetching: false,
-      selectedRow: this.selected
+      isFetching: false
     };
   },
+
   computed: {
-    computeValue: function() {
-      if (this.selectedRow) {
-        return this.selectedRow.city.name || "";
+    json() {
+      return JSON.stringify(this.value);
+    },
+    city() {
+      if (this.value) {
+        return this.value.city.name;
       } else {
         return "";
       }
     }
   },
+
   methods: {
+    select(event) {
+      this.$emit("input", event);
+      this.$forceUpdate();
+    },
     getAsyncData: window.debounce(function(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
