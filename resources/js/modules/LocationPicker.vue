@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="hiddene" size="150" name="location" :value="json" />
+    <input type="hidden" size="150" name="location" :value="json" />
     <b-autocomplete
       required
       :value="city"
@@ -10,7 +10,7 @@
       :loading="isFetching"
       :keep-first="true"
       @typing="getAsyncData"
-      @select="select"
+      @select="$emit('input', $event)"
       icon="magnify"
     >
       <template slot="empty">
@@ -56,9 +56,6 @@ export default {
   },
 
   methods: {
-    select(event) {
-      this.$emit("input", event);
-    },
     getAsyncData: window.debounce(function(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
