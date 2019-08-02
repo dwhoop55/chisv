@@ -61,7 +61,10 @@ export default {
     return {
       form: new Form({
         firstname: "",
-        lastname: ""
+        lastname: "",
+        email: "",
+        languages: [],
+        location: {}
       }),
       user: null,
       isWorking: true

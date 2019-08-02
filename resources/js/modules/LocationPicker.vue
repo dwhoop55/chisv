@@ -58,7 +58,6 @@ export default {
   methods: {
     select(event) {
       this.$emit("input", event);
-      this.$forceUpdate();
     },
     getAsyncData: window.debounce(function(name) {
       if (!name.length || name.length < 2) {
