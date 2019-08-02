@@ -81,5 +81,7 @@ Route::post('register', 'Auth\RegisterController@create')->name('register.create
 
 Route::group(['middleware' => ['auth:api']], function () {
 
-    Route::resource('user', 'UserApiController');
+    Route::resource('user', 'UserApiController', [
+        'only' => ['index', 'show', 'update', 'destroy']
+    ]);
 });

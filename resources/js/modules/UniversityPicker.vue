@@ -1,16 +1,16 @@
 <template>
   <div>
-    <input type="hidden" name="university" :value="JSON.stringify(selectedRow)" />
+    <input type="hidden" size="150" name="university" :value="json" />
     <b-autocomplete
       required
+      :value="universityName"
       :data="rows"
-      :value="computeValue"
       :placeholder="'e.g. RWTH'"
       :field="'name'"
       :loading="isFetching"
       :keep-first="true"
-      @typing="getAsyncData"
-      @select="selectedRow=$event"
+      @typing="typing"
+      @select="select"
       icon="magnify"
     >
       <template slot="empty">
@@ -33,36 +33,49 @@
 
 <script>
 export default {
-  props: ["selected"],
+  props: ["value"],
+
   data() {
     return {
       rows: [],
       isFetching: false,
-      selectedRow: this.selected
+      internal: {}
     };
   },
+
+  mounted() {
+    this.internal = this.value;
+  },
+
   computed: {
-    setText: function(text) {
-      if (!this.selectedRow) {
-        this.selectedRow = { name: text };
+    universityName() {
+      if (this.internal && this.internal.name) {
+        return this.internal.name;
       }
     },
-    computeValue: function() {
-      if (this.selectedRow) {
-        return this.selectedRow.name || "";
-      } else {
-        return "";
+    json() {
+      if (this.internal && this.internal.name) {
+        return JSON.stringify(this.internal);
       }
     }
   },
+
   methods: {
+    typing: function(text) {
+      this.internal = { name: text };
+      this.$emit("input", this.internal);
+      this.getAsyncData(text);
+    },
+    select: function(event) {
+      this.internal = event;
+      this.$emit("input", event);
+    },
     getAsyncData: window.debounce(function(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
         return;
       }
       this.isFetching = true;
-      this.selectedRow = { name: name };
       axios
         .get(`/api/search/university/${name}`)
         .then(({ data }) => {

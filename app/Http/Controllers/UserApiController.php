@@ -6,6 +6,9 @@ use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Users;
 use Illuminate\Http\JsonResponse;
+use function GuzzleHttp\json_encode;
+use App\Http\Requests\UserRequest;
+use App\Language;
 
 class UserApiController extends Controller
 {
@@ -76,27 +79,6 @@ class UserApiController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  \App\User  $user
@@ -110,26 +92,46 @@ class UserApiController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(User $user)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $data = [
+            "firstname" => $request->firstname,
+            "lastname" => $request->lastname,
+            "email" => $request->email,
+            "city_id" => $request->location["city"]["id"],
+            "university_id" => $request->university["id"],
+            "degree_id" => $request->degree_id,
+            "shirt_id" => $request->shirt_id,
+            "past_conferences" => $request->past_conferences,
+            "past_conferences_sv" => $request->past_conferences_sv,
+        ];
+        $result = $user->update($data);
+
+        // Update languages
+        $existingLanguages = $user->languages->keyBy('id')->keys();
+        $updatedLanguages = collect($request->languages)->keyBy('id')->keys();
+
+        foreach ($existingLanguages as $language) {
+            if ($updatedLanguages->search($language) === false) {
+                // has been removed
+                $user->languages()->detach($language);
+            };
+        }
+
+        foreach ($updatedLanguages as $language) {
+            if ($existingLanguages->search($language) === false) {
+                // has been added
+                $user->languages()->attach($language);
+            };
+        }
+
+        return ["result" => $result];
     }
 
     /**
@@ -141,6 +143,6 @@ class UserApiController extends Controller
     public function destroy(User $user)
     {
         $result = $user->delete();
-        return ["result" => true, "error" => null];
+        return ["result" => $result, "error" => null];
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use App\User;
 
 class UserRequest extends FormRequest
 {
@@ -17,15 +18,18 @@ class UserRequest extends FormRequest
         $rules = [
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => 'required|string|email|max:255|unique:users,email',
 
-            'languages' => ['required', 'json', 'notIn:[]'],
-            'location' => ['required', 'json', 'notIn:null'],
-            'university' => ['required', 'json', 'notIn:null'],
+            'languages' => ['required'],
+
+            'location' => ['required'],
+            'location.city.id' => ['required', 'exists:cities,id'],
+
+            'university' => ['required'],
+            'university.name' => ['required', 'string'],
 
             'degree_id' => ['required', 'integer', 'exists:degrees,id'],
             'shirt_id' => ['required', 'integer', 'exists:shirts,id'],
-            'password' => ['required', 'string', 'min:6', 'confirmed'],
             'past_conferences' => ['nullable', 'string'],
             'past_conferences_sv' => ['nullable', 'string'],
         ];
@@ -35,9 +39,10 @@ class UserRequest extends FormRequest
         // See: https://laravel.com/docs/5.8/validation#rule-unique
         if ($request->method === "PUT") {
             $user = User::find($request->id);
-            $rules['email'] .= ',' . $user->email;
+            $rules['email'] .= ',' . $user->id;
         } else {
             // It is a POST (create) request.
+            $rules['password'] = ['required', 'string', 'min:6', 'confirmed'];
         }
 
         return $rules;
@@ -63,7 +68,7 @@ class UserRequest extends FormRequest
     public function messages()
     {
         return [
-            'location.*' => 'Please choose the city closest to you',
+            // 'location.*' => 'Please choose the city closest to you',
             'languages.*' => 'You need to at least choose one language',
             'university.*' => 'Please pick your university. If it\'s not in the list, type its name',
             'degree_id.*' => 'Choosing a degree program is required',

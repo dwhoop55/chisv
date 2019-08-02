@@ -5,11 +5,11 @@
       required
       :value="city"
       :data="rows"
-      :placeholder="'e.g. Berlin'"
-      :field="'city.name'"
+      placeholder="e.g. Berlin"
+      field="city.name"
       :loading="isFetching"
       :keep-first="true"
-      @typing="getAsyncData"
+      @typing="typing"
       @select="$emit('input', $event)"
       icon="magnify"
     >
@@ -47,7 +47,7 @@ export default {
       return JSON.stringify(this.value);
     },
     city() {
-      if (this.value) {
+      if (this.value && this.value.city) {
         return this.value.city.name;
       } else {
         return "";
@@ -56,6 +56,10 @@ export default {
   },
 
   methods: {
+    typing: function(text) {
+      this.$emit("input", "");
+      this.getAsyncData(text);
+    },
     getAsyncData: window.debounce(function(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];

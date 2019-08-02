@@ -146,6 +146,7 @@ class ConferenceController extends Controller
      */
     public function update(ConferenceRequest $request, Conference $conference)
     {
+        // TODO: data is validated, this is not required anymore
         $validated = $request->validated();
 
         // Process icon upload

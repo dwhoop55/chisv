@@ -1,27 +1,39 @@
 <template>
-  <b-field horizontal label="Degree program">
-    <b-select
-      required
-      :value="id"
-      @input="$emit('update:id', $event)"
-      placeholder="Select your current degree program"
-      icon="school"
-    >
-      <option v-for="option in degrees" :value="option.id" :key="option.id">{{ option.name }}</option>
-    </b-select>
-  </b-field>
+  <b-select
+    required
+    :loading="fetching"
+    :value="value"
+    placeholder="Select your current degree program"
+    icon="school"
+    @input="input"
+  >
+    <option v-for="option in degrees" :value="option.id" :key="option.id">{{ option.name }}</option>
+  </b-select>
 </template>
 
 <script>
 export default {
-  name: "degree-select",
-  props: ["url", "id"],
+  props: ["value"],
+
+  model: {},
   data() {
-    return { degrees: [] };
+    return {
+      fetching: true,
+      degrees: []
+    };
   },
+
+  methods: {
+    input: function(event) {
+      if (Number.isInteger(event)) {
+        this.$emit("input", event);
+      }
+    }
+  },
+
   mounted() {
     axios
-      .get(this.url)
+      .get(`/api/degree`)
       .then(({ data }) => {
         this.degrees = [];
         data.data.forEach(entry => this.degrees.push(entry));
@@ -29,6 +41,9 @@ export default {
       .catch(error => {
         this.degrees = [];
         throw error;
+      })
+      .finally(() => {
+        this.fetching = false;
       });
   }
 };

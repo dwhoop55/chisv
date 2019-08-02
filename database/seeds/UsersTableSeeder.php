@@ -72,15 +72,13 @@ class UsersTableSeeder extends Seeder
             $randomStateId = 10 + rand(1, State::where('id', '>', '10')->count());
             $state = State::find($randomStateId);
 
-            $randomConferenceId = rand(1, Conference::count());
-            $conference = Conference::find($randomConferenceId);
-
-            $randomLanguageId = rand(1, Language::count());
-            $language = Language::find($randomLanguageId);
+            $conference = Conference::inRandomOrder()->first();
+            $language = Language::inRandomOrder()->first();
+            $language2 = Language::inRandomOrder()->first();
 
             $role = Role::byName('sv');
 
-            $user->languages()->attach($language);
+            $user->languages()->attach([$language->id, $language2->id]);
             $user->grant($role, $conference, $state);
         });
     }

@@ -1,33 +1,42 @@
 <template>
-  <b-field horizontal label="Your T‑Shirt size">
-    <b-select
-      @input="$emit('update:id', $event)"
-      placeholder="Choose.."
-      icon="tshirt-crew"
-      required
-    >
-      <option
-        v-for="shirt in shirts"
-        :value="shirt.id"
-        :key="shirt.id"
-      >{{ shirt.cut }} cut, size {{ shirt.size }}</option>
-    </b-select>
-  </b-field>
+  <b-select
+    required
+    :loading="fetching"
+    :value="value"
+    placeholder="Select your cut and size"
+    icon="tshirt-crew"
+    @input="input"
+  >
+    <option
+      v-for="shirt in shirts"
+      :value="shirt.id"
+      :key="shirt.id"
+    >{{ shirt.cut }} cut, size {{ shirt.size }}</option>
+  </b-select>
 </template>
 
 <script>
 export default {
-  name: "shirt-select",
-  props: ["url"],
+  props: ["value"],
+
   data() {
     return {
-      shirts: null
+      fetching: true,
+      shirts: []
     };
-    x;
   },
+
+  methods: {
+    input: function(event) {
+      if (Number.isInteger(event)) {
+        this.$emit("input", event);
+      }
+    }
+  },
+
   mounted() {
     axios
-      .get(this.url)
+      .get(`/api/shirt`)
       .then(({ data }) => {
         this.shirts = [];
         data.data.forEach(entry => this.shirts.push(entry));
@@ -35,6 +44,9 @@ export default {
       .catch(error => {
         this.shirts = [];
         throw error;
+      })
+      .finally(() => {
+        this.fetching = false;
       });
   }
 };
