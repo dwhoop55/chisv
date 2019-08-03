@@ -44,7 +44,7 @@
             :message="form.errors.get('location')"
             label="City (closest)"
           >
-            <location-picker v-model="form.location"></location-picker>
+            <location-picker :for="country" v-model="form.location"></location-picker>
           </b-field>
 
           <b-field
