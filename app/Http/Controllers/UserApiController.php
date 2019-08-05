@@ -5,10 +5,8 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\Users;
-use Illuminate\Http\JsonResponse;
-use function GuzzleHttp\json_encode;
-use App\Http\Requests\UserRequest;
-use App\Language;
+use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserApiController extends Controller
 {
@@ -98,37 +96,53 @@ class UserApiController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, User $user)
+    public function update(UserUpdateRequest $request, User $user)
     {
-        $data = [
-            "firstname" => $request->firstname,
-            "lastname" => $request->lastname,
-            "email" => $request->email,
-            "city_id" => $request->location["city"]["id"],
-            "university_id" => $request->university["id"],
-            "degree_id" => $request->degree_id,
-            "shirt_id" => $request->shirt_id,
-            "past_conferences" => $request->past_conferences,
-            "past_conferences_sv" => $request->past_conferences_sv,
-        ];
+
+        $data = $request->only(
+            'firstname',
+            'lastname',
+            'email',
+            'timezone_id',
+            'date_format',
+            'time_format',
+            'time_sec_format',
+            'timezone_id',
+            'degree_id',
+            'shirt_id',
+            'past_conferences',
+            'past_conferences_sv',
+            'password'
+        );
+
+        if (isset($data["password"])) {
+            // change password
+            $data['password'] = Hash::make($data['password']);
+        }
+
+        if (isset($request->location["city"])) $data['city_id'] = $request->location["city"]["id"];
+        if (isset($request->university["id"])) $data['university_id'] = $request->university["id"];
+
         $result = $user->update($data);
 
         // Update languages
-        $existingLanguages = $user->languages->keyBy('id')->keys();
-        $updatedLanguages = collect($request->languages)->keyBy('id')->keys();
+        if (isset($request->languages)) {
+            $existingLanguages = $user->languages->keyBy('id')->keys();
+            $updatedLanguages = collect($request->languages)->keyBy('id')->keys();
 
-        foreach ($existingLanguages as $language) {
-            if ($updatedLanguages->search($language) === false) {
-                // has been removed
-                $user->languages()->detach($language);
-            };
-        }
+            foreach ($existingLanguages as $language) {
+                if ($updatedLanguages->search($language) === false) {
+                    // has been removed
+                    $user->languages()->detach($language);
+                };
+            }
 
-        foreach ($updatedLanguages as $language) {
-            if ($existingLanguages->search($language) === false) {
-                // has been added
-                $user->languages()->attach($language);
-            };
+            foreach ($updatedLanguages as $language) {
+                if ($existingLanguages->search($language) === false) {
+                    // has been added
+                    $user->languages()->attach($language);
+                };
+            }
         }
 
         return ["result" => $result];

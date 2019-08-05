@@ -18,6 +18,8 @@ class CreateUsersTable extends Migration
             $table->string('firstname');
             $table->string('lastname');
 
+            $table->integer('country_id');
+            $table->integer('region_id');
             $table->integer('city_id');
             $table->integer('university_id')->nullable();
             $table->string('university_fallback')->nullable()->default(null);

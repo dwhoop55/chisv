@@ -25,6 +25,8 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
+                'country_id' => 82,
+                'region_id' => 1269,
                 'city_id' => 12850,
                 'shirt_id' => 1,
                 'degree_id' => 2,
@@ -41,6 +43,8 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
+                'country_id' => 82,
+                'region_id' => 1269,
                 'city_id' => 12850,
                 'shirt_id' => 3,
                 'degree_id' => 1,
@@ -57,6 +61,8 @@ class UsersTableSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
                 'university_id' => 4011,
+                'country_id' => 82,
+                'region_id' => 1269,
                 'city_id' => 12850,
                 'shirt_id' => 13,
                 'degree_id' => 3,

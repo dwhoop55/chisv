@@ -4,7 +4,7 @@
 export default {
   props: ["type", "message", "duration"],
   mounted: function() {
-    this.$notification.open({
+    this.$toast.open({
       duration: this.duration,
       indefinite: this.duration ? false : true,
       message: this.message,

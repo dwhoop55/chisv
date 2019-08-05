@@ -1,3 +1,4 @@
+// v-model safe
 <template>
   <div>
     <input type="hidden" size="150" name="university" :value="json" />
@@ -39,23 +40,23 @@ export default {
     return {
       rows: [],
       isFetching: false,
-      internal: {}
+      internal: this.value
     };
-  },
-
-  mounted() {
-    this.internal = this.value;
   },
 
   computed: {
     universityName() {
       if (this.internal && this.internal.name) {
         return this.internal.name;
+      } else if (this.value && this.value.name) {
+        return this.value.name;
       }
     },
     json() {
       if (this.internal && this.internal.name) {
         return JSON.stringify(this.internal);
+      } else if (this.value && this.value.name) {
+        return JSON.stringify(this.value);
       }
     }
   },

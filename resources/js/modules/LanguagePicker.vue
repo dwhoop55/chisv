@@ -1,3 +1,4 @@
+// v-model safe
 <template>
   <div>
     <input type="hidden" size="150" name="languages" :value="JSON.stringify(value)" />

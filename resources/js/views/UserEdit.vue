@@ -2,130 +2,228 @@
   <section>
     <b-tabs expanded :animated="false" v-model="activeTab">
       <b-tab-item icon="account" label="Profile">
-        <form @submit.prevent="save" @keydown="form.onKeydown($event)">
+        <form @submit.prevent="save" @keydown="profileForm.onKeydown($event)">
           <b-field grouped>
             <b-field
               expanded
-              :type="{ 'is-danger': form.errors.has('firstname') }"
-              :message="form.errors.get('firstname')"
+              :type="{ 'is-danger': profileForm.errors.has('firstname') }"
+              :message="profileForm.errors.get('firstname')"
               label="Firstname"
             >
-              <b-input required v-model="form.firstname"></b-input>
+              <b-input required v-model="profileForm.firstname"></b-input>
             </b-field>
             <b-field
               expanded
-              :type="{ 'is-danger': form.errors.has('lastname') }"
-              :message="form.errors.get('lastname')"
+              :type="{ 'is-danger': profileForm.errors.has('lastname') }"
+              :message="profileForm.errors.get('lastname')"
               label="Lastname"
             >
-              <b-input required v-model="form.lastname"></b-input>
+              <b-input required v-model="profileForm.lastname"></b-input>
             </b-field>
           </b-field>
 
           <b-field
             expanded
-            :type="{ 'is-danger': form.errors.has('email') }"
-            :message="form.errors.get('email')"
+            :type="{ 'is-danger': profileForm.errors.has('email') }"
+            :message="profileForm.errors.get('email')"
             label="E-Mail"
           >
-            <b-input required v-model="form.email"></b-input>
+            <b-input required v-model="profileForm.email"></b-input>
           </b-field>
 
           <b-field
-            :type="{ 'is-danger': form.errors.has('languages') }"
-            :message="form.errors.get('languages')"
+            :type="{ 'is-danger': profileForm.errors.has('languages') }"
+            :message="profileForm.errors.get('languages')"
             label="Languages"
           >
-            <language-picker v-model="form.languages"></language-picker>
+            <language-picker v-model="profileForm.languages"></language-picker>
           </b-field>
 
           <b-field
-            :type="{ 'is-danger': form.errors.has('location') }"
-            :message="form.errors.get('location')"
-            label="City (closest)"
-          >
-            <location-picker :for="country" v-model="form.location"></location-picker>
-          </b-field>
-
-          <b-field
-            :type="{ 'is-danger': form.errors.has('university') }"
-            :message="form.errors.get('university')"
-            label="University"
-          >
-            <university-picker v-model="form.university"></university-picker>
-          </b-field>
-
-          <b-field
-            :type="{ 'is-danger': form.errors.has('degree_id') }"
-            :message="form.errors.get('degree_id')"
+            :type="{ 'is-danger': profileForm.errors.has('degree_id') }"
+            :message="profileForm.errors.get('degree_id')"
             label="Degree program"
           >
-            <degree-select v-model="form.degree_id"></degree-select>
+            <degree-select v-model="profileForm.degree_id"></degree-select>
           </b-field>
 
           <b-field grouped>
             <b-field
               expanded
-              :type="{ 'is-danger': form.errors.has('past_conferences') }"
-              :message="form.errors.get('past_conferences')"
+              :type="{ 'is-danger': profileForm.errors.has('past_conferences') }"
+              :message="profileForm.errors.get('past_conferences')"
               label="Past conferences you have attended"
             >
-              <b-input required v-model="form.past_conferences"></b-input>
+              <b-input v-model="profileForm.past_conferences"></b-input>
             </b-field>
             <b-field
               expanded
-              :type="{ 'is-danger': form.errors.has('past_conferences_sv') }"
-              :message="form.errors.get('past_conferences_sv')"
+              :type="{ 'is-danger': profileForm.errors.has('past_conferences_sv') }"
+              :message="profileForm.errors.get('past_conferences_sv')"
               label="Past conferences you have attended as SV"
             >
-              <b-input required v-model="form.past_conferences_sv"></b-input>
+              <b-input v-model="profileForm.past_conferences_sv"></b-input>
             </b-field>
           </b-field>
 
           <b-field
-            :type="{ 'is-danger': form.errors.has('shirt_id') }"
-            :message="form.errors.get('shirt_id')"
+            :type="{ 'is-danger': profileForm.errors.has('shirt_id') }"
+            :message="profileForm.errors.get('shirt_id')"
             label="T-Shirt"
           >
-            <shirt-select v-model="form.shirt_id"></shirt-select>
+            <shirt-select v-model="profileForm.shirt_id"></shirt-select>
           </b-field>
 
           <button
-            :disabled="isWorking || form.busy"
+            :disabled="isWorking || profileForm.busy"
             type="submit"
-            class="button is-success is-pulled-right"
+            class="button is-primary is-pulled-right"
           >Save</button>
-          <b-loading :is-full-page="false" :active.sync="isWorking || form.busy"></b-loading>
+        </form>
+      </b-tab-item>
+
+      <b-tab-item icon="earth" label="Locale">
+        <form @submit.prevent="save" @keydown="localeForm.onKeydown($event)">
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('location') }"
+            :message="localeForm.errors.get('location')"
+            label="City (closest)"
+          >
+            <location-picker v-model="localeForm.location"></location-picker>
+          </b-field>
+
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('university') }"
+            :message="localeForm.errors.get('university')"
+            label="University"
+          >
+            <university-picker v-model="localeForm.university"></university-picker>
+          </b-field>
+
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('timezone') }"
+            :message="localeForm.errors.get('timezone')"
+            label="Display dates in this timezone"
+          >
+            <timezone-picker v-model="localeForm.timezone_id"></timezone-picker>
+          </b-field>
+
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('date_format') }"
+            :message="localeForm.errors.get('date_format')"
+            label="Display dates in this format"
+          >
+            <b-select v-model="localeForm.date_format" placeholder="Select a format">
+              <option value="d.m.Y">d.m.Y (25.04.2019)</option>
+              <option value="d.m.y">d.m.y (25.04.19)</option>
+              <option value="Y-m-d">Y-m-d (2019-04-25)</option>
+            </b-select>
+          </b-field>
+
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('time_format') }"
+            :message="localeForm.errors.get('time_format')"
+            label="Display time in this format"
+          >
+            <b-select v-model="localeForm.time_format" placeholder="Select a format">
+              <option value="H:i">H:i (14:25)</option>
+              <option value="h:i a">h:i a (2:25 pm)</option>
+            </b-select>
+          </b-field>
+
+          <b-field
+            :type="{ 'is-danger': localeForm.errors.has('time_sec_format') }"
+            :message="localeForm.errors.get('time_sec_format')"
+            label="Display time (with seconds) in this format"
+          >
+            <b-select v-model="localeForm.time_sec_format" placeholder="Select a format">
+              <option value="H:i:s">H:i:s (14:25:59)</option>
+              <option value="h:i:s a">h:i:s a (2:25:59 pm)</option>
+            </b-select>
+          </b-field>
+
+          <button
+            :disabled="localeForm.busy"
+            type="submit"
+            class="button is-primary is-pulled-right"
+          >Save</button>
         </form>
       </b-tab-item>
 
       <b-tab-item icon="key" label="Password">
-        <password-set :userId="user.id"></password-set>
+        <form @submit.prevent="save" @keydown="passwordForm.onKeydown($event)">
+          <b-field label="Password">
+            <b-input
+              type="password"
+              v-model="passwordForm.password"
+              password-reveal
+              placeholder="Your password"
+              required
+            ></b-input>
+          </b-field>
+
+          <b-field
+            label="Confirm Password"
+            :type="{ 'is-danger': passwordForm.errors.has('password') }"
+            :message="passwordForm.errors.get('password')"
+          >
+            <b-input
+              type="password"
+              v-model="passwordForm.password_confirmation"
+              password-reveal
+              placeholder="Confirm your password"
+              required
+            ></b-input>
+          </b-field>
+
+          <button
+            :disabled="passwordForm.busy"
+            type="submit"
+            class="button is-primary is-pulled-right"
+          >Set new password</button>
+        </form>
       </b-tab-item>
+      <b-loading
+        :is-full-page="false"
+        :active.sync="isWorking || profileForm.busy || localeForm.busy || passwordForm.busy"
+      ></b-loading>
     </b-tabs>
   </section>
 </template>
 
 <script>
 import Form from "vform";
+import { stringify } from "querystring";
 
 export default {
   props: ["userId"],
 
   data() {
     return {
-      form: new Form({
+      profileForm: new Form({
         id: null,
         firstname: "",
         lastname: "",
         email: "",
         languages: [],
-        location: {},
-        university: {},
         degree_id: null,
         past_conferences: "",
         past_conferences_sv: "",
         shirt_id: null
+      }),
+      localeForm: new Form({
+        id: null,
+        location: {},
+        university: {},
+        timezone_id: null,
+        date_format: null,
+        time_format: null,
+        time_sec_format: null
+      }),
+      passwordForm: new Form({
+        id: null,
+        password: "",
+        password_confirmation: ""
       }),
       user: null,
       isWorking: true,
@@ -139,17 +237,34 @@ export default {
 
   methods: {
     save() {
-      this.form
+      var form;
+      switch (this.activeTab) {
+        case 0: //profile
+          form = this.profileForm;
+          break;
+
+        case 1: // locale
+          form = this.localeForm;
+          break;
+
+        case 2: //password
+          form = this.passwordForm;
+          break;
+      }
+      form
         .put(`/api/user/${this.userId}`)
         .then(data => {
           this.load(this.user.id);
+          this.$toast.open({
+            message: "Changes saved!",
+            type: "is-success"
+          });
         })
         .catch(error => {
-          this.$notification.open({
+          this.$toast.open({
             duration: 5000,
             message: `Could not save user: ${error.message}`,
-            type: "is-danger",
-            hasIcon: true
+            type: "is-danger"
           });
         });
     },
@@ -160,21 +275,28 @@ export default {
         .then(data => {
           let user = data.data;
           this.user = user;
-          this.form.id = user.id;
-          this.form.firstname = user.firstname;
-          this.form.lastname = user.lastname;
-          this.form.email = user.email;
-          this.form.languages = user.languages;
-          this.form.location = user.location;
+          this.profileForm.id = user.id;
+          this.localeForm.id = user.id;
+          this.passwordForm.id = user.id;
+          this.profileForm.firstname = user.firstname;
+          this.profileForm.lastname = user.lastname;
+          this.profileForm.email = user.email;
+          this.profileForm.languages = user.languages;
+          this.profileForm.degree_id = user.degree_id;
+          this.profileForm.past_conferences = user.past_conferences;
+          this.profileForm.past_conferences_sv = user.past_conferences_sv;
+          this.profileForm.shirt_id = user.shirt_id;
+
+          this.localeForm.location = user.location;
           if (user.university) {
-            this.form.university = user.university;
+            this.localeForm.university = user.university;
           } else {
-            this.form.university = { name: user.university_fallback };
+            this.localeForm.university = { name: user.university_fallback };
           }
-          this.form.degree_id = user.degree_id;
-          this.form.past_conferences = user.past_conferences;
-          this.form.past_conferences_sv = user.past_conferences_sv;
-          this.form.shirt_id = user.shirt_id;
+          this.localeForm.timezone_id = user.timezone_id;
+          this.localeForm.date_format = user.date_format;
+          this.localeForm.time_format = user.time_format;
+          this.localeForm.time_sec_format = user.time_sec_format;
         })
         .catch(error => {
           this.$notification.open({

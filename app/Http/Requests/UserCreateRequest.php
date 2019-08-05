@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 use App\User;
 
-class UserRequest extends FormRequest
+class UserCreateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -32,18 +32,9 @@ class UserRequest extends FormRequest
             'shirt_id' => ['required', 'integer', 'exists:shirts,id'],
             'past_conferences' => ['nullable', 'string'],
             'past_conferences_sv' => ['nullable', 'string'],
-        ];
 
-        // Check if the request is a PUT (update) request
-        // and append the laravel "except given id" for the email
-        // See: https://laravel.com/docs/5.8/validation#rule-unique
-        if ($request->method === "PUT") {
-            $user = User::find($request->id);
-            $rules['email'] .= ',' . $user->id;
-        } else {
-            // It is a POST (create) request.
-            $rules['password'] = ['required', 'string', 'min:6', 'confirmed'];
-        }
+            'password' => ['required', 'string', 'min:6', 'confirmed']
+        ];
 
         return $rules;
     }

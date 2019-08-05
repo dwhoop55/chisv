@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Collection;
 use PharIo\Manifest\Email;
 use Illuminate\Auth\Access\Gate;
 use App\Http\Resources\Users;
+use App\Http\Resources\Timezones;
+use App\Timezone;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +67,10 @@ Route::get('/degree', function () {
 
 Route::get('/shirt', function () {
     return new Shirts(Shirt::all());
+});
+
+Route::get('/timezone', function () {
+    return new Timezones(Timezone::all());
 });
 
 Route::get('email/exists/{email}', function ($email) {

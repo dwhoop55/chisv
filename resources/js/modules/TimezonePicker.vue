@@ -1,51 +1,38 @@
+// v-model safe
 <template>
   <section>
-    <input class="is-hidden" :name="inputName" :value="selectedId" />
-    <b-autocomplete
-      v-model="name"
-      :data="filteredDataArray"
-      :keep-first="true"
-      :open-on-focus="true"
-      placeholder="e.g. Europe/Berlin"
-      icon="magnify"
-      field="name"
-      @select="option => selected = option"
+    <b-select
+      placeholder="Select a timezone"
+      :loading="fetching"
+      :value="value"
+      @input="$emit('input', $event)"
     >
-      <template slot="empty">No results found</template>
-    </b-autocomplete>
+      <option v-for="option in timezones" :value="option.id" :key="option.id">{{ option.name }}</option>
+    </b-select>
   </section>
 </template>
 
 <script>
 export default {
-  name: "timezone-picker",
-  props: ["inputName", "timezones", "id"],
+  props: ["value"],
+
   data() {
     return {
-      name: "",
-      selected: null
+      timezones: [],
+      fetching: true
     };
   },
-  created() {
-    if (this.id) {
-      this.selected = this.timezones[this.id - 1];
-      this.name = this.selected.name;
-    }
-  },
-  computed: {
-    selectedId() {
-      return this.selected ? this.selected.id : null;
-    },
-    filteredDataArray() {
-      return this.timezones.filter(timezone => {
-        return (
-          timezone.name
-            .toString()
-            .toLowerCase()
-            .indexOf(this.name.toLowerCase()) >= 0
-        );
+
+  mounted() {
+    axios
+      .get("/api/timezone")
+      .then(data => {
+        this.timezones = data.data.data;
+        this.fetching = false;
+      })
+      .catch(error => {
+        this.$notification.open(`Could not load timezone: ${error}`);
       });
-    }
   }
 };
 </script>

@@ -7,6 +7,8 @@ use App\Timezone;
 use App\Degree;
 use App\Shirt;
 use App\City;
+use App\Country;
+use App\Region;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,8 @@ $factory->define(App\User::class, function (Faker $faker) {
     return [
         'firstname' => $faker->firstName(),
         'lastname' => $faker->lastName(),
+        'country_id' => $faker->numberBetween(1, Country::all()->count()),
+        'region_id' => $faker->numberBetween(1, Region::all()->count()),
         'city_id' => $faker->numberBetween(1, City::all()->count()),
         'university_id' => $faker->numberBetween(1, University::all()->count()),
         'university_fallback' => $faker->optional($weight = 0.5)->company(),
