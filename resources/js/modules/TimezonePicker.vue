@@ -31,7 +31,11 @@ export default {
         this.fetching = false;
       })
       .catch(error => {
-        this.$notification.open(`Could not load timezone: ${error}`);
+        this.$notification.open({
+          message: `Could not load timezone: ${error}`,
+          type: "is-danger",
+          indefinite: true
+        });
       });
   }
 };

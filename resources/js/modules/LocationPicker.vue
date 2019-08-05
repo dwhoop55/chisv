@@ -1,7 +1,6 @@
 // v-model safe
 <template>
   <div>
-    <input type="hidden" size="150" name="location" :value="json" />
     <b-autocomplete
       required
       :value="city"
@@ -44,9 +43,6 @@ export default {
   },
 
   computed: {
-    json() {
-      return JSON.stringify(this.value);
-    },
     city() {
       if (this.value && this.value.city) {
         return this.value.city.name;

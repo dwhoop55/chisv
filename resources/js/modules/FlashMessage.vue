@@ -8,8 +8,7 @@ export default {
       duration: this.duration,
       indefinite: this.duration ? false : true,
       message: this.message,
-      type: this.type,
-      hasIcon: true
+      type: this.type
     });
   }
 };

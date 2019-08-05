@@ -10,7 +10,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use App\Degree;
 use App\Shirt;
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\UserCreateRequest;
 
 class RegisterController extends Controller
 {
@@ -24,13 +24,6 @@ class RegisterController extends Controller
     | provide this functionality without requiring any additional code.
     |
     */
-
-    /**
-     * Where to redirect users after registration.
-     *
-     * @var string
-     */
-    protected $redirectTo = '/home';
 
     /**
      * Create a new controller instance.
@@ -48,51 +41,54 @@ class RegisterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create(UserRequest $request)
+    public function create(UserCreateRequest $request)
     {
-        $validated = $request->validated();
 
-        $userData = [
-            'firstname' => $validated['firstname'],
-            'lastname' => $validated['lastname'],
-            'email' => $validated['email'],
-            'city_id' => json_decode($validated['location'])->city->id,
-            'shirt_id' => $validated['shirt_id'],
-            'degree_id' => $validated['degree_id'],
-            'past_conferences' => $validated['past_conferences'],
-            'past_conferences_sv' => $validated['past_conferences_sv'],
-            'password' => Hash::make($validated['password']),
-        ];
+        $data = $request->only(
+            'firstname',
+            'lastname',
+            'email',
+            'timezone_id',
+            'timezone_id',
+            'degree_id',
+            'shirt_id',
+            'past_conferences',
+            'past_conferences_sv',
+            'password'
+        );
 
-        $university = json_decode($validated['university']);
-        if (isset($university->id)) {
-            $userData['university_id'] = $university->id;
+        $data['password'] = Hash::make($data['password']);
+        $data['country_id'] = $request['location']['country']['id'];
+        $data['region_id'] = $request['location']['region']['id'];
+        $data['city_id'] = $request['location']['city']['id'];
+
+        $university = $request['university'];
+        if (isset($university['id'])) {
+            $data['university_id'] = $university['id'];
         } else {
-            $userData['university_fallback'] = $university->name;
+            $data['university_fallback'] = $university['name'];
         }
 
-        $user = new User($userData);
+        $user = new User($data);
         // Required to have an id on the user, for setting language references
         $user->save();
 
         // Add languages
-        $languages = json_decode($validated['languages']);
+        $languages = $request['languages'];
         foreach ($languages as $language) {
-            $user->languages()->attach($language->id);
+            $user->languages()->attach($language['id']);
         }
 
         event(new Registered($user));
 
         auth()->guard()->login($user);
 
-        return redirect(route('home'));
+        return ["result" => $user, "error" => null];
     }
 
 
     public function index()
     {
-        $degrees = Degree::all();
-        $shirts = Shirt::all();
-        return view('auth.register', compact('degrees', 'shirts'));
+        return view('auth.register');
     }
 }

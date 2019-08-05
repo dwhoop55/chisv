@@ -101,8 +101,8 @@
           </b-field>
 
           <b-field
-            :type="{ 'is-danger': localeForm.errors.has('timezone') }"
-            :message="localeForm.errors.get('timezone')"
+            :type="{ 'is-danger': localeForm.errors.has('timezone_id') }"
+            :message="localeForm.errors.get('timezone_id')"
             label="Display dates in this timezone"
           >
             <timezone-picker v-model="localeForm.timezone_id"></timezone-picker>

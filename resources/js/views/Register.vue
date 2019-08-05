@@ -1,242 +1,183 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column is-three-quarters">
-      <div class="form-card">
-        <div class="form-title">
-          <h1>Sign up</h1>
-        </div>
-        <div class="form-content">
-          <form @submit.prevent="formSubmit($data)">
-            <section class="section">
-              <b-field horizontal label="Name">
-                <b-input
-                  icon="account"
-                  placeholder="Firstname"
-                  v-model="firstname"
-                  value
-                  expanded
-                  required
-                ></b-input>
-                <b-input
-                  icon="account"
-                  placeholder="Lastname"
-                  v-model="lastname"
-                  value
-                  expanded
-                  required
-                ></b-input>
-              </b-field>
+  <section>
+    <form @submit.prevent="save" @keydown="form.onKeydown($event)">
+      <b-field grouped>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('firstname') }"
+          :message="form.errors.get('firstname')"
+          label="Firstname"
+        >
+          <b-input required v-model="form.firstname"></b-input>
+        </b-field>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('lastname') }"
+          :message="form.errors.get('lastname')"
+          label="Lastname"
+        >
+          <b-input required v-model="form.lastname"></b-input>
+        </b-field>
+      </b-field>
 
-              <b-field
-                horizontal
-                label="Email"
-                :message="emailMessage"
-                :class="{ 'is-invalid' : emailMessage }"
-              >
-                <b-input
-                  @blur="emailBlur"
-                  icon="at"
-                  type="email"
-                  v-model="email"
-                  maxlength="64"
-                  required
-                ></b-input>
-              </b-field>
+      <b-field
+        expanded
+        :type="{ 'is-danger': form.errors.has('email') }"
+        :message="form.errors.get('email')"
+        label="E-Mail"
+      >
+        <b-input required v-model="form.email"></b-input>
+      </b-field>
 
-              <b-field horizontal label="Languages">
-                <language-picker :url="'/api/search/language/'" @update:tags="languages = $event"></language-picker>
-                <!-- <pre>{{ languages }}</pre> -->
-              </b-field>
-            </section>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('languages') }"
+        :message="form.errors.get('languages')"
+        label="Languages"
+      >
+        <language-picker v-model="form.languages"></language-picker>
+      </b-field>
 
-            <section class="section">
-              <b-field horizontal label="City of residence (choose closest)">
-                <location-picker
-                  @update:value="locationUpdateValue($event)"
-                  @update:id="locationUpdateId($event)"
-                  :id.sync="location"
-                ></location-picker>
-                <!-- <pre>{{ location }}</pre> -->
-              </b-field>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('location') }"
+        :message="form.errors.get('location')"
+        label="City (closest)"
+      >
+        <location-picker v-model="form.location"></location-picker>
+      </b-field>
 
-              <b-field horizontal label="University">
-                <university-picker :id.sync="university" :value.sync="universityString"></university-picker>
-                <!-- <pre>{{ university }}</pre> -->
-              </b-field>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('university') }"
+        :message="form.errors.get('university')"
+        label="University"
+      >
+        <university-picker v-model="form.university"></university-picker>
+      </b-field>
 
-              <degree-select :id.sync="degreeId" :url="'/api/degree'"></degree-select>
-              <!-- <pre>{{ degreeId }}</pre> -->
-            </section>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('timezone_id') }"
+        :message="form.errors.get('timezone_id')"
+        label="Display dates in this timezone"
+      >
+        <timezone-picker v-model="form.timezone_id"></timezone-picker>
+      </b-field>
 
-            <section class="section">
-              <b-field horizontal label="Past conferences you have attended">
-                <b-input v-model="pastConferences" maxlength="255" icon="pencil"></b-input>
-              </b-field>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('degree_id') }"
+        :message="form.errors.get('degree_id')"
+        label="Degree program"
+      >
+        <degree-select v-model="form.degree_id"></degree-select>
+      </b-field>
 
-              <b-field horizontal label="Past conferences you have attended as SV">
-                <b-input v-model="pastConferencesSV" maxlength="255" icon="pencil"></b-input>
-              </b-field>
+      <b-field grouped>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('past_conferences') }"
+          :message="form.errors.get('past_conferences')"
+          label="Past conferences you have attended"
+        >
+          <b-input v-model="form.past_conferences"></b-input>
+        </b-field>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('past_conferences_sv') }"
+          :message="form.errors.get('past_conferences_sv')"
+          label="Past conferences you have attended as SV"
+        >
+          <b-input v-model="form.past_conferences_sv"></b-input>
+        </b-field>
+      </b-field>
 
-              <shirt-select :id.sync="shirtId" :url="'/api/shirt'"></shirt-select>
-              <!-- <pre>{{ shirtId }}</pre> -->
-            </section>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('shirt_id') }"
+        :message="form.errors.get('shirt_id')"
+        label="T-Shirt"
+      >
+        <shirt-select v-model="form.shirt_id"></shirt-select>
+      </b-field>
 
-            <section class="section">
-              <b-field horizontal label="Password">
-                <b-input
-                  v-model="password1"
-                  type="password"
-                  minlength="6"
-                  placeholder="Password for your account"
-                  required
-                ></b-input>
-              </b-field>
+      <b-field label="Password" :message="form.errors.get('password')">
+        <b-field grouped :type="{ 'is-danger': form.errors.has('password') }">
+          <b-input
+            expanded
+            type="password"
+            v-model="form.password"
+            password-reveal
+            placeholder="Your password"
+            required
+          ></b-input>
 
-              <b-field horizontal label="Confirm">
-                <b-input
-                  v-model="password2"
-                  type="password"
-                  minlength="6"
-                  placeholder="Confirm your password"
-                  required
-                ></b-input>
-              </b-field>
-            </section>
+          <b-input
+            expanded
+            type="password"
+            v-model="form.password_confirmation"
+            password-reveal
+            placeholder="Confirm your password"
+            required
+          ></b-input>
+        </b-field>
+      </b-field>
 
-            <b-field grouped position="is-right">
-              <b-button
-                v-bind:class="{ 'is-loading': isSubmitting }"
-                class="is-primary"
-                tag="input"
-                native-type="submit"
-                value="Sign Up"
-              />
-            </b-field>
-          </form>
-        </div>
+      <button :disabled="form.busy" type="submit" class="button is-primary is-pulled-right">Sign up</button>
+    </form>
+
+    <b-loading animation :is-full-page="true" :active.sync="form.busy"></b-loading>
+
+    <b-modal :can-cancel="false" :active.sync="registerSuccess">
+      <div class="box">
+        <b-message type="is-success" has-icon>
+          <h1 class="title">Welcome on board!</h1>
+          <h2 class="subtitle">You can now see all conferences and enroll. Happy SV-ing!</h2>
+        </b-message>
+        <b-button
+          class="is-pulled-right"
+          type="is-success"
+          size="is-large"
+          @click="goTo('/home')"
+        >Next</b-button>
       </div>
-    </div>
-  </div>
+    </b-modal>
+  </section>
 </template>
 
 <script>
-import { log } from "util";
+import Form from "vform";
+
 export default {
-  name: "Register",
   data() {
     return {
-      isSubmitting: false,
-      firstname: "",
-      lastname: "",
-      email: "",
-      emailChecking: false,
-      emailMessage: "",
-      location: null,
-      locationMessage: null,
-      university: null,
-      universityString: "",
-      languages: null,
-      degreeId: null,
-      pastConferences: "",
-      pastConferencesSV: "",
-      shirtId: null,
-      password1: "",
-      password2: ""
+      form: new Form({
+        firstname: "",
+        lastname: "",
+        email: "",
+        languages: [],
+        degree_id: null,
+        past_conferences: "",
+        past_conferences_sv: "",
+        shirt_id: null,
+        location: {},
+        university: {},
+        timezone_id: null,
+        password: "",
+        password_confirmation: ""
+      }),
+      registerSuccess: false
     };
   },
-  mounted() {},
+
   methods: {
-    formSubmit: function() {
-      let payload = {
-        firstname: this.firstname.trim(),
-        lastname: this.lastname.trim(),
-        email: this.email,
-        cityId: this.location ? this.location.city.id : undefined,
-        universityId: this.university ? this.university.id : undefined,
-        universityString: this.universityString.trim(),
-        languageIds: this.languages ? this.languages.map(a => a.id) : undefined,
-        degreeId: this.degreeId,
-        pastConferences: this.pastConferences.trim(),
-        pastConferencesSV: this.pastConferencesSV.trim(),
-        shirtId: this.shirtId,
-        password: this.password1,
-        password_confirmation: this.password2
-      };
-
-      this.isSubmitting = true;
-      axios
-        .post("/register", payload)
-        .then(
-          function(response) {
-            console.log(response);
-            if (response.status == 201) {
-              this.goTo("/home");
-            }
-          }.bind(this)
-        )
-        .catch(
-          function(error) {
-            if (error.response.status == 422) {
-              this.$toast.open({
-                duration: 5000,
-                message: `${error.response.data.message} (${error.response.status})`,
-                type: "is-danger"
-              });
-            } else {
-              this.$toast.open({
-                duration: 5000,
-                message: `The request failed. Please try again (${error.response.status})`,
-                type: "is-danger"
-              });
-            }
-          }.bind(this)
-        )
-        .finally((this.isSubmitting = false));
-    },
-
-    toTitleCase: function(str) {
-      return str.replace(/\w\S*/g, function(txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-      });
-    },
-
-    validEmail: function(email) {
-      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return re.test(email);
-    },
-
-    locationUpdateValue: function($event) {
-      if (this.location) {
-        this.locationMessage = "";
-      } else {
-        this.locationMessage =
-          "Please select a city from the list. Choose the closest.";
-      }
-    },
-
-    locationUpdateId: function($event) {},
-
-    emailBlur: function() {
-      // Valid email-like string
-      if (!this.email || this.email < 2) {
-        return;
-      }
-      this.emailChecking = true;
-      axios
-        .get(`/api/email/exists/${this.email}`)
-        .then(({ data }) => {
-          if (data.result == true) {
-            this.emailMessage =
-              "Looks like you already have an account with this email address, try resetting your password";
-          } else {
-            this.emailMessage = "";
-          }
+    save() {
+      this.form
+        .post(`/api/register`)
+        .then(data => {
+          this.registerSuccess = true;
         })
         .catch(error => {
-          throw error;
-        })
-        .finally(() => {
-          this.emailChecking = false;
+          this.$toast.open({
+            duration: 5000,
+            message: `Could not save user: ${error.message}`,
+            type: "is-danger"
+          });
         });
     }
   }

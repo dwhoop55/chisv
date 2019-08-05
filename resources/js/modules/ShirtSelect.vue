@@ -1,3 +1,4 @@
+// v-model safe
 <template>
   <b-select
     required

@@ -1,7 +1,6 @@
 // v-model safe
 <template>
   <div>
-    <input type="hidden" size="150" name="university" :value="json" />
     <b-autocomplete
       required
       :value="universityName"
@@ -51,13 +50,6 @@ export default {
       } else if (this.value && this.value.name) {
         return this.value.name;
       }
-    },
-    json() {
-      if (this.internal && this.internal.name) {
-        return JSON.stringify(this.internal);
-      } else if (this.value && this.value.name) {
-        return JSON.stringify(this.value);
-      }
     }
   },
 
@@ -85,7 +77,11 @@ export default {
         })
         .catch(error => {
           this.rows = [];
-          throw error;
+          this.$notification.open({
+            message: `Could not load University: ${error}`,
+            type: "is-danger",
+            indefinite: true
+          });
         })
         .finally(() => {
           this.isFetching = false;

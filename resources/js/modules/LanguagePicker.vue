@@ -1,15 +1,15 @@
 // v-model safe
 <template>
   <div>
-    <input type="hidden" size="150" name="languages" :value="JSON.stringify(value)" />
     <b-taginput
-      v-model="value"
+      :value="value"
       :data="filteredTags"
       autocomplete
       field="name"
       icon="label"
       :attached="true"
       placeholder="Which language(s) do you speak?"
+      @input="$emit('input', $event)"
       @typing="getLanguage"
     ></b-taginput>
   </div>
@@ -23,7 +23,7 @@ export default {
   data() {
     return {
       filteredTags: [],
-      isFetching: false
+      fetching: false
     };
   },
   methods: {
@@ -32,7 +32,7 @@ export default {
         this.filteredTags = [];
         return;
       }
-      this.isFetching = true;
+      this.fetching = true;
       axios
         .get(`/api/search/language/${text}`)
         .then(({ data }) => {
@@ -44,16 +44,9 @@ export default {
           throw error;
         })
         .finally(() => {
-          this.isFetching = false;
+          this.fetching = false;
         });
     }, 10)
   }
 };
 </script>
-
-<style scoped>
-.notification-no-padding {
-  padding: 0 !important;
-}
-</style>
-
