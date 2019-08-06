@@ -10,7 +10,7 @@
                     <h1>Sign up</h1>
                 </div>
                 <div class="form-content">
-                    <register></register>
+                    <user-register></user-register>
                 </div>
             </div>
         </div>
