@@ -3,6 +3,9 @@
 @section('content')
 <div class="columns is-centered">
     <div class="column is-two-thirds">
+
+        <conference-edit roles="{{ auth()->user()->permissions }}"></conference-edit>
+
         @if($errors->any())
         <div class="notification is-danger">
             <p class="is-size-5 has-text-weight-bold">Some fields are invalid</p>
