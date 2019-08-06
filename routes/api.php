@@ -84,9 +84,11 @@ Route::get('email/exists/{email}', function ($email) {
 
 Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
-
 Route::group(['middleware' => ['auth:api']], function () {
 
+    Route::get('user/self', function () {
+        return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
+    });
     Route::resource('user', 'UserApiController', [
         'only' => ['index', 'show', 'update', 'destroy']
     ]);

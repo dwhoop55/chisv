@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "bulma-utilities": "^0.3.6",
-        "vform": "^1.0.1"
+        "vform": "^1.0.1",
+        "vuex": "^3.1.1",
+        "vuex-persistedstate": "^2.5.4"
     }
 }

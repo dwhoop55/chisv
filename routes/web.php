@@ -18,14 +18,14 @@ Route::get('/', function () {
 Route::get('home', 'HomeController@index')->name('home');
 
 // Auth routes
-Auth::routes(['register' => false]);
 Route::get('register', 'Auth\RegisterController@index')->name('register');
-Route::post('register', 'Auth\RegisterController@create')->name('register.create');
+Auth::routes(['register' => false]);
 
 
 Route::group(['middleware' => ['auth']], function () {
     Route::resource('conference', 'ConferenceController', [
-        'only' => ['index', 'show', 'edit', 'create']
+        // 'only' => ['index', 'show', 'edit', 'create']
+        'only' => ['index', 'show', 'edit', 'create', 'update', 'destroy']
     ]);
     Route::resource('user', 'UserController', [
         'only' => ['index', 'show', 'edit']
