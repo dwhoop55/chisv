@@ -37,7 +37,7 @@ export default {
 
   mounted() {
     axios
-      .get(`/api/shirt`)
+      .get(`shirt`)
       .then(({ data }) => {
         this.shirts = [];
         data.data.forEach(entry => this.shirts.push(entry));

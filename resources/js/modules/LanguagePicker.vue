@@ -34,7 +34,7 @@ export default {
       }
       this.fetching = true;
       axios
-        .get(`/api/search/language/${text}`)
+        .get(`search/language/${text}`)
         .then(({ data }) => {
           this.filteredTags = [];
           data.data.forEach(entry => this.filteredTags.push(entry));

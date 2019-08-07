@@ -133,8 +133,8 @@
           class="is-pulled-right"
           type="is-success"
           size="is-large"
-          @click="goTo('/home')"
-        >Next</b-button>
+          @click="goTo('/login')"
+        >Login</b-button>
       </div>
     </b-modal>
   </section>
@@ -168,7 +168,7 @@ export default {
   methods: {
     save() {
       this.form
-        .post(`/api/register`)
+        .post(`register`)
         .then(data => {
           this.registerSuccess = true;
         })

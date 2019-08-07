@@ -32,64 +32,73 @@ use App\Timezone;
 |
 */
 
-Route::prefix('search')->group(function () {
+Route::group(['prefix' => 'v1'], function () {
 
-    Route::get('location/{pattern}', function ($pattern) {
-        $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
-        $matches = City::where('name', 'LIKE', $pattern . '%')->orWhere('name', 'LIKE', $unUmlautedPattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
-        $locations = collect();
-        foreach ($matches as $match) {
-            $locations->push($match->location());
-        }
-        return new Locations($locations);
+    //// GUEST ////
+    //// Search ////
+    Route::prefix('search')->group(function () {
+        Route::get('location/{pattern}', function ($pattern) {
+            $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
+            $matches = City::where('name', 'LIKE', $pattern . '%')->orWhere('name', 'LIKE', $unUmlautedPattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
+            $locations = collect();
+            foreach ($matches as $match) {
+                $locations->push($match->location());
+            }
+            return new Locations($locations);
+        });
+        Route::get('university/{pattern}', function ($pattern) {
+            $patterns = preg_split("/\ |\-|,|;/", $pattern);
+            $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
+            foreach ($patterns as $item) {
+                $query = $query->where('name', 'LIKE', '%' . $item . '%');
+                $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
+            }
+            $matches = $query->orderBy('name', 'asc')->get();
+            return new Universities($matches);
+        });
+        Route::get('language/{pattern}', function ($pattern) {
+            $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
+            return new Languages($matches);
+        });
+    });
+    //// Search ////
+
+    Route::get('/degree', function () {
+        return new Degrees(Degree::all());
     });
 
-    Route::get('university/{pattern}', function ($pattern) {
-        $patterns = preg_split("/\ |\-|,|;/", $pattern);
-        $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
-        foreach ($patterns as $item) {
-            $query = $query->where('name', 'LIKE', '%' . $item . '%');
-            $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
-        }
-        $matches = $query->orderBy('name', 'asc')->get();
-        return new Universities($matches);
+    Route::get('/shirt', function () {
+        return new Shirts(Shirt::all());
     });
 
-    Route::get('language/{pattern}', function ($pattern) {
-        $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
-        return new Languages($matches);
+    Route::get('/timezone', function () {
+        return new Timezones(Timezone::all());
     });
-});
 
-Route::get('/degree', function () {
-    return new Degrees(Degree::all());
-});
-
-Route::get('/shirt', function () {
-    return new Shirts(Shirt::all());
-});
-
-Route::get('/timezone', function () {
-    return new Timezones(Timezone::all());
-});
-
-Route::get('email/exists/{email}', function ($email) {
-    $emailExists = User::where('email', $email)->get()->count() == 1;
-    if ($emailExists) {
-        return response()->json(['result' => true]);
-    } else {
-        return response()->json(['result' => false]);
-    };
-});
-
-Route::post('register', 'Auth\RegisterController@create')->name('register.create');
-
-Route::group(['middleware' => ['auth:api']], function () {
-
-    Route::get('user/self', function () {
-        return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
+    Route::get('email/exists/{email}', function ($email) {
+        $emailExists = User::where('email', $email)->get()->count() == 1;
+        if ($emailExists) {
+            return response()->json(['result' => true]);
+        } else {
+            return response()->json(['result' => false]);
+        };
     });
-    Route::resource('user', 'UserApiController', [
-        'only' => ['index', 'show', 'update', 'destroy']
-    ]);
+
+    Route::post('register', 'Auth\RegisterController@create')->name('register.create');
+    //// GUEST ////
+
+
+
+    //// AUTHENTICATED ////
+    Route::group(['middleware' => ['auth:api']], function () {
+
+        Route::get('user/self', function () {
+            return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
+        });
+        Route::resource('user', 'UserApiController', [
+            'only' => ['index', 'show', 'update', 'destroy']
+        ]);
+    });
+    //// AUTHENTICATED ////
+
 });

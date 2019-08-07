@@ -9,7 +9,6 @@ require("./helpers");
 
 import Vue from "vue";
 import Buefy from "buefy";
-import store from "./store";
 import { Form, HasError, AlertError } from 'vform'
 
 Vue.component(HasError.name, HasError)
@@ -52,7 +51,6 @@ Vue.mixin({
 
 const app = new Vue({
     el: "#app",
-    store,
     data: {
         showMobileNav: false,
     }

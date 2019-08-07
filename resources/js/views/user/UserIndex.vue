@@ -152,7 +152,7 @@ export default {
 
       this.loading = true;
       axios
-        .get(`/api/user?${params}`)
+        .get(`user?${params}`)
         .then(({ data }) => {
           this.data = [];
           this.total = data.meta.total;

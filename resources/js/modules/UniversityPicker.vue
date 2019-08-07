@@ -70,7 +70,7 @@ export default {
       }
       this.isFetching = true;
       axios
-        .get(`/api/search/university/${name}`)
+        .get(`search/university/${name}`)
         .then(({ data }) => {
           this.rows = [];
           data.data.forEach(entry => this.rows.push(entry));

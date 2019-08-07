@@ -183,6 +183,13 @@
           >Set new password</button>
         </form>
       </b-tab-item>
+
+      <b-tab-item icon="format-list-bulleted" label="Conferences"></b-tab-item>
+
+      <b-tab-item icon="sign-caution" label="Administrative">
+        <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
+      </b-tab-item>
+
       <b-loading
         :is-full-page="false"
         :active.sync="isWorking || profileForm.busy || localeForm.busy || passwordForm.busy"
@@ -236,6 +243,24 @@ export default {
   },
 
   methods: {
+    destroy() {
+      this.$buefy.dialog.confirm({
+        message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,
+        onConfirm: () => {
+          axios
+            .delete(`/user/${this.user.id}`)
+            .then(() => {
+              this.goTo("/user");
+            })
+            .catch(error => {
+              this.$buefy.toast.open({
+                message: `An error occured: ${error}`,
+                type: "is-danger"
+              });
+            });
+        }
+      });
+    },
     save() {
       var form;
       switch (this.activeTab) {
@@ -252,16 +277,16 @@ export default {
           break;
       }
       form
-        .put(`/api/user/${this.userId}`)
+        .put(`user/${this.userId}`)
         .then(data => {
           this.load(this.user.id);
-          this.$toast.open({
+          this.$buefy.toast.open({
             message: "Changes saved!",
             type: "is-success"
           });
         })
         .catch(error => {
-          this.$toast.open({
+          this.$buefy.toast.open({
             duration: 5000,
             message: `Could not save user: ${error.message}`,
             type: "is-danger"
@@ -271,7 +296,7 @@ export default {
     load(id) {
       this.isWorking = true;
       axios
-        .get(`/api/user/${id}`)
+        .get(`user/${id}`)
         .then(data => {
           let user = data.data;
           this.user = user;
@@ -299,7 +324,7 @@ export default {
           this.localeForm.time_sec_format = user.time_sec_format;
         })
         .catch(error => {
-          this.$notification.open({
+          this.$buefy.notification.open({
             duration: 5000,
             message: `Could not fetch user: ${error.message}`,
             type: "is-danger",

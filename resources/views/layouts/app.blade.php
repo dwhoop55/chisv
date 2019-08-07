@@ -31,7 +31,7 @@
 
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
-                <a class="navbar-item" href="{{ url('/home') }}">
+                <a class="navbar-item has-text-weight-bold" href="{{ url('/') }}">
                     {{ config('app.name', 'chisv') }}
                 </a>
 

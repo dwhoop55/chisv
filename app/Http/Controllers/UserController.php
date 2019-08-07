@@ -45,28 +45,6 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function show(User $user)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      *
      * @param  \App\User  $user
@@ -78,30 +56,5 @@ class UserController extends Controller
         $degrees = Degree::all();
         $shirts = Shirt::all();
         return view("user.edit", compact('authUser', 'user', 'degrees', 'shirts'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
-    {
-        return redirect(route('user.index'))->with('error', 'Not implemented');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(User $user)
-    {
-        $name = $user->firstname . " " . $user->lastname;
-        $user->delete();
-        return redirect(route('user.index'))->with('success', $name . ' deleted!');
     }
 }

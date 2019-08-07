@@ -28,7 +28,7 @@ export default {
 
   mounted() {
     axios
-      .get("/api/timezone")
+      .get("timezone")
       .then(data => {
         this.timezones = data.data.data;
         this.fetching = false;

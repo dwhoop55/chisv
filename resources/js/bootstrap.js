@@ -1,4 +1,5 @@
 window._ = require("lodash");
+window.debounce = require("lodash/debounce");
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -21,12 +22,10 @@ try {
 
 window.axios = require("axios");
 
-window.debounce = require("lodash/debounce");
-
-
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
+window.axios.defaults.headers.common["Content-Type"] = "application/json";
+window.axios.defaults.baseURL = "/api/v1/"
 window.axios.defaults.timeout = 3000;
-// window.axios.defaults.baseURL = "http://localhost:8000/"
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that

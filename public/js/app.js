@@ -2379,7 +2379,7 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
 
         if (response.status == 201) {
-          this.goTo("/home");
+          this.goTo("/");
         }
       }.bind(this))["catch"](function (error) {
         if (error.response.status == 422) {

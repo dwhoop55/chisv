@@ -34,7 +34,7 @@ export default {
 
   mounted() {
     axios
-      .get(`/api/degree`)
+      .get(`degree`)
       .then(({ data }) => {
         this.degrees = [];
         data.data.forEach(entry => this.degrees.push(entry));
