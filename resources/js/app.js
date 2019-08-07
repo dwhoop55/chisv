@@ -4,19 +4,34 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require("./bootstrap");
-require("./helpers");
+// require("./bootstrap");
+require("@/mixins");
+window.debounce = require("lodash/debounce");
+window.axios = require("@/plugins/axios.js")
 
 import Vue from "vue";
 import Buefy from "buefy";
-import store from "./store";
-import { Form, HasError, AlertError } from 'vform'
+import VueRouter from 'vue-router'
 
+import routes from '@/config/routes.js'
+import store from "./store";
+
+import App from "@/App.vue";
+
+import { Form, HasError, AlertError } from 'vform'
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
 
-Vue.use(Buefy);
+//Load Plugins
+Vue.use(Buefy)
+Vue.use(VueRouter)
+
+//Router configuration
+const router = new VueRouter({
+    mode: 'history',
+    routes
+})
 
 /**
  * The following block of code may be used to automatically register your
@@ -25,6 +40,7 @@ Vue.use(Buefy);
  *
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
+
 const files = require.context("./", true, /\.vue$/i);
 files.keys().map(key =>
     Vue.component(
@@ -36,24 +52,17 @@ files.keys().map(key =>
     )
 );
 
-Vue.mixin({
-    methods: {
-        goTo: function (path) {
-            window.location.href = path;
-        }
-    }
-});
-
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: "#app",
-    store,
-    data: {
-        showMobileNav: false,
-    }
+export const vm = new Vue({
+    el: '#app',
+    render: h => h(App),
+    router,
+    store
 });
+
+store.dispatch('fetchUser');

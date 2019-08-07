@@ -32,6 +32,20 @@ use App\Timezone;
 |
 */
 
+//Auth Routes
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+    Route::post('password/reset', 'Auth\ResetPasswordController@reset');
+    Route::post('register', 'Auth\RegisterController@register');
+});
+
+Route::group(['middleware' => 'auth:api', 'prefix' => 'v1'], function () {
+    Route::get('user/self', function () {
+        return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
+    });
+});
+
+
 Route::prefix('search')->group(function () {
 
     Route::get('location/{pattern}', function ($pattern) {

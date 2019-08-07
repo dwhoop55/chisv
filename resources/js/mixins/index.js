@@ -1,3 +1,13 @@
+import Vue from 'vue';
+
+Vue.mixin({
+    methods: {
+        goTo: function (path) {
+            window.location.href = path;
+        }
+    }
+});
+
 /**
  * Pad numbers to two digits
  **/

@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import Axios from 'axios';
+import axios from '@/plugins/axios';
 import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
@@ -27,7 +27,7 @@ const mutations = {
 // asynchronous operations.
 const actions = {
     fetchUser({ commit }) {
-        Axios.get('/api/user/self')
+        axios.get('user/self')
             .then(data => { commit('setUser', data.data) })
             .catch(error => { throw error });
     },

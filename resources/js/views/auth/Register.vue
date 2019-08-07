@@ -168,7 +168,7 @@ export default {
   methods: {
     save() {
       this.form
-        .post(`/api/register`)
+        .post(`register`)
         .then(data => {
           this.registerSuccess = true;
         })
