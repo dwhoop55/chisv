@@ -15,6 +15,15 @@ mix.js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css');
 // .version();
 
+mix.webpackConfig({
+    resolve: {
+        alias: {
+            '@': __dirname + '/resources/js'
+        },
+    },
+})
+
+
 Mix.listen('configReady', (webpackConfig) => {
     if (Mix.isUsing('hmr')) {
         // Remove leading '/' from entry keys
