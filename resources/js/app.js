@@ -4,12 +4,13 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-require("./bootstrap");
 require("./helpers");
+require("./bootstrap");
 
 import Vue from "vue";
 import Buefy from "buefy";
 import { Form, HasError, AlertError } from 'vform'
+
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -49,7 +50,7 @@ Vue.mixin({
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
+export const vm = new Vue({
     el: "#app",
     data: {
         showMobileNav: false,

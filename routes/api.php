@@ -20,6 +20,7 @@ use Illuminate\Auth\Access\Gate;
 use App\Http\Resources\Users;
 use App\Http\Resources\Timezones;
 use App\Timezone;
+use App\Conference;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +85,7 @@ Route::group(['prefix' => 'v1'], function () {
         };
     });
 
+
     Route::post('register', 'Auth\RegisterController@create')->name('register.create');
     //// GUEST ////
 
@@ -94,6 +96,9 @@ Route::group(['prefix' => 'v1'], function () {
 
         Route::get('user/self', function () {
             return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
+        });
+        Route::get('conference/{key}', function ($key) {
+            return Conference::where('key', $key)->first();
         });
         Route::resource('user', 'UserApiController', [
             'only' => ['index', 'show', 'update', 'destroy']

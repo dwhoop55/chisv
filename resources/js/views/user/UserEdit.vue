@@ -186,7 +186,7 @@
 
       <b-tab-item icon="format-list-bulleted" label="Conferences"></b-tab-item>
 
-      <b-tab-item icon="sign-caution" label="Administrative">
+      <b-tab-item v-if="canDelete" icon="sign-caution" label="Administrative">
         <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
       </b-tab-item>
 
@@ -200,10 +200,10 @@
 
 <script>
 import Form from "vform";
-import { stringify } from "querystring";
+import api from "@/api.js";
 
 export default {
-  props: ["userId"],
+  props: ["userId", "canDelete"],
 
   data() {
     return {
@@ -239,7 +239,7 @@ export default {
   },
 
   mounted() {
-    this.load(this.userId);
+    this.load();
   },
 
   methods: {
@@ -247,8 +247,8 @@ export default {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,
         onConfirm: () => {
-          axios
-            .delete(`/user/${this.user.id}`)
+          api
+            .destroyUser(this.user.id)
             .then(() => {
               this.goTo("/user");
             })
@@ -276,10 +276,10 @@ export default {
           form = this.passwordForm;
           break;
       }
-      form
-        .put(`user/${this.userId}`)
+      api
+        .updateUser(this.userId, form)
         .then(data => {
-          this.load(this.user.id);
+          this.load();
           this.$buefy.toast.open({
             message: "Changes saved!",
             type: "is-success"
@@ -293,35 +293,22 @@ export default {
           });
         });
     },
-    load(id) {
+    load() {
       this.isWorking = true;
-      axios
-        .get(`user/${id}`)
+      api
+        .getUser(this.userId)
         .then(data => {
           let user = data.data;
           this.user = user;
-          this.profileForm.id = user.id;
-          this.localeForm.id = user.id;
-          this.passwordForm.id = user.id;
-          this.profileForm.firstname = user.firstname;
-          this.profileForm.lastname = user.lastname;
-          this.profileForm.email = user.email;
-          this.profileForm.languages = user.languages;
-          this.profileForm.degree_id = user.degree_id;
-          this.profileForm.past_conferences = user.past_conferences;
-          this.profileForm.past_conferences_sv = user.past_conferences_sv;
-          this.profileForm.shirt_id = user.shirt_id;
+          this.profileForm.fill(user);
+          this.localeForm.fill(user);
+          this.localeForm.fill(user);
 
-          this.localeForm.location = user.location;
           if (user.university) {
             this.localeForm.university = user.university;
           } else {
             this.localeForm.university = { name: user.university_fallback };
           }
-          this.localeForm.timezone_id = user.timezone_id;
-          this.localeForm.date_format = user.date_format;
-          this.localeForm.time_format = user.time_format;
-          this.localeForm.time_sec_format = user.time_sec_format;
         })
         .catch(error => {
           this.$buefy.notification.open({
