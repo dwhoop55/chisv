@@ -78,25 +78,7 @@
         <b-table-column width="200" field="permissions" label="Permissions">
           <div class="field is-grouped is-grouped-multiline">
             <div class="control" :key="permission.id" v-for="permission in props.row.permissions">
-              <div class="tags has-addons">
-                <span
-                  class="tag has-text-weight-medium"
-                  :class="{ 'is-light' : permission.role.name == 'sv', 'is-dark' : permission.role.name == 'chair', 'is-primary' : permission.role.name == 'captain'}"
-                >{{ permission.role.name }}</span>
-
-                <span v-if="permission.conference" class="tag is-light has-text-weight-light">
-                  <a
-                    :href="'/conference/' + permission.conference.key"
-                    class="href"
-                  >{{ permission.conference.key.substring(0,20) }}</a>
-                </span>
-
-                <span
-                  v-if="permission.state"
-                  :class="{ 'is-success' : permission.state.name == 'accepted', 'is-danger' : permission.state.name == 'dropped', 'is-light' : permission.state.name == 'enrolled', 'is-warning' : permission.state.name == 'waitlisted' }"
-                  class="tag"
-                >{{ permission.state.name }}</span>
-              </div>
+              <permission-tag :permission="permission"></permission-tag>
             </div>
           </div>
         </b-table-column>

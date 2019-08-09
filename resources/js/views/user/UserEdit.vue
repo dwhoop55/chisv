@@ -75,7 +75,7 @@
           </b-field>
 
           <button
-            :disabled="isWorking || profileForm.busy"
+            :disabled="isLoading || profileForm.busy"
             type="submit"
             class="button is-primary is-pulled-right"
           >Save</button>
@@ -184,7 +184,11 @@
         </form>
       </b-tab-item>
 
-      <b-tab-item icon="format-list-bulleted" label="Conferences"></b-tab-item>
+      <b-tab-item icon="format-list-bulleted" label="Conferences">
+        <div class="box" v-for="permission in user.permissions" v-bind:key="permission.id">
+          <permission-tag size="is-large" :permission="permission"></permission-tag>
+        </div>
+      </b-tab-item>
 
       <b-tab-item v-if="canDelete" icon="sign-caution" label="Administrative">
         <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
@@ -192,7 +196,7 @@
 
       <b-loading
         :is-full-page="false"
-        :active.sync="isWorking || profileForm.busy || localeForm.busy || passwordForm.busy"
+        :active.sync="isLoading || profileForm.busy || localeForm.busy || passwordForm.busy"
       ></b-loading>
     </b-tabs>
   </section>
@@ -233,8 +237,8 @@ export default {
         password_confirmation: ""
       }),
       user: null,
-      isWorking: true,
-      activeTab: 0
+      isLoading: true,
+      activeTab: 3
     };
   },
 
@@ -294,7 +298,7 @@ export default {
         });
     },
     load() {
-      this.isWorking = true;
+      this.isLoading = true;
       api
         .getUser(this.userId)
         .then(data => {
@@ -319,7 +323,7 @@ export default {
           });
         })
         .finally(() => {
-          this.isWorking = false;
+          this.isLoading = false;
         });
     }
   }

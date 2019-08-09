@@ -30,7 +30,7 @@
         >Delete this conference</button>
       </b-tab-item>
     </b-tabs>
-    <b-loading :is-full-page="false" :active.sync="generalForm.busy"></b-loading>
+    <b-loading :is-full-page="false" :active.sync="isLoading || generalForm.busy"></b-loading>
   </section>
 </template>
 
@@ -57,7 +57,8 @@ export default {
         enable_bidding: null,
         created_at: null,
         updated_at: null
-      })
+      }),
+      isLoading: true
     };
   },
 
@@ -73,6 +74,7 @@ export default {
           form = this.generalForm;
           break;
       }
+      this.isLoading = true;
       api
         .updateConference(this.conferenceKey, form)
         .then(data => {
@@ -88,12 +90,16 @@ export default {
             message: `Could not save conference: ${error.message}`,
             type: "is-danger"
           });
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     destroy() {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.conference.name}?`,
         onConfirm: () => {
+          this.isLoading = true;
           api
             .destroyConference(this.conferenceKey)
             .then(() => {
@@ -104,11 +110,15 @@ export default {
                 message: `An error occured: ${error}`,
                 type: "is-danger"
               });
+            })
+            .finally(() => {
+              this.isLoading = false;
             });
         }
       });
     },
     load() {
+      this.isLoading = true;
       api
         .getConference(this.conferenceKey)
         .then(data => {
@@ -118,6 +128,9 @@ export default {
         })
         .catch(error => {
           throw error;
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     }
   }
