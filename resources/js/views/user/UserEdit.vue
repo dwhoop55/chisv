@@ -184,13 +184,39 @@
         </form>
       </b-tab-item>
 
-      <b-tab-item icon="format-list-bulleted" label="Conferences">
-        <div class="box" v-for="permission in user.permissions" v-bind:key="permission.id">
-          <permission-tag size="is-large" :permission="permission"></permission-tag>
+      <b-tab-item icon="format-list-bulleted" label="Permission">
+        <h1 class="subtitle has-margin-t-3">Your conferences and permissions</h1>
+
+        <div v-if="user" class="columns is-multiline">
+          <div
+            class="column is-half"
+            v-for="permission in user.permissions"
+            v-bind:key="permission.id"
+          >
+            <div class="card">
+              <div v-if="permission.conference && permission.conference.image" class="card-image">
+                <!-- <figure class="image is-square">
+                    <img :src="permission.conference.image" />
+                </figure>-->
+              </div>
+              <div
+                v-else
+                class="card-image is-cover"
+                style="height: 200px; background-image:url('/images/conference-default.jpg')"
+              >
+                <!-- <figure class="image is-3by1">
+                    <img src="/images/conference-default.jpg" />
+                </figure>-->
+              </div>
+              <div class="card-content">
+                <permission-tag :can-revoke="true" size="is-medium" :permission="permission"></permission-tag>
+              </div>
+            </div>
+          </div>
         </div>
       </b-tab-item>
 
-      <b-tab-item v-if="canDelete" icon="sign-caution" label="Administrative">
+      <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
         <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
       </b-tab-item>
 
@@ -207,7 +233,7 @@ import Form from "vform";
 import api from "@/api.js";
 
 export default {
-  props: ["userId", "canDelete"],
+  props: ["userId", "canDelete", "canRevoke", "canGrant"],
 
   data() {
     return {

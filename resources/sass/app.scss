@@ -1,22 +1,16 @@
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Lato");
-
 // Variables
 @import "variables";
-
 // Import Bulma and Buefy styles
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
-
 // Import Bulma utilities
 @import "~bulma-utilities/sass/bulma-utilities";
-
 // Login/register
 @import "form";
-
 // Set your colors
 $primary-invert: findColorInvert($primary);
-
 // Setup $colors to use as bulma classes (e.g. 'is-twitter')
 $colors: (
   "white": (
@@ -56,12 +50,10 @@ $colors: (
     $danger-invert
   )
 );
-
 // Links
 $link: $link-color;
 $link-invert: findColorInvert($link);
 $link-focus-border: $primary;
-
 h1 {
   font-size: $h1-font-size;
 }
@@ -80,4 +72,13 @@ h3 {
 
 .is-clickable {
   cursor: pointer;
+}
+
+.is-cover {
+  background-position: center;
+  background-size: cover;
+}
+
+.has-radius-10 {
+  border-radius: 10px;
 }
