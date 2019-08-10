@@ -9,12 +9,15 @@
       </b-tag>
       <b-tag v-if="permission.state" :size="size" :type="stateType">{{ permission.state.name }}</b-tag>
     </b-taglist>
+    <b-tooltip type="is-danger" label="Revoke this permission">
+      <b-button v-if="canRevoke" type="is-danger" @click="$emit('revoke', permission.id)">Revoke</b-button>
+    </b-tooltip>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["permission", "size"],
+  props: ["permission", "size", "canRevoke"],
 
   computed: {
     roleType: function() {
