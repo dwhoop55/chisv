@@ -16,6 +16,7 @@ mix.js('resources/js/app.js', 'public/js')
 // .version();
 
 mix.webpackConfig({
+    devtool: 'source-map',
     resolve: {
         alias: {
             '@': __dirname + '/resources/js'
