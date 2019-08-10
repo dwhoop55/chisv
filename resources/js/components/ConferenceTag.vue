@@ -1,5 +1,5 @@
 <template>
-  <b-tag :size="size">
+  <b-tag rounded :size="size">
     <b-tooltip :label="'Go to ' + conference.name" multilined>
       <a :href="'/conference/' + conference.key">{{ conference.key.substring(0,20) }}</a>
     </b-tooltip>

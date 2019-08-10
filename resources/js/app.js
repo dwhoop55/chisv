@@ -40,6 +40,9 @@ Vue.mixin({
     methods: {
         goTo: function (path) {
             window.location.href = path;
+        },
+        goBack: function () {
+            window.history.back();
         }
     }
 });

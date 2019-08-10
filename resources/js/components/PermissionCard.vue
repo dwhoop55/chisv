@@ -80,7 +80,8 @@ export default {
         extra =
           "<br/><br/>Remember, when you revoke sv permission you could \
            <b>loose access to the user</b> when he/she is not associated \
-           otherwise with the conferences you can manage<br/>To gain access again the user has to enroll again.";
+           otherwise with the conferences you can manage. \
+           <br/>To gain access again the user has to enroll again.";
       }
       this.$buefy.dialog.confirm({
         title: `Revoking ${this.permission.role.name} permission`,
@@ -101,7 +102,7 @@ export default {
             type: "is-success",
             message: data.data.message
           });
-          this.removeFromParent();
+          this.$emit("revoked", this.permission);
         })
         .catch(error => {
           this.$buefy.toast.open({
@@ -109,9 +110,6 @@ export default {
             message: error.message
           });
         });
-    },
-    removeFromParent: function() {
-      this.$emit("revoked", this.permission);
     }
   }
 };

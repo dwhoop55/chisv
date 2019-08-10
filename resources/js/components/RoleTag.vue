@@ -1,5 +1,5 @@
 <template>
-  <b-tag :size="size" :type="roleType">
+  <b-tag rounded :size="size" :type="roleType">
     <b-tooltip :label="role.description" multilined>{{ role.name }}</b-tooltip>
   </b-tag>
 </template>

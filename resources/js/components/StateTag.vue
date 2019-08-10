@@ -1,5 +1,5 @@
 <template>
-  <b-tag :size="size" :type="stateType">
+  <b-tag rounded :size="size" :type="stateType">
     <b-tooltip :label="state.description" multilined>{{ state.name }}</b-tooltip>
   </b-tag>
 </template>

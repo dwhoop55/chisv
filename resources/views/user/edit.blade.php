@@ -4,7 +4,7 @@
 
 <div class="columns is-centered">
     <div class="column is-two-thirds">
-        <user-edit :can-grant="'{{ auth()->user()->can('grant', $user) }}'"
+        <user-edit :can-grant="'{{ auth()->user()->can('create', 'App\Permission') }}'"
             :can-delete="'{{ auth()->user()->can('delete', $user) }}'" :user-id="'{{ $user->id }}'">
         </user-edit>
     </div>

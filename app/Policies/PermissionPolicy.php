@@ -40,7 +40,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        if ($user->idAdmin()) {
+        if ($user->isAdmin() || $user->isChair() || $user->isCaptain()) {
             return true;
         }
     }
