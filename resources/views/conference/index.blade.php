@@ -5,7 +5,7 @@
 @can('create', App\Conference::class)
 <div class="container">
     <div class="field">
-        <a class="button is-pulled-right" href="{{ route('conference.create') }}">Add new Conference</a>
+        <a class="button is-pulled-right" href="{{ route('conference.showCreate') }}">Add new Conference</a>
     </div>
 </div>
 @endcan
@@ -14,11 +14,11 @@
     @foreach ($conferences as $conference)
     <article class="media">
         <figure class="media-left">
-            <a href="{{ route('conference.show', $conference) }}" class="image is-128x128">
+            <a href="{{ route('conference.showModel', $conference) }}" class="image is-128x128">
                 @if ($conference->icon)
                 <img src="{{ $conference->icon->path }}">
                 @else
-                <img href="{{ route('conference.show', $conference) }}"
+                <img href="{{ route('conference.showModel', $conference) }}"
                     src="https://robohash.org/{{ $conference->key }}">
                 @endif
             </a>
@@ -26,7 +26,7 @@
         <div class="media-content">
             <div class="content">
                 <h3 class="is-marginless columns is-vcentered">
-                    <a href="{{ route('conference.show', $conference) }}">{{ $conference->name }}</a>
+                    <a href="{{ route('conference.showModel', $conference) }}">{{ $conference->name }}</a>
 
                     @if ($conference->enable_bidding)
                     <div class="tags has-addons">
@@ -56,7 +56,7 @@
                 </p>
             </div>
             @can('update', $conference)
-            <a class="button" href="{{ route('conference.edit', $conference) }}">Settings</a>
+            <a class="button" href="{{ route('conference.showEdit', $conference) }}">Settings</a>
             @endcan
         </div>
     </article>

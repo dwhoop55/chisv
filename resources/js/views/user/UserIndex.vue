@@ -35,7 +35,6 @@
       narrowed
       backend-pagination
       backend-sorting
-      :selected.sync="selected"
       :total="total"
       :per-page="perPage"
       @page-change="onPageChange"
@@ -48,25 +47,23 @@
       @sort="onSort"
     >
       <template slot-scope="props">
-        <b-table-column width="200" label="Actions">
+        <b-table-column width="100" label="Actions">
           <div class="buttons">
             <b-button
               type="is-inverted"
               @click="goTo(`/user/${props.row.id}/tasks`)"
               icon-left="format-list-checks"
             >tasks</b-button>
-            <b-button
-              type="is-inverted"
-              outlined
-              @click="goTo(`/user/${props.row.id}/edit`)"
-              icon-left="account-edit"
-            >edit</b-button>
           </div>
         </b-table-column>
 
-        <b-table-column field="firstname" label="Firstname" sortable>{{ props.row.firstname }}</b-table-column>
+        <b-table-column field="firstname" label="Firstname" sortable>
+          <a :href="`/user/${props.row.id}/edit`">{{ props.row.firstname }}</a>
+        </b-table-column>
 
-        <b-table-column field="lastname" label="Lastname" sortable>{{ props.row.lastname }}</b-table-column>
+        <b-table-column field="lastname" label="Lastname" sortable>
+          <a :href="`/user/${props.row.id}/edit`">{{ props.row.lastname }}</a>
+        </b-table-column>
 
         <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
 
@@ -113,7 +110,6 @@ export default {
       roleName: "sv",
       searchString: "",
       defaultSortOrder: "asc",
-      selected: null,
       page: 1,
       perPage: 25
     };

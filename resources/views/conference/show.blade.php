@@ -8,7 +8,7 @@
     @can('update', $conference)
     <div class="container is-topmost">
         <div class="field">
-            <a class="button is-pulled-right" href="{{ route('conference.edit', $conference->key) }}">Settings</a>
+            <a class="button is-pulled-right" href="{{ route('conference.showEdit', $conference->key) }}">Settings</a>
         </div>
     </div>
     @endcan

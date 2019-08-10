@@ -184,34 +184,22 @@
         </form>
       </b-tab-item>
 
-      <b-tab-item icon="format-list-bulleted" label="Permission">
-        <h1 class="subtitle has-margin-t-3">Your conferences and permissions</h1>
+      <b-tab-item icon="format-list-bulleted" label="Conferences">
+        <div v-if="user">
+          <div class="subtitle has-margin-t-3">
+            <p v-if="hasActivePermissions">Active conferences</p>
+            <p v-else>Not associated to active conferences</p>
+          </div>
+          <div class="column" v-for="permission in activePermissions" v-bind:key="permission.id">
+            <permission-card :permission="permission" />
+          </div>
 
-        <div v-if="user" class="columns is-multiline">
-          <div
-            class="column is-half"
-            v-for="permission in user.permissions"
-            v-bind:key="permission.id"
-          >
-            <div class="card">
-              <div v-if="permission.conference && permission.conference.image" class="card-image">
-                <!-- <figure class="image is-square">
-                    <img :src="permission.conference.image" />
-                </figure>-->
-              </div>
-              <div
-                v-else
-                class="card-image is-cover"
-                style="height: 200px; background-image:url('/images/conference-default.jpg')"
-              >
-                <!-- <figure class="image is-3by1">
-                    <img src="/images/conference-default.jpg" />
-                </figure>-->
-              </div>
-              <div class="card-content">
-                <permission-tag :can-revoke="true" size="is-medium" :permission="permission"></permission-tag>
-              </div>
-            </div>
+          <div class="subtitle has-margin-t-3">
+            <p v-if="hasPastPermissions">Ended conferences</p>
+            <p v-else>No other permissions</p>
+          </div>
+          <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
+            <permission-card :permission="permission" />
           </div>
         </div>
       </b-tab-item>
@@ -233,7 +221,26 @@ import Form from "vform";
 import api from "@/api.js";
 
 export default {
-  props: ["userId", "canDelete", "canRevoke", "canGrant"],
+  props: ["userId", "canDelete", "canGrant"],
+
+  computed: {
+    activePermissions: function() {
+      return this.user.permissions.filter(function(permission) {
+        return permission.conference && permission.conference.state_id != 6;
+      });
+    },
+    hasActivePermissions: function() {
+      return this.activePermissions.length != 0;
+    },
+    pastPermissions: function() {
+      return this.user.permissions.filter(function(permission) {
+        return !permission.conference || permission.conference.state_id == 6;
+      });
+    },
+    hasPastPermissions: function() {
+      return this.pastPermissions.length != 0;
+    }
+  },
 
   data() {
     return {

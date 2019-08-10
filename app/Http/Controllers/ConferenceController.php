@@ -35,13 +35,16 @@ class ConferenceController extends Controller
     public function enroll(Conference $conference)
     {
         $user = auth()->user();
-        if ($user->can('enroll', $conference)) {
-            if ($user->grant(Role::byName('sv'), $conference, State::byName('enrolled'))) {
-                return back()->with('success', 'Your are now enrolled for ' . $conference->name);
-            }
-        } else {
-            return back()->withErrors(['error', 'You cannot enroll for this conference']);
-        }
+        $result = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'));
+        return ["success" => $result, "message" => "You are now enrolled"];
+        // $user = auth()->user();
+        // if ($user->can('enroll', $conference)) {
+        //     if ($user->grant(Role::byName('sv'), $conference, State::byName('enrolled'))) {
+        //         return back()->with('success', 'Your are now enrolled for ' . $conference->name);
+        //     }
+        // } else {
+        //     return back()->withErrors(['error', 'You cannot enroll for this conference']);
+        // }
     }
 
     /** 
@@ -53,21 +56,114 @@ class ConferenceController extends Controller
     public function unenroll(Conference $conference)
     {
         $user = auth()->user();
-        if ($user->can('unenroll', $conference)) {
-            if ($user->revoke(Role::byName('sv'), $conference)) {
-                return back()->with('success', 'Your are no longer enrolled for ' . $conference->name);
-            }
-        } else {
-            return back()->withErrors(['error', 'You cannot unenroll from this conference']);
-        }
+        $result = $user->revoke(Role::byName('sv'), $conference);
+        return ["success" => $result, "message" => "You are now longer enrolled"];
+        // $user = auth()->user();
+        // if ($user->can('unenroll', $conference)) {
+        //     if ($user->revoke(Role::byName('sv'), $conference)) {
+        //         return back()->with('success', 'Your are no longer enrolled for ' . $conference->name);
+        //     }
+        // } else {
+        //     return back()->withErrors(['error', 'You cannot unenroll from this conference']);
+        // }
     }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(ConferenceRequest $request)
+    {
+        $validated = $request->validated();
+        $result = Conference::create($validated);
+        return ["success" => $result, "message" => "Conference created"];
+    }
+
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Conference  $conference
+     * @return \Illuminate\Http\Response
+     */
+    public function update(ConferenceRequest $request, Conference $conference)
+    {
+        // // TODO: data is validated, this is not required anymore
+        // $validated = $request->validated();
+
+        // // Process icon upload
+        // if (isset($validated['icon'])) {
+        //     $file = $validated['icon'];
+        //     $name = 'conference-icon-' . $conference->id . "." . $file->extension();
+        //     $path = "/storage/$name";
+        //     $type = 'icon';
+        //     if (Storage::disk('public')->put($name, $file->get())) {
+        //         $dbImage = new Image(compact('name', 'path', 'type'));
+        //         $conference->icon()->delete();
+        //         $conference->icon()->save($dbImage);
+        //     } else {
+        //         throw new InvalidFileException("The icon could not be stored");
+        //     }
+        // }
+
+        // // Process image upload
+        // if (isset($validated['image'])) {
+        //     $file = $validated['image'];
+        //     $name = 'conference-image-' . $conference->id . "." . $file->extension();
+        //     $path = "/storage/$name";
+        //     $type = 'image';
+        //     if (Storage::disk('public')->put($name, $file->get())) {
+        //         $dbImage = new Image(compact('name', 'path', 'type'));
+        //         $conference->image()->delete();
+        //         $conference->image()->save($dbImage);
+        //     } else {
+        //         throw new InvalidFileException("The image could not be stored");
+        //     }
+        // }
+
+        // if (isset($validated['delete_icon'])) {
+        //     unset($validated['delete_icon']);
+        //     $name = $conference->icon->name;
+        //     Storage::disk('public')->delete($name);
+        //     $conference->icon()->delete();
+        // }
+
+        // if (isset($validated['delete_image'])) {
+        //     unset($validated['delete_image']);
+        //     $name = $conference->image->name;
+        //     Storage::disk('public')->delete($name);
+        //     $conference->image()->delete();
+        // }
+
+        // if (!$request->has('enable_bidding')) $validated['enable_bidding'] = 0;
+        // $conference->update($validated);
+        // return redirect()->route('conference.show', $conference->key);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Conference  $conference
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Conference $conference)
+    {
+        $result = $conference->delete();
+        return ["success" => $result, "message" => "Conference deleted"];
+    }
+
+
+    // Blade views
 
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user)
+    public function showIndex()
     {
 
         // Ask the ConferencePolicy if index is allowed for that user
@@ -89,23 +185,10 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function showCreate()
     {
-        return redirect(route('conference.index'))->with('error', 'Not implemented');
+        $this->authorize('create', Conference::class);
         return view('conference.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(ConferenceRequest $request)
-    {
-        $validated = $request->validated();
-        Conference::create($validated);
-        return redirect()->route('conference.index');
     }
 
     /**
@@ -114,7 +197,7 @@ class ConferenceController extends Controller
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
-    public function show(Conference $conference)
+    public function showModel(Conference $conference)
     {
         $overState = State::byName('over');
         $planningState = State::byName('planning');
@@ -129,84 +212,9 @@ class ConferenceController extends Controller
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
-    public function edit(Conference $conference)
+    public function showEdit(Conference $conference)
     {
-        $states = State::where('for', 'App\Conference')->get();
-        $user = auth()->user();
-        $timezones = Timezone::all();
-        return view('conference.edit', compact("conference", "states", "timezones", "user"));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Conference  $conference
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ConferenceRequest $request, Conference $conference)
-    {
-        // TODO: data is validated, this is not required anymore
-        $validated = $request->validated();
-
-        // Process icon upload
-        if (isset($validated['icon'])) {
-            $file = $validated['icon'];
-            $name = 'conference-icon-' . $conference->id . "." . $file->extension();
-            $path = "/storage/$name";
-            $type = 'icon';
-            if (Storage::disk('public')->put($name, $file->get())) {
-                $dbImage = new Image(compact('name', 'path', 'type'));
-                $conference->icon()->delete();
-                $conference->icon()->save($dbImage);
-            } else {
-                throw new InvalidFileException("The icon could not be stored");
-            }
-        }
-
-        // Process image upload
-        if (isset($validated['image'])) {
-            $file = $validated['image'];
-            $name = 'conference-image-' . $conference->id . "." . $file->extension();
-            $path = "/storage/$name";
-            $type = 'image';
-            if (Storage::disk('public')->put($name, $file->get())) {
-                $dbImage = new Image(compact('name', 'path', 'type'));
-                $conference->image()->delete();
-                $conference->image()->save($dbImage);
-            } else {
-                throw new InvalidFileException("The image could not be stored");
-            }
-        }
-
-        if (isset($validated['delete_icon'])) {
-            unset($validated['delete_icon']);
-            $name = $conference->icon->name;
-            Storage::disk('public')->delete($name);
-            $conference->icon()->delete();
-        }
-
-        if (isset($validated['delete_image'])) {
-            unset($validated['delete_image']);
-            $name = $conference->image->name;
-            Storage::disk('public')->delete($name);
-            $conference->image()->delete();
-        }
-
-        if (!$request->has('enable_bidding')) $validated['enable_bidding'] = 0;
-        $conference->update($validated);
-        return redirect()->route('conference.show', $conference->key);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Conference  $conference
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Conference $conference)
-    {
-        $conference->delete();
-        return redirect()->route('conference.index');
+        $this->authorize('update', $conference);
+        return view('conference.edit', compact('conference'));
     }
 }

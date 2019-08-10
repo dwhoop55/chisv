@@ -94,15 +94,23 @@ Route::group(['prefix' => 'v1'], function () {
     //// AUTHENTICATED ////
     Route::group(['middleware' => ['auth:api']], function () {
 
-        Route::get('user/self', function () {
-            return User::with(['permissions', 'timezone'])->find(auth()->user()->id);
-        });
-        Route::get('conference/{key}', function ($key) {
-            return Conference::where('key', $key)->first();
-        });
-        Route::resource('user', 'UserApiController', [
+        Route::resource('user', 'UserController', [
             'only' => ['index', 'show', 'update', 'destroy']
         ]);
+        Route::resource('conference', 'ConferenceController', [
+            // 'only' => ['index', 'show', 'update', 'destroy', 'create']
+            'only' => ['update', 'destroy', 'create']
+        ]);
+        Route::resource('permission', 'PermissionController', [
+            'only' => ['store', 'destroy']
+        ]);
+
+        Route::post('conference/{conference}/enroll', 'ConferenceController@enroll')
+            ->middleware("can:enroll,conference")
+            ->name('conference.enroll');
+        Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')
+            ->middleware("can:unenroll,conference")
+            ->name('conference.unenroll');
     });
     //// AUTHENTICATED ////
 

@@ -46,12 +46,12 @@
             <div class="navbar-menu" :class="{ 'is-active': showMobileNav }">
                 <div class="navbar-start">
                     @auth
-                    <a class="navbar-item" href="{{ route('conference.index') }}">
+                    <a class="navbar-item" href="{{ route('conference.showIndex') }}">
                         Conferences
                     </a>
                     @endauth
                     @can('index', App\User::class)
-                    <a class="navbar-item" href="{{ route('user.index') }}">
+                    <a class="navbar-item" href="{{ route('user.showIndex') }}">
                         Users
                     </a>
                     @endcan
@@ -61,7 +61,7 @@
                     @guest
                     <div class="navbar-item">
                         <div class="buttons">
-                            <a class="button is-primary" href="{{ route('register') }}">
+                            <a class="button is-primary" href="{{ route('register.show') }}">
                                 <strong>Sign up</strong>
                             </a>
                             <a class="button is-light" href="{{ route('login') }}">
@@ -75,7 +75,7 @@
                             {{ Auth::user()->firstname }}
                         </a>
                         <div class="navbar-dropdown">
-                            <a class="navbar-item" href="{{ route('user.edit', Auth::user()->id) }}">
+                            <a class="navbar-item" href="{{ route('user.showEdit', Auth::user()->id) }}">
                                 My Profile
                             </a>
                             <hr class="navbar-divider">

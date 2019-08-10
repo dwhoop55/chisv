@@ -1,58 +1,19 @@
 <template>
   <div class="control">
     <b-taglist attached>
-      <b-tag :size="size" :type="roleType">{{ permission.role.name }}</b-tag>
-      <b-tag v-if="permission.conference" :size="size" type="is-light">
-        <a
-          :href="'/conference/' + permission.conference.key"
-        >{{ permission.conference.key.substring(0,20) }}</a>
-      </b-tag>
-      <b-tag v-if="permission.state" :size="size" :type="stateType">{{ permission.state.name }}</b-tag>
+      <role-tag v-if="permission.role" :role="permission.role" :size="size" />
+      <conference-tag
+        v-if="permission.conference"
+        :conference="permission.conference"
+        :size="size"
+      />
+      <state-tag v-if="permission.state" :state="permission.state" :size="size" />
     </b-taglist>
-    <b-tooltip type="is-danger" label="Revoke this permission">
-      <b-button v-if="canRevoke" type="is-danger" @click="$emit('revoke', permission.id)">Revoke</b-button>
-    </b-tooltip>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["permission", "size", "canRevoke"],
-
-  computed: {
-    roleType: function() {
-      if (this.permission.role.name) {
-        switch (this.permission.role.name) {
-          case "sv":
-            return "is-light";
-            break;
-          case "chair":
-            return "is-dark";
-            break;
-          case "captain":
-            return "is-primary";
-            break;
-        }
-      }
-    },
-    stateType: function() {
-      if (this.permission.state) {
-        switch (this.permission.state.name) {
-          case "accepted":
-            return "is-success";
-            break;
-          case "dropped":
-            return "is-danger";
-            break;
-          case "enrolled":
-            return "is-light";
-            break;
-          case "waitlisted":
-            return "is-warning";
-            break;
-        }
-      }
-    }
-  }
+  props: ["permission", "size"]
 };
 </script>
