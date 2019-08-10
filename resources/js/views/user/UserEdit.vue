@@ -199,7 +199,7 @@
             <p v-else>No other permissions</p>
           </div>
           <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
-            <permission-card :permission="permission" />
+            <permission-card @revoked="load" :permission="permission" />
           </div>
         </div>
       </b-tab-item>

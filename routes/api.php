@@ -102,7 +102,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['update', 'destroy', 'create']
         ]);
         Route::resource('permission', 'PermissionController', [
-            'only' => ['store', 'destroy']
+            'only' => ['store', 'destroy', 'update']
         ]);
 
         Route::post('conference/{conference}/enroll', 'ConferenceController@enroll')
@@ -111,6 +111,18 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference")
             ->name('conference.unenroll');
+
+        // Determine if a user can perform a certain action
+        Route::get('can/{ability}/{model}/{id}', function ($ability, $model, $id) {
+            $class = app("App\\" . $model);
+            if ($id) {
+                $instance = $class::find($id);
+                $result = auth()->user()->can($ability, $instance);
+            } else {
+                $result = auth()->user()->can($ability, $class);
+            }
+            return ["result" => $result];
+        });
     });
     //// AUTHENTICATED ////
 

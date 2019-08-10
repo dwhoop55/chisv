@@ -39,6 +39,19 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
+        $result = $permission->delete();
+        return ['success' => $result, "message" => "Permission revoked"];
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Permission  $permission
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Permission $permission)
+    {
         //
     }
 
@@ -63,16 +76,5 @@ class PermissionController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Permission  $permission
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, Permission $permission)
-    // {
-    //     //
-    // }
 
 }

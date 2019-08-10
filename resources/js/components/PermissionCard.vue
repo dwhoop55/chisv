@@ -1,15 +1,12 @@
 <template>
   <div class="card">
-    <div
-      class="card-image is-cover"
-      :style="{ 
-        'height: 200px':  true,
-        'background-image:url(\'/images/conference-default.jpg\')': !hasImage,
-        backgroundImage: hasImage
-      }"
-      style="height: 200px; background-image:url('/images/conference-default.jpg')"
-    >
-      <b-button outlined @click="confirmRevoke" type="is-danger is-pulled-right has-margin-7">Revoke</b-button>
+    <div class="card-image is-cover" :style="backgroundImage">
+      <b-button
+        v-if="canRevoke"
+        outlined
+        @click="confirmRevoke"
+        type="is-danger is-pulled-right has-margin-7"
+      >Revoke</b-button>
     </div>
 
     <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
@@ -37,23 +34,60 @@
 
 <script>
 import api from "@/api.js";
+import { setTimeout } from "timers";
 
 export default {
   props: ["permission"],
+
+  data() {
+    return {
+      canRevoke: false
+    };
+  },
+
+  created() {
+    this.checkCan();
+  },
 
   computed: {
     hasImage: function() {
       return this.conference && this.conference.image;
     },
     backgroundImage: function() {
-      return `background-image:url(${this.permission.conference.image.path})`;
+      if (this.hasImage) {
+        return `height: 200px; background-image:url(${this.permission.conference.image.path})`;
+      } else {
+        return "height: 200px; background-image:url('/images/conference-default.jpg')";
+      }
     }
   },
 
   methods: {
+    checkCan: function() {
+      api
+        .can("delete", "Permission", this.permission.id)
+        .then(data => {
+          this.canRevoke = data.data.result;
+        })
+        .catch(error => {
+          throw error;
+        });
+    },
     confirmRevoke: function() {
+      let message = `Are you sure you want to <b>revoke</b> ${this.permission.role.name} permissions?`;
+      let extra = "";
+      if (this.permission.role.name == "sv") {
+        extra =
+          "<br/><br/>Remember, when you revoke sv permission you could \
+           <b>loose access to the user</b> when he/she is not associated \
+           otherwise with the conferences you can manage<br/>To gain access again the user has to enroll again.";
+      }
       this.$buefy.dialog.confirm({
-        message: `Revoke ${this.permission.role.name} role on ${this.permission.conference.key}?`,
+        title: `Revoking ${this.permission.role.name} permission`,
+        message: message + extra,
+        confirmText: `Yes, revoke ${this.permission.role.name} permission`,
+        type: "is-danger",
+        hasIcon: true,
         onConfirm: () => {
           this.revoke();
         }
@@ -65,7 +99,7 @@ export default {
         .then(data => {
           this.$buefy.toast.open({
             type: "is-success",
-            message: "The permission was revoked"
+            message: data.data.message
           });
           this.removeFromParent();
         })
@@ -77,7 +111,7 @@ export default {
         });
     },
     removeFromParent: function() {
-      this.$$parent.user.permissions.$remove(this.permission);
+      this.$emit("revoked", this.permission);
     }
   }
 };

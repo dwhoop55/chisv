@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Degree;
 use App\Shirt;
 use App\Http\Resources\Users;
+use App\Http\Requests\UserUpdateRequest;
 
 class UserController extends Controller
 {

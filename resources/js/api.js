@@ -22,6 +22,14 @@ export default {
 
     revokePermission: function (id) {
         return axios.delete(`permission/${id}`);
+    },
+
+    can: function (ability, model, id = null) {
+        if (id) {
+            return axios.get(`can/${ability}/${model}/${id}`);
+        } else {
+            return axios.get(`can/${ability}/${model}`);
+        }
     }
 
 }
