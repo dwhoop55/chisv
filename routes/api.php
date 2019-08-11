@@ -98,8 +98,13 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index', 'show', 'update', 'destroy']
         ]);
         Route::resource('conference', 'ConferenceController', [
-            // 'only' => ['index', 'show', 'update', 'destroy', 'create']
-            'only' => ['update', 'destroy', 'create']
+            'only' => ['index', 'show', 'update', 'destroy', 'create']
+        ]);
+        Route::resource('role', 'RoleController', [
+            'only' => ['index']
+        ]);
+        Route::resource('state', 'StateController', [
+            'only' => ['index']
         ]);
         Route::resource('permission', 'PermissionController', [
             'only' => ['store', 'destroy', 'update']

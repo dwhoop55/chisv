@@ -54,12 +54,11 @@ class UserPolicy
             return true;
         } else if ($user->isChair() || $user->isCaptain()) {
             // This is more tricky:
-            // Only allow view for users which are
-            // enrolled for a conference the user
-            // has the chair/captain role for
-            $conferencesAsSv = $model->conferencesByRole(Role::byName('sv'));
-            $manageableConferences = $user->conferencesByRole(Role::byName('chair'))->merge($user->conferencesByRole(Role::byName('captain')));
-            $conferencesTheyShare = $conferencesAsSv->intersect($manageableConferences);
+            // Only show users, which share conferences
+            // the auth()->user is chair or captain for
+            $conferencesOfModel = $model->conferences;
+            $manageableConferences = $user->conferencesAsChairOrCaptain();
+            $conferencesTheyShare = $conferencesOfModel->intersect($manageableConferences);
             return $conferencesTheyShare->isNotEmpty();
         }
     }

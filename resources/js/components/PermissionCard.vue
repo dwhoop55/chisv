@@ -1,27 +1,48 @@
 <template>
-  <div class="card">
-    <div class="card-image is-cover" :style="backgroundImage">
-      <b-button
-        v-if="canRevoke"
-        outlined
-        @click="confirmRevoke"
-        type="is-danger is-pulled-right has-margin-7"
-      >Revoke</b-button>
-    </div>
+  <section>
+    <div class="card">
+      <div class="card-image is-cover" :style="backgroundImage">
+        <b-field grouped position="is-right">
+          <b-button
+            v-if="canRevoke"
+            outlined
+            @click="confirmRevoke"
+            type="is-danger"
+            class="has-margin-7"
+          >Revoke</b-button>
+        </b-field>
+      </div>
 
-    <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
-      <b-taglist attached class="is-pulled-right">
-        <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
-        <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
-      </b-taglist>
-      <div class="has-margin-4">
-        <p class="subtitle" v-if="permission.conference">
-          <a :href="'/conference/' + permission.conference.key">{{ permission.conference.name }}</a>
-        </p>
-        <p class="subtitle" v-else>All conferences</p>
+      <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
+        <b-taglist
+          @click.native="showEditModal=true"
+          attached
+          :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
+        >
+          <b-tag v-if="canRevoke" rounded :type="editType" size="is-large">
+            <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
+          </b-tag>
+          <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
+          <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
+          <!-- <b-tag v-if="canRevoke" rounded type="is-danger" size="is-large">
+          <b-tooltip type="is-danger" label="Revoke" multilined>
+            <b-icon icon="close-circle" size="is-small"></b-icon>
+          </b-tooltip>
+          </b-tag>-->
+        </b-taglist>
+
+        <div class="has-margin-4">
+          <p class="subtitle" v-if="permission.conference">
+            <a :href="'/conference/' + permission.conference.key">{{ permission.conference.name }}</a>
+          </p>
+          <p class="subtitle" v-else>All conferences</p>
+        </div>
       </div>
     </div>
-  </div>
+    <b-modal @close="$emit('updated')" :active.sync="showEditModal" has-modal-card>
+      <edit-permission-modal @updated="$emit('updated')" :permission="permission"></edit-permission-modal>
+    </b-modal>
+  </section>
 </template>
 
 <script>
@@ -33,7 +54,8 @@ export default {
 
   data() {
     return {
-      canRevoke: false
+      canRevoke: null,
+      showEditModal: false
     };
   },
 
@@ -42,6 +64,9 @@ export default {
   },
 
   computed: {
+    editType: function() {
+      return this.roleType(this.permission.role);
+    },
     hasImage: function() {
       return this.conference && this.conference.image;
     },

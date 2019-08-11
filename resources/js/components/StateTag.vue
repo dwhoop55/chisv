@@ -1,6 +1,6 @@
 <template>
-  <b-tag rounded :size="size" :type="stateType">
-    <b-tooltip :type="stateType" :label="state.description" multilined>{{ state.name }}</b-tooltip>
+  <b-tag rounded :size="size" :type="type">
+    <b-tooltip :type="type" :label="state.description" multilined>{{ state.name }}</b-tooltip>
   </b-tag>
 </template>
 
@@ -9,21 +9,8 @@ export default {
   props: ["state", "size"],
 
   computed: {
-    stateType: function() {
-      switch (this.state.name) {
-        case "accepted":
-          return "is-success";
-          break;
-        case "dropped":
-          return "is-danger";
-          break;
-        case "enrolled":
-          return "is-light";
-          break;
-        case "waitlisted":
-          return "is-warning";
-          break;
-      }
+    type: function() {
+      return this.stateType(this.state);
     }
   }
 };

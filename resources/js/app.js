@@ -36,6 +36,12 @@ files.keys().map(key =>
     )
 );
 
+Vue.filter('capitalize', function (value) {
+    if (!value) return ''
+    value = value.toString()
+    return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
 Vue.mixin({
     methods: {
         goTo: function (path) {
@@ -43,7 +49,38 @@ Vue.mixin({
         },
         goBack: function () {
             window.history.back();
-        }
+        },
+        stateType: function (state) {
+            switch (state.name) {
+                case "accepted":
+                    return "is-success";
+                    break;
+                case "dropped":
+                    return "is-danger";
+                    break;
+                case "enrolled":
+                    return "is-light";
+                    break;
+                case "waitlisted":
+                    return "is-warning";
+                    break;
+            }
+        },
+        roleType: function (role) {
+            if (role.name) {
+                switch (role.name) {
+                    case "sv":
+                        return "is-light";
+                        break;
+                    case "chair":
+                        return "is-dark";
+                        break;
+                    case "captain":
+                        return "is-primary";
+                        break;
+                }
+            }
+        },
     }
 });
 

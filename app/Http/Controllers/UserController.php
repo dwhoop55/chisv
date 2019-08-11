@@ -37,6 +37,17 @@ class UserController extends Controller
         $userQuery = User::with('degree', 'shirt', 'university', 'permissions.conference', 'permissions.role')
             ->orderBy(request()->sort_by, request()->sort_order);
 
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        // Why not simply using the Gate to allow for view?
+        // The answer is: You would have to fetch all users first,
+        // then you'll have a collection. You can then loop through
+        // the collection (filter) only the users the can be view'ed
+        // BUT then you can no longer paginate on the query
+        // Paginate is not available (stock) for collections,
+        // but we account for really large userbase. I've tested
+        // this code with over 1000 users and it yields enough performance
+        // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
         // Now we need to distunguish beween the roles and limit
         // the users we will query for if the authUser is anything
         // but an admin

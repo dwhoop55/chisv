@@ -186,14 +186,17 @@
 
       <b-tab-item icon="format-list-bulleted" label="Conferences">
         <div v-if="user">
-          <grant-permission-button v-if="canGrant" class="is-pulled-right"></grant-permission-button>
+          <b-button @click="showGrantModal=true" class="is-pulled-right" v-if="canGrant">Grant</b-button>
+          <b-modal :active.sync="showGrantModal" has-modal-card>
+            <grant-permission-modal @granted="load" :user="user"></grant-permission-modal>
+          </b-modal>
 
           <div class="subtitle has-margin-t-3">
             <p v-if="hasActivePermissions">Active conferences</p>
             <p v-else>Not associated to active conferences</p>
           </div>
           <div class="column" v-for="permission in activePermissions" v-bind:key="permission.id">
-            <permission-card :permission="permission" />
+            <permission-card @revoked="load" @updated="load" :permission="permission" />
           </div>
 
           <div class="subtitle has-margin-t-3">
@@ -201,7 +204,7 @@
             <p v-else>No other permissions</p>
           </div>
           <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
-            <permission-card @revoked="load()" :permission="permission" />
+            <permission-card @revoked="load" @updated="load" :permission="permission" />
           </div>
         </div>
       </b-tab-item>
@@ -273,7 +276,8 @@ export default {
       }),
       user: null,
       isLoading: true,
-      activeTab: 0
+      activeTab: 3,
+      showGrantModal: false
     };
   },
 
@@ -292,9 +296,11 @@ export default {
               this.goTo("/user");
             })
             .catch(error => {
-              this.$buefy.toast.open({
-                message: `An error occured: ${error}`,
-                type: "is-danger"
+              this.$buefy.notification.open({
+                duration: 5000,
+                message: `Error: ${error.message}`,
+                type: "is-danger",
+                hasIcon: true
               });
             });
         }
@@ -325,10 +331,11 @@ export default {
           });
         })
         .catch(error => {
-          this.$buefy.toast.open({
+          this.$buefy.notification.open({
             duration: 5000,
             message: `Could not save user: ${error.message}`,
-            type: "is-danger"
+            type: "is-danger",
+            hasIcon: true
           });
         });
     },

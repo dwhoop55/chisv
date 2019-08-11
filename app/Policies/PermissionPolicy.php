@@ -40,7 +40,31 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        if ($user->isAdmin() || $user->isChair() || $user->isCaptain()) {
+        if ($user->isAdmin() || $user->isChair()) {
+            return true;
+        }
+    }
+
+    /**
+     * Determine whether the user can create a specific permission.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Permission  $permission
+     * @return mixed
+     */
+    public function createThis(User $user, Permission $permission)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        $conference = $permission->conference;
+        if (
+            $user->isChair($conference)
+            && $permission->role != Role::byName('admin')
+        ) {
+            // If the user is chair for the conference in the permission
+            // and is not trying to grant admin, we allow
             return true;
         }
     }
@@ -64,8 +88,7 @@ class PermissionPolicy
         }
 
         if (
-            $conference && ($user->isChair($conference) || $user->isCaptain($conference)
-                && ($permission->role_id == $permission->role_id))
+            $conference && ($user->isChair($conference) || $user->isCaptain($conference))
         ) {
             // Allow update if the user is chair or captain
             // for the conference in the permission and

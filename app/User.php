@@ -48,6 +48,11 @@ class User extends Authenticatable
         return $this->hasManyThrough('App\Conference', 'App\Permission', 'user_id', 'id', 'id', 'conference_id')->where('role_id', $role->id)->get();
     }
 
+    public function conferences()
+    {
+        return $this->hasManyThrough('App\Conference', 'App\Permission', 'user_id', 'id', 'id', 'conference_id');
+    }
+
     public function languages()
     {
         return $this->belongsToMany('App\Language');

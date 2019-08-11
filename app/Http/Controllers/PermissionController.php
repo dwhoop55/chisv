@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use Illuminate\Http\Request;
+use App\Http\Requests\PermissionRequest;
 
 class PermissionController extends Controller
 {
@@ -26,9 +27,23 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
-        //
+        $permission = new Permission($request->all());
+        $user = auth()->user();
+
+        // Last check: abort if the policy denies creation of
+        // this specific permission for the given user
+        abort_unless($user->can('createThis', $permission), 403, 'You don\'t have permission to create this permission');
+
+        // Now try to save - when the permission already exists this will fail
+        // return a message then
+        try {
+            $result = $permission->save();
+        } catch (\Throwable $th) {
+            abort(400, 'Permission already exists');
+        }
+        return ["result" => $result, "message" => "Permission granted!"];
     }
 
     /**
@@ -52,7 +67,22 @@ class PermissionController extends Controller
      */
     public function update(Request $request, Permission $permission)
     {
-        //
+        $updatedPermission = new Permission($request->all());
+        $user = auth()->user();
+
+        // Last check: abort if the policy denies update of
+        // this specific permission for the given user
+        abort_unless($user->can('createThis', $updatedPermission), 403, 'You don\'t have permission to update the permission in this way');
+
+        // Now try to save - when the permission already exists this will fail
+        // return a message then
+        try {
+            $oldPermission = Permission::find($request->get('id'));
+            $result = $oldPermission->update($request->all(['role_id', 'conference_id', 'state_id']));
+        } catch (\Throwable $th) {
+            abort(400, 'Permission already exists');
+        }
+        return ["result" => $result, "message" => "Permission updated!"];
     }
 
     // /**

@@ -11,6 +11,7 @@ use Dotenv\Exception\InvalidFileException;
 use App\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Role;
+use App\Http\Resources\Conferences;
 
 class ConferenceController extends Controller
 {
@@ -24,6 +25,24 @@ class ConferenceController extends Controller
         // This will only authorize CRUD, not the index
         // we authorize it manually
         $this->authorizeResource(Conference::class);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index()
+    {
+
+        // Ask the ConferencePolicy if index is allowed for that user
+        $this->authorize('index', Conference::class);
+
+        $conferences = Conference::all()->filter(function ($conference) {
+            return auth()->user()->can('view', $conference);
+        });
+
+        return new Conferences($conferences);
     }
 
     /** 

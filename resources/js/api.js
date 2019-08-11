@@ -1,4 +1,7 @@
 export default {
+    getConferences: function () {
+        return axios.get("conference");
+    },
     getConference: function (key) {
         return axios.get(`conference/${key}`);
     },
@@ -20,8 +23,22 @@ export default {
         return axios.delete(`conference/${key}`);
     },
 
+    getRoles: function () {
+        return axios.get("role");
+    },
+
+    getStates: function () {
+        return axios.get("state");
+    },
+
+    grantPermission: function (vform) {
+        return vform.post("permission");
+    },
     revokePermission: function (id) {
         return axios.delete(`permission/${id}`);
+    },
+    updatePermission: function (vform, id) {
+        return vform.put(`permission/${id}`);
     },
 
     can: function (ability, model, id = null) {
