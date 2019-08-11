@@ -10,18 +10,10 @@
     </div>
 
     <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
-      <state-tag
-        class="is-pulled-right has-margin-l-7"
-        size="is-large"
-        v-if="permission.state"
-        :state="permission.state"
-      />
-      <role-tag
-        class="is-pulled-right has-margin-l-7"
-        :role="permission.role"
-        size="is-large"
-        v-if="permission.role"
-      />
+      <b-taglist attached class="is-pulled-right">
+        <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
+        <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
+      </b-taglist>
       <div class="has-margin-4">
         <p class="subtitle" v-if="permission.conference">
           <a :href="'/conference/' + permission.conference.key">{{ permission.conference.name }}</a>
