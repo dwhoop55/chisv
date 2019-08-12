@@ -309,15 +309,15 @@ export default {
     save() {
       var form;
       switch (this.activeTab) {
-        case 0: //profile
+        case 1: //profile
           form = this.profileForm;
           break;
 
-        case 1: // locale
+        case 2: // locale
           form = this.localeForm;
           break;
 
-        case 2: //password
+        case 3: //password
           form = this.passwordForm;
           break;
       }
