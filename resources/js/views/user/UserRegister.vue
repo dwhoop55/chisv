@@ -117,8 +117,9 @@
           ></b-input>
         </b-field>
       </b-field>
-
-      <button :disabled="form.busy" type="submit" class="button is-primary is-pulled-right">Sign up</button>
+      <b-field grouped position="is-right">
+        <button :disabled="form.busy" type="submit" class="button is-primary">Sign up</button>
+      </b-field>
     </form>
 
     <b-loading animation :is-full-page="true" :active.sync="form.busy"></b-loading>

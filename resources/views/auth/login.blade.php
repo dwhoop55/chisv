@@ -1,14 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
-
 <div class="columns is-centered">
     <div class="column is-half">
-        <div class="form-card">
-            <div class="form-title">
-                <h1>Sign In</h1>
-            </div>
-            <div class="form-content">
+        <div class="card">
+            <header class="card-header">
+                <p class="card-header-title is-block has-text-centered">
+                    Sign in to chisv
+                </p>
+            </header>
+            <div class="card-content">
 
                 <div class="field">
                     <form action="{{ route('login') }}" method="POST">
@@ -57,7 +58,9 @@
                         <div class="field">
                             <a href="{{ route('password.request') }}">Forgot Your Password?</a>
                         </div>
-
+                        <div class="field">
+                            <a href="{{ route('register.show') }}">No Account? Sign up</a>
+                        </div>
                         <div class="field is-grouped is-grouped-right">
                             <p class="control">
                                 <button type="submit" class="button is-primary">
@@ -70,6 +73,5 @@
             </div>
         </div>
     </div>
-</div>
 </div>
 @endsection

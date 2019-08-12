@@ -61,19 +61,22 @@ export default {
         .then(data => {
           this.$buefy.toast.open({
             message: data.data.message,
-            type: "is-success"
+            type: "is-success",
+            queue: false
           });
           this.$emit("granted", this.form);
           this.$parent.close();
         })
         .catch(error => {
-          this.$buefy.notification.open({
-            queue: false,
-            indefinite: true,
-            hasIcon: true,
-            message: error.response.data.message,
-            type: "is-danger"
-          });
+          if (error.response.status != 422) {
+            this.$buefy.notification.open({
+              queue: false,
+              indefinite: true,
+              hasIcon: true,
+              message: error.response.data.message,
+              type: "is-danger"
+            });
+          }
         });
     }
   },
