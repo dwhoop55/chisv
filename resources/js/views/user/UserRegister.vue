@@ -130,12 +130,9 @@
           <h1 class="title">Welcome on board!</h1>
           <h2 class="subtitle">You can now see all conferences and enroll. Happy SV-ing!</h2>
         </b-message>
-        <b-button
-          class="is-pulled-right"
-          type="is-success"
-          size="is-large"
-          @click="goTo('/login')"
-        >Login</b-button>
+        <b-field grouped position="is-right">
+          <b-button type="is-success" size="is-large" @click="goTo('/login')">Login</b-button>
+        </b-field>
       </div>
     </b-modal>
   </section>
