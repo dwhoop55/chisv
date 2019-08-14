@@ -15,7 +15,7 @@
 
       <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
         <b-taglist
-          @click.native="showEditModal=true"
+          @click.native="tagClick"
           attached
           :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
         >
@@ -127,6 +127,11 @@ export default {
             message: error.message
           });
         });
+    },
+    tagClick: function() {
+      if (this.canRevoke) {
+        this.showEditModal = true;
+      }
     }
   }
 };

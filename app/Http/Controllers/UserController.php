@@ -8,6 +8,7 @@ use App\Degree;
 use App\Shirt;
 use App\Http\Resources\Users;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {

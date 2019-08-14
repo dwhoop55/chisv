@@ -10,13 +10,14 @@ require("./bootstrap");
 import Vue from "vue";
 import Buefy from "buefy";
 import { Form, HasError, AlertError } from 'vform'
-
+import VueMoment from 'vue-moment'
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
 
 Vue.use(Buefy);
+Vue.use(VueMoment);
 
 /**
  * The following block of code may be used to automatically register your
@@ -40,6 +41,10 @@ Vue.filter('capitalize', function (value) {
     if (!value) return ''
     value = value.toString()
     return value.charAt(0).toUpperCase() + value.slice(1)
+})
+
+Vue.filter('textlimit', function (text, limit, clamp = '...') {
+    return text.length > limit ? text.slice(0, limit) + clamp : text;
 })
 
 Vue.mixin({

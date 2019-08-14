@@ -66,7 +66,7 @@
         :message="form.errors.get('degree_id')"
         label="Degree program"
       >
-        <degree-select v-model="form.degree_id"></degree-select>
+        <degree-picker v-model="form.degree_id"></degree-picker>
       </b-field>
 
       <b-field grouped>
@@ -93,7 +93,7 @@
         :message="form.errors.get('shirt_id')"
         label="T-Shirt"
       >
-        <shirt-select v-model="form.shirt_id"></shirt-select>
+        <shirt-picker v-model="form.shirt_id"></shirt-picker>
       </b-field>
 
       <b-field label="Password" :message="form.errors.get('password')">

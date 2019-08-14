@@ -2,11 +2,14 @@
 
 @section('content')
 
+<conference-index></conference-index>
+
+{{-- 
 @can('create', App\Conference::class)
 <div class="container">
     <div class="field">
         <a class="button is-pulled-right" href="{{ route('conference.showCreate') }}">Add new Conference</a>
-    </div>
+</div>
 </div>
 @endcan
 
@@ -61,6 +64,6 @@
         </div>
     </article>
     @endforeach
-</div>
+</div> --}}
 
 @endsection

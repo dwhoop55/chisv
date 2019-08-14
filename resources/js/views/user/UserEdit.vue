@@ -69,7 +69,7 @@
             :message="profileForm.errors.get('degree_id')"
             label="Degree program"
           >
-            <degree-select v-model="profileForm.degree_id"></degree-select>
+            <degree-picker v-model="profileForm.degree_id"></degree-picker>
           </b-field>
 
           <b-field grouped>
@@ -96,7 +96,7 @@
             :message="profileForm.errors.get('shirt_id')"
             label="T-Shirt"
           >
-            <shirt-select v-model="profileForm.shirt_id"></shirt-select>
+            <shirt-picker v-model="profileForm.shirt_id"></shirt-picker>
           </b-field>
 
           <button
