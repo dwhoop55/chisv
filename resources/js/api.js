@@ -9,6 +9,10 @@ export default {
         return axios.get(`user/${id}`);
     },
 
+    createConference: function (vform) {
+        return vform.post(`conference`);
+    },
+
     updateUser: function (id, vform) {
         return vform.put(`user/${id}`);
     },

@@ -3,13 +3,15 @@
     <div class="card">
       <div class="card-image is-cover" :style="backgroundImage">
         <b-field grouped position="is-right">
-          <b-button
-            v-if="canRevoke"
-            outlined
-            @click="confirmRevoke"
-            type="is-danger"
-            class="has-margin-7"
-          >Revoke</b-button>
+          <transition name="slide-fade">
+            <b-button
+              v-if="canRevoke"
+              outlined
+              @click="confirmRevoke"
+              type="is-danger"
+              class="has-margin-7"
+            >Revoke</b-button>
+          </transition>
         </b-field>
       </div>
 
@@ -19,9 +21,11 @@
           attached
           :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
         >
-          <b-tag v-if="canRevoke" rounded :type="editType" size="is-large">
-            <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
-          </b-tag>
+          <transition name="slide-fade">
+            <b-tag v-if="canRevoke" rounded :type="editType" size="is-large">
+              <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
+            </b-tag>
+          </transition>
           <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
           <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
           <!-- <b-tag v-if="canRevoke" rounded type="is-danger" size="is-large">
@@ -54,7 +58,7 @@ export default {
 
   data() {
     return {
-      canRevoke: null,
+      canRevoke: false,
       showEditModal: false
     };
   },

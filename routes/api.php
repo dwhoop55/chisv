@@ -98,7 +98,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index', 'show', 'update', 'destroy']
         ]);
         Route::resource('conference', 'ConferenceController', [
-            'only' => ['index', 'show', 'update', 'destroy', 'create']
+            'only' => ['index', 'show', 'update', 'destroy', 'store']
         ]);
         Route::resource('role', 'RoleController', [
             'only' => ['index']
@@ -118,7 +118,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.unenroll');
 
         // Determine if a user can perform a certain action
-        Route::get('can/{ability}/{model}/{id}', function ($ability, $model, $id) {
+        Route::get('can/{ability}/{model}/{id?}', function ($ability, $model, $id = null) {
             $class = app("App\\" . $model);
             if ($id) {
                 $instance = $class::find($id);
