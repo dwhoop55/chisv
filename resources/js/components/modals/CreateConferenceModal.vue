@@ -4,6 +4,10 @@
       <p class="card-header-title">Create new conference</p>
     </header>
     <div class="card-content">
+      <p class="has-padding-5">
+        This conference will be in state
+        <strong>planning</strong> after creation
+      </p>
       <form @submit.prevent="create" @keydown="form.onKeydown($event)">
         <b-field
           label="Name"

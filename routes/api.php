@@ -116,6 +116,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference")
             ->name('conference.unenroll');
+        Route::post('conference/{conference}/users', 'ConferenceController@showUsers')
+            ->middleware("can:view,conference")
+            ->name('conference.showUsers');
 
         // Determine if a user can perform a certain action
         Route::get('can/{ability}/{model}/{id?}', function ($ability, $model, $id = null) {

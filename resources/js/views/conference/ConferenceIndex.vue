@@ -60,7 +60,7 @@ export default {
         });
     },
     goToConference: function(key) {
-      goTo(`/conference/${key}`);
+      this.goTo(`/conference/${key}/edit`);
     }
   }
 };

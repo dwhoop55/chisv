@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
+use App\Http\Requests\ConferenceCreateRequest;
 use App\State;
 use App\Timezone;
 use App\User;
-use App\Http\Requests\ConferenceRequest;
-use Dotenv\Exception\InvalidFileException;
 use App\Image;
-use Illuminate\Support\Facades\Storage;
 use App\Role;
 use App\Http\Resources\Conferences;
 
@@ -25,6 +23,30 @@ class ConferenceController extends Controller
         // This will only authorize CRUD, not the index
         // we authorize it manually
         $this->authorizeResource(Conference::class);
+    }
+
+    /**
+     * Show a conference.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Conference $conference)
+    {
+        return $conference;
+    }
+
+    /**
+     * Show all users of a conference.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showUsers(Conference $conference)
+    {
+        // We want to return only users which are allowed to be viewd by the authUser
+        $users = $conference->users->filter(function ($user) {
+            return auth()->user()->can('view', $user);
+        });
+        return $users;
     }
 
     /**
@@ -93,7 +115,7 @@ class ConferenceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ConferenceRequest $request)
+    public function store(ConferenceCreateRequest $request)
     {
         $validated = $request->validated();
         $result = Conference::create($validated);

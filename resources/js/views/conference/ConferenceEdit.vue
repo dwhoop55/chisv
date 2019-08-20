@@ -12,6 +12,42 @@
             <b-input required v-model="generalForm.name"></b-input>
           </b-field>
 
+          <b-field
+            expanded
+            :type="{ 'is-danger': generalForm.errors.has('key') }"
+            :message="generalForm.errors.get('key')"
+            label="Key (https://chisv.org/conference/key)"
+          >
+            <b-input required v-model="generalForm.key"></b-input>
+          </b-field>
+
+          <b-field
+            expanded
+            :type="{ 'is-danger': generalForm.errors.has('location') }"
+            :message="generalForm.errors.get('location')"
+            label="Location"
+          >
+            <b-input required v-model="generalForm.location"></b-input>
+          </b-field>
+
+          <b-field
+            expanded
+            :type="{ 'is-danger': generalForm.errors.has('timezone_id') }"
+            :message="generalForm.errors.get('timezone_id')"
+            label="Timezone"
+          >
+            <timezone-picker v-model="generalForm.timezone_id"></timezone-picker>
+          </b-field>
+
+          <b-field
+            expanded
+            :type="{ 'is-danger': generalForm.errors.has('start_date')||generalForm.errors.has('end_date') }"
+            :message="generalForm.errors.get('start_date') + generalForm.errors.get('end_date')"
+            label="Date"
+          >
+            <b-datepicker v-model="dateRange" range inline></b-datepicker>
+          </b-field>
+
           <button
             :disabled="generalForm.busy"
             type="submit"
@@ -41,11 +77,25 @@ import api from "@/api.js";
 export default {
   props: ["canDelete", "conferenceKey"],
 
+  computed: {
+    dateRange: function() {
+      if (this.generalForm.start_date && this.generalForm.end_date) {
+        return [
+          new Date(
+            Date.parse(this.generalForm.start_date.replace("-", "/", "g"))
+          ),
+          new Date(Date.parse(this.generalForm.end_date.replace("-", "/", "g")))
+        ];
+      }
+    }
+  },
+
   data() {
     return {
       conference: null,
       activeTab: 0,
       generalForm: new Form({
+        id: null,
         name: null,
         key: this.conferenceKey,
         location: null,

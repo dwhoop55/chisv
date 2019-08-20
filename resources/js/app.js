@@ -44,7 +44,9 @@ Vue.filter('capitalize', function (value) {
 })
 
 Vue.filter('textlimit', function (text, limit, clamp = '...') {
-    return text.length > limit ? text.slice(0, limit) + clamp : text;
+    if (text) {
+        return text.length > limit ? text.slice(0, limit) + clamp : text;
+    }
 })
 
 Vue.mixin({
