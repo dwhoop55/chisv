@@ -19,19 +19,17 @@ class ConferenceUpdateRequest extends FormRequest
         abort_unless($conference, 400, "No conference with this id!");
 
         $rules = [
-            'name' => 'max:100|unique:conferences,name,' . $conference->id,
-            'key' => 'max:30|url|unique:conferences,key,' . $conference->id,
-            'icon' => 'file|image|mimes:jpeg,png,gif,webp|max:1024',
-            'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
-            'location' => 'string|max:100',
+            'name' => 'max:70|unique:conferences,name,' . $conference->id,
+            'key' => 'max:30|alpha_num|unique:conferences,key,' . $conference->id,
+            'location' => 'string|max:70',
+            'timezone_id' => 'integer|exists:timezones,id',
             'start_date' => 'date',
             'end_date' => 'date',
-            'description' => 'string|max:1000',
-            'timezone_id' => 'integer|exists:timezones,id',
+            'description' => 'string|max:700',
             'state_id' => 'integer|exists:states,id',
-            'enable_bidding' => 'integer',
-            // 'delete_icon' => 'integer',
-            // 'delete_image' => 'integer',
+            'enable_bidding' => 'boolean',
+            'icon' => 'file|image|mimes:jpeg,png,gif,webp|max:1024',
+            'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
         ];
 
         return $rules;
@@ -45,7 +43,7 @@ class ConferenceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            "key.url" => "This has to be a valid part of an http url"
+            "key.alpha_num" => "This has to be a valid part of an http url"
         ];
     }
 }

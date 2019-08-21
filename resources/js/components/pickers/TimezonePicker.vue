@@ -1,7 +1,13 @@
 // v-model safe
 <template>
   <section>
-    <b-select placeholder="Select a timezone" :loading="fetching" :value="value" @input="input">
+    <b-select
+      expanded
+      placeholder="Select a timezone"
+      :loading="fetching"
+      :value="value"
+      @input="input"
+    >
       <option v-for="option in timezones" :value="option.id" :key="option.id">{{ option.name }}</option>
     </b-select>
   </section>
@@ -22,7 +28,15 @@ export default {
     input: function(event) {
       if (Number.isInteger(event)) {
         this.$emit("input", event);
+        this.emitObject(event);
       }
+    },
+    emitObject: function(id) {
+      this.timezones.forEach(timezone => {
+        if (timezone.id == id) {
+          this.$emit("timezone", timezone);
+        }
+      });
     }
   },
 

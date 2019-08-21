@@ -125,47 +125,15 @@
             <university-picker v-model="localeForm.university"></university-picker>
           </b-field>
 
-          <b-field
+          <!-- <b-field
             :type="{ 'is-danger': localeForm.errors.has('timezone_id') }"
             :message="localeForm.errors.get('timezone_id')"
-            label="Display dates in this timezone"
+            label="All dates are converted to this timezone"
           >
-            <timezone-picker v-model="localeForm.timezone_id"></timezone-picker>
-          </b-field>
-
-          <b-field
-            :type="{ 'is-danger': localeForm.errors.has('date_format') }"
-            :message="localeForm.errors.get('date_format')"
-            label="Display dates in this format"
-          >
-            <b-select v-model="localeForm.date_format" placeholder="Select a format">
-              <option value="d.m.Y">d.m.Y (25.04.2019)</option>
-              <option value="d.m.y">d.m.y (25.04.19)</option>
-              <option value="Y-m-d">Y-m-d (2019-04-25)</option>
-            </b-select>
-          </b-field>
-
-          <b-field
-            :type="{ 'is-danger': localeForm.errors.has('time_format') }"
-            :message="localeForm.errors.get('time_format')"
-            label="Display time in this format"
-          >
-            <b-select v-model="localeForm.time_format" placeholder="Select a format">
-              <option value="H:i">H:i (14:25)</option>
-              <option value="h:i a">h:i a (2:25 pm)</option>
-            </b-select>
-          </b-field>
-
-          <b-field
-            :type="{ 'is-danger': localeForm.errors.has('time_sec_format') }"
-            :message="localeForm.errors.get('time_sec_format')"
-            label="Display time (with seconds) in this format"
-          >
-            <b-select v-model="localeForm.time_sec_format" placeholder="Select a format">
-              <option value="H:i:s">H:i:s (14:25:59)</option>
-              <option value="h:i:s a">h:i:s a (2:25:59 pm)</option>
-            </b-select>
-          </b-field>
+            <b-tooltip position="is-bottom" label="Not used yet, but please set it" always>
+              <timezone-picker v-model="localeForm.timezone_id"></timezone-picker>
+            </b-tooltip>
+          </b-field>-->
 
           <button
             :disabled="localeForm.busy"
@@ -264,10 +232,7 @@ export default {
         id: null,
         location: {},
         university: {},
-        timezone_id: null,
-        date_format: null,
-        time_format: null,
-        time_sec_format: null
+        timezone_id: null
       }),
       passwordForm: new Form({
         id: null,
@@ -297,6 +262,7 @@ export default {
             })
             .catch(error => {
               this.$buefy.notification.open({
+                queue: false,
                 duration: 5000,
                 message: `Error: ${error.message}`,
                 type: "is-danger",
@@ -326,12 +292,14 @@ export default {
         .then(data => {
           this.load();
           this.$buefy.toast.open({
+            queue: false,
             message: "Changes saved!",
             type: "is-success"
           });
         })
         .catch(error => {
           this.$buefy.notification.open({
+            queue: false,
             duration: 5000,
             message: `Could not save user: ${error.message}`,
             type: "is-danger",
@@ -362,6 +330,7 @@ export default {
             this.goTo("/user");
           }
           this.$buefy.notification.open({
+            queue: false,
             duration: 5000,
             message: `Could not fetch user: ${error.message}`,
             type: "is-danger",

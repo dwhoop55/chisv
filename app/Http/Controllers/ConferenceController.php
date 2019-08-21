@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Conference;
 use App\Http\Requests\ConferenceCreateRequest;
+use App\Http\Requests\ConferenceUpdateRequest;
 use App\State;
 use App\Timezone;
 use App\User;
@@ -130,7 +131,7 @@ class ConferenceController extends Controller
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
-    public function update(ConferenceRequest $request, Conference $conference)
+    public function update(ConferenceUpdateRequest $request, Conference $conference)
     {
         // // TODO: data is validated, this is not required anymore
         // $validated = $request->validated();

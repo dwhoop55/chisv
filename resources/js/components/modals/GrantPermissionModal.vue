@@ -26,7 +26,7 @@
           :message="form.errors.get('state_id')"
         >
           <!-- Assigning min-id will only show states for the sv -->
-          <state-picker min-id="10" v-model="form.state_id"></state-picker>
+          <state-picker :range="[10,20]" v-model="form.state_id"></state-picker>
         </b-field>
         <b-field grouped position="is-right">
           <button :disabled="form.busy" type="submit" class="button is-success">Grant</button>

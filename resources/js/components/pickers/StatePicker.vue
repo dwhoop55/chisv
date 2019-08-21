@@ -18,7 +18,7 @@
 import api from "@/api.js";
 
 export default {
-  props: ["value", "min-id"],
+  props: ["value", "range"],
 
   data() {
     return {
@@ -37,9 +37,11 @@ export default {
 
   computed: {
     filteredStates: function() {
-      return this.states.filter(function(state) {
-        return state.id >= 10;
-      });
+      return this.states.filter(
+        function(state) {
+          return state.id >= this.range[0] && state.id <= this.range[1];
+        }.bind(this)
+      );
     }
   },
 

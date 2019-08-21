@@ -29,9 +29,9 @@ class CreateUsersTable extends Migration
             $table->string('past_conferences')->nullable()->default(null);
             $table->string('past_conferences_sv')->nullable()->default(null);
 
-            $table->string('date_format')->default('d.m.Y');
-            $table->string('time_sec_format')->default('H:i:s');
-            $table->string('time_format')->default('H:i');
+            // $table->string('date_format')->default('d.m.Y');
+            // $table->string('time_sec_format')->default('H:i:s');
+            // $table->string('time_format')->default('H:i');
 
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
