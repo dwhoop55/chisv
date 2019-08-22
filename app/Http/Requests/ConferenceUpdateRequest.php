@@ -15,7 +15,7 @@ class ConferenceUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $conference = Conference::find($request->id);
+        $conference = $request->route('conference');
         abort_unless($conference, 400, "No conference with this id!");
 
         $rules = [
@@ -28,8 +28,6 @@ class ConferenceUpdateRequest extends FormRequest
             'description' => 'string|max:700',
             'state_id' => 'integer|exists:states,id',
             'enable_bidding' => 'boolean',
-            'icon' => 'file|image|mimes:jpeg,png,gif,webp|max:1024',
-            'image' => 'file|image|mimes:jpeg,png,gif,webp|max:2048',
         ];
 
         return $rules;
@@ -43,7 +41,10 @@ class ConferenceUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            "key.alpha_num" => "This has to be a valid part of an http url"
+            "key.alpha_num" => "This has to be a valid part of an http url",
+            "timezone_id.*" => "Please pick a timezone from the list",
+            "location.*" => "Please specify a location",
+            "description.string" => "Please give a short intro into the conference"
         ];
     }
 }

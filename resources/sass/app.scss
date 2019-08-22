@@ -123,12 +123,15 @@ h3 {
 
 .is-flex-conferences {
   justify-content: center;
-  align-items: center;
+  align-items: stretch;
+}
+
+.is-100vh {
+  height: 100%;
 }
 
 .card {
   border-radius: 0.5rem;
-  // box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1), 0 0 0 1px rgba(0, 0, 0, 0.1);
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
 }

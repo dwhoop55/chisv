@@ -27,7 +27,12 @@
             :message="generalForm.errors.get('location')"
             label="Location"
           >
-            <b-input required v-model="generalForm.location" maxlength="70"></b-input>
+            <b-input
+              required
+              v-model="generalForm.location"
+              maxlength="70"
+              placeholder="e.g. City, State, Country - or - City, Country"
+            ></b-input>
           </b-field>
 
           <b-field grouped>
@@ -45,7 +50,12 @@
               :type="{ 'is-danger': hasDateErrors }"
               :message="dateErrors"
             >
-              <b-datepicker @input="updateDateRange" :value="dateRange" range></b-datepicker>
+              <b-datepicker
+                placeholder="Select a range"
+                @input="updateDateRange"
+                :value="dateRange"
+                range
+              ></b-datepicker>
             </b-field>
           </b-field>
 
@@ -55,7 +65,12 @@
             :type="{ 'is-danger': generalForm.errors.has('description') }"
             :message="generalForm.errors.get('description')"
           >
-            <b-input maxlength="300" v-model="generalForm.description" type="textarea"></b-input>
+            <b-input
+              maxlength="300"
+              placeholder="Let your users know what the conference is about"
+              v-model="generalForm.description"
+              type="textarea"
+            ></b-input>
           </b-field>
 
           <b-field
@@ -68,7 +83,7 @@
           </b-field>
 
           <b-field
-            label="Enable bidding"
+            label="Enable bidding on tasks"
             expanded
             :type="{ 'is-danger': generalForm.errors.has('enable_bidding') }"
             :message="generalForm.errors.get('enable_bidding')"
@@ -76,22 +91,133 @@
             <b-switch v-model="generalForm.enable_bidding"></b-switch>
           </b-field>
 
-          <button
-            :disabled="generalForm.busy"
-            type="submit"
-            class="button is-primary is-pulled-right"
-          >Save</button>
+          <b-field class="buttons" grouped position="is-centered">
+            <a :href="`/conference/${conferenceKey}`" class="button">
+              <span class="icon">
+                <i class="mdi mdi-arrow-left"></i>
+              </span>
+              <span>Cancel</span>
+            </a>
+            <button :disabled="generalForm.busy" type="submit" class="button is-success">
+              <span class="icon">
+                <i class="mdi mdi-check"></i>
+              </span>
+              <span>Apply</span>
+            </button>
+          </b-field>
         </form>
       </b-tab-item>
 
-      <b-tab-item icon="image" label="Image"></b-tab-item>
+      <b-tab-item icon="image" label="Image">
+        <form @submit.prevent="save" @keydown="imageForm.onKeydown($event)">
+          <div class="section box">
+            <b-field grouped>
+              <b-field label="Active Artwork" expanded>
+                <figure v-if="conference.image" class="image">
+                  <img :src="conference.image.path" />
+                </figure>
+                <figure v-else class="image">
+                  <small>This is the default image which is active when no image is uploaded</small>
+                  <img src="/images/conference-default.jpg" />
+                </figure>
+              </b-field>
+
+              <b-field label="Replace with">
+                <b-upload
+                  @input="uploadImage('image', $event)"
+                  accept="image/*"
+                  :loading="imageForm.busy"
+                  v-model="imageForm.image"
+                  drag-drop
+                >
+                  <section class="section">
+                    <div class="content has-text-centered">
+                      <p>
+                        <b-icon icon="upload" size="is-large"></b-icon>
+                      </p>
+                      <p>
+                        Drop a new artwork (e.g. skyline, buildings, art)
+                        <br />related to the conference here
+                      </p>
+                      <div v-if="imageForm.image">
+                        <p class="tag is-primary">{{imageForm.image.name}}</p>
+                        <p class="has-text-success">To upload click Apply below</p>
+                      </div>
+                    </div>
+                  </section>
+                </b-upload>
+              </b-field>
+            </b-field>
+          </div>
+
+          <div class="section box">
+            <b-field grouped>
+              <b-field label="Active Icon" expanded>
+                <figure v-if="conference.icon" class="image is-128x128">
+                  <img :src="conference.icon.path" />
+                </figure>
+                <figure v-else class="image is-128x128">
+                  <small>This is the default icon which is active when no icon is uploaded</small>
+                  <img :src="`https://avatars.dicebear.com/v2/jdenticon/${conference.key}.svg`" />
+                </figure>
+              </b-field>
+
+              <b-field label="Replace with">
+                <b-upload
+                  @input="uploadImage('icon', $event)"
+                  accept="image/*"
+                  :loading="imageForm.busy"
+                  v-model="imageForm.icon"
+                  drag-drop
+                >
+                  <section class="section">
+                    <div class="content has-text-centered">
+                      <p>
+                        <b-icon icon="upload" size="is-large"></b-icon>
+                      </p>
+                      <p>Drop a new icon</p>
+                      <div v-if="imageForm.icon">
+                        <p class="tag is-primary">{{imageForm.icon.name}}</p>
+                        <p class="has-text-success">To upload click Apply below</p>
+                      </div>
+                    </div>
+                  </section>
+                </b-upload>
+              </b-field>
+            </b-field>
+          </div>
+
+          <b-field class="buttons" grouped position="is-right">
+            <a :href="`/conference/${conferenceKey}`" class="button">
+              <span class="icon">
+                <i class="mdi mdi-arrow-left"></i>
+              </span>
+              <span>Cancel</span>
+            </a>
+            <button :disabled="imageForm.busy" type="submit" class="button is-success">
+              <span class="icon">
+                <i class="mdi mdi-check"></i>
+              </span>
+              <span>Apply</span>
+            </button>
+          </b-field>
+        </form>
+      </b-tab-item>
 
       <b-tab-item icon="sign-caution" label="Administrative">
-        <button
-          v-if="canDelete"
-          @click="destroy"
-          class="button is-danger is-pulled-right"
-        >Delete this conference</button>
+        <b-field class="buttons" grouped position="is-centered">
+          <a :href="`/conference/${conferenceKey}`" class="button">
+            <span class="icon">
+              <i class="mdi mdi-arrow-left"></i>
+            </span>
+            <span>Cancel</span>
+          </a>
+          <button
+            v-if="canDelete"
+            @click="destroy"
+            class="button is-danger is-pulled-right"
+          >Delete this conference</button>
+        </b-field>
       </b-tab-item>
     </b-tabs>
     <b-loading :is-full-page="false" :active.sync="isLoading || generalForm.busy"></b-loading>
@@ -139,10 +265,13 @@ export default {
   data() {
     return {
       conference: null,
-      activeTab: 0,
+      activeTab: 1,
       timezone: null,
+      imageForm: new Form({
+        image: null,
+        icon: null
+      }),
       generalForm: new Form({
-        id: null,
         name: null,
         key: this.conferenceKey,
         location: null,
@@ -164,6 +293,14 @@ export default {
   },
 
   methods: {
+    uploadImage: function(type, event) {
+      api
+        .uploadConferenceImage(this.conference, type, event)
+        .then(data => console.log(data))
+        .catch(error => {
+          throw error;
+        });
+    },
     updateDateRange: function($event) {
       this.generalForm.start_date = $event[0].toMySqlDate();
       this.generalForm.end_date = $event[1].toMySqlDate();
@@ -174,6 +311,9 @@ export default {
         case 0: //general
           form = this.generalForm;
           break;
+        case 1: //image
+          form = this.imageForm;
+          break;
       }
       this.isLoading = true;
       api
@@ -181,7 +321,7 @@ export default {
         .then(data => {
           this.load();
           this.$buefy.toast.open({
-            message: "Changes saved!",
+            message: data.data.message,
             type: "is-success"
           });
         })
@@ -235,11 +375,16 @@ export default {
           this.conference = conference;
           this.timezone = conference.timezone;
           this.generalForm.fill(conference);
+          this.imageForm.fill(conference);
           this.generalForm.enable_bidding =
             this.generalForm.enable_bidding == "1" ? true : false;
         })
         .catch(error => {
-          throw error;
+          if (error.response.status == 404) {
+            this.goTo("/conference");
+          } else {
+            throw error;
+          }
         })
         .finally(() => {
           this.isLoading = false;

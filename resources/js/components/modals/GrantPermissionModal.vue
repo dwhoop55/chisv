@@ -13,6 +13,7 @@
           <role-picker v-model="form.role_id"></role-picker>
         </b-field>
         <b-field
+          v-if="form.role_id && form.role_id!=1"
           label="Conference"
           :type="{ 'is-danger': form.errors.has('conference_id') }"
           :message="form.errors.get('conference_id')"
@@ -70,7 +71,6 @@ export default {
         .catch(error => {
           if (error.response.status != 422) {
             this.$buefy.notification.open({
-              queue: false,
               indefinite: true,
               hasIcon: true,
               message: error.response.data.message,

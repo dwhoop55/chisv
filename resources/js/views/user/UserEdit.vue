@@ -102,8 +102,8 @@
           <button
             :disabled="isLoading || profileForm.busy"
             type="submit"
-            class="button is-primary is-pulled-right"
-          >Save</button>
+            class="button is-success is-pulled-right"
+          >Apply</button>
         </form>
       </b-tab-item>
 
@@ -138,8 +138,8 @@
           <button
             :disabled="localeForm.busy"
             type="submit"
-            class="button is-primary is-pulled-right"
-          >Save</button>
+            class="button is-success is-pulled-right"
+          >Apply</button>
         </form>
       </b-tab-item>
 
@@ -172,13 +172,15 @@
           <button
             :disabled="passwordForm.busy"
             type="submit"
-            class="button is-primary is-pulled-right"
+            class="button is-success is-pulled-right"
           >Set new password</button>
         </form>
       </b-tab-item>
 
       <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
-        <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
+        <b-field class="section" grouped position="is-centered">
+          <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
+        </b-field>
       </b-tab-item>
     </b-tabs>
 
@@ -262,7 +264,6 @@ export default {
             })
             .catch(error => {
               this.$buefy.notification.open({
-                queue: false,
                 duration: 5000,
                 message: `Error: ${error.message}`,
                 type: "is-danger",
@@ -292,14 +293,12 @@ export default {
         .then(data => {
           this.load();
           this.$buefy.toast.open({
-            queue: false,
             message: "Changes saved!",
             type: "is-success"
           });
         })
         .catch(error => {
           this.$buefy.notification.open({
-            queue: false,
             duration: 5000,
             message: `Could not save user: ${error.message}`,
             type: "is-danger",
@@ -330,7 +329,6 @@ export default {
             this.goTo("/user");
           }
           this.$buefy.notification.open({
-            queue: false,
             duration: 5000,
             message: `Could not fetch user: ${error.message}`,
             type: "is-danger",

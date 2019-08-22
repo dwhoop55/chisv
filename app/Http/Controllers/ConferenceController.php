@@ -41,7 +41,7 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function showUsers(Conference $conference)
+    public function users(Conference $conference)
     {
         // We want to return only users which are allowed to be viewd by the authUser
         $users = $conference->users->filter(function ($user) {
@@ -133,56 +133,20 @@ class ConferenceController extends Controller
      */
     public function update(ConferenceUpdateRequest $request, Conference $conference)
     {
-        // // TODO: data is validated, this is not required anymore
-        // $validated = $request->validated();
+        $data = $request->only(
+            'name',
+            'key',
+            'location',
+            'timezone_id',
+            'start_date',
+            'end_date',
+            'description',
+            'state_id',
+            'enable_bidding'
+        );
 
-        // // Process icon upload
-        // if (isset($validated['icon'])) {
-        //     $file = $validated['icon'];
-        //     $name = 'conference-icon-' . $conference->id . "." . $file->extension();
-        //     $path = "/storage/$name";
-        //     $type = 'icon';
-        //     if (Storage::disk('public')->put($name, $file->get())) {
-        //         $dbImage = new Image(compact('name', 'path', 'type'));
-        //         $conference->icon()->delete();
-        //         $conference->icon()->save($dbImage);
-        //     } else {
-        //         throw new InvalidFileException("The icon could not be stored");
-        //     }
-        // }
-
-        // // Process image upload
-        // if (isset($validated['image'])) {
-        //     $file = $validated['image'];
-        //     $name = 'conference-image-' . $conference->id . "." . $file->extension();
-        //     $path = "/storage/$name";
-        //     $type = 'image';
-        //     if (Storage::disk('public')->put($name, $file->get())) {
-        //         $dbImage = new Image(compact('name', 'path', 'type'));
-        //         $conference->image()->delete();
-        //         $conference->image()->save($dbImage);
-        //     } else {
-        //         throw new InvalidFileException("The image could not be stored");
-        //     }
-        // }
-
-        // if (isset($validated['delete_icon'])) {
-        //     unset($validated['delete_icon']);
-        //     $name = $conference->icon->name;
-        //     Storage::disk('public')->delete($name);
-        //     $conference->icon()->delete();
-        // }
-
-        // if (isset($validated['delete_image'])) {
-        //     unset($validated['delete_image']);
-        //     $name = $conference->image->name;
-        //     Storage::disk('public')->delete($name);
-        //     $conference->image()->delete();
-        // }
-
-        // if (!$request->has('enable_bidding')) $validated['enable_bidding'] = 0;
-        // $conference->update($validated);
-        // return redirect()->route('conference.show', $conference->key);
+        $result = $conference->update($data);
+        return ["success" => $result, "message" => "Conference updated"];
     }
 
     /**

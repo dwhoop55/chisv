@@ -1,6 +1,6 @@
 <template>
   <a :href="conferenceUrl">
-    <div class="card is-hoverable-anim is-clickable">
+    <div class="card is-hoverable-anim is-clickable is-100vh">
       <div class="card-image is-cover" :style="divImage">
         <div
           :style="stateBackground"

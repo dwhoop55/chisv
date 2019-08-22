@@ -9,6 +9,7 @@ export default {
         return axios.get(`user/${id}`);
     },
 
+
     createConference: function (vform) {
         return vform.post(`conference`);
     },
@@ -18,6 +19,19 @@ export default {
     },
     updateConference: function (key, vform) {
         return vform.put(`conference/${key}`);
+    },
+    uploadConferenceImage: function (conference, type, image) {
+        let form = new FormData();
+        form.append('image', image);
+        form.append('type', type);
+        form.append('owner_type', "App\\Conference");
+        form.append('owner_id', conference.id);
+        form.append("name", conference.key + "-" + type);
+        return axios.post(`image`, form, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
     },
 
     destroyUser: function (id) {

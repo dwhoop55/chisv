@@ -16,7 +16,7 @@ Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
 
-Vue.use(Buefy);
+Vue.use(Buefy, { defaultNoticeQueue: false });
 Vue.use(VueMoment);
 
 /**

@@ -63,7 +63,6 @@ export default {
         .catch(error => {
           if (error.response.status != 422) {
             this.$buefy.notification.open({
-              queue: false,
               indefinite: true,
               hasIcon: true,
               message: error.response.data.message,

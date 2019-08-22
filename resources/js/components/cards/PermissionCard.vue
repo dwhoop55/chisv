@@ -120,7 +120,6 @@ export default {
         .revokePermission(this.permission.id)
         .then(data => {
           this.$buefy.toast.open({
-            queue: false,
             type: "is-success",
             message: data.data.message
           });
@@ -128,7 +127,6 @@ export default {
         })
         .catch(error => {
           this.$buefy.toast.open({
-            queue: false,
             type: "is-danger",
             message: error.message
           });
