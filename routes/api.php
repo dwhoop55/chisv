@@ -87,6 +87,13 @@ Route::group(['prefix' => 'v1'], function () {
 
 
     Route::post('register', 'Auth\RegisterController@create')->name('register.create');
+
+    Route::get('version', function () {
+        $currentHead = trim(substr(file_get_contents('../.git/HEAD'), 4));
+        $branch = str_replace('refs/heads/', '', $currentHead);
+        $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
+        return ["branch" => $branch, "commit" => $commit];
+    });
     //// GUEST ////
 
 
