@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Conference extends Model
 {
 
-    protected $with = ['timezone', 'state', 'image'];
+    protected $with = ['timezone', 'state', 'artwork', 'icon'];
 
     // We guard there properties, such that they don't get assigned
     // when we mass-update the conference with an request
@@ -33,9 +33,9 @@ class Conference extends Model
         return $this->belongsTo('App\Timezone');
     }
 
-    public function image()
+    public function artwork()
     {
-        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'image');
+        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'artwork');
     }
 
     public function icon()

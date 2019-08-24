@@ -89,7 +89,7 @@ class User extends Authenticatable
         return $this->belongsTo('App\Timezone');
     }
 
-    public function image()
+    public function avatar()
     {
         return $this->morphOne('App\Image', 'owner');
     }

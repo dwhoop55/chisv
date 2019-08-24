@@ -117,7 +117,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['store', 'destroy', 'update']
         ]);
         Route::resource('image', 'ImageController', [
-            'only' => ['store']
+            'only' => ['store', 'destroy', 'update']
         ]);
 
         Route::post('conference/{conference}/enroll', 'ConferenceController@enroll')

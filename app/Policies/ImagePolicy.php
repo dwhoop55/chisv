@@ -81,7 +81,20 @@ class ImagePolicy
      */
     public function update(User $user, Image $image)
     {
-        //
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Allow update of own avatar
+        if ($user->avatar && $user->avatar->id == $image->id) {
+            return true;
+        }
+
+        // Allow updating of conference owner images for the
+        // associated chair
+        if ($user->isChair($image->owner)) {
+            return true;
+        }
     }
 
     /**
@@ -93,7 +106,19 @@ class ImagePolicy
      */
     public function delete(User $user, Image $image)
     {
-        //
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Allow deletion of own avatar
+        if ($user->avatar && $user->avatar->id == $image->id) {
+            return true;
+        }
+
+        // Allow if the user is chair for the image owners conference
+        if ($user->isChair($image->owner)) {
+            return true;
+        }
     }
 
     /**

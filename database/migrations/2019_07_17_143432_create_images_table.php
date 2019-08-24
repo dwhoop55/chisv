@@ -19,7 +19,8 @@ class CreateImagesTable extends Migration
             $table->integer('owner_id')->index();
             $table->string('owner_type')->index();
             $table->string('type')->index()->default('image');
-            $table->string('path')->unique()->nullable(false)->index();
+            $table->string('disk_path')->unique()->nullable(false)->index();
+            $table->string('web_path')->unique()->nullable(false)->index();
             $table->timestamps();
         });
     }

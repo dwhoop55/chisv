@@ -43,31 +43,25 @@ class ImageController extends Controller
         $data = $request->validate([
             'image' => 'required|image',
             'name' => 'required|string',
-            'type' => 'required|string|in:image,icon,avatar',
+            'type' => 'required|string|in:artwork,icon,avatar',
             'owner_id' => 'required|integer',
             'owner_type' => 'required|string|in:App\User,App\Conference',
         ]);
 
-        $path = $request->file('image')->store('public');
-        // Adjust path here
+        // First get the owner and save the image to disk
+        $disk_path = $request->file('image')->store('public/images');
+        $web_path = $this->getWebPath($disk_path);
 
-        $owner = app($data['owner_type'])::find($data['owner_id']);
-        $model = new Image(compact('name', 'path', 'type'));
 
-        if ($data['type'] == 'image') {
-            if ($owner->image) $owner->image->delete();
-            $owner->image->save($model);
-        } else if ($data['type'] == 'icon') {
-            if ($owner->icon) $owner->icon->delete();
-            $owner->icon->save($model);
-        }
-        // if (Storage::disk('public')->put($name, $file->get())) {
-        //     $dbImage = new Image(compact('name', 'path', 'type'));
-        //     // $conference->icon()->delete();
-        //     // $conference->icon()->save($dbImage);
-        // } else {
-        //     throw new InvalidFileException("The image could not be stored");
-        // }
+        // Now we create a new Image and try to save it to the database
+        $name = $data['name'];
+        $type = $data['type'];
+        $owner_type = $data['owner_type'];
+        $owner_id = $data['owner_id'];
+        $model = new Image(compact('name', 'owner_type', 'owner_id', 'disk_path', 'web_path', 'type'));
+        $result = $model->save();
+
+        return ['success' => $result, "message" => "Upload successful!", "web_path" => $web_path];
     }
 
     /**
@@ -78,7 +72,7 @@ class ImageController extends Controller
      */
     public function show(Image $image)
     {
-        //
+        return $image;
     }
 
     /**
@@ -90,7 +84,27 @@ class ImageController extends Controller
      */
     public function update(Request $request, Image $image)
     {
-        //
+        // NOTICE:
+        // We remove the old file from disk, upload a new file which
+        // will have an entirely new filename. Thus all links to the old
+        // image filename will result in 404s
+        // We could also overwrite the stored image with new data
+        // but this would open the hell of cached image files later
+        // in production. 
+        $data = $request->validate([
+            'image' => 'required|image',
+        ]);
+
+        // Delete the old image from disk
+        Storage::delete($image->disk_path);
+
+        // First get the owner and save the image to disk
+        $disk_path = $request->file('image')->store('public/images');
+        $web_path = $this->getWebPath($disk_path);
+
+        $result = $image->update(compact('disk_path', 'web_path'));
+
+        return ['success' => $result, "message" => "Update successful!", "web_path" => $web_path];
     }
 
     /**
@@ -101,6 +115,22 @@ class ImageController extends Controller
      */
     public function destroy(Image $image)
     {
-        //
+        Storage::delete($image->disk_path);
+        return ["success" => $image->delete(), "message" => "Image deleted!"];
+    }
+
+    public function getWebPath($path)
+    {
+        if ($this->startsWith($path, 'public/')) {
+            return str_replace('public/', '/storage/', $path);
+        } else {
+            return null;
+        }
+    }
+
+    function startsWith($string, $startString)
+    {
+        $len = strlen($startString);
+        return (substr($string, 0, $len) === $startString);
     }
 }

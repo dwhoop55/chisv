@@ -52,18 +52,18 @@ export default {
       return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
     },
     divImage: function() {
-      return `height: 200px; background-image:url(${this.image})`;
+      return `height: 350px; background-image:url(${this.image})`;
     },
     image: function() {
-      if (this.conference.image && this.conference.image.path) {
-        return this.conference.image.path;
+      if (this.conference.artwork && this.conference.artwork.web_path) {
+        return this.conference.artwork.web_path;
       } else {
         return this.fallbackImage;
       }
     },
     icon: function() {
-      if (this.conference.icon && this.conference.icon.path) {
-        return this.conference.icon.path;
+      if (this.conference.icon && this.conference.icon.web_path) {
+        return this.conference.icon.web_path;
       } else {
         return `https://avatars.dicebear.com/v2/jdenticon/${this.conference.key}.svg`;
       }

@@ -179,7 +179,7 @@
 
       <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
         <b-field class="section" grouped position="is-centered">
-          <button @click="destroy" class="button is-danger is-pulled-right">Delete this user</button>
+          <button @click="deleteUser" class="button is-danger is-pulled-right">Delete this user</button>
         </b-field>
       </b-tab-item>
     </b-tabs>
@@ -253,12 +253,12 @@ export default {
   },
 
   methods: {
-    destroy() {
+    deleteUser() {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,
         onConfirm: () => {
           api
-            .destroyUser(this.user.id)
+            .deleteUser(this.user.id)
             .then(() => {
               this.goTo("/user");
             })

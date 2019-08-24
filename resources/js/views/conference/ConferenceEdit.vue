@@ -91,7 +91,7 @@
             <b-switch v-model="generalForm.enable_bidding"></b-switch>
           </b-field>
 
-          <b-field class="buttons" grouped position="is-centered">
+          <b-field class="buttons" grouped position="is-right">
             <a :href="`/conference/${conferenceKey}`" class="button">
               <span class="icon">
                 <i class="mdi mdi-arrow-left"></i>
@@ -111,23 +111,34 @@
       <b-tab-item icon="image" label="Image">
         <form @submit.prevent="save" @keydown="imageForm.onKeydown($event)">
           <div class="section box">
-            <b-field grouped>
-              <b-field label="Active Artwork" expanded>
-                <figure v-if="conference.image" class="image">
-                  <img :src="conference.image.path" />
-                </figure>
-                <figure v-else class="image">
-                  <small>This is the default image which is active when no image is uploaded</small>
-                  <img src="/images/conference-default.jpg" />
-                </figure>
-              </b-field>
-
-              <b-field label="Replace with">
+            <div class="columns is-vcentered is-mobile is-multiline">
+              <div class="column is-half is-narrow">
+                <div v-if="conference && conference.artwork">
+                  <b-field>
+                    <figure class="image">
+                      <img :src="conference.artwork.web_path" />
+                    </figure>
+                  </b-field>
+                  <b-field>
+                    <b-button
+                      @click.prevent="deleteImage(conference.artwork.id)"
+                      type="is-danger"
+                    >Delete this artwork</b-button>
+                  </b-field>
+                </div>
+                <div v-else>
+                  <small>This is the default artwork which is active when no image is uploaded</small>
+                  <figure class="image">
+                    <img src="/images/conference-default.jpg" />
+                  </figure>
+                </div>
+              </div>
+              <div class="column is-half">
                 <b-upload
-                  @input="uploadImage('image', $event)"
+                  @input="uploadImage('artwork', $event)"
                   accept="image/*"
-                  :loading="imageForm.busy"
-                  v-model="imageForm.image"
+                  :loading="isLoading"
+                  v-model="imageForm.artwork"
                   drag-drop
                 >
                   <section class="section">
@@ -139,34 +150,41 @@
                         Drop a new artwork (e.g. skyline, buildings, art)
                         <br />related to the conference here
                       </p>
-                      <div v-if="imageForm.image">
-                        <p class="tag is-primary">{{imageForm.image.name}}</p>
-                        <p class="has-text-success">To upload click Apply below</p>
-                      </div>
                     </div>
                   </section>
                 </b-upload>
-              </b-field>
-            </b-field>
+              </div>
+            </div>
           </div>
 
           <div class="section box">
-            <b-field grouped>
-              <b-field label="Active Icon" expanded>
-                <figure v-if="conference.icon" class="image is-128x128">
-                  <img :src="conference.icon.path" />
-                </figure>
-                <figure v-else class="image is-128x128">
+            <div class="columns is-vcentered is-mobile is-multiline">
+              <div class="column is-half is-narrow">
+                <div v-if="conference && conference.icon">
+                  <b-field>
+                    <figure class="image is-128x128">
+                      <img :src="conference.icon.web_path" />
+                    </figure>
+                  </b-field>
+                  <b-field>
+                    <b-button
+                      @click.prevent="deleteImage(conference.icon.id)"
+                      type="is-danger"
+                    >Delete this icon</b-button>
+                  </b-field>
+                </div>
+                <div v-else>
                   <small>This is the default icon which is active when no icon is uploaded</small>
-                  <img :src="`https://avatars.dicebear.com/v2/jdenticon/${conference.key}.svg`" />
-                </figure>
-              </b-field>
-
-              <b-field label="Replace with">
+                  <figure class="image is-128x128">
+                    <img :src="`https://avatars.dicebear.com/v2/jdenticon/${conference.key}.svg`" />
+                  </figure>
+                </div>
+              </div>
+              <div class="column is-half">
                 <b-upload
                   @input="uploadImage('icon', $event)"
                   accept="image/*"
-                  :loading="imageForm.busy"
+                  :loading="isLoading"
                   v-model="imageForm.icon"
                   drag-drop
                 >
@@ -176,15 +194,11 @@
                         <b-icon icon="upload" size="is-large"></b-icon>
                       </p>
                       <p>Drop a new icon</p>
-                      <div v-if="imageForm.icon">
-                        <p class="tag is-primary">{{imageForm.icon.name}}</p>
-                        <p class="has-text-success">To upload click Apply below</p>
-                      </div>
                     </div>
                   </section>
                 </b-upload>
-              </b-field>
-            </b-field>
+              </div>
+            </div>
           </div>
 
           <b-field class="buttons" grouped position="is-right">
@@ -194,18 +208,12 @@
               </span>
               <span>Cancel</span>
             </a>
-            <button :disabled="imageForm.busy" type="submit" class="button is-success">
-              <span class="icon">
-                <i class="mdi mdi-check"></i>
-              </span>
-              <span>Apply</span>
-            </button>
           </b-field>
         </form>
       </b-tab-item>
 
       <b-tab-item icon="sign-caution" label="Administrative">
-        <b-field class="buttons" grouped position="is-centered">
+        <b-field class="buttons" grouped position="is-right">
           <a :href="`/conference/${conferenceKey}`" class="button">
             <span class="icon">
               <i class="mdi mdi-arrow-left"></i>
@@ -214,7 +222,7 @@
           </a>
           <button
             v-if="canDelete"
-            @click="destroy"
+            @click="deleteConference"
             class="button is-danger is-pulled-right"
           >Delete this conference</button>
         </b-field>
@@ -264,8 +272,8 @@ export default {
 
   data() {
     return {
-      conference: null,
-      activeTab: 1,
+      conference: {},
+      activeTab: 0,
       timezone: null,
       imageForm: new Form({
         image: null,
@@ -288,17 +296,67 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.load();
   },
 
   methods: {
-    uploadImage: function(type, event) {
+    deleteImage: function(id) {
       api
-        .uploadConferenceImage(this.conference, type, event)
-        .then(data => console.log(data))
+        .deleteImage(id)
+        .then(data => {
+          this.load();
+          this.$buefy.toast.open({
+            message: data.data.message,
+            type: "is-success"
+          });
+        })
         .catch(error => {
-          throw error;
+          this.$buefy.toast.open({
+            duration: 5000,
+            message: `Could not delete: ${error.message}`,
+            type: "is-danger"
+          });
+        });
+    },
+    uploadImage: function(type, image) {
+      // We need to check if there is an existing image and update the image only
+      // Or upload a entire new one
+      let promise;
+      switch (type) {
+        case "artwork":
+          if (this.conference.artwork) {
+            promise = api.updateImage(this.conference.artwork.id, image);
+          } else {
+            promise = api.createConferenceImage(this.conference, type, image);
+          }
+          break;
+        case "icon":
+          if (this.conference.icon) {
+            promise = api.updateImage(this.conference.icon.id, image);
+          } else {
+            promise = api.createConferenceImage(this.conference, type, image);
+          }
+          break;
+      }
+
+      this.isLoading = true;
+      promise
+        .then(data => {
+          this.$buefy.toast.open({
+            message: data.data.message,
+            type: "is-success"
+          });
+        })
+        .catch(error => {
+          this.$buefy.toast.open({
+            message: `An error occured: ${error.message}`,
+            type: "is-danger"
+          });
+        })
+        .finally(() => {
+          this.load();
+          this.isLoading = false;
         });
     },
     updateDateRange: function($event) {
@@ -344,19 +402,19 @@ export default {
           this.isLoading = false;
         });
     },
-    destroy() {
+    deleteConference() {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.conference.name}?`,
         onConfirm: () => {
           this.isLoading = true;
           api
-            .destroyConference(this.conferenceKey)
+            .deleteConference(this.conferenceKey)
             .then(() => {
               this.goTo("/conference");
             })
             .catch(error => {
               this.$buefy.toast.open({
-                message: `An error occured: ${error}`,
+                message: `An error occured: ${error.message}`,
                 type: "is-danger"
               });
             })
