@@ -111,6 +111,7 @@
       <b-tab-item icon="image" label="Image">
         <form @submit.prevent="save" @keydown="imageForm.onKeydown($event)">
           <div class="section box">
+            <p class="subtitle">Active Artwork</p>
             <div class="columns is-vcentered is-mobile is-multiline">
               <div class="column is-half is-narrow">
                 <div v-if="conference && conference.artwork">
@@ -158,6 +159,7 @@
           </div>
 
           <div class="section box">
+            <p class="subtitle">Active Icon</p>
             <div class="columns is-vcentered is-mobile is-multiline">
               <div class="column is-half is-narrow">
                 <div v-if="conference && conference.icon">
@@ -349,9 +351,10 @@ export default {
           });
         })
         .catch(error => {
-          this.$buefy.toast.open({
-            message: `An error occured: ${error.message}`,
-            type: "is-danger"
+          this.$buefy.notification.open({
+            message: error.response.data.errors.image[0],
+            type: "is-danger",
+            indefinite: true
           });
         })
         .finally(() => {

@@ -91,7 +91,7 @@ class User extends Authenticatable
 
     public function avatar()
     {
-        return $this->morphOne('App\Image', 'owner');
+        return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC')->get();
     }
 
     public function isAdmin()

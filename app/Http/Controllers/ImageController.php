@@ -41,7 +41,7 @@ class ImageController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'image' => 'required|image',
+            'image' => 'required|image|between:0,5000',
             'name' => 'required|string',
             'type' => 'required|string|in:artwork,icon,avatar',
             'owner_id' => 'required|integer',
@@ -92,7 +92,7 @@ class ImageController extends Controller
         // but this would open the hell of cached image files later
         // in production. 
         $data = $request->validate([
-            'image' => 'required|image',
+            'image' => 'required|image|between:0,5000',
         ]);
 
         // Delete the old image from disk

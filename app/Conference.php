@@ -35,12 +35,12 @@ class Conference extends Model
 
     public function artwork()
     {
-        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'artwork');
+        return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC')->where('type', '=', 'artwork');
     }
 
     public function icon()
     {
-        return $this->morphOne('App\Image', 'owner')->where('type', '=', 'icon');;
+        return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC')->where('type', '=', 'icon');;
     }
 
     public function users()
