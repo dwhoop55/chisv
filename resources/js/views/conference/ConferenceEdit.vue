@@ -96,7 +96,7 @@
               <span class="icon">
                 <i class="mdi mdi-arrow-left"></i>
               </span>
-              <span>Cancel</span>
+              <span>Back</span>
             </a>
             <button :disabled="generalForm.busy" type="submit" class="button is-success">
               <span class="icon">
@@ -208,7 +208,7 @@
               <span class="icon">
                 <i class="mdi mdi-arrow-left"></i>
               </span>
-              <span>Cancel</span>
+              <span>Back</span>
             </a>
           </b-field>
         </form>
@@ -220,7 +220,7 @@
             <span class="icon">
               <i class="mdi mdi-arrow-left"></i>
             </span>
-            <span>Cancel</span>
+            <span>Back</span>
           </a>
           <button
             v-if="canDelete"

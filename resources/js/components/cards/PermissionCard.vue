@@ -28,11 +28,6 @@
           </transition>
           <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
           <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
-          <!-- <b-tag v-if="canRevoke" rounded type="is-danger" size="is-large">
-          <b-tooltip type="is-danger" label="Revoke" multilined>
-            <b-icon icon="close-circle" size="is-small"></b-icon>
-          </b-tooltip>
-          </b-tag>-->
         </b-taglist>
 
         <div class="has-margin-4">
@@ -72,13 +67,13 @@ export default {
       return this.roleType(this.permission.role);
     },
     hasImage: function() {
-      return this.conference && this.conference.image;
+      return this.permission.conference && this.permission.conference.artwork;
     },
     backgroundImage: function() {
       if (this.hasImage) {
-        return `height: 200px; background-image:url(${this.permission.conference.image.path})`;
+        return `height: 300px; background-image:url(${this.permission.conference.artwork.web_path})`;
       } else {
-        return "height: 200px; background-image:url('/images/conference-default.jpg')";
+        return "height: 300px; background-image:url('/images/conference-default.jpg')";
       }
     }
   },
