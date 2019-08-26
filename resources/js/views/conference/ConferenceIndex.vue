@@ -5,7 +5,7 @@
     </b-field>
     <div class="columns is-multiline is-flex-conferences">
       <div class="column is-half" v-for="conference in conferences" :key="conference.id">
-        <conference-card :conference="conference" :fallback-image="fallbackImage"></conference-card>
+        <conference-card :conference="conference"></conference-card>
       </div>
     </div>
 
@@ -24,7 +24,6 @@ export default {
     return {
       conferences: null,
       loading: true,
-      fallbackImage: "/images/conference-default.jpg",
       showCreateModal: false,
       canCreate: false
     };

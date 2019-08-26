@@ -1,6 +1,6 @@
 <template>
   <b-tag rounded :size="size" :type="type">
-    <b-tooltip :type="type" :label="role.description" multilined>{{ role.name }}</b-tooltip>
+    <b-tooltip :type="type" :label="role.description" multilined>{{ role.name | capitalize }}</b-tooltip>
   </b-tag>
 </template>
 

@@ -66,11 +66,35 @@
             :message="generalForm.errors.get('description')"
           >
             <b-input
-              maxlength="300"
+              maxlength="1000"
               placeholder="Let your users know what the conference is about"
               v-model="generalForm.description"
               type="textarea"
             ></b-input>
+          </b-field>
+
+          <p>Leave any of the two fields empty to hide the button on the conference page</p>
+          <b-field grouped>
+            <b-field
+              expanded
+              :type="{ 'is-danger': generalForm.errors.has('url_name') }"
+              :message="generalForm.errors.get('url_name')"
+              label="External link caption"
+            >
+              <b-input
+                v-model="generalForm.url_name"
+                maxlength="100"
+                placeholder="e.g. ACM, Website, More"
+              ></b-input>
+            </b-field>
+            <b-field
+              label="External link URL"
+              expanded
+              :type="{ 'is-danger': generalForm.errors.has('url') }"
+              :message="generalForm.errors.get('url')"
+            >
+              <b-input v-model="generalForm.url" maxlength="300" placeholder="e.g. https://acm.org"></b-input>
+            </b-field>
           </b-field>
 
           <b-field
@@ -289,6 +313,8 @@ export default {
         start_date: null,
         end_date: null,
         description: null,
+        url_name: null,
+        url: null,
         state_id: null,
         enable_bidding: null,
         created_at: null,

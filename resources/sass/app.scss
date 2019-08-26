@@ -70,6 +70,10 @@ h3 {
   z-index: 10;
 }
 
+.is-below {
+  z-index: -10;
+}
+
 .is-clickable {
   cursor: pointer;
 }
@@ -115,6 +119,19 @@ h3 {
   bottom: 0;
 }
 
+.is-blurred {
+  -webkit-filter: blur(4px);
+  -moz-filter: blur(4px);
+  -o-filter: blur(4px);
+  -ms-filter: blur(4px);
+  filter: blur(4px);
+  transform: scale(1.1);
+}
+
+.is-visible-8 {
+  opacity: 0.8;
+}
+
 .is-hoverable-anim:hover {
   -webkit-transform: translateY(-5px);
   box-shadow: 0 8px 36px rgba(25, 8, 58, 0.36);
@@ -128,6 +145,10 @@ h3 {
 
 .is-100vh {
   height: 100%;
+}
+
+.is-100hw {
+  width: 100%;
 }
 
 .card {

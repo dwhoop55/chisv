@@ -1,7 +1,10 @@
 <template>
   <a :href="conferenceUrl">
     <div class="card is-hoverable-anim is-clickable is-100vh">
-      <div class="card-image is-cover" :style="divImage">
+      <div
+        class="card-image is-cover"
+        :style="`height:350px;${conferenceArtworkBackground(conference)}`"
+      >
         <div
           :style="stateBackground"
           class="has-text-weight-bold has-text-shadow is-rounded-b-l is-rounded-b-r is-pinned-t is-pinned-r has-text-white-bis is-absolute has-margin-r-7 has-padding-l-5 has-padding-r-5 has-padding-b-7 has-padding-t-7"
@@ -11,7 +14,7 @@
         <div class="media">
           <div class="media-left">
             <figure class="image is-48x48">
-              <img :src="icon" />
+              <img :src="conferenceIcon(conference)" />
             </figure>
           </div>
           <div class="media-content">
@@ -29,7 +32,7 @@
 
 <script>
 export default {
-  props: ["conference", "fallbackImage"],
+  props: ["conference"],
 
   computed: {
     stateBackground: function() {
@@ -50,23 +53,6 @@ export default {
           break;
       }
       return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
-    },
-    divImage: function() {
-      return `height: 350px; background-image:url(${this.image})`;
-    },
-    image: function() {
-      if (this.conference.artwork && this.conference.artwork.web_path) {
-        return this.conference.artwork.web_path;
-      } else {
-        return this.fallbackImage;
-      }
-    },
-    icon: function() {
-      if (this.conference.icon && this.conference.icon.web_path) {
-        return this.conference.icon.web_path;
-      } else {
-        return `https://avatars.dicebear.com/v2/jdenticon/${this.conference.key}.svg`;
-      }
     },
     conferenceUrl: function() {
       return `/conference/${this.conference.key}`;

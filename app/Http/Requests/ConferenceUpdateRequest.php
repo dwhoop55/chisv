@@ -25,7 +25,9 @@ class ConferenceUpdateRequest extends FormRequest
             'timezone_id' => 'integer|exists:timezones,id',
             'start_date' => 'date',
             'end_date' => 'date',
-            'description' => 'string|max:700',
+            'description' => 'string|max:1000',
+            'url_name' => 'nullable|string|max:100',
+            'url' => 'nullable|string|max:300|url',
             'state_id' => 'integer|exists:states,id',
             'enable_bidding' => 'boolean',
         ];

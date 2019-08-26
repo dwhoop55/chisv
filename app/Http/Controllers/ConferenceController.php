@@ -11,6 +11,7 @@ use App\User;
 use App\Image;
 use App\Role;
 use App\Http\Resources\Conferences;
+use App\Permission;
 
 class ConferenceController extends Controller
 {
@@ -66,6 +67,25 @@ class ConferenceController extends Controller
         });
 
         return new Conferences($conferences);
+    }
+
+    /** 
+     * Returns the state of enrollment
+     * 
+     * @param \App\Conference conference
+     * @return \Illuminate\Http\Response
+     */
+    public function enrollment(Conference $conference)
+    {
+        $permission = Permission
+            ::where('conference_id', $conference->id)
+            ->where('user_id', auth()->user()->id)
+            ->where('role_id', Role::byName('sv')->id)->first();
+        if ($permission && $permission->state) {
+            return $permission->state;
+        } else {
+            return null;
+        }
     }
 
     /** 
@@ -140,6 +160,9 @@ class ConferenceController extends Controller
             'timezone_id',
             'start_date',
             'end_date',
+            'description',
+            'url_name',
+            'url',
             'description',
             'state_id',
             'enable_bidding'

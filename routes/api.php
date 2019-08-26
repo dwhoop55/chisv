@@ -126,6 +126,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference")
             ->name('conference.unenroll');
+        Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
+            ->name('conference.enrollment');
+
         // Route::get('conference/{conference}/users', 'ConferenceController@users')
         //     ->middleware("can:view,conference")
         //     ->name('conference.users');

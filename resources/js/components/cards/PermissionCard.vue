@@ -1,7 +1,10 @@
 <template>
   <section>
     <div class="card">
-      <div class="card-image is-cover" :style="backgroundImage">
+      <div
+        class="card-image is-cover"
+        :style="`height:300px;${conferenceArtworkBackground(permission.conference)}`"
+      >
         <b-field grouped position="is-right">
           <transition name="slide-fade">
             <b-button
@@ -22,7 +25,7 @@
           :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
         >
           <transition name="slide-fade">
-            <b-tag v-if="canRevoke" rounded :type="editType" size="is-large">
+            <b-tag v-if="canRevoke" rounded :type="roleType(permission.role)" size="is-large">
               <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
             </b-tag>
           </transition>
@@ -46,7 +49,6 @@
 
 <script>
 import api from "@/api.js";
-import { setTimeout } from "timers";
 
 export default {
   props: ["permission"],
@@ -60,22 +62,6 @@ export default {
 
   created() {
     this.checkCan();
-  },
-
-  computed: {
-    editType: function() {
-      return this.roleType(this.permission.role);
-    },
-    hasImage: function() {
-      return this.permission.conference && this.permission.conference.artwork;
-    },
-    backgroundImage: function() {
-      if (this.hasImage) {
-        return `height: 300px; background-image:url(${this.permission.conference.artwork.web_path})`;
-      } else {
-        return "height: 300px; background-image:url('/images/conference-default.jpg')";
-      }
-    }
   },
 
   methods: {

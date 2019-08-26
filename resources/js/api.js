@@ -81,6 +81,9 @@ export default {
         } else {
             return axios.get(`can/${ability}/${model}`);
         }
+    },
+    getEnrollment: function (key) {
+        return axios.get(`conference/${key}/enrollment`)
     }
 
 }

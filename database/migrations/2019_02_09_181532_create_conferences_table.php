@@ -25,6 +25,8 @@ class CreateConferencesTable extends Migration
             $table->text('description')->nullable()->default(null);
             $table->integer('state_id')->default(1);
             $table->integer('enable_bidding')->default(0);
+            $table->string('url', 300)->nullable()->default('https://www.acm.org/');
+            $table->string('url_name', 100)->nullable()->default("ACM");
 
             $table->timestamp('created_at')->useCurrent();
             $table->timestamp('updated_at')->useCurrent();

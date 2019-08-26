@@ -51,6 +51,27 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        conferenceArtworkBackground: function (conference) {
+            if (conference && conference.artwork) {
+                return `background-image:url(${conference.artwork.web_path})`;
+            } else {
+                return "background-image:url('/images/conference-default.jpg')";
+            }
+        },
+        conferenceArtwork: function (conference) {
+            if (conference.artwork && conference.artwork.web_path) {
+                return conference.artwork.web_path;
+            } else {
+                return "/images/conference-default.jpg";
+            }
+        },
+        conferenceIcon: function (conference) {
+            if (conference.icon && conference.icon.web_path) {
+                return conference.icon.web_path;
+            } else {
+                return `https://avatars.dicebear.com/v2/jdenticon/${this.conference.key}.svg`;
+            }
+        },
         goTo: function (path) {
             window.location.href = path;
         },
@@ -59,6 +80,7 @@ Vue.mixin({
         },
         stateType: function (state) {
             switch (state.name) {
+                // states for users
                 case "accepted":
                     return "is-success";
                     break;
@@ -70,6 +92,22 @@ Vue.mixin({
                     break;
                 case "waitlisted":
                     return "is-warning";
+                    break;
+                // states for conferences
+                case "planning":
+                    return "is-danger";
+                    break;
+                case "enrollment":
+                    return "is-warning";
+                    break;
+                case "registration":
+                    return "is-warning";
+                    break;
+                case "running":
+                    return "is-success";
+                    break;
+                case "over":
+                    return "is-danger";
                     break;
             }
         },
