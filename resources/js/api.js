@@ -69,17 +69,17 @@ export default {
         return vform.post("permission");
     },
     revokePermission: function (id) {
-        return axios.delete(`permission / ${id}`);
+        return axios.delete(`permission/${id}`);
     },
     updatePermission: function (vform, id) {
-        return vform.put(`permission / ${id}`);
+        return vform.put(`permission/${id}`);
     },
 
     can: function (ability, model, id = null) {
         if (id) {
-            return axios.get(`can / ${ability} / ${model} / ${id}`);
+            return axios.get(`can/${ability}/${model}/${id}`);
         } else {
-            return axios.get(`can / ${ability} / ${model}`);
+            return axios.get(`can/${ability}/${model}`);
         }
     }
 
