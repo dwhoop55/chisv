@@ -26,8 +26,6 @@
 
 <body>
     <div id="app">
-        {{-- Flash any messages --}}
-        @include('flash-message')
 
         <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
@@ -78,6 +76,7 @@
                             <a class="navbar-item" href="{{ route('user.showEdit', Auth::user()->id) }}">
                                 My Profile
                             </a>
+                            <nav-build-info></nav-build-info>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                             $('#logout-form').submit();">

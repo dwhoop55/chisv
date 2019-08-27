@@ -8,7 +8,12 @@ export default {
     getUser: function (id) {
         return axios.get(`user/${id}`);
     },
-
+    getEnrollment: function (key) {
+        return axios.get(`conference/${key}/enrollment`)
+    },
+    getVersion: function () {
+        return axios.get(`version`)
+    },
 
     createConference: function (vform) {
         return vform.post(`conference`);
@@ -82,8 +87,6 @@ export default {
             return axios.get(`can/${ability}/${model}`);
         }
     },
-    getEnrollment: function (key) {
-        return axios.get(`conference/${key}/enrollment`)
-    }
+
 
 }
