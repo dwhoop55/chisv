@@ -94,19 +94,18 @@ class ConferenceController extends Controller
      * @param \App\Conference conference
      * @return \Illuminate\Http\Response
      */
-    public function enroll(Conference $conference)
+    public function enroll(Conference $conference, User $user = null)
     {
-        $user = auth()->user();
+
+        if (!$user) {
+            // When there is no user specified the request means the
+            // authUser wants to enroll self
+            // So we set the user to enroll to the authUser
+            $user = auth()->user();
+        }
+
         $result = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'));
         return ["success" => $result, "message" => "You are now enrolled"];
-        // $user = auth()->user();
-        // if ($user->can('enroll', $conference)) {
-        //     if ($user->grant(Role::byName('sv'), $conference, State::byName('enrolled'))) {
-        //         return back()->with('success', 'Your are now enrolled for ' . $conference->name);
-        //     }
-        // } else {
-        //     return back()->withErrors(['error', 'You cannot enroll for this conference']);
-        // }
     }
 
     /** 
@@ -115,19 +114,17 @@ class ConferenceController extends Controller
      * @param \App\Conference conference
      * @return \Illuminate\Http\Response
      */
-    public function unenroll(Conference $conference)
+    public function unenroll(Conference $conference, User $user = null)
     {
-        $user = auth()->user();
+        if (!$user) {
+            // When there is no user specified the request means the
+            // authUser wants to unenroll self
+            // So we set the user to unenroll to the authUser
+            $user = auth()->user();
+        }
+
         $result = $user->revoke(Role::byName('sv'), $conference);
         return ["success" => $result, "message" => "You are now longer enrolled"];
-        // $user = auth()->user();
-        // if ($user->can('unenroll', $conference)) {
-        //     if ($user->revoke(Role::byName('sv'), $conference)) {
-        //         return back()->with('success', 'Your are no longer enrolled for ' . $conference->name);
-        //     }
-        // } else {
-        //     return back()->withErrors(['error', 'You cannot unenroll from this conference']);
-        // }
     }
 
     /**

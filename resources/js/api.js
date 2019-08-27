@@ -14,6 +14,12 @@ export default {
     getVersion: function () {
         return axios.get(`version`)
     },
+    getRoles: function () {
+        return axios.get("role");
+    },
+    getStates: function () {
+        return axios.get("state");
+    },
 
     createConference: function (vform) {
         return vform.post(`conference`);
@@ -51,6 +57,13 @@ export default {
             }
         });
     },
+    updateEnrollment: function (action, onConference, forUser = null) {
+        if (forUser) {
+            return axios.post(`conference/${onConference}/${action}/${forUser}`)
+        } else {
+            return axios.post(`conference/${onConference}/${action}`)
+        }
+    },
 
     deleteUser: function (id) {
         return axios.delete(`user/${id}`);
@@ -60,14 +73,6 @@ export default {
     },
     deleteImage: function (id) {
         return axios.delete(`image/${id}`);
-    },
-
-    getRoles: function () {
-        return axios.get("role");
-    },
-
-    getStates: function () {
-        return axios.get("state");
     },
 
     grantPermission: function (vform) {

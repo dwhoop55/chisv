@@ -50,7 +50,6 @@
                     <b-button
                       v-if="canEdit"
                       @click="goTo(`/conference/${conference.key}/edit`)"
-                      type="is-warning"
                     >Edit</b-button>
                   </transition>
                   <b-button

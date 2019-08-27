@@ -120,10 +120,10 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['store', 'destroy', 'update']
         ]);
 
-        Route::post('conference/{conference}/enroll', 'ConferenceController@enroll')
-            ->middleware("can:enroll,conference")
+        Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
+            ->middleware("can:enroll,conference,user")
             ->name('conference.enroll');
-        Route::post('conference/{conference}/unenroll', 'ConferenceController@unenroll')
+        Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference")
             ->name('conference.unenroll');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')

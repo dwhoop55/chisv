@@ -18,12 +18,32 @@ class ConferencePolicy
      * @param  \App\Conference  $conference
      * @return mixed
      */
-    public function enroll(User $user, Conference $conference)
+    public function enroll(User $authUser, Conference $conference, User $user = null)
     {
+        if (!$user) {
+            // When there is no user specified the request means the
+            // authUser wants to enroll self
+            // So we set the user to enroll to the authUser
+            $user = $authUser;
+        }
+
+        if ($authUser->isAdmin() || $authUser->isChair($conference)) {
+            // Allow Admins and Chairs to always enroll self or other people to the conference
+            return true;
+        }
+
         if ($user->isSv($conference)) {
             // A user can only enroll once for a conference
+            // We reject because the user is already SV for conference
             return false;
-        } else {
+        }
+
+        if (
+            $user->id == $authUser->id && // Assign permissions to self
+            $conference->state == State::byName('enrollment')
+        ) {
+            // If the user accessing the route is also the user to enroll
+            // then grant access if the conference is in state enrollment
             return true;
         }
     }
@@ -42,9 +62,10 @@ class ConferencePolicy
             && ($user->svStateFor($conference) == State::byName('enrolled')
                 || $user->svStateFor($conference) == State::byName('accepted')
                 || $user->svStateFor($conference) == State::byName('waitlisted'))
+            && ($conference->state != State::byName('over'))
         ) {
-            // A user can only unenroll when enrolled
-            // or..
+            // A user can only unenroll when enrolled, accepted or waitlisted
+            // but only if the conference is not over yet
             return true;
         } else {
             return false;

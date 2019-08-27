@@ -1,6 +1,13 @@
 <template>
   <div>
-    <div v-if="state">
+    <div v-if="errored">
+      <b-notification type="is-warning" has-icon :closable="false">
+        <p>Your enrollment status could not be loaded.</p>
+        <p>{{ errored }}</p>
+        <b-button outlined inverted type="is-warning" @click="getState()">Try again</b-button>
+      </b-notification>
+    </div>
+    <div v-else-if="state">
       <b-notification :type="type" has-icon :closable="false">
         <p>
           You are
@@ -9,11 +16,12 @@
           </b-tooltip>
         </p>
         <b-button
+          v-if="canUnenroll"
           class="has-margin-t-7"
           outlined
           inverted
           type="is-danger"
-          @click="unenroll()"
+          @click="updateEnrollment('unenroll')"
         >Unenroll from {{conference.key}}</b-button>
       </b-notification>
     </div>
@@ -21,19 +29,13 @@
       <b-notification type="is-info" has-icon :closable="false">
         <p>You are not enrolled for this conference</p>
         <b-button
+          v-if="canEnroll"
           class="has-margin-t-7"
           outlined
           inverted
-          type="is-danger"
-          @click="enroll()"
+          type="is-success"
+          @click="updateEnrollment('enroll')"
         >Enroll for {{conference.key}}</b-button>
-      </b-notification>
-    </div>
-    <div v-else-if="errored">
-      <b-notification type="is-warning" has-icon :closable="false">
-        <p>Your enrollment status could not be loaded.</p>
-        <p>{{ errored }}</p>
-        <b-button outlined inverted type="is-warning" @click="getState()">Try again</b-button>
       </b-notification>
     </div>
     <div v-else>
@@ -69,8 +71,17 @@ export default {
   },
 
   methods: {
-    unenroll: function() {},
-    enroll: function() {},
+    updateEnrollment: function(action) {
+      api
+        .updateEnrollment(action, this.conference.key)
+        .then(data => {
+          this.getState();
+          this.getCan();
+        })
+        .catch(error => {
+          this.errored = error.message;
+        });
+    },
     getState: function() {
       this.loading = true;
       this.errored = null;
