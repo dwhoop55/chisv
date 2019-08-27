@@ -49,6 +49,7 @@
 
 <script>
 import api from "@/api.js";
+import auth from "@/auth.js";
 
 export default {
   props: ["permission"],
@@ -61,19 +62,16 @@ export default {
   },
 
   created() {
-    this.checkCan();
+    this.getCan();
   },
 
   methods: {
-    checkCan: function() {
-      api
-        .can("delete", "Permission", this.permission.id)
-        .then(data => {
-          this.canRevoke = data.data.result;
-        })
-        .catch(error => {
-          throw error;
-        });
+    getCan: async function() {
+      this.canRevoke = await auth.can(
+        "delete",
+        "Permission",
+        this.permission.id
+      );
     },
     confirmRevoke: function() {
       let message = `Are you sure you want to <b>revoke</b> ${this.permission.role.name} permissions?`;

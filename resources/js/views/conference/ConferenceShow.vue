@@ -83,6 +83,7 @@
 
 <script>
 import api from "@/api.js";
+import auth from "@/auth.js";
 
 export default {
   props: ["conference"],
@@ -94,14 +95,12 @@ export default {
   },
 
   created() {
-    this.checkCan();
+    this.getCan();
   },
 
   methods: {
-    checkCan: function() {
-      api
-        .can("update", "Conference", this.conference.id)
-        .then(data => (this.canEdit = data.data.result));
+    getCan: async function() {
+      this.canEdit = await auth.can("update", "Conference", this.conference.id);
     }
   }
 };

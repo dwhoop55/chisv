@@ -47,6 +47,7 @@
 
 <script>
 import api from "@/api.js";
+import auth from "@/auth.js";
 
 export default {
   props: ["conference"],
@@ -63,7 +64,7 @@ export default {
   },
 
   created() {
-    this.checkCan();
+    this.getCan();
     this.getState();
   },
 
@@ -91,14 +92,18 @@ export default {
           this.loading = false;
         });
     },
-    checkCan: function() {
-      api
-        .can("enroll", "Conference", this.conference.id)
-        .then(data => (this.canEnroll = data.data.result));
+    getCan: async function() {
+      this.canEnroll = await auth.can(
+        "enroll",
+        "Conference",
+        this.conference.id
+      );
 
-      api
-        .can("unenroll", "Conference", this.conference.id)
-        .then(data => (this.canUnenroll = data.data.result));
+      this.canUnenroll = await auth.can(
+        "unenroll",
+        "Conference",
+        this.conference.id
+      );
     }
   },
 

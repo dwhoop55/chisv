@@ -18,6 +18,7 @@
 
 <script>
 import api from "@/api.js";
+import auth from "@/auth.js";
 
 export default {
   data() {
@@ -31,19 +32,12 @@ export default {
 
   created() {
     this.load();
-    this.checkCanCreate();
+    this.getCan();
   },
 
   methods: {
-    checkCanCreate: function() {
-      api
-        .can("create", "Conference")
-        .then(data => {
-          this.canCreate = data.data.result;
-        })
-        .catch(error => {
-          throw error;
-        });
+    getCan: async function() {
+      this.canCreate = await auth.can("create", "Conference");
     },
     load: function() {
       api
