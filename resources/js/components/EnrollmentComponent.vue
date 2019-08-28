@@ -4,7 +4,7 @@
       <b-notification type="is-warning" has-icon :closable="false">
         <p>Your enrollment status could not be loaded.</p>
         <p>{{ errored }}</p>
-        <b-button outlined inverted type="is-warning" @click="getState()">Try again</b-button>
+        <b-button outlined inverted type="is-warning" @click="getState();getCan()">Try again</b-button>
       </b-notification>
     </div>
     <div v-else-if="state">

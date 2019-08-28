@@ -3,7 +3,7 @@
     <b-field v-if="canCreate" grouped position="is-right">
       <b-button @click="showCreateModal=true" class="button">Add Conference</b-button>
     </b-field>
-    <div class="columns is-multiline is-flex-conferences">
+    <div class="columns is-multiline is-flex-stretch">
       <div class="column is-half" v-for="conference in conferences" :key="conference.id">
         <conference-card :conference="conference"></conference-card>
       </div>

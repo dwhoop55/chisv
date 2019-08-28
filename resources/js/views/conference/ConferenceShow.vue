@@ -70,7 +70,11 @@
             </div>
           </nav>
 
-          <enrollment-component :conference="conference"></enrollment-component>
+          <div class="columns is-centered">
+            <div class="column is-half">
+              <enrollment-component :conference="conference"></enrollment-component>
+            </div>
+          </div>
 
           <p class="content has-margin-t-1">{{ conference.description | textlimit(1000) }}</p>
         </div>

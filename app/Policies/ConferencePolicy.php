@@ -29,7 +29,7 @@ class ConferencePolicy
 
         if ($authUser->isAdmin() || $authUser->isChair($conference)) {
             // Allow Admins and Chairs to always enroll self or other people to the conference
-            return true;
+            // return true;
         }
 
         if ($user->isSv($conference)) {
