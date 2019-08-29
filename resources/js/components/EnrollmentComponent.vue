@@ -74,7 +74,7 @@ export default {
     unenroll: function() {
       // We warn the user and want a confirmation
       // when re-enrollment isnt possible after the user unenrolled
-      if (this.canEnroll == false) {
+      if (this.conference.state.name != "enrollment") {
         this.$buefy.dialog.confirm({
           title: "Caution!",
           message:
