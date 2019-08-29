@@ -21,7 +21,7 @@
           outlined
           inverted
           type="is-danger"
-          @click="updateEnrollment('unenroll')"
+          @click="unenroll"
         >Unenroll from {{conference.key}}</b-button>
       </b-notification>
     </div>
@@ -34,7 +34,7 @@
           outlined
           inverted
           type="is-success"
-          @click="updateEnrollment('enroll')"
+          @click="enroll"
         >Enroll for {{conference.key}}</b-button>
       </b-notification>
     </div>
@@ -71,6 +71,26 @@ export default {
   },
 
   methods: {
+    unenroll: function() {
+      // We warn the user and want a confirmation
+      // when re-enrollment isnt possible after the user unenrolled
+      if (this.canEnroll == false) {
+        this.$buefy.dialog.confirm({
+          title: "Caution!",
+          message:
+            "The current state of the conference <b>will not allow for re-enrollment</b>! Are you sure you want to unenroll?",
+          confirmText: "Yes, unenroll me",
+          type: "is-danger",
+          hasIcon: true,
+          onConfirm: () => this.updateEnrollment("unenroll")
+        });
+      } else {
+        this.updateEnrollment("unenroll");
+      }
+    },
+    enroll: function() {
+      this.updateEnrollment("enroll");
+    },
     updateEnrollment: function(action) {
       api
         .updateEnrollment(action, this.conference.key)
