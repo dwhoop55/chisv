@@ -57,13 +57,13 @@ export default {
             }
         });
     },
-    updateEnrollment: function (action, onConference, forUser = null) {
-        if (forUser) {
-            return axios.post(`conference/${onConference}/${action}/${forUser}`)
-        } else {
-            return axios.post(`conference/${onConference}/${action}`)
-        }
-    },
+    // updateEnrollment: function (action, onConference, forUser = null) {
+    //     if (forUser) {
+    //         return axios.post(`conference/${onConference}/${action}/${forUser}`)
+    //     } else {
+    //         return axios.post(`conference/${onConference}/${action}`)
+    //     }
+    // },
 
     deleteUser: function (id) {
         return axios.delete(`user/${id}`);
@@ -85,6 +85,12 @@ export default {
         return vform.put(`permission/${id}`);
     },
 
+    enroll: function (conference, vform) {
+        return vform.post(`conference/${conference}/enroll`)
+    },
+    unenroll: function (conference) {
+        return axios.post(`conference/${conference}/unenroll`)
+    },
     can: function (ability, model, id = null) {
         if (id) {
             return axios.get(`can/${ability}/${model}/${id}`);

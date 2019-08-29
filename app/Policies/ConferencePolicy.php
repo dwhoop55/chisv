@@ -12,7 +12,7 @@ class ConferencePolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can enroll for the conferences.
+     * Determine whether the user can enroll in the conferences.
      *
      * @param  \App\User  $user
      * @param  \App\Conference  $conference

@@ -6,7 +6,7 @@
         :style="`height:300px;${conferenceArtworkBackground(permission.conference)}`"
       >
         <b-field grouped position="is-right">
-          <transition name="slide-fade">
+          <transition name="slide-right-fade">
             <b-button
               v-if="canRevoke"
               outlined
@@ -24,7 +24,7 @@
           attached
           :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
         >
-          <transition name="slide-fade">
+          <transition name="slide-right-fade">
             <b-tag v-if="canRevoke" rounded :type="roleType(permission.role)" size="is-large">
               <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
             </b-tag>

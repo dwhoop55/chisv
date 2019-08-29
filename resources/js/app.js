@@ -11,6 +11,7 @@ import Vue from "vue";
 import Buefy from "buefy";
 import { Form, HasError, AlertError } from 'vform'
 import VueMoment from 'vue-moment'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -18,6 +19,7 @@ Vue.component(Form.name, Form)
 
 Vue.use(Buefy, { defaultNoticeQueue: false });
 Vue.use(VueMoment);
+Vue.use(VueDOMPurifyHTML);
 
 /**
  * The following block of code may be used to automatically register your
@@ -88,7 +90,7 @@ Vue.mixin({
                     return "is-danger";
                     break;
                 case "enrolled":
-                    return "is-light";
+                    return "is-success";
                     break;
                 case "waitlisted":
                     return "is-warning";

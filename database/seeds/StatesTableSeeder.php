@@ -20,8 +20,8 @@ class StatesTableSeeder extends Seeder
             ["id" => 5, "for" => "App\Conference", "name" => "running", "description" => "The conference is running"],
             ["id" => 6, "for" => "App\Conference", "name" => "over", "description" => "The conference is over"],
 
-            ["id" => 11, "for" => "App\User", "name" => "enrolled", "description" => "Is enrolled, waiting to be accepted, waitlisted or dropped"],
-            ["id" => 12, "for" => "App\User", "name" => "waitlisted", "description" => "On the waitlist, waiting to be accepted when other SVs cancel"],
+            ["id" => 11, "for" => "App\User", "name" => "enrolled", "description" => "Waiting to be accepted, waitlisted or dropped"],
+            ["id" => 12, "for" => "App\User", "name" => "waitlisted", "description" => "Waiting to be accepted when other SVs cancel"],
             ["id" => 13, "for" => "App\User", "name" => "accepted", "description" => "Accepted to the conference as SV"],
             ["id" => 14, "for" => "App\User", "name" => "dropped", "description" => "Dropped from the conference"],
 

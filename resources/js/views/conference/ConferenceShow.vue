@@ -28,6 +28,7 @@
                   v-if="conference.enable_bidding==true"
                   type="is-success"
                 >Bidding now open!</b-tag>
+                <b-tag rounded size="is-medium" v-else type="is-warning">Bidding currently closed</b-tag>
               </b-taglist>
             </div>
           </div>
@@ -46,7 +47,7 @@
             <div class="level-right">
               <div class="level-item">
                 <div class="buttons">
-                  <transition name="slide-fade">
+                  <transition name="slide-right-fade">
                     <b-button
                       v-if="canEdit"
                       @click="goTo(`/conference/${conference.key}/edit`)"
@@ -71,12 +72,12 @@
           </nav>
 
           <div class="columns is-centered">
-            <div class="column is-half">
+            <div class="column is-two-thirds">
               <enrollment-component :conference="conference"></enrollment-component>
             </div>
           </div>
 
-          <p class="content has-margin-t-1">{{ conference.description | textlimit(1000) }}</p>
+          <p class="content has-margin-t-1" v-dompurify-html="conference.description"></p>
         </div>
       </div>
     </div>
