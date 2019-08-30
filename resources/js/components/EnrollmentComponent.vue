@@ -226,7 +226,7 @@ export default {
     return {
       form: new Form({
         know_city: false,
-        attend_before: false,
+        attended_before: false,
         sved_before: false,
         need_visa: false,
         why: ""
@@ -266,24 +266,26 @@ export default {
     unenroll: function() {
       api
         .unenroll(this.conference.key)
-        .then(data => {})
+        .then(data => {
+          this.state = null;
+        })
         .catch(error => {
           this.errored = error.message;
         })
         .finally(() => {
-          this.getState();
           this.getCan();
         });
     },
     enroll: function() {
       api
         .enroll(this.conference.key, this.form)
-        .then(data => {})
+        .then(data => {
+          this.state = data.data.result;
+        })
         .catch(error => {
           this.errored = error.message;
         })
         .finally(() => {
-          this.getState();
           this.getCan();
         });
     },

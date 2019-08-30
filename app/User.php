@@ -13,7 +13,7 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
      * @var array
      */
@@ -114,7 +114,7 @@ class User extends Authenticatable
         return $this->hasPermission(Role::byName('sv'), $conference);
     }
 
-    public function grant(Role $role, Conference $conference, State $state = null)
+    public function grant(Role $role, Conference $conference, State $state = null, EnrollmentInfo $enrollmentInfo = null)
     {
         $permission = new Permission;
         $permission->user()->associate($this);
@@ -123,9 +123,16 @@ class User extends Authenticatable
         $permission->state()->associate($state);
 
         try {
-            return $permission->save();
+            $permission->save();
+
+            // Now that we have the model id-ed in the database
+            // we can save additional enrollmentInfos when available
+            if ($enrollmentInfo) {
+                $permission->enrollmentInfo()->save($enrollmentInfo);
+            }
+            return $permission;
         } catch (QueryException $th) {
-            return false;
+            return null;
         }
     }
 
@@ -140,6 +147,9 @@ class User extends Authenticatable
 
         if ($permission) {
             try {
+                if ($permission->enrollmentInfo) {
+                    $permission->enrollmentInfo()->delete();
+                }
                 return $permission->delete();
             } catch (QueryException $th) {
                 return false;

@@ -116,6 +116,12 @@ export default {
         this.showEditModal = true;
       }
     }
+  },
+
+  computed: {
+    conferenceUrl: function() {
+      return `/conference/${this.permission.conference.key}`;
+    }
   }
 };
 </script>

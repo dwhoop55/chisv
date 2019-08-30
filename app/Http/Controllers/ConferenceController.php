@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
+use App\EnrollmentInfo;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
 use App\Http\Requests\EnrollRequest;
@@ -105,8 +106,14 @@ class ConferenceController extends Controller
             $user = auth()->user();
         }
 
-        $result = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'));
-        return ["success" => $result, "message" => "You are now enrolled"];
+        $enrollmentInfo = new EnrollmentInfo($request->toArray());
+        $permission = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'), $enrollmentInfo);
+
+        if ($permission) {
+            return ["result" => $permission->state, "message" => "You are now enrolled"];
+        } else {
+            return ["result" => null, "message" => "There was an error while granting SV permissions"];
+        }
     }
 
     /** 

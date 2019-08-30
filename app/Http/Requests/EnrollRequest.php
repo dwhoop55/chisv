@@ -16,7 +16,7 @@ class EnrollRequest extends FormRequest
     {
         return [
             'know_city' => 'required|boolean',
-            'attend_before' => 'required|boolean',
+            'attended_before' => 'required|boolean',
             'sved_before' => 'required|boolean',
             'need_visa' => 'required|boolean',
             'why' => 'present|nullable|string|max:2000',
