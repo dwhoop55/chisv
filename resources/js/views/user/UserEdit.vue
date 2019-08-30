@@ -5,7 +5,7 @@
         <div v-if="user">
           <b-button @click="showGrantModal=true" class="is-pulled-right" v-if="canGrant">Grant</b-button>
           <b-modal :active.sync="showGrantModal" has-modal-card>
-            <grant-permission-modal @granted="load" :user="user"></grant-permission-modal>
+            <permission-modal @created="load" :user="user"></permission-modal>
           </b-modal>
 
           <div class="subtitle has-margin-t-3">

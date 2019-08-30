@@ -1,6 +1,7 @@
 <template>
   <b-select
     @input="$emit('input', $event)"
+    :disabled="disabled"
     :value="value"
     expanded
     :loading="loading"
@@ -18,7 +19,7 @@
 import api from "@/api.js";
 
 export default {
-  props: ["value", "range"],
+  props: ["value", "range", "disabled"],
 
   data() {
     return {

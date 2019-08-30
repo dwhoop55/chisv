@@ -21,6 +21,10 @@ class CreateEnrollmentInfosTable extends Migration
             $table->boolean('sved_before')->index();
             $table->boolean('need_visa')->index();
             $table->text('why')->nullable();
+
+            $table->foreign('permission_id')
+                ->references('id')->on('permissions')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

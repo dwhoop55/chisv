@@ -65,7 +65,7 @@ class PermissionController extends Controller
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Permission $permission)
+    public function update(PermissionRequest $request, Permission $permission)
     {
         $updatedPermission = new Permission($request->all());
         $user = auth()->user();

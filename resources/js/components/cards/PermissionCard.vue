@@ -15,6 +15,15 @@
               class="has-margin-7"
             >Revoke</b-button>
           </transition>
+          <transition name="slide-right-fade">
+            <b-button
+              v-if="permission.enrollment_info"
+              outlined
+              @click="showEnrollmentInfo=true"
+              type="is-light"
+              class="has-margin-t-7 has-margin-r-7"
+            >Show Enrollment Info</b-button>
+          </transition>
         </b-field>
       </div>
 
@@ -42,7 +51,13 @@
       </div>
     </div>
     <b-modal @close="$emit('updated')" :active.sync="showEditModal" has-modal-card>
-      <edit-permission-modal @updated="$emit('updated')" :permission="permission"></edit-permission-modal>
+      <permission-modal @updated="$emit('updated')" :permission="permission"></permission-modal>
+    </b-modal>
+    <b-modal :active.sync="showEnrollmentInfo" has-modal-card>
+      <enrollment-info-modal
+        :enrollment-info="permission.enrollment_info"
+        :conference="permission.conference"
+      ></enrollment-info-modal>
     </b-modal>
   </section>
 </template>
@@ -57,7 +72,8 @@ export default {
   data() {
     return {
       canRevoke: false,
-      showEditModal: false
+      showEditModal: false,
+      showEnrollmentInfo: false
     };
   },
 

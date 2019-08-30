@@ -147,9 +147,6 @@ class User extends Authenticatable
 
         if ($permission) {
             try {
-                if ($permission->enrollmentInfo) {
-                    $permission->enrollmentInfo()->delete();
-                }
                 return $permission->delete();
             } catch (QueryException $th) {
                 return false;
