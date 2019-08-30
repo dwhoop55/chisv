@@ -23,7 +23,7 @@ class CreateConferencesTable extends Migration
             $table->date('start_date')->nullable()->default(null);
             $table->date('end_date')->nullable()->default(null);
             $table->text('description')->nullable()->default(null);
-            $table->text('enrollment_info')->nullable()->default(null);
+            $table->text('enrollment_text')->nullable()->default(null);
             $table->integer('state_id')->default(1);
             $table->integer('enable_bidding')->default(0);
             $table->string('url', 300)->nullable()->default('https://www.acm.org/');

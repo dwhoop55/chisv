@@ -22,7 +22,7 @@ class ConferenceTableSeeder extends Seeder
                 'start_date' => '2019-03-01',
                 'end_date' => '2019-03-05',
                 'description' => 'Awesome people doing awesome things',
-                'enrollment_info' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
+                'enrollment_text' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
             ],
             [
                 'id' => 2,
@@ -34,7 +34,7 @@ class ConferenceTableSeeder extends Seeder
                 'start_date' => '2019-06-23',
                 'end_date' => '2019-06-28',
                 'description' => 'Awesome people doing awesome things',
-                'enrollment_info' => NULL
+                'enrollment_text' => NULL
             ],
             [
                 'id' => 3,
@@ -46,7 +46,7 @@ class ConferenceTableSeeder extends Seeder
                 'start_date' => '2019-09-22',
                 'end_date' => '2019-09-25',
                 'description' => 'AutomotiveUI (or short: AutoUI) is the International ACM SIGCHI Conference on Automotive User Interfaces and Interactive Vehicular Applications. It is the premier forum for UI research in the automotive domain. The conference annually brings together over 200 researchers and practitioners interested in both the technical and the human aspects of in-vehicle user interfaces and applications, to provide a forum for the exchange of technical information concerning research (and practice) and educational activities for motor vehicle user interface development. We have multiple meeting categories in which researchers, practitioners, and other interested parties can take part in our conference and community. We welcome you to engage with us in this exciting field!',
-                'enrollment_info' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
+                'enrollment_text' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
             ],
             [
                 'id' => 4,
@@ -58,7 +58,7 @@ class ConferenceTableSeeder extends Seeder
                 'start_date' => '2019-11-10',
                 'end_date' => '2019-11-13',
                 'description' => '',
-                'enrollment_info' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
+                'enrollment_text' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference'
             ],
         ];
 

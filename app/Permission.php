@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
 
-    protected $with = ['role', 'user', 'conference', 'state'];
+    protected $with = ['role', 'user', 'conference', 'state', 'enrollmentInfo'];
     protected $guarded = [];
 
     public function role()
@@ -28,5 +28,10 @@ class Permission extends Model
     public function state()
     {
         return $this->belongsTo('App\State');
+    }
+
+    public function enrollmentInfo()
+    {
+        return $this->hasOne('App\EnrollmentInfo');
     }
 }

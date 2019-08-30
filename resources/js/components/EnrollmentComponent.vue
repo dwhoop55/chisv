@@ -14,7 +14,7 @@
 
     <!-- Not enrolled -->
     <transition name="slide-top-fade">
-      <b-notification v-if="!loading && !state" type="is-info" has-icon :closable="false">
+      <b-notification v-if="!loading && !state" type="is-light" has-icon :closable="false">
         You are not enrolled in this conference
         <p v-if="conference.state.name != 'enrollment'">
           The enrollment phase is
@@ -32,20 +32,18 @@
             <strong>{{ state.name }}</strong>
           </b-tooltip>
         </p>
-        <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
-      </b-notification>
-    </transition>
-
-    <!-- Unenroll -->
-    <transition name="slide-top-fade">
-      <b-field grouped position="is-centered">
+        <!-- Unenroll -->
         <b-button
           v-if="!loading && canUnenroll"
           type="is-danger"
+          class="has-margin-t-7"
+          outlined
+          inverted
           icon-left="account-remove"
           @click="confirmUnenroll"
         >Unenroll</b-button>
-      </b-field>
+        <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
+      </b-notification>
     </transition>
 
     <!-- Enroll form -->
@@ -149,8 +147,8 @@
                 ></b-input>
               </b-field>
 
-              <div class="notification" v-if="conference.enrollment_info">
-                <span v-dompurify-html="conference.enrollment_info"></span>
+              <div class="notification" v-if="conference.enrollment_text">
+                <span v-dompurify-html="conference.enrollment_text"></span>
               </div>
               <!-- end content -->
             </div>
