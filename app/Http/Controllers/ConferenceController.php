@@ -84,7 +84,7 @@ class ConferenceController extends Controller
             ->where('user_id', auth()->user()->id)
             ->where('role_id', Role::byName('sv')->id)->first();
         if ($permission && $permission->state) {
-            return $permission->state;
+            return $permission;
         } else {
             return null;
         }

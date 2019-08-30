@@ -42,6 +42,15 @@
           icon-left="account-remove"
           @click="confirmUnenroll"
         >Unenroll</b-button>
+        <b-button
+          v-if="!loading && state"
+          type="is-primary"
+          class="has-margin-t-7"
+          outlined
+          inverted
+          icon-left="format-list-bulleted"
+          @click="showEnrollmentInfo=true"
+        >Show Enrollment Info</b-button>
         <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
       </b-notification>
     </transition>
@@ -84,57 +93,9 @@
       </b-collapse>
     </transition>
 
-    <!-- <div v-if="errored">
-      <b-notification type="is-warning" has-icon :closable="false">
-        <p>Your enrollment status could not be loaded.</p>
-        <p>{{ errored }}</p>
-        <b-button outlined inverted type="is-warning" @click="getState();getCan()">Try again</b-button>
-      </b-notification>
-    </div>
-
-    <div v-else-if="state">
-      <b-notification :type="type" has-icon :closable="false">
-        <p>
-          You are
-          <b-tooltip type="is-light" multilined :label="state.description">
-            <strong>{{ state.name }}</strong>
-          </b-tooltip>
-        </p>
-        <b-button
-          v-if="canUnenroll"
-          class="has-margin-t-7"
-          outlined
-          inverted
-          type="is-danger"
-          @click="unenroll"
-        >Unenroll from {{conference.key}}</b-button>
-        <p v-else>You can no longer unenroll</p>
-      </b-notification>
-    </div>
-
-    <div v-else-if="unenrolled">
-      <b-notification type="is-info" has-icon :closable="false">
-        <p>You are not enrolled in this conference</p>
-        <b-button
-          size="is-large"
-          v-if="canEnroll"
-          class="has-margin-t-7"
-          outlined
-          inverted
-          type="is-success"
-          @click="enroll"
-          icon-left="github-circle"
-        >Enroll</b-button>
-        <p v-else>The enrollment phase is over!</p>
-      </b-notification>
-    </div>
-
-    <div v-else>
-      <b-notification has-icon :closable="false">
-        <p>Loading enrollment status..</p>
-        <b-loading :is-full-page="false" :active="loading"></b-loading>
-      </b-notification>
-    </div>-->
+    <b-modal :active.sync="showEnrollmentInfo" has-modal-card>
+      <enrollment-info-modal :enrollment-info="enrollmentInfo" disabled :conference="conference"></enrollment-info-modal>
+    </b-modal>
   </div>
 </template>
 
@@ -155,8 +116,10 @@ export default {
         need_visa: false,
         why: ""
       }),
+      showEnrollmentInfo: false,
       formOpenState: false,
       state: null,
+      enrollmentInfo: null,
       errored: null,
       loading: true,
       canUnenroll: null,
@@ -221,7 +184,8 @@ export default {
         .getEnrollment(this.conference.key)
         .then(data => {
           if (data.data != "") {
-            this.state = data.data;
+            this.state = data.data.state;
+            this.enrollmentInfo = data.data.enrollment_info;
           }
         })
         .catch(error => {
