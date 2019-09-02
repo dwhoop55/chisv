@@ -55,8 +55,20 @@ class ConferencePolicy
      * @param  \App\Conference  $conference
      * @return mixed
      */
-    public function unenroll(User $user, Conference $conference)
+    public function unenroll(User $authUser, Conference $conference, User $user = null)
     {
+        if (!$user) {
+            // When there is no user specified the request means the
+            // authUser wants to unenroll self
+            // So we set the user to unenroll to the authUser
+            $user = $authUser;
+        }
+
+        if ($authUser->isAdmin() || $authUser->isChair($conference)) {
+            // Allow Admins and Chairs to always unenroll self or other people to the conference
+            return true;
+        }
+
         if (
             $user->isSv($conference)
             && ($user->svStateFor($conference) == State::byName('enrolled')

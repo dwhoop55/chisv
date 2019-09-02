@@ -114,7 +114,7 @@ class User extends Authenticatable
         return $this->hasPermission(Role::byName('sv'), $conference);
     }
 
-    public function grant(Role $role, Conference $conference, State $state = null, EnrollmentInfo $enrollmentInfo = null)
+    public function grant(Role $role, Conference $conference, State $state = null, EnrollmentForm $enrollmentForm = null)
     {
         $permission = new Permission;
         $permission->user()->associate($this);
@@ -126,9 +126,9 @@ class User extends Authenticatable
             $permission->save();
 
             // Now that we have the model id-ed in the database
-            // we can save additional enrollmentInfos when available
-            if ($enrollmentInfo) {
-                $permission->enrollmentInfo()->save($enrollmentInfo);
+            // we can save the enrollmentForm when available
+            if ($enrollmentForm) {
+                $permission->enrollmentForm()->save($enrollmentForm);
             }
             return $permission;
         } catch (QueryException $th) {

@@ -12,6 +12,18 @@
   opacity: 0;
 }
 
+.slide-left-fade-enter-active {
+  transition: all 0.4s ease;
+}
+.slide-left-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+.slide-left-fade-enter, .slide-left-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(-15px);
+  opacity: 0;
+}
+
 .slide-top-fade-enter-active {
   transition: all 0.4s ease;
 }

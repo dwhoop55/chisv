@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-tabs expanded :animated="false" v-model="activeTab">
+    <b-tabs type="is-toggle-rounded" position="is-centered" :animated="false" v-model="activeTab">
       <b-tab-item icon="wrench" label="General">
         <form @submit.prevent="save" @keydown="generalForm.onKeydown($event)">
           <b-field
@@ -116,12 +116,6 @@
           </b-field>
 
           <b-field class="buttons" grouped position="is-right">
-            <a :href="`/conference/${conferenceKey}`" class="button">
-              <span class="icon">
-                <i class="mdi mdi-arrow-left"></i>
-              </span>
-              <span>Back</span>
-            </a>
             <button :disabled="generalForm.busy" type="submit" class="button is-success">
               <span class="icon">
                 <i class="mdi mdi-check"></i>
@@ -226,26 +220,11 @@
               </div>
             </div>
           </div>
-
-          <b-field class="buttons" grouped position="is-right">
-            <a :href="`/conference/${conferenceKey}`" class="button">
-              <span class="icon">
-                <i class="mdi mdi-arrow-left"></i>
-              </span>
-              <span>Back</span>
-            </a>
-          </b-field>
         </form>
       </b-tab-item>
 
       <b-tab-item icon="sign-caution" label="Administrative">
         <b-field class="buttons" grouped position="is-right">
-          <a :href="`/conference/${conferenceKey}`" class="button">
-            <span class="icon">
-              <i class="mdi mdi-arrow-left"></i>
-            </span>
-            <span>Back</span>
-          </a>
           <button
             v-if="canDelete"
             @click="deleteConference"
@@ -261,10 +240,11 @@
 <script>
 import { Form } from "vform";
 import api from "@/api.js";
+import auth from "@/auth.js";
 import moment from "moment-timezone";
 
 export default {
-  props: ["canDelete", "conferenceKey"],
+  props: ["conferenceKey"],
 
   computed: {
     dateErrors: function() {
@@ -299,6 +279,7 @@ export default {
   data() {
     return {
       conference: {},
+      canDelete: false,
       activeTab: 0,
       timezone: null,
       imageForm: new Form({
@@ -329,10 +310,18 @@ export default {
   },
 
   methods: {
+    getCan: async function() {
+      this.canDelete = await auth.can(
+        "delete",
+        "Conference",
+        this.conference.id
+      );
+    },
     deleteImage: function(id) {
       api
         .deleteImage(id)
         .then(data => {
+          this.$emit("updated");
           this.load();
           this.$buefy.toast.open({
             message: data.data.message,
@@ -371,6 +360,7 @@ export default {
       this.isLoading = true;
       promise
         .then(data => {
+          this.$emit("updated");
           this.$buefy.toast.open({
             message: data.data.message,
             type: "is-success"
@@ -406,6 +396,7 @@ export default {
       api
         .updateConference(this.conferenceKey, form)
         .then(data => {
+          this.$emit("updated");
           this.load();
           this.$buefy.toast.open({
             message: data.data.message,
@@ -465,6 +456,7 @@ export default {
           this.imageForm.fill(conference);
           this.generalForm.enable_bidding =
             this.generalForm.enable_bidding == "1" ? true : false;
+          this.getCan();
         })
         .catch(error => {
           if (error.response.status == 404) {

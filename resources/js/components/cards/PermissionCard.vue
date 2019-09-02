@@ -17,12 +17,12 @@
           </transition>
           <transition name="slide-right-fade">
             <b-button
-              v-if="permission.enrollment_info"
+              v-if="permission.enrollment_form"
               outlined
-              @click="showEnrollmentInfo=true"
+              @click="showEnrollmentForm=true"
               type="is-light"
               class="has-margin-t-7 has-margin-r-7"
-            >Show Enrollment Info</b-button>
+            >Show Enrollment Form</b-button>
           </transition>
         </b-field>
       </div>
@@ -53,11 +53,11 @@
     <b-modal @close="$emit('updated')" :active.sync="showEditModal" has-modal-card>
       <permission-modal @updated="$emit('updated')" :permission="permission"></permission-modal>
     </b-modal>
-    <b-modal :active.sync="showEnrollmentInfo" has-modal-card>
-      <enrollment-info-modal
-        :enrollment-info="permission.enrollment_info"
+    <b-modal :active.sync="showEnrollmentForm" has-modal-card>
+      <enrollment-form-modal
+        :enrollment-form="permission.enrollment_form"
         :conference="permission.conference"
-      ></enrollment-info-modal>
+      ></enrollment-form-modal>
     </b-modal>
   </section>
 </template>
@@ -73,7 +73,7 @@ export default {
     return {
       canRevoke: false,
       showEditModal: false,
-      showEnrollmentInfo: false
+      showEnrollmentForm: false
     };
   },
 

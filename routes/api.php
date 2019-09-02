@@ -124,14 +124,13 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:enroll,conference,user")
             ->name('conference.enroll');
         Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
-            ->middleware("can:unenroll,conference")
+            ->middleware("can:unenroll,conference,user")
             ->name('conference.unenroll');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
-
-        // Route::get('conference/{conference}/users', 'ConferenceController@users')
-        //     ->middleware("can:view,conference")
-        //     ->name('conference.users');
+        Route::get('conference/{conference}/user', 'ConferenceController@user')
+            ->middleware("can:view,conference")
+            ->name('conference.user');
 
 
         // Determine if a user can perform a certain action

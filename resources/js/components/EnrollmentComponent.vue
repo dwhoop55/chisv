@@ -14,7 +14,7 @@
 
     <!-- Not enrolled -->
     <transition name="slide-top-fade">
-      <b-notification v-if="!loading && !state" type="is-light" has-icon :closable="false">
+      <b-notification v-if="!loading && !permission" type="is-light" has-icon :closable="false">
         You are not enrolled in this conference
         <p v-if="conference.state.name != 'enrollment'">
           The enrollment phase is
@@ -25,32 +25,39 @@
 
     <!-- Enrolled, Accepted, Waitlisted or Dropped -->
     <transition name="slide-top-fade">
-      <b-notification v-if="!loading && state" :type="stateType(state)" has-icon :closable="false">
+      <b-notification
+        v-if="!loading && permission"
+        :type="stateType(permission.state)"
+        has-icon
+        :closable="false"
+      >
         <p>
           You are
-          <b-tooltip type="is-light" multilined :label="state.description">
-            <strong>{{ state.name }}</strong>
+          <b-tooltip type="is-light" multilined :label="permission.state.description">
+            <strong>{{ permission.state.name }}</strong>
           </b-tooltip>
         </p>
         <!-- Unenroll -->
+        <transition name="slide-left-fade">
+          <b-button
+            v-if="!loading && canUnenroll"
+            type="is-danger"
+            class="has-margin-t-7"
+            outlined
+            inverted
+            icon-left="account-remove"
+            @click="confirmUnenroll"
+          >Unenroll</b-button>
+        </transition>
         <b-button
-          v-if="!loading && canUnenroll"
-          type="is-danger"
-          class="has-margin-t-7"
-          outlined
-          inverted
-          icon-left="account-remove"
-          @click="confirmUnenroll"
-        >Unenroll</b-button>
-        <b-button
-          v-if="!loading && state"
+          v-if="!loading && permission"
           type="is-primary"
           class="has-margin-t-7"
           outlined
           inverted
           icon-left="format-list-bulleted"
-          @click="showEnrollmentInfo=true"
-        >Show Enrollment Info</b-button>
+          @click="showEnrollmentForm=true"
+        >Show Enrollment Form</b-button>
         <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
       </b-notification>
     </transition>
@@ -58,8 +65,8 @@
     <!-- Enroll form -->
     <transition name="slide-top-fade">
       <b-collapse
-        :open="formOpenState"
-        v-if="!loading && canEnroll && !state"
+        :open="false"
+        v-if="!loading && canEnroll && !permission"
         class="card"
         aria-id="contentIdForEnrollForm"
       >
@@ -78,7 +85,7 @@
         <form @submit.prevent="enroll" @keydown="form.onKeydown($event)">
           <div class="card-content">
             <div class="content">
-              <enrollment-info-form v-model="form" :conference="conference"></enrollment-info-form>
+              <enrollment-form v-model="form" :conference="conference"></enrollment-form>
 
               <div class="notification" v-if="conference.enrollment_text">
                 <span v-dompurify-html="conference.enrollment_text"></span>
@@ -93,8 +100,8 @@
       </b-collapse>
     </transition>
 
-    <b-modal :active.sync="showEnrollmentInfo" has-modal-card>
-      <enrollment-info-modal :enrollment-info="enrollmentInfo" disabled :conference="conference"></enrollment-info-modal>
+    <b-modal :active.sync="showEnrollmentForm" has-modal-card>
+      <enrollment-form-modal v-model="form" disabled :conference="conference"></enrollment-form-modal>
     </b-modal>
   </div>
 </template>
@@ -116,12 +123,12 @@ export default {
         need_visa: false,
         why: ""
       }),
-      showEnrollmentInfo: false,
-      formOpenState: false,
-      state: null,
-      enrollmentInfo: null,
+      showEnrollmentForm: false,
+
+      permission: null,
       errored: null,
       loading: true,
+
       canUnenroll: null,
       canEnroll: null
     };
@@ -151,41 +158,47 @@ export default {
       }
     },
     unenroll: function() {
+      this.loading = true;
       api
         .unenroll(this.conference.key)
         .then(data => {
-          this.state = null;
+          this.errored = null;
+          this.permission = null;
         })
         .catch(error => {
           this.errored = error.message;
         })
         .finally(() => {
           this.getCan();
+          this.loading = false;
         });
     },
     enroll: function() {
+      this.loading = true;
       api
         .enroll(this.conference.key, this.form)
         .then(data => {
-          this.state = data.data.result;
+          this.permission = data.data.result;
+          this.errored = null;
         })
         .catch(error => {
           this.errored = error.message;
         })
         .finally(() => {
           this.getCan();
+          this.loading = false;
         });
     },
     getState: function() {
       this.loading = true;
       this.errored = null;
-      this.state = null;
+      this.permission = null;
       api
         .getEnrollment(this.conference.key)
         .then(data => {
           if (data.data != "") {
-            this.state = data.data.state;
-            this.enrollmentInfo = data.data.enrollment_info;
+            this.permission = data.data;
+            this.form.fill(this.permission.enrollment_form);
           }
         })
         .catch(error => {

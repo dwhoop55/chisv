@@ -5,7 +5,7 @@ export default {
         return new Promise(function (resolve, reject) {
             api.can(ability, model, id)
                 .then(data => { resolve(data.data.result) })
-                .catch(error => { reject() })
+                .catch(error => { reject(error) })
         });
     }
 

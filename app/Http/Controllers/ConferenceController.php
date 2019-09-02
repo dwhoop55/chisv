@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
-use App\EnrollmentInfo;
+use App\EnrollmentForm;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
 use App\Http\Requests\EnrollRequest;
@@ -44,11 +44,33 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function users(Conference $conference)
+    public function user(Conference $conference)
     {
-        // We want to return only users which are allowed to be viewd by the authUser
-        $users = $conference->users->filter(function ($user) {
-            return auth()->user()->can('view', $user);
+        // We need to design our returned user objects in a special way
+        // since also SVs can sniff these from the dev tools
+        $users = $conference->users->map(function ($user) {
+            $safeUser = null;
+            $safeUser = $user->only('firstname', 'lastname');
+            $safeUser['university'] = $user->university;
+            $safeUser['university_fallback'] = $user->university_fallback;
+            $safeUser['sv_state'] = $user->svStateFor(request()->conference);
+            if (
+                auth()->user()->isAdmin()
+                || auth()->user()->isChair(request()->conference)
+                || auth()->user()->isCaptain(request()->conference)
+            ) {
+                // Show more information
+                $safeUser['email'] = $user->email;
+                $safeUser['degree'] = $user->degree;
+                $safeUser['past_conferences'] = $user->past_conferences;
+                $safeUser['past_conferences_sv'] = $user->past_conferences_sv;
+                $safeUser['city'] = $user->city;
+                $safeUser['shirt'] = $user->shirt;
+            } else {
+                // SV
+                // Only show basic information defined at the top
+            }
+            return $safeUser;
         });
         return $users;
     }
@@ -83,7 +105,8 @@ class ConferenceController extends Controller
             ::where('conference_id', $conference->id)
             ->where('user_id', auth()->user()->id)
             ->where('role_id', Role::byName('sv')->id)->first();
-        if ($permission && $permission->state) {
+
+        if ($permission) {
             return $permission;
         } else {
             return null;
@@ -106,11 +129,11 @@ class ConferenceController extends Controller
             $user = auth()->user();
         }
 
-        $enrollmentInfo = new EnrollmentInfo($request->toArray());
-        $permission = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'), $enrollmentInfo);
+        $enrollmentForm = new EnrollmentForm($request->toArray());
+        $permission = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'), $enrollmentForm);
 
         if ($permission) {
-            return ["result" => $permission->state, "message" => "You are now enrolled"];
+            return ["result" => $permission, "message" => "You are now enrolled"];
         } else {
             return ["result" => null, "message" => "There was an error while granting SV permissions"];
         }
