@@ -8,7 +8,7 @@
       :show-detail-icon="true"
       :opened-detailed="[1]"
       paginated
-      per-page="5"
+      per-page="25"
       detailed
       :hoverable="true"
       sort-icon="chevron-up"
@@ -38,7 +38,7 @@
         </b-table-column>
         <b-table-column width="130" field="sv_state.id" label="SV State" sortable>
           <template>
-            <b-taglist @click.native="props.row.show=true" attached>
+            <b-taglist attached>
               <b-tag
                 v-if="props.row.sv_permission"
                 rounded
@@ -50,7 +50,7 @@
             </b-taglist>
           </template>
         </b-table-column>
-        <b-table-column width="130" field="sv_state.created_at" label="enrolled" sortable>
+        <b-table-column width="150" field="sv_state.created_at" label="enrolled" sortable>
           <template>
             <b-tooltip
               type="is-light"

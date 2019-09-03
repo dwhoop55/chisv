@@ -46,9 +46,16 @@ class ConferenceController extends Controller
      */
     public function user(Conference $conference)
     {
+        // First we filter the users, to only get the SVs
+        $users = $conference->users->filter(function ($user) {
+            return $user->isSv(request()->conference);
+        });
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $users = $conference->users->map(function ($user) {
+        $users = $users->map(function ($user) {
+            if (!$user->isSv(request()->conference)) {
+                return;
+            }
             $safeUser = null;
             $safeUser = $user->only('firstname', 'lastname', 'id');
             $safeUser['avatar'] = $user->avatar;
