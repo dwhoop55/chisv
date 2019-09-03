@@ -97,7 +97,7 @@ Vue.mixin({
                     return "is-danger";
                     break;
                 case "enrolled":
-                    return "is-success";
+                    return "is-light";
                     break;
                 case "waitlisted":
                     return "is-warning";

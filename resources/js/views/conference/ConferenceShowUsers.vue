@@ -2,18 +2,21 @@
   <div>
     <b-table
       v-if="users"
+      ref="table"
       :data="users"
       detail-key="id"
       :show-detail-icon="true"
+      :opened-detailed="[1]"
       paginated
       per-page="5"
-      :opened-detailed="[1]"
       detailed
+      :hoverable="true"
       sort-icon="chevron-up"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
+      default-sort="sv_state.id"
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
@@ -33,7 +36,7 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column field="sv_state.id" label="SV State" sortable>
+        <b-table-column width="130" field="sv_state.id" label="SV State" sortable>
           <template>
             <b-taglist @click.native="props.row.show=true" attached>
               <b-tag
@@ -47,7 +50,7 @@
             </b-taglist>
           </template>
         </b-table-column>
-        <b-table-column field="sv_state.created_at" label="enrolled" sortable>
+        <b-table-column width="130" field="sv_state.created_at" label="enrolled" sortable>
           <template>
             <b-tooltip
               type="is-light"
@@ -128,6 +131,9 @@ export default {
             hasIcon: true
           });
         });
+    },
+    toggle(row) {
+      this.$refs.table.toggleDetails(row);
     }
   }
 };
