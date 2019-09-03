@@ -50,10 +50,11 @@ class ConferenceController extends Controller
         // since also SVs can sniff these from the dev tools
         $users = $conference->users->map(function ($user) {
             $safeUser = null;
-            $safeUser = $user->only('firstname', 'lastname');
-            $safeUser['university'] = $user->university;
-            $safeUser['university_fallback'] = $user->university_fallback;
+            $safeUser = $user->only('firstname', 'lastname', 'id');
+            $safeUser['avatar'] = $user->avatar;
+            $safeUser['university'] = $user->university ? $user->university : $user->university_fallback;
             $safeUser['sv_state'] = $user->svStateFor(request()->conference);
+            $safeUser['sv_state']->created_at = $user->svPermissionFor(request()->conference)->created_at;
             if (
                 auth()->user()->isAdmin()
                 || auth()->user()->isChair(request()->conference)
@@ -66,13 +67,14 @@ class ConferenceController extends Controller
                 $safeUser['past_conferences_sv'] = $user->past_conferences_sv;
                 $safeUser['city'] = $user->city;
                 $safeUser['shirt'] = $user->shirt;
+                $safeUser['sv_permission'] = $user->svPermissionFor(request()->conference);
             } else {
                 // SV
                 // Only show basic information defined at the top
             }
             return $safeUser;
         });
-        return $users;
+        return $users->unique()->values();
     }
 
     /**
@@ -197,7 +199,7 @@ class ConferenceController extends Controller
         );
 
         $result = $conference->update($data);
-        return ["success" => $result, "message" => "Conference updated"];
+        return ["result" => $conference, "message" => "Conference updated"];
     }
 
     /**

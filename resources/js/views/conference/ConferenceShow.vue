@@ -42,10 +42,10 @@
                   <p
                     class="has-text-weight-medium"
                   >{{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
+                  <p class="has-text-weight-medium">{{ conference.location }}</p>
                 </div>
               </div>
               <div class="level-right">
-                <p class="has-text-weight-medium">{{ conference.location }}</p>
                 <div class="level-item">
                   <div class="buttons">
                     <a
@@ -61,13 +61,13 @@
 
             <b-tabs v-model="activeTab" :animated="false" position="is-centered">
               <b-tab-item label="Overview">
-                <conference-show-overview v-if="conference" :conference="conference"></conference-show-overview>
+                <conference-show-overview v-if="conference" v-model="conference"></conference-show-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
-                <conference-show-users :conferenceKey="conferenceKey"></conference-show-users>
+                <conference-show-users :conference="conference"></conference-show-users>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Edit">
-                <conference-edit @updated="getConference" :conferenceKey="conferenceKey"></conference-edit>
+                <conference-edit v-model="conference"></conference-edit>
               </b-tab-item>
             </b-tabs>
           </div>
@@ -89,14 +89,16 @@ export default {
   data() {
     return {
       canEdit: false,
-      activeTab: 0,
+      activeTab: 1,
       conference: null
     };
   },
 
   created() {
-    console.log(this.$route);
     this.getConference();
+    if (window.location.hash == "#edit") {
+      this.activeTab = 2;
+    }
   },
 
   methods: {

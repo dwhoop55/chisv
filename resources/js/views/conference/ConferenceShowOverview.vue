@@ -12,6 +12,10 @@
 
 <script>
 export default {
-  props: ["conference", "canEdit"]
+  props: ["conference", "canEdit"],
+  model: {
+    prop: "conference",
+    event: "updated"
+  }
 };
 </script>

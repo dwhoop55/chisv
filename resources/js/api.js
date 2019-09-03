@@ -6,11 +6,7 @@ export default {
         return axios.get(`conference/${key}`);
     },
     getConferenceUsers: function (key) {
-        return new Promise(function (resolve, reject) {
-            axios.get(`conference/${key}/user`)
-                .then(data => { resolve(data.data.result) })
-                .catch(error => { reject(error) })
-        });
+        return axios.get(`conference/${key}/user`)
     },
     getUser: function (id) {
         return axios.get(`user/${id}`);

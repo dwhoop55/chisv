@@ -91,7 +91,7 @@ class User extends Authenticatable
 
     public function avatar()
     {
-        return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC')->get();
+        return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC');
     }
 
     public function isAdmin()
@@ -172,6 +172,15 @@ class User extends Authenticatable
             ->where('role_id', Role::byName('sv')->id)->first();
 
         return $permission ? $permission->state : null;
+    }
+
+    public function svPermissionFor(Conference $conference)
+    {
+        $permission = $this->permissions()
+            ->where('conference_id', $conference->id)
+            ->where('role_id', Role::byName('sv')->id)->first();
+
+        return $permission ? $permission : null;
     }
 
     public function setSvStateFor(State $state, Conference $conference)
