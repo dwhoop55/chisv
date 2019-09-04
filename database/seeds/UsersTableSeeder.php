@@ -74,7 +74,7 @@ class UsersTableSeeder extends Seeder
         ];
         DB::table('users')->insert($users);
 
-        factory(App\User::class, 10)->create()->each(function ($user) {
+        factory(App\User::class, 20)->create()->each(function ($user) {
             $randomStateId = 10 + rand(1, State::where('id', '>', '10')->count());
             $state = State::find($randomStateId);
 

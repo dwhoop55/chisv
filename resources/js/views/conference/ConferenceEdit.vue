@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-tabs expanded :animated="false" v-model="activeTab">
+    <b-tabs type="is-toggle-rounded" position="is-centered" :animated="false" v-model="activeTab">
       <b-tab-item icon="wrench" label="General">
         <form @submit.prevent="save" @keydown="generalForm.onKeydown($event)">
           <b-field
@@ -116,12 +116,6 @@
           </b-field>
 
           <b-field class="buttons" grouped position="is-right">
-            <a :href="`/conference/${conferenceKey}`" class="button">
-              <span class="icon">
-                <i class="mdi mdi-arrow-left"></i>
-              </span>
-              <span>Back</span>
-            </a>
             <button :disabled="generalForm.busy" type="submit" class="button is-success">
               <span class="icon">
                 <i class="mdi mdi-check"></i>
@@ -146,7 +140,7 @@
                   </b-field>
                   <b-field>
                     <b-button
-                      @click.prevent="deleteImage(conference.artwork.id)"
+                      @click.prevent="deleteImage('artwork', conference.artwork.id)"
                       type="is-danger"
                     >Delete this artwork</b-button>
                   </b-field>
@@ -194,7 +188,7 @@
                   </b-field>
                   <b-field>
                     <b-button
-                      @click.prevent="deleteImage(conference.icon.id)"
+                      @click.prevent="deleteImage('icon', conference.icon.id)"
                       type="is-danger"
                     >Delete this icon</b-button>
                   </b-field>
@@ -226,26 +220,11 @@
               </div>
             </div>
           </div>
-
-          <b-field class="buttons" grouped position="is-right">
-            <a :href="`/conference/${conferenceKey}`" class="button">
-              <span class="icon">
-                <i class="mdi mdi-arrow-left"></i>
-              </span>
-              <span>Back</span>
-            </a>
-          </b-field>
         </form>
       </b-tab-item>
 
       <b-tab-item icon="sign-caution" label="Administrative">
         <b-field class="buttons" grouped position="is-right">
-          <a :href="`/conference/${conferenceKey}`" class="button">
-            <span class="icon">
-              <i class="mdi mdi-arrow-left"></i>
-            </span>
-            <span>Back</span>
-          </a>
           <button
             v-if="canDelete"
             @click="deleteConference"
@@ -261,10 +240,15 @@
 <script>
 import { Form } from "vform";
 import api from "@/api.js";
+import auth from "@/auth.js";
 import moment from "moment-timezone";
 
 export default {
-  props: ["canDelete", "conferenceKey"],
+  props: ["conference"],
+  model: {
+    prop: "conference",
+    event: "updated"
+  },
 
   computed: {
     dateErrors: function() {
@@ -298,7 +282,7 @@ export default {
 
   data() {
     return {
-      conference: {},
+      canDelete: false,
       activeTab: 0,
       timezone: null,
       imageForm: new Form({
@@ -320,20 +304,39 @@ export default {
         created_at: null,
         updated_at: null
       }),
-      isLoading: true
+      isLoading: false
     };
   },
 
   created() {
-    this.load();
+    this.getCan();
+    this.timezone = this.conference.timezone;
+    this.generalForm.fill(this.conference);
+    this.imageForm.fill(this.conference);
+    this.generalForm.enable_bidding =
+      this.generalForm.enable_bidding == "1" ? true : false;
   },
 
   methods: {
-    deleteImage: function(id) {
+    getCan: async function() {
+      this.canDelete = await auth.can(
+        "delete",
+        "Conference",
+        this.conference.id
+      );
+    },
+    deleteImage: function(type, id) {
       api
         .deleteImage(id)
         .then(data => {
-          this.load();
+          let result = data.data.result;
+          let conference = this.conference;
+          if (type == "artwork") {
+            conference.artwork = result;
+          } else {
+            conference.icon = result;
+          }
+          this.$emit("updated", conference);
           this.$buefy.toast.open({
             message: data.data.message,
             type: "is-success"
@@ -371,6 +374,14 @@ export default {
       this.isLoading = true;
       promise
         .then(data => {
+          let result = data.data.result;
+          let conference = this.conference;
+          if (type == "artwork") {
+            conference.artwork = result;
+          } else {
+            conference.icon = result;
+          }
+          this.$emit("updated", conference);
           this.$buefy.toast.open({
             message: data.data.message,
             type: "is-success"
@@ -384,7 +395,6 @@ export default {
           });
         })
         .finally(() => {
-          this.load();
           this.isLoading = false;
         });
     },
@@ -404,9 +414,9 @@ export default {
       }
       this.isLoading = true;
       api
-        .updateConference(this.conferenceKey, form)
+        .updateConference(this.conference.key, form)
         .then(data => {
-          this.load();
+          this.$emit("updated", data.data.result);
           this.$buefy.toast.open({
             message: data.data.message,
             type: "is-success"
@@ -437,7 +447,7 @@ export default {
         onConfirm: () => {
           this.isLoading = true;
           api
-            .deleteConference(this.conferenceKey)
+            .deleteConference(this.conference.key)
             .then(() => {
               this.goTo("/conference");
             })
@@ -452,30 +462,6 @@ export default {
             });
         }
       });
-    },
-    load() {
-      this.isLoading = true;
-      api
-        .getConference(this.conferenceKey)
-        .then(data => {
-          let conference = data.data;
-          this.conference = conference;
-          this.timezone = conference.timezone;
-          this.generalForm.fill(conference);
-          this.imageForm.fill(conference);
-          this.generalForm.enable_bidding =
-            this.generalForm.enable_bidding == "1" ? true : false;
-        })
-        .catch(error => {
-          if (error.response.status == 404) {
-            this.goTo("/conference");
-          } else {
-            throw error;
-          }
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
     }
   }
 };

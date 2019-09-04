@@ -1,10 +1,10 @@
 <template>
   <div class="modal-card" style="width: auto">
     <header class="modal-card-head">
-      <p class="modal-card-title">Enrollment Info for {{ conference.key.toUpperCase() }}</p>
+      <p class="modal-card-title">Enrollment for {{ conference.key.toUpperCase() }}</p>
     </header>
     <section class="modal-card-body">
-      <enrollment-info-form v-model="enrollmentInfo" :disabled="true" :conference="conference"></enrollment-info-form>
+      <enrollment-form v-model="value" :disabled="true" :conference="conference"></enrollment-form>
     </section>
     <footer class="modal-card-foot">
       <button class="button is-primary" type="button" @click="$parent.close()">Close</button>
@@ -14,6 +14,6 @@
 
 <script>
 export default {
-  props: ["enrollmentInfo", "conference"]
+  props: ["value", "conference"]
 };
 </script>

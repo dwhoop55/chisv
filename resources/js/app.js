@@ -71,7 +71,14 @@ Vue.mixin({
             if (conference.icon && conference.icon.web_path) {
                 return conference.icon.web_path;
             } else {
-                return `https://avatars.dicebear.com/v2/jdenticon/${this.conference.key}.svg`;
+                return `https://avatars.dicebear.com/v2/jdenticon/${conference.key}.svg?options[background]=%23f0f0f0`;
+            }
+        },
+        userAvatar: function (user) {
+            if (user.avatar && user.avatar.web_path) {
+                return user.avatar.web_path;
+            } else {
+                return `https://avatars.dicebear.com/v2/jdenticon/${user.id}.svg`;
             }
         },
         goTo: function (path) {
@@ -90,7 +97,7 @@ Vue.mixin({
                     return "is-danger";
                     break;
                 case "enrolled":
-                    return "is-success";
+                    return "is-light";
                     break;
                 case "waitlisted":
                     return "is-warning";

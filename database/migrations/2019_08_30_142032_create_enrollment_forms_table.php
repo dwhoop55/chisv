@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEnrollmentInfosTable extends Migration
+class CreateEnrollmentFormsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateEnrollmentInfosTable extends Migration
      */
     public function up()
     {
-        Schema::create('enrollment_infos', function (Blueprint $table) {
+        Schema::create('enrollment_forms', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('permission_id')->index();
             $table->boolean('know_city')->index();
@@ -36,6 +36,6 @@ class CreateEnrollmentInfosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('enrollment_infos');
+        Schema::dropIfExists('enrollment_forms');
     }
 }

@@ -53,7 +53,7 @@ export default {
         });
     },
     goToConference: function(key) {
-      this.goTo(`/conference/${key}/edit`);
+      this.goTo(`/conference/${key}#edit`);
     }
   }
 };

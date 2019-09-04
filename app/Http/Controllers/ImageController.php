@@ -61,7 +61,7 @@ class ImageController extends Controller
         $model = new Image(compact('name', 'owner_type', 'owner_id', 'disk_path', 'web_path', 'type'));
         $result = $model->save();
 
-        return ['success' => $result, "message" => "Upload successful!", "web_path" => $web_path];
+        return ['result' => $model, "message" => "Upload successful!", "web_path" => $web_path];
     }
 
     /**
@@ -104,7 +104,7 @@ class ImageController extends Controller
 
         $result = $image->update(compact('disk_path', 'web_path'));
 
-        return ['success' => $result, "message" => "Update successful!", "web_path" => $web_path];
+        return ['result' => $image, "message" => "Update successful!", "web_path" => $web_path];
     }
 
     /**
@@ -116,7 +116,7 @@ class ImageController extends Controller
     public function destroy(Image $image)
     {
         Storage::delete($image->disk_path);
-        return ["success" => $image->delete(), "message" => "Image deleted!"];
+        return ["result" => null, "success" => $image->delete(), "message" => "Image deleted!"];
     }
 
     public function getWebPath($path)
