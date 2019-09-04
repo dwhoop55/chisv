@@ -22,9 +22,6 @@ class CreateEnrollmentInfosTable extends Migration
             $table->boolean('need_visa')->index();
             $table->text('why')->nullable();
 
-            $table->foreign('permission_id')
-                ->references('id')->on('permissions')
-                ->onDelete('cascade');
             $table->timestamps();
         });
     }
