@@ -10,17 +10,6 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    // /**
-    //  * Determine whether the user can view any models.
-    //  *
-    //  * @param  \App\User  $user
-    //  * @return mixed
-    //  */
-    // public function viewAny(User $user)
-    // {
-    //     return $this->index($user);
-    // }
-
     /**
      * Determine whether the user can view a list of users.
      * Which user in particular is decided by view below
@@ -29,7 +18,7 @@ class UserPolicy
      * @param  \App\User  $model
      * @return mixed
      */
-    public function index(User $user)
+    public function viewAny(User $user)
     {
         // Note, this only is for if the user can access
         // the index page. Which user is displayed is

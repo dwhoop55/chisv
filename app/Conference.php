@@ -23,6 +23,7 @@ class Conference extends Model
         return 'key';
     }
 
+
     public function state()
     {
         return $this->belongsTo('App\State');

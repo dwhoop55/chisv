@@ -90,7 +90,7 @@ class ConferencePolicy
      * @param  \App\User  $user
      * @return mixed
      */
-    public function index(User $user)
+    public function viewAny(User $user)
     {
         // Everyone logged in should be able to list conferences
         return $user ? true : false;

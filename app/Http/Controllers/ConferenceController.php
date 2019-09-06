@@ -91,10 +91,6 @@ class ConferenceController extends Controller
      */
     public function index()
     {
-
-        // Ask the ConferencePolicy if index is allowed for that user
-        $this->authorize('index', Conference::class);
-
         $conferences = Conference::orderBy('start_date', 'desc')->get()->filter(function ($conference) {
             return auth()->user()->can('view', $conference);
         });
@@ -231,10 +227,6 @@ class ConferenceController extends Controller
      */
     public function showIndex()
     {
-
-        // Ask the ConferencePolicy if index is allowed for that user
-        $this->authorize('index', Conference::class);
-
         $conferences = Conference::all()->filter(function ($conference) {
             return auth()->user()->can('view', $conference);
         });

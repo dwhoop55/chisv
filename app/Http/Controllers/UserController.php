@@ -31,8 +31,6 @@ class UserController extends Controller
      */
     public function index()
     {
-        // Ask the UserPolicy if index is allowed for that user
-        $this->authorize('index', User::class);
 
         // First we setup the query whith common arguments
         $userQuery = User::with('degree', 'shirt', 'university', 'permissions.conference', 'permissions.role')

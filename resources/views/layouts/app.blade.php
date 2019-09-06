@@ -48,7 +48,7 @@
                         Conferences
                     </a>
                     @endauth
-                    @can('index', App\User::class)
+                    @can('viewAny', App\User::class)
                     <a class="navbar-item" href="{{ route('user.showIndex') }}">
                         Users
                     </a>
