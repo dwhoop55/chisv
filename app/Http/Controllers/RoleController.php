@@ -15,9 +15,7 @@ class RoleController extends Controller
      */
     public function __construct()
     {
-        // This will only authorize CRUD, not the index
-        // we authorize it manually
-        $this->authorizeResource(Conference::class);
+        $this->authorizeResource(Role::class);
     }
 
     /**
@@ -27,9 +25,6 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // Ask the RolePolicy if index is allowed for that user
-        $this->authorize('index', Role::class);
-
         $roles = Role::all()->filter(function ($role) {
             return auth()->user()->can('view', $role);
         });

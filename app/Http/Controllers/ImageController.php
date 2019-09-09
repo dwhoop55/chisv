@@ -16,8 +16,6 @@ class ImageController extends Controller
      */
     public function __construct()
     {
-        // This will only authorize CRUD, not the index
-        // we authorize it manually
         $this->authorizeResource(Image::class);
     }
 

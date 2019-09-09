@@ -26,7 +26,9 @@
                                 <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}"
                                     class="input {{ $errors->has('email') ? 'is-danger' : '' }}" name="email"
                                     value="{{ old('email') }}" required autofocus>
-                                <i class="icon mdi mdi-at"></i>
+                                <span class="icon is-small is-left">
+                                    <i class="icon mdi mdi-at"></i>
+                                </span>
                             </div>
                             @if ($errors->has('email'))
                             <p class="help is-danger">{{ $errors->first('email') }}</p>

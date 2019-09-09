@@ -17,10 +17,12 @@
 
                         <div class="field">
                             <div class="control has-icons-left has-icons-right">
-                                <input id="email" type="email" placeholder="{{ __('E-Mail Address') }}"
+                                <input id="email" type="email" placeholder="E-Mail Address"
                                     class="input {{ $errors->has('email') ? 'is-danger' : '' }}" name="email"
                                     value="{{ old('email') }}" required autofocus>
-                                <i class="icon mdi mdi-at"></i>
+                                <span class="icon is-small is-left">
+                                    <i class="mdi mdi-at"></i>
+                                </span>
                             </div>
                         </div>
 
@@ -29,7 +31,9 @@
                                 <input id="password" placeholder="{{ __('Password') }}" type="password"
                                     class="input {{ $errors->has('password') ? 'is-danger' : '' }}" name="password"
                                     required>
-                                <i class="icon mdi mdi-key"></i>
+                                <span class="icon is-small is-left">
+                                    <i class="mdi mdi-key"></i>
+                                </span>
                             </div>
                         </div>
 

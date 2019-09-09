@@ -26,7 +26,7 @@
         :message="form.errors.get('email')"
         label="E-Mail"
       >
-        <b-input required v-model="form.email"></b-input>
+        <b-input required icon="email" v-model="form.email"></b-input>
       </b-field>
 
       <b-field
