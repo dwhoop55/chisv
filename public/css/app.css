@@ -12891,10 +12891,6 @@ label.panel-block:hover {
   border-bottom: 1px solid #dbdbdb;
 }
 
-.datepicker .datepicker-content {
-  height: 16.25rem;
-}
-
 .datepicker .datepicker-footer {
   margin-top: 0.875rem;
   padding-top: 0.875rem;
@@ -13206,6 +13202,22 @@ label.panel-block:hover {
   white-space: nowrap;
 }
 
+.dropdown.is-expanded {
+  width: 100%;
+}
+
+.dropdown.is-expanded .dropdown-trigger {
+  width: 100%;
+}
+
+.dropdown.is-expanded .dropdown-menu {
+  width: 100%;
+}
+
+.dropdown.is-expanded.is-mobile-modal .dropdown-menu {
+  max-width: 100%;
+}
+
 .dropdown:not(.is-disabled) .dropdown-menu .dropdown-item.is-disabled,
 .dropdown:not(.is-disabled) .dropdown-menu .has-link a.is-disabled {
   opacity: 0.5;
@@ -13306,6 +13318,24 @@ label.panel-block:hover {
 .taginput .field.has-addons .control .control .taginput-container.is-focusable,
 .field.has-addons .control .control .select select {
   border-radius: 0;
+}
+
+.field.has-addons .b-numberinput:not(:first-child) .control:first-child .button,
+.field.has-addons .b-numberinput:not(:first-child) .control:first-child .input,
+.field.has-addons .b-numberinput:not(:first-child) .control:first-child .taginput .taginput-container.is-focusable,
+.taginput .field.has-addons .b-numberinput:not(:first-child) .control:first-child .taginput-container.is-focusable,
+.field.has-addons .b-numberinput:not(:first-child) .control:first-child .select select {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.field.has-addons .b-numberinput:not(:last-child) .control:last-child .button,
+.field.has-addons .b-numberinput:not(:last-child) .control:last-child .input,
+.field.has-addons .b-numberinput:not(:last-child) .control:last-child .taginput .taginput-container.is-focusable,
+.taginput .field.has-addons .b-numberinput:not(:last-child) .control:last-child .taginput-container.is-focusable,
+.field.has-addons .b-numberinput:not(:last-child) .control:last-child .select select {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
 }
 
 .field.is-floating-label {
@@ -13439,6 +13469,19 @@ label.panel-block:hover {
 }
 
 .field.is-floating-in-label.has-numberinput .b-numberinput .control .button {
+  height: 3.25em;
+}
+
+.field.is-floating-in-label.has-addons .control .button,
+.field.is-floating-in-label.has-addons .control .input,
+.field.is-floating-in-label.has-addons .control .taginput .taginput-container.is-focusable,
+.taginput .field.is-floating-in-label.has-addons .control .taginput-container.is-focusable,
+.field.is-floating-in-label.has-addons .control .select select,
+.field.is-floating-in-label.is-grouped .control .button,
+.field.is-floating-in-label.is-grouped .control .input,
+.field.is-floating-in-label.is-grouped .control .taginput .taginput-container.is-focusable,
+.taginput .field.is-floating-in-label.is-grouped .control .taginput-container.is-focusable,
+.field.is-floating-in-label.is-grouped .control .select select {
   height: 3.25em;
 }
 
@@ -13834,6 +13877,14 @@ label.panel-block:hover {
   flex-direction: column-reverse;
 }
 
+.notices.is-bottom .notification {
+  margin-bottom: 0;
+}
+
+.notices.is-bottom .notification:not(:first-child) {
+  margin-bottom: 1.5rem;
+}
+
 .notices.has-custom-container {
   position: absolute;
 }
@@ -13850,6 +13901,11 @@ label.panel-block:hover {
 }
 
 .b-numberinput.field.is-grouped div.control {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+.b-numberinput.field.has-addons.is-expanded {
   flex-grow: 1;
   flex-shrink: 1;
 }
@@ -13918,6 +13974,7 @@ label.panel-block:hover {
   font-size: calc(1rem / 1.5);
   line-height: 1rem;
   font-weight: bold;
+  color: #fff;
 }
 
 .progress-wrapper .progress {
@@ -13937,6 +13994,10 @@ label.panel-block:hover {
 .progress-wrapper .progress.is-large + .progress-value {
   font-size: calc(1.5rem / 1.5);
   line-height: 1.5rem;
+}
+
+.progress-wrapper .progress:indeterminate::-ms-fill {
+  animation-name: none;
 }
 
 .progress-wrapper .progress::-webkit-progress-value {
@@ -14195,7 +14256,90 @@ label.panel-block:hover {
   font-size: 1.5rem;
 }
 
+.rate {
+  align-items: center;
+  display: flex;
+}
+
+.rate:not(:last-child) {
+  margin-bottom: 0.75rem;
+}
+
+.rate.is-spaced .rate-item:not(:last-child) {
+  margin-right: 0.25rem;
+}
+
+.rate.is-disabled .rate-item {
+  cursor: initial;
+}
+
+.rate.is-disabled .rate-item:hover {
+  transform: none;
+}
+
+.rate.is-rtl .rate-item {
+  order: 1;
+}
+
+.rate.is-rtl .rate-text {
+  margin-left: 0;
+  margin-right: 0.35rem;
+}
+
+.rate .rate-item {
+  cursor: pointer;
+  display: inline-flex;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.rate .rate-item:hover {
+  transform: scale(1.1);
+}
+
+.rate .rate-item.set-on .icon,
+.rate .rate-item.set-half .is-half {
+  color: #e08e0b;
+}
+
+.rate .rate-item.set-half .is-half {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: hidden;
+}
+
+.rate .icon {
+  color: #dbdbdb;
+  line-height: 1;
+  pointer-events: none;
+  width: inherit;
+}
+
+.rate .is-half > i {
+  position: absolute;
+  left: 0;
+}
+
+.rate .rate-text {
+  font-size: calc(1rem / 1.25);
+  margin-left: 0.35rem;
+}
+
+.rate .rate-text.is-small {
+  font-size: calc(0.75rem / 1.25);
+}
+
+.rate .rate-text.is-medium {
+  font-size: calc(1.25rem / 1.25);
+}
+
+.rate .rate-text.is-large {
+  font-size: calc(1.5rem / 1.25);
+}
+
 .select select {
+  text-rendering: auto !important;
   padding-right: 2.5em;
 }
 
@@ -14242,15 +14386,19 @@ label.panel-block:hover {
   background: #dbdbdb;
   border-radius: 4px;
   border: 0px solid #7a7a7a;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .b-slider .b-slider-thumb-wrapper {
   display: inline-flex;
   align-items: center;
   position: absolute;
-  transform: translateX(-50%);
   cursor: -webkit-grab;
   cursor: grab;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  flex-direction: column;
 }
 
 .b-slider .b-slider-thumb-wrapper .b-slider-thumb {
@@ -14307,6 +14455,8 @@ label.panel-block:hover {
   font-size: 0.75rem;
   position: absolute;
   top: calc(0.5rem / 2 + 2px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .b-slider.is-small .b-slider-track {
@@ -14326,6 +14476,8 @@ label.panel-block:hover {
   font-size: 0.75rem;
   position: absolute;
   top: calc(0.375rem / 2 + 2px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .b-slider.is-medium .b-slider-track {
@@ -14345,6 +14497,8 @@ label.panel-block:hover {
   font-size: 0.75rem;
   position: absolute;
   top: calc(0.625rem / 2 + 2px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .b-slider.is-large .b-slider-track {
@@ -14364,6 +14518,8 @@ label.panel-block:hover {
   font-size: 0.75rem;
   position: absolute;
   top: calc(0.75rem / 2 + 2px);
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .b-slider.is-white .b-slider-fill {
@@ -14408,10 +14564,9 @@ label.panel-block:hover {
 
 .b-slider .b-slider-tick {
   position: absolute;
-  display: flex;
-  justify-content: center;
   width: 3px;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
+  top: 50%;
   background: #b5b5b5;
   border-radius: 4px;
 }
@@ -14441,7 +14596,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   margin-top: 0;
   position: relative;
   flex-grow: 1;
-  flex-basis: 0;
+  flex-basis: 1em;
 }
 
 .b-steps .steps .step-items .step-item .step-link {
@@ -14464,7 +14619,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   z-index: 1;
 }
 
-.b-steps .steps .step-items .step-item.is-white::before {
+.b-steps .steps .step-items .step-item.is-white::before,
+.b-steps .steps .step-items .step-item.is-white::after {
   background: linear-gradient(to left, #dbdbdb 50%, #fff 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14476,7 +14632,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #fff;
 }
 
-.b-steps .steps .step-items .step-item.is-white.is-active::before {
+.b-steps .steps .step-items .step-item.is-white.is-active::before,
+.b-steps .steps .step-items .step-item.is-white.is-active::after {
   background-position: left bottom;
 }
 
@@ -14485,11 +14642,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #fff;
 }
 
-.b-steps .steps .step-items .step-item.is-white.is-previous::before {
+.b-steps .steps .step-items .step-item.is-white.is-previous::before,
+.b-steps .steps .step-items .step-item.is-white.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-black::before {
+.b-steps .steps .step-items .step-item.is-black::before,
+.b-steps .steps .step-items .step-item.is-black::after {
   background: linear-gradient(to left, #dbdbdb 50%, #000 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14501,7 +14660,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #000;
 }
 
-.b-steps .steps .step-items .step-item.is-black.is-active::before {
+.b-steps .steps .step-items .step-item.is-black.is-active::before,
+.b-steps .steps .step-items .step-item.is-black.is-active::after {
   background-position: left bottom;
 }
 
@@ -14510,11 +14670,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #000;
 }
 
-.b-steps .steps .step-items .step-item.is-black.is-previous::before {
+.b-steps .steps .step-items .step-item.is-black.is-previous::before,
+.b-steps .steps .step-items .step-item.is-black.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-light::before {
+.b-steps .steps .step-items .step-item.is-light::before,
+.b-steps .steps .step-items .step-item.is-light::after {
   background: linear-gradient(to left, #dbdbdb 50%, #dee2e6 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14526,7 +14688,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #dee2e6;
 }
 
-.b-steps .steps .step-items .step-item.is-light.is-active::before {
+.b-steps .steps .step-items .step-item.is-light.is-active::before,
+.b-steps .steps .step-items .step-item.is-light.is-active::after {
   background-position: left bottom;
 }
 
@@ -14535,11 +14698,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #dee2e6;
 }
 
-.b-steps .steps .step-items .step-item.is-light.is-previous::before {
+.b-steps .steps .step-items .step-item.is-light.is-previous::before,
+.b-steps .steps .step-items .step-item.is-light.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-dark::before {
+.b-steps .steps .step-items .step-item.is-dark::before,
+.b-steps .steps .step-items .step-item.is-dark::after {
   background: linear-gradient(to left, #dbdbdb 50%, #343a40 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14551,7 +14716,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #343a40;
 }
 
-.b-steps .steps .step-items .step-item.is-dark.is-active::before {
+.b-steps .steps .step-items .step-item.is-dark.is-active::before,
+.b-steps .steps .step-items .step-item.is-dark.is-active::after {
   background-position: left bottom;
 }
 
@@ -14560,11 +14726,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #343a40;
 }
 
-.b-steps .steps .step-items .step-item.is-dark.is-previous::before {
+.b-steps .steps .step-items .step-item.is-dark.is-previous::before,
+.b-steps .steps .step-items .step-item.is-dark.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-primary::before {
+.b-steps .steps .step-items .step-item.is-primary::before,
+.b-steps .steps .step-items .step-item.is-primary::after {
   background: linear-gradient(to left, #dbdbdb 50%, #1a3c5e 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14576,7 +14744,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-primary.is-active::before {
+.b-steps .steps .step-items .step-item.is-primary.is-active::before,
+.b-steps .steps .step-items .step-item.is-primary.is-active::after {
   background-position: left bottom;
 }
 
@@ -14585,11 +14754,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-primary.is-previous::before {
+.b-steps .steps .step-items .step-item.is-primary.is-previous::before,
+.b-steps .steps .step-items .step-item.is-primary.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-link::before {
+.b-steps .steps .step-items .step-item.is-link::before,
+.b-steps .steps .step-items .step-item.is-link::after {
   background: linear-gradient(to left, #dbdbdb 50%, #1a3c5e 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14601,7 +14772,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-link.is-active::before {
+.b-steps .steps .step-items .step-item.is-link.is-active::before,
+.b-steps .steps .step-items .step-item.is-link.is-active::after {
   background-position: left bottom;
 }
 
@@ -14610,11 +14782,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-link.is-previous::before {
+.b-steps .steps .step-items .step-item.is-link.is-previous::before,
+.b-steps .steps .step-items .step-item.is-link.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-info::before {
+.b-steps .steps .step-items .step-item.is-info::before,
+.b-steps .steps .step-items .step-item.is-info::after {
   background: linear-gradient(to left, #dbdbdb 50%, #3498db 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14626,7 +14800,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #3498db;
 }
 
-.b-steps .steps .step-items .step-item.is-info.is-active::before {
+.b-steps .steps .step-items .step-item.is-info.is-active::before,
+.b-steps .steps .step-items .step-item.is-info.is-active::after {
   background-position: left bottom;
 }
 
@@ -14635,11 +14810,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #3498db;
 }
 
-.b-steps .steps .step-items .step-item.is-info.is-previous::before {
+.b-steps .steps .step-items .step-item.is-info.is-previous::before,
+.b-steps .steps .step-items .step-item.is-info.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-success::before {
+.b-steps .steps .step-items .step-item.is-success::before,
+.b-steps .steps .step-items .step-item.is-success::after {
   background: linear-gradient(to left, #dbdbdb 50%, #23d160 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14651,7 +14828,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #23d160;
 }
 
-.b-steps .steps .step-items .step-item.is-success.is-active::before {
+.b-steps .steps .step-items .step-item.is-success.is-active::before,
+.b-steps .steps .step-items .step-item.is-success.is-active::after {
   background-position: left bottom;
 }
 
@@ -14660,11 +14838,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #23d160;
 }
 
-.b-steps .steps .step-items .step-item.is-success.is-previous::before {
+.b-steps .steps .step-items .step-item.is-success.is-previous::before,
+.b-steps .steps .step-items .step-item.is-success.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-warning::before {
+.b-steps .steps .step-items .step-item.is-warning::before,
+.b-steps .steps .step-items .step-item.is-warning::after {
   background: linear-gradient(to left, #dbdbdb 50%, #f39c12 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14676,7 +14856,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #f39c12;
 }
 
-.b-steps .steps .step-items .step-item.is-warning.is-active::before {
+.b-steps .steps .step-items .step-item.is-warning.is-active::before,
+.b-steps .steps .step-items .step-item.is-warning.is-active::after {
   background-position: left bottom;
 }
 
@@ -14685,11 +14866,13 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #f39c12;
 }
 
-.b-steps .steps .step-items .step-item.is-warning.is-previous::before {
+.b-steps .steps .step-items .step-item.is-warning.is-previous::before,
+.b-steps .steps .step-items .step-item.is-warning.is-previous::after {
   background-position: left bottom;
 }
 
-.b-steps .steps .step-items .step-item.is-danger::before {
+.b-steps .steps .step-items .step-item.is-danger::before,
+.b-steps .steps .step-items .step-item.is-danger::after {
   background: linear-gradient(to left, #dbdbdb 50%, #e74c3c 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14701,7 +14884,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #e74c3c;
 }
 
-.b-steps .steps .step-items .step-item.is-danger.is-active::before {
+.b-steps .steps .step-items .step-item.is-danger.is-active::before,
+.b-steps .steps .step-items .step-item.is-danger.is-active::after {
   background-position: left bottom;
 }
 
@@ -14710,7 +14894,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #e74c3c;
 }
 
-.b-steps .steps .step-items .step-item.is-danger.is-previous::before {
+.b-steps .steps .step-items .step-item.is-danger.is-previous::before,
+.b-steps .steps .step-items .step-item.is-danger.is-previous::after {
   background-position: left bottom;
 }
 
@@ -14722,19 +14907,26 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   text-align: center;
 }
 
-.b-steps .steps .step-items .step-item:not(:first-child) {
-  flex-basis: 1em;
-  flex-grow: 1;
+.b-steps .steps .step-items .step-item:not(:first-child),
+.b-steps .steps .step-items .step-item:only-child {
   flex-shrink: 1;
 }
 
-.b-steps .steps .step-items .step-item:not(:first-child)::before {
+.b-steps .steps .step-items .step-item:not(:first-child)::before,
+.b-steps .steps .step-items .step-item:only-child::before {
   content: " ";
   display: block;
   position: absolute;
 }
 
-.b-steps .steps .step-items .step-item::before {
+.b-steps .steps .step-items .step-item:only-child::after {
+  content: " ";
+  display: block;
+  position: absolute;
+}
+
+.b-steps .steps .step-items .step-item::before,
+.b-steps .steps .step-items .step-item::after {
   background: linear-gradient(to left, #dbdbdb 50%, #1a3c5e 50%);
   background-size: 200% 100%;
   background-position: right bottom;
@@ -14750,7 +14942,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-active::before {
+.b-steps .steps .step-items .step-item.is-active::before,
+.b-steps .steps .step-items .step-item.is-active::after {
   background-position: left bottom;
 }
 
@@ -14759,7 +14952,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   background-color: #1a3c5e;
 }
 
-.b-steps .steps .step-items .step-item.is-previous::before {
+.b-steps .steps .step-items .step-item.is-previous::before,
+.b-steps .steps .step-items .step-item.is-previous::after {
   background-position: left bottom;
 }
 
@@ -14804,12 +14998,55 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   font-weight: 600;
 }
 
-.b-steps .steps .step-items .step-item:not(:first-child)::before {
+.b-steps .steps .step-items .step-item:not(:first-child)::before,
+.b-steps .steps .step-items .step-item:only-child::before {
   height: 0.2em;
   width: 100%;
   bottom: 0;
   left: -50%;
   top: 1rem;
+}
+
+.b-steps .steps .step-items .step-item:only-child::after {
+  height: 0.2em;
+  bottom: 0;
+  top: 1rem;
+}
+
+.b-steps .steps .step-items .step-item:only-child::before,
+.b-steps .steps .step-items .step-item:only-child::after {
+  width: 25%;
+  left: 50%;
+}
+
+.b-steps .steps .step-items .step-item:only-child::before {
+  right: 50%;
+  left: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .b-steps .steps .step-items .step-item:not(.is-active) {
+    display: none;
+  }
+
+  .b-steps .steps .step-items .step-item::before,
+  .b-steps .steps .step-items .step-item::after,
+  .b-steps .steps .step-items .step-item:not(:first-child)::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    height: 0.2em;
+    width: 25%;
+    bottom: 0;
+    left: 50%;
+    top: 1rem;
+  }
+
+  .b-steps .steps .step-items .step-item::before,
+  .b-steps .steps .step-items .step-item:not(:first-child)::before {
+    right: 50%;
+    left: auto;
+  }
 }
 
 .b-steps .steps.is-small {
@@ -14841,12 +15078,55 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   font-weight: 600;
 }
 
-.b-steps .steps.is-small .step-items .step-item:not(:first-child)::before {
+.b-steps .steps.is-small .step-items .step-item:not(:first-child)::before,
+.b-steps .steps.is-small .step-items .step-item:only-child::before {
   height: 0.2em;
   width: 100%;
   bottom: 0;
   left: -50%;
   top: 0.75rem;
+}
+
+.b-steps .steps.is-small .step-items .step-item:only-child::after {
+  height: 0.2em;
+  bottom: 0;
+  top: 0.75rem;
+}
+
+.b-steps .steps.is-small .step-items .step-item:only-child::before,
+.b-steps .steps.is-small .step-items .step-item:only-child::after {
+  width: 25%;
+  left: 50%;
+}
+
+.b-steps .steps.is-small .step-items .step-item:only-child::before {
+  right: 50%;
+  left: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .b-steps .steps.is-small .step-items .step-item:not(.is-active) {
+    display: none;
+  }
+
+  .b-steps .steps.is-small .step-items .step-item::before,
+  .b-steps .steps.is-small .step-items .step-item::after,
+  .b-steps .steps.is-small .step-items .step-item:not(:first-child)::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    height: 0.2em;
+    width: 25%;
+    bottom: 0;
+    left: 50%;
+    top: 0.75rem;
+  }
+
+  .b-steps .steps.is-small .step-items .step-item::before,
+  .b-steps .steps.is-small .step-items .step-item:not(:first-child)::before {
+    right: 50%;
+    left: auto;
+  }
 }
 
 .b-steps .steps.is-medium {
@@ -14878,12 +15158,55 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   font-weight: 600;
 }
 
-.b-steps .steps.is-medium .step-items .step-item:not(:first-child)::before {
+.b-steps .steps.is-medium .step-items .step-item:not(:first-child)::before,
+.b-steps .steps.is-medium .step-items .step-item:only-child::before {
   height: 0.2em;
   width: 100%;
   bottom: 0;
   left: -50%;
   top: 1.25rem;
+}
+
+.b-steps .steps.is-medium .step-items .step-item:only-child::after {
+  height: 0.2em;
+  bottom: 0;
+  top: 1.25rem;
+}
+
+.b-steps .steps.is-medium .step-items .step-item:only-child::before,
+.b-steps .steps.is-medium .step-items .step-item:only-child::after {
+  width: 25%;
+  left: 50%;
+}
+
+.b-steps .steps.is-medium .step-items .step-item:only-child::before {
+  right: 50%;
+  left: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .b-steps .steps.is-medium .step-items .step-item:not(.is-active) {
+    display: none;
+  }
+
+  .b-steps .steps.is-medium .step-items .step-item::before,
+  .b-steps .steps.is-medium .step-items .step-item::after,
+  .b-steps .steps.is-medium .step-items .step-item:not(:first-child)::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    height: 0.2em;
+    width: 25%;
+    bottom: 0;
+    left: 50%;
+    top: 1.25rem;
+  }
+
+  .b-steps .steps.is-medium .step-items .step-item::before,
+  .b-steps .steps.is-medium .step-items .step-item:not(:first-child)::before {
+    right: 50%;
+    left: auto;
+  }
 }
 
 .b-steps .steps.is-large {
@@ -14915,7 +15238,8 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   font-weight: 600;
 }
 
-.b-steps .steps.is-large .step-items .step-item:not(:first-child)::before {
+.b-steps .steps.is-large .step-items .step-item:not(:first-child)::before,
+.b-steps .steps.is-large .step-items .step-item:only-child::before {
   height: 0.2em;
   width: 100%;
   bottom: 0;
@@ -14923,10 +15247,53 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   top: 1.5rem;
 }
 
+.b-steps .steps.is-large .step-items .step-item:only-child::after {
+  height: 0.2em;
+  bottom: 0;
+  top: 1.5rem;
+}
+
+.b-steps .steps.is-large .step-items .step-item:only-child::before,
+.b-steps .steps.is-large .step-items .step-item:only-child::after {
+  width: 25%;
+  left: 50%;
+}
+
+.b-steps .steps.is-large .step-items .step-item:only-child::before {
+  right: 50%;
+  left: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .b-steps .steps.is-large .step-items .step-item:not(.is-active) {
+    display: none;
+  }
+
+  .b-steps .steps.is-large .step-items .step-item::before,
+  .b-steps .steps.is-large .step-items .step-item::after,
+  .b-steps .steps.is-large .step-items .step-item:not(:first-child)::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    height: 0.2em;
+    width: 25%;
+    bottom: 0;
+    left: 50%;
+    top: 1.5rem;
+  }
+
+  .b-steps .steps.is-large .step-items .step-item::before,
+  .b-steps .steps.is-large .step-items .step-item:not(:first-child)::before {
+    right: 50%;
+    left: auto;
+  }
+}
+
 .switch {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  position: relative;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -15152,6 +15519,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-white {
+  background: transparent;
   border-color: #fff;
 }
 
@@ -15160,6 +15528,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-black {
+  background: transparent;
   border-color: #000;
 }
 
@@ -15168,6 +15537,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-light {
+  background: transparent;
   border-color: #dee2e6;
 }
 
@@ -15176,6 +15546,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-dark {
+  background: transparent;
   border-color: #343a40;
 }
 
@@ -15184,6 +15555,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-primary {
+  background: transparent;
   border-color: #1a3c5e;
 }
 
@@ -15192,6 +15564,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-link {
+  background: transparent;
   border-color: #1a3c5e;
 }
 
@@ -15200,6 +15573,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-info {
+  background: transparent;
   border-color: #3498db;
 }
 
@@ -15208,6 +15582,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-success {
+  background: transparent;
   border-color: #23d160;
 }
 
@@ -15216,6 +15591,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-warning {
+  background: transparent;
   border-color: #f39c12;
 }
 
@@ -15224,6 +15600,7 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 }
 
 .switch.is-outlined input[type=checkbox]:checked + .check.is-danger {
+  background: transparent;
   border-color: #e74c3c;
 }
 
@@ -16277,6 +16654,16 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
 .upload .upload-draggable.is-hovered.is-danger {
   border-color: #e74c3c;
   background: rgba(231, 76, 60, 0.05);
+}
+
+@media screen and (-ms-high-contrast: active), screen and (-ms-high-contrast: none) {
+  .upload input[type=file] {
+    z-index: auto;
+  }
+
+  .upload .upload-draggable + input[type=file] {
+    z-index: -1;
+  }
 }
 
 .has-margin-1 {
@@ -17598,24 +17985,64 @@ MIT (https://github.com/Wikiki/bulma-steps/blob/master/LICENSE)
   text-decoration: underline;
 }
 
-.form-card {
-  background: #fff;
-  box-shadow: 0 0 7px 0 rgba(0, 0, 0, 0.11);
+/* Enter and leave animations can use different */
+
+/* durations and timing functions.              */
+
+.slide-right-fade-enter-active {
+  transition: all 0.4s ease;
 }
 
-.form-card .form-title {
-  background-color: #1a3c5e;
-  padding: 1.5rem;
+.slide-right-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
 }
 
-.form-card .form-title h1 {
-  color: #fff;
-  text-align: center;
-  font-size: 1.5rem;
+.slide-right-fade-enter,
+.slide-right-fade-leave-to {
+  transform: translateX(15px);
+  opacity: 0;
 }
 
-.form-card .form-content {
-  padding: 1rem 2rem 3rem;
+.slide-left-fade-enter-active {
+  transition: all 0.4s ease;
+}
+
+.slide-left-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-left-fade-enter,
+.slide-left-fade-leave-to {
+  transform: translateX(-15px);
+  opacity: 0;
+}
+
+.slide-top-fade-enter-active {
+  transition: all 0.4s ease;
+}
+
+.slide-top-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-top-fade-enter,
+.slide-top-fade-leave-to {
+  transform: translateY(-15px);
+  opacity: 0;
+}
+
+.slide-bottom-fade-enter-active {
+  transition: all 0.4s ease;
+}
+
+.slide-bottom-fade-leave-active {
+  transition: all 0.4s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-bottom-fade-enter,
+.slide-bottom-fade-leave-to {
+  transform: translateY(15px);
+  opacity: 0;
 }
 
 h1 {
@@ -17634,7 +18061,121 @@ h3 {
   z-index: 10;
 }
 
+.is-below {
+  z-index: -10;
+}
+
 .is-clickable {
   cursor: pointer;
 }
 
+.is-cover {
+  background-position: center;
+  background-size: cover;
+}
+
+.is-absolute {
+  position: absolute;
+}
+
+.is-rounded-b-l {
+  border-bottom-left-radius: 0.5rem;
+}
+
+.is-rounded-b-r {
+  border-bottom-right-radius: 0.5rem;
+}
+
+.is-rounded-t-l {
+  border-top-left-radius: 0.5rem;
+}
+
+.is-rounded-t-r {
+  border-top-right-radius: 0.5rem;
+}
+
+.is-pinned-l {
+  left: 0;
+}
+
+.is-pinned-r {
+  right: 0;
+}
+
+.is-pinned-t {
+  top: 0;
+}
+
+.is-pinned-b {
+  bottom: 0;
+}
+
+.is-blurred {
+  -webkit-filter: blur(4px);
+  -moz-filter: blur(4px);
+  -o-filter: blur(4px);
+  -ms-filter: blur(4px);
+  filter: blur(4px);
+  transform: scale(1.1);
+}
+
+.is-visible-8 {
+  opacity: 0.8;
+}
+
+.is-hoverable-anim:hover {
+  -webkit-transform: translateY(-5px);
+  box-shadow: 0 8px 36px rgba(25, 8, 58, 0.36);
+  transform: translateY(-5px);
+}
+
+.is-flex-stretch {
+  justify-content: center;
+  align-items: stretch;
+}
+
+.is-100vh {
+  height: 100%;
+}
+
+.is-100hw {
+  width: 100%;
+}
+
+.card {
+  border-radius: 0.5rem;
+  box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.card-image {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+.has-text-shadow {
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.has-padding-t-8 {
+  padding-top: 0.5rem;
+}
+
+.has-padding-b-8 {
+  padding-bottom: 0.5rem;
+}
+
+.has-padding-l-8 {
+  padding-left: 0.5rem;
+}
+
+.has-padding-r-8 {
+  padding-right: 0.5rem;
+}
+
+.has-padding-8 {
+  padding: 0.5rem;
+}
+
+
+/*# sourceMappingURL=app.css.map*/
