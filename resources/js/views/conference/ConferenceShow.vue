@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       canEdit: false,
-      activeTab: 1,
+      activeTab: 0,
       conference: null
     };
   },

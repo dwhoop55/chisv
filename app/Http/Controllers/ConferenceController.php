@@ -15,6 +15,8 @@ use App\Role;
 use App\Http\Resources\Conferences;
 use App\Permission;
 
+use function PHPSTORM_META\type;
+
 class ConferenceController extends Controller
 {
     /**
@@ -110,9 +112,9 @@ class ConferenceController extends Controller
             ->where('role_id', Role::byName('sv')->id)->first();
 
         if ($permission) {
-            return $permission;
+            return ["permission" => $permission];
         } else {
-            return null;
+            return ["enrollment_form" => $conference->enrollmentForm->only('is_filled', 'body')];
         }
     }
 

@@ -1965,11 +1965,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 
 
 
@@ -1977,13 +1972,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: ["conference"],
   data: function data() {
     return {
-      form: new vform__WEBPACK_IMPORTED_MODULE_3___default.a({
-        know_city: false,
-        attended_before: false,
-        sved_before: false,
-        need_visa: false,
-        why: ""
-      }),
+      form: new vform__WEBPACK_IMPORTED_MODULE_3___default.a(),
       showEnrollmentForm: false,
       permission: null,
       errored: null,
@@ -2047,17 +2036,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this3.loading = false;
       });
     },
+    parseForm: function parseForm(form) {
+      console.log(form);
+    },
     getState: function getState() {
       var _this4 = this;
 
       this.loading = true;
       this.errored = null;
       this.permission = null;
+      this.form = null;
       _api_js__WEBPACK_IMPORTED_MODULE_1__["default"].getEnrollment(this.conference.key).then(function (data) {
-        if (data.data != "") {
-          _this4.permission = data.data;
+        var response = data.data;
 
-          _this4.form.fill(_this4.permission.enrollment_form);
+        if (response.permission) {
+          _this4.permission = response.permission;
+          _this4.form = _this4.parseForm(_this4.permission.enrollment_form);
+          console.log(_this4.permission);
+        } else if (response.enrollment_form) {
+          _this4.form = _this4.parseForm(_this4.enrollment_form);
         }
       })["catch"](function (error) {
         _this4.errored = error.message;
@@ -2525,16 +2522,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ["value", "conference", "disabled"],
+  props: ["value", "disabled"],
   data: function data() {
     return {};
   },
-  created: function created() {
-    this.value.know_city = this.value.know_city == "1" ? true : false;
-    this.value.attended_before = this.value.attended_before == "1" ? true : false;
-    this.value.sved_before = this.value.sved_before == "1" ? true : false;
-    this.value.need_visa = this.value.need_visa == "1" ? true : false;
-  }
+  created: function created() {}
 });
 
 /***/ }),
@@ -4287,7 +4279,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       canEdit: false,
-      activeTab: 1,
+      activeTab: 0,
       conference: null
     };
   },
@@ -68228,7 +68220,6 @@ var render = function() {
                           { staticClass: "content" },
                           [
                             _c("enrollment-form", {
-                              attrs: { conference: _vm.conference },
                               model: {
                                 value: _vm.form,
                                 callback: function($$v) {
@@ -68236,22 +68227,7 @@ var render = function() {
                                 },
                                 expression: "form"
                               }
-                            }),
-                            _vm._v(" "),
-                            _vm.conference.enrollment_text
-                              ? _c("div", { staticClass: "notification" }, [
-                                  _c("span", {
-                                    directives: [
-                                      {
-                                        name: "dompurify-html",
-                                        rawName: "v-dompurify-html",
-                                        value: _vm.conference.enrollment_text,
-                                        expression: "conference.enrollment_text"
-                                      }
-                                    ]
-                                  })
-                                ])
-                              : _vm._e()
+                            })
                           ],
                           1
                         )
@@ -68288,7 +68264,7 @@ var render = function() {
         },
         [
           _c("enrollment-form-modal", {
-            attrs: { disabled: "", conference: _vm.conference },
+            attrs: { disabled: "" },
             model: {
               value: _vm.form,
               callback: function($$v) {
@@ -68673,210 +68649,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "section",
-    [
-      _c(
-        "b-tooltip",
-        {
-          attrs: {
-            multilined: "",
-            position: "is-bottom",
-            label:
-              "If you get selected as a local volunteer\n             you may be requested to do specific tasks that leverage \n             that characteristic, like finding restaurants, helping\n             with the Information desk, help with PC meeting, and others."
-          }
-        },
-        [
-          _c("b-icon", { attrs: { icon: "information" } }),
-          _vm._v(" \n    "),
-          _c("p", { staticClass: "has-text-weight-medium" }, [
-            _vm._v(
-              _vm._s(
-                "Are you local to where " +
-                  (_vm.conference
-                    ? _vm.conference.key.toUpperCase()
-                    : "the conference") +
-                  " will be this year?"
-              )
-            )
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-field",
-        { staticClass: "has-margin-b-5" },
-        [
-          _c(
-            "b-switch",
-            {
-              staticClass: "has-margin-l-3 has-margin-t-7",
-              attrs: { disabled: _vm.disabled, type: "is-success" },
-              model: {
-                value: _vm.value.know_city,
-                callback: function($$v) {
-                  _vm.$set(_vm.value, "know_city", $$v)
-                },
-                expression: "value.know_city"
-              }
-            },
-            [_vm._v(_vm._s(_vm.value.know_city ? "Yes" : "No"))]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._m(0),
-      _vm._v(" "),
-      _c(
-        "b-field",
-        { staticClass: "has-margin-b-5" },
-        [
-          _c(
-            "b-switch",
-            {
-              staticClass: "has-margin-l-3 has-margin-t-7",
-              attrs: { disabled: _vm.disabled, type: "is-success" },
-              model: {
-                value: _vm.value.attended_before,
-                callback: function($$v) {
-                  _vm.$set(_vm.value, "attended_before", $$v)
-                },
-                expression: "value.attended_before"
-              }
-            },
-            [_vm._v(_vm._s(_vm.value.attended_before ? "Yes" : "No"))]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm._m(1),
-      _vm._v(" "),
-      _c(
-        "b-field",
-        { staticClass: "has-margin-b-5" },
-        [
-          _c(
-            "b-switch",
-            {
-              staticClass: "has-margin-l-3 has-margin-t-7",
-              attrs: { disabled: _vm.disabled, type: "is-success" },
-              model: {
-                value: _vm.value.sved_before,
-                callback: function($$v) {
-                  _vm.$set(_vm.value, "sved_before", $$v)
-                },
-                expression: "value.sved_before"
-              }
-            },
-            [_vm._v(_vm._s(_vm.value.sved_before ? "Yes" : "No"))]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-tooltip",
-        {
-          attrs: {
-            multilined: "",
-            label:
-              "Choosing 'yes' will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs."
-          }
-        },
-        [
-          _c("b-icon", { attrs: { icon: "information" } }),
-          _vm._v(" \n    "),
-          _c("p", { staticClass: "has-text-weight-medium" }, [
-            _vm._v(
-              "\n      Do you need to apply for a travel visa in order to attend this conference?\n      "
-            ),
-            _c("br"),
-            _vm._v(
-              "(answer no if you are eligible for a VISA waiver program for the country of the conference)\n    "
-            )
-          ])
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "b-field",
-        { staticClass: "has-margin-b-5" },
-        [
-          _c(
-            "b-switch",
-            {
-              staticClass: "has-margin-l-3 has-margin-t-7",
-              attrs: { disabled: _vm.disabled, type: "is-success" },
-              model: {
-                value: _vm.value.need_visa,
-                callback: function($$v) {
-                  _vm.$set(_vm.value, "need_visa", $$v)
-                },
-                expression: "value.need_visa"
-              }
-            },
-            [_vm._v(_vm._s(_vm.value.need_visa ? "Yes" : "No"))]
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c("span", { staticClass: "has-text-weight-medium" }, [
-        _vm._v("Please explain why you want to be an SV at the conference.")
-      ]),
-      _vm._v(" "),
-      _c(
-        "b-field",
-        { staticClass: "has-margin-b-5" },
-        [
-          _c("b-input", {
-            staticClass: "has-margin-l-3 has-margin-t-7",
-            attrs: {
-              disabled: _vm.disabled,
-              maxlength: "2000",
-              type: "textarea"
-            },
-            model: {
-              value: _vm.value.why,
-              callback: function($$v) {
-                _vm.$set(_vm.value, "why", $$v)
-              },
-              expression: "value.why"
-            }
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
+  return _c("section")
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "has-text-weight-medium" }, [
-      _vm._v("\n    Have you\n    "),
-      _c("b", [_vm._v("attended")]),
-      _vm._v(" this conference before?\n  ")
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("span", { staticClass: "has-text-weight-medium" }, [
-      _vm._v("\n    Have you been an\n    "),
-      _c("b", [_vm._v("SV")]),
-      _vm._v(" at this conference before?\n  ")
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 

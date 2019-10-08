@@ -15,12 +15,10 @@ class CreateEnrollmentFormsTable extends Migration
     {
         Schema::create('enrollment_forms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('permission_id', false, true)->index();
-            $table->boolean('know_city')->index();
-            $table->boolean('attended_before')->index();
-            $table->boolean('sved_before')->index();
-            $table->boolean('need_visa')->index();
-            $table->text('why')->nullable();
+            $table->bigInteger('permission_id', false, true)->nullable()->index();
+            $table->string('name')->index()->nullable(false);
+            $table->boolean('is_filled')->default(true)->index();
+            $table->json('body');
 
             $table->foreign('permission_id')
                 ->references('id')->on('permissions')

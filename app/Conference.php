@@ -23,6 +23,10 @@ class Conference extends Model
         return 'key';
     }
 
+    public function enrollmentForm()
+    {
+        return $this->belongsTo('App\EnrollmentForm');
+    }
 
     public function state()
     {

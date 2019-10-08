@@ -85,12 +85,7 @@
         <form @submit.prevent="enroll" @keydown="form.onKeydown($event)">
           <div class="card-content">
             <div class="content">
-              <enrollment-form v-model="form" :conference="conference"></enrollment-form>
-
-              <div class="notification" v-if="conference.enrollment_text">
-                <span v-dompurify-html="conference.enrollment_text"></span>
-              </div>
-              <!-- end content -->
+              <enrollment-form v-model="form"></enrollment-form>
             </div>
           </div>
           <footer class="card-footer">
@@ -101,7 +96,7 @@
     </transition>
 
     <b-modal :active.sync="showEnrollmentForm" has-modal-card>
-      <enrollment-form-modal v-model="form" disabled :conference="conference"></enrollment-form-modal>
+      <enrollment-form-modal v-model="form" disabled></enrollment-form-modal>
     </b-modal>
   </div>
 </template>
@@ -116,13 +111,7 @@ export default {
 
   data() {
     return {
-      form: new Form({
-        know_city: false,
-        attended_before: false,
-        sved_before: false,
-        need_visa: false,
-        why: ""
-      }),
+      form: new Form(),
       showEnrollmentForm: false,
 
       permission: null,
@@ -157,6 +146,7 @@ export default {
         this.unenroll();
       }
     },
+
     unenroll: function() {
       this.loading = true;
       api
@@ -173,6 +163,7 @@ export default {
           this.loading = false;
         });
     },
+
     enroll: function() {
       this.loading = true;
       api
@@ -189,16 +180,26 @@ export default {
           this.loading = false;
         });
     },
+
+    parseForm: function(form) {
+      console.log(form);
+    },
+
     getState: function() {
       this.loading = true;
       this.errored = null;
       this.permission = null;
+      this.form = null;
       api
         .getEnrollment(this.conference.key)
         .then(data => {
-          if (data.data != "") {
-            this.permission = data.data;
-            this.form.fill(this.permission.enrollment_form);
+          let response = data.data;
+          if (response.permission) {
+            this.permission = response.permission;
+            this.form = this.parseForm(this.permission.enrollment_form);
+            console.log(this.permission);
+          } else if (response.enrollment_form) {
+            this.form = this.parseForm(this.enrollment_form);
           }
         })
         .catch(error => {
@@ -208,6 +209,7 @@ export default {
           this.loading = false;
         });
     },
+
     getCan: async function() {
       this.canEnroll = await auth.can(
         "enroll",

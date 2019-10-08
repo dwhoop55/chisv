@@ -1,6 +1,6 @@
 <template>
   <section>
-    <b-tooltip
+    <!-- <b-tooltip
       multilined
       position="is-bottom"
       label="If you get selected as a local volunteer
@@ -76,24 +76,18 @@
         class="has-margin-l-3 has-margin-t-7"
         v-model="value.why"
       ></b-input>
-    </b-field>
+    </b-field>-->
   </section>
 </template>
 
 <script>
 export default {
-  props: ["value", "conference", "disabled"],
+  props: ["value", "disabled"],
 
   data() {
     return {};
   },
 
-  created() {
-    this.value.know_city = this.value.know_city == "1" ? true : false;
-    this.value.attended_before =
-      this.value.attended_before == "1" ? true : false;
-    this.value.sved_before = this.value.sved_before == "1" ? true : false;
-    this.value.need_visa = this.value.need_visa == "1" ? true : false;
-  }
+  created() {}
 };
 </script>

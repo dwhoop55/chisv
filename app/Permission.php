@@ -8,6 +8,7 @@ class Permission extends Model
 {
 
     protected $with = ['role', 'user', 'conference', 'state', 'enrollmentForm'];
+    protected $hidden = ['role_id', 'user_id', 'conference_id', 'state_id', 'enrollment_form_id'];
     protected $guarded = [];
 
     public function role()
