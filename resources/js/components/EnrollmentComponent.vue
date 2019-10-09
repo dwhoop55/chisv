@@ -65,7 +65,7 @@
     <!-- Enroll form -->
     <transition name="slide-top-fade">
       <b-collapse
-        :open="false"
+        :open="true"
         v-if="!loading && canEnroll && !permission"
         class="card"
         aria-id="contentIdForEnrollForm"
@@ -82,10 +82,11 @@
             <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"></b-icon>
           </a>
         </div>
-        <form @submit.prevent="enroll" @keydown="form.onKeydown($event)">
+        <form @submit.prevent="enroll">
           <div class="card-content">
             <div class="content">
               <enrollment-form v-model="form"></enrollment-form>
+              <p class="notification is-warning" v-if="form && form.agreement">{{ form.agreement }}</p>
             </div>
           </div>
           <footer class="card-footer">
@@ -111,7 +112,7 @@ export default {
 
   data() {
     return {
-      form: new Form(),
+      form: {},
       showEnrollmentForm: false,
 
       permission: null,
@@ -167,7 +168,7 @@ export default {
     enroll: function() {
       this.loading = true;
       api
-        .enroll(this.conference.key, this.form)
+        .enroll(this.conference.key, this.form.vform)
         .then(data => {
           this.permission = data.data.result;
           this.errored = null;
@@ -181,25 +182,22 @@ export default {
         });
     },
 
-    parseForm: function(form) {
-      console.log(form);
-    },
-
     getState: function() {
       this.loading = true;
       this.errored = null;
       this.permission = null;
-      this.form = null;
+
       api
         .getEnrollment(this.conference.key)
         .then(data => {
           let response = data.data;
           if (response.permission) {
             this.permission = response.permission;
-            this.form = this.parseForm(this.permission.enrollment_form);
-            console.log(this.permission);
+            this.form = this.parseEnrollmentForm(
+              response.permission.enrollment_form
+            );
           } else if (response.enrollment_form) {
-            this.form = this.parseForm(this.enrollment_form);
+            this.form = this.parseEnrollmentForm(response.enrollment_form);
           }
         })
         .catch(error => {

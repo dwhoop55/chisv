@@ -1,7 +1,6 @@
 <template>
   <div>
     <b-table
-      v-if="users"
       ref="table"
       :data="users"
       detail-key="id"
@@ -83,8 +82,18 @@
           </div>
         </article>
       </template>
+
+      <template slot="empty">
+        <section class="section">
+          <div class="content has-text-grey has-text-centered">
+            <p>
+              <b-icon icon="emoticon-sad" size="is-large"></b-icon>
+            </p>
+            <p>No users found yet.</p>
+          </div>
+        </section>
+      </template>
     </b-table>
-    <b-loading :is-full-page="false" :active="!users"></b-loading>
   </div>
 </template>
 
@@ -97,8 +106,9 @@ export default {
 
   data() {
     return {
-      users: null,
-      columns: [],
+      users: [],
+      isLoading: true,
+      // columns: [],
       canChangeEnrollment: false
     };
   },
@@ -120,8 +130,12 @@ export default {
       api
         .getConferenceUsers(this.conference.key)
         .then(data => {
-          this.users = data.data;
-          this.columns = Object.keys(this.users[0]);
+          if (data.data.length > 0) {
+            this.users = data.data;
+            // this.columns = Object.keys(this.users[0]);
+          } else {
+            this.users = null;
+          }
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -130,6 +144,9 @@ export default {
             type: "is-danger",
             hasIcon: true
           });
+        })
+        .finally(() => {
+          this.isLoading = false;
         });
     },
     toggle(row) {

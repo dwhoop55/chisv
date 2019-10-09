@@ -53,6 +53,36 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        parseEnrollmentForm: function (jsonForm) {
+            var vform = new Form();
+            var meta = {};
+            var header = null;
+            var agreement = null;
+
+            let body = JSON.parse(jsonForm.body);
+            if (body.header) {
+                header = body.header;
+            }
+            if (body.agreement) {
+                agreement = body.agreement;
+            }
+
+            let fields = body.fields;
+            vform['id'] = jsonForm.id;
+            for (const [key, value] of Object.entries(fields)) {
+                meta[key] = value;
+                switch (value.type) {
+                    case "boolean":
+                        vform[key] = value.value ? value.value : false;
+                        break;
+                    case "string":
+                        vform[key] = value.value ? value.value : "";
+                        break;
+                }
+            }
+
+            return { vform: vform, meta: meta, header: header, agreement: agreement };
+        },
         conferenceArtworkBackground: function (conference) {
             if (conference && conference.artwork) {
                 return `background-image:url(${conference.artwork.web_path})`;

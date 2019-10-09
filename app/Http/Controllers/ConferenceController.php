@@ -14,6 +14,7 @@ use App\Image;
 use App\Role;
 use App\Http\Resources\Conferences;
 use App\Permission;
+use Illuminate\Http\Request;
 
 use function PHPSTORM_META\type;
 
@@ -114,7 +115,7 @@ class ConferenceController extends Controller
         if ($permission) {
             return ["permission" => $permission];
         } else {
-            return ["enrollment_form" => $conference->enrollmentForm->only('is_filled', 'body')];
+            return ["enrollment_form" => $conference->enrollmentForm->only('is_filled', 'body', 'id')];
         }
     }
 
@@ -122,6 +123,7 @@ class ConferenceController extends Controller
      * Enrolls a user to be an SV for the conference
      * 
      * @param \App\Conference conference
+     * @param \App\User user
      * @return \Illuminate\Http\Response
      */
     public function enroll(EnrollRequest $request, Conference $conference, User $user = null)
@@ -134,7 +136,23 @@ class ConferenceController extends Controller
             $user = auth()->user();
         }
 
-        $enrollmentForm = new EnrollmentForm($request->toArray());
+
+        $permission = new Permission();
+        $permission->conference()->associate($conference);
+        $permission->user()->associate($user);
+        $permission->state()->associate(State::byName('enrolled'));
+        $permission->role()->associate(Role::byName('sv'));
+
+        // Create the permission
+        // $permission->save();
+
+        // Now create the enrollmentForm
+        $enrollmentFormService = app('App\Services\EnrollmentFormService');
+        $enrollmentForm = $enrollmentFormService->loadAndApply($request);
+
+        dd($enrollmentForm);
+
+        $enrollmentForm = new EnrollmentForm(request()->toArray());
         $permission = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'), $enrollmentForm);
 
         if ($permission) {

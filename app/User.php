@@ -124,7 +124,6 @@ class User extends Authenticatable
 
         try {
             $permission->save();
-
             // Now that we have the model id-ed in the database
             // we can save the enrollmentForm when available
             if ($enrollmentForm) {
