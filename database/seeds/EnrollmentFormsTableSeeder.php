@@ -46,20 +46,20 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'value' => true,
                     'required' => true,
                 ),
-                'why' =>
+                'why_you_want_to_be_sv' =>
                 array(
                     'type' => 'string',
-                    'description' => 'Please explain why you want to be an SV at the conference.',
+                    'description' => 'Please explain why you want to be an SV at the conference:',
                     'maxlength' => 2000,
-                    'value' => 'Very long text',
+                    'value' => '',
                     'required' => true,
                 ),
-                'short' =>
+                'other_conferences_attended' =>
                 array(
                     'type' => 'string',
-                    'description' => 'Some short text:',
-                    'maxlength' => 99,
-                    'value' => 'Short text',
+                    'description' => 'Other conferences you attended:',
+                    'maxlength' => 100,
+                    'value' => '',
                     'required' => false,
                 ),
             ),

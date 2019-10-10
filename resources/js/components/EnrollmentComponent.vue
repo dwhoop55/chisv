@@ -33,10 +33,22 @@
       >
         <p>
           You are
-          <b-tooltip type="is-light" multilined :label="permission.state.description">
+          <b-tooltip
+            :type="stateType(permission.state)"
+            multilined
+            :label="permission.state.description"
+          >
             <strong>{{ permission.state.name }}</strong>
           </b-tooltip>
         </p>
+        <b-button
+          v-if="!loading && permission"
+          type="is-primary"
+          class="has-margin-t-7"
+          outlined
+          icon-left="format-list-bulleted"
+          @click="showEnrollmentForm=true"
+        >Show Enrollment Form</b-button>
         <!-- Unenroll -->
         <transition name="slide-left-fade">
           <b-button
@@ -44,20 +56,11 @@
             type="is-danger"
             class="has-margin-t-7"
             outlined
-            inverted
             icon-left="account-remove"
             @click="confirmUnenroll"
           >Unenroll</b-button>
         </transition>
-        <b-button
-          v-if="!loading && permission"
-          type="is-primary"
-          class="has-margin-t-7"
-          outlined
-          inverted
-          icon-left="format-list-bulleted"
-          @click="showEnrollmentForm=true"
-        >Show Enrollment Form</b-button>
+
         <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
       </b-notification>
     </transition>
@@ -90,7 +93,11 @@
             </div>
           </div>
           <footer class="card-footer">
-            <a @click="enroll" class="card-footer-item is-success">Agree and Enroll</a>
+            <a
+              :disabled="form.vform.busy"
+              @click="enroll"
+              class="card-footer-item is-success"
+            >Agree and Enroll</a>
           </footer>
         </form>
       </b-collapse>
@@ -161,6 +168,7 @@ export default {
         })
         .finally(() => {
           this.getCan();
+          this.getState();
           this.loading = false;
         });
     },
@@ -174,7 +182,9 @@ export default {
           this.errored = null;
         })
         .catch(error => {
-          this.errored = error.message;
+          if (error.response.status != 422) {
+            this.errored = error.message;
+          }
         })
         .finally(() => {
           this.getCan();

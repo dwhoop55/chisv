@@ -14,6 +14,7 @@ use App\Image;
 use App\Role;
 use App\Http\Resources\Conferences;
 use App\Permission;
+use App\Services\EnrollmentFormService;
 use Illuminate\Http\Request;
 
 use function PHPSTORM_META\type;
@@ -144,22 +145,28 @@ class ConferenceController extends Controller
         $permission->role()->associate(Role::byName('sv'));
 
         // Create the permission
-        // $permission->save();
+        $permission->save();
 
-        // Now create the enrollmentForm
-        $enrollmentFormService = app('App\Services\EnrollmentFormService');
-        $enrollmentForm = $enrollmentFormService->loadAndApply($request);
-
-        dd($enrollmentForm);
-
-        $enrollmentForm = new EnrollmentForm(request()->toArray());
-        $permission = $user->grant(Role::byName('sv'), $conference, State::byName('enrolled'), $enrollmentForm);
-
-        if ($permission) {
-            return ["result" => $permission, "message" => "You are now enrolled"];
-        } else {
+        if (!$permission) {
             return ["result" => null, "message" => "There was an error while granting SV permissions"];
         }
+
+        // Now create the enrollmentForm
+        $enrollmentFormService = new EnrollmentFormService();
+        $enrollmentForm = $enrollmentFormService->getFilledWith($request);
+
+        if (!$enrollmentForm) {
+            return ["result" => null, "message" => "There was an error while creating the enrollment form"];
+        }
+
+        $permission->enrollmentForm()->save($enrollmentForm);
+        // We painfully reload manually here because ->refresh on the
+        // model does not work..
+        // We need to reload to have the permission that we return also
+        // carry the enrollmentForm
+        $permission = Permission::find($permission->id);
+
+        return ["result" => $permission, "message" => "You are now enrolled"];
     }
 
     /** 
