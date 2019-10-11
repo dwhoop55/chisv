@@ -19,9 +19,10 @@ class EnrollmentFormsTableSeeder extends Seeder
                 'know_city' =>
                 array(
                     'type' => 'boolean',
-                    'description' => 'Are you local to where ISS2019 will be this year?',
+                    'description' => 'Are you local to where the conference will be this year?',
                     'hint' => 'If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.',
                     'value' => true,
+                    'weight' => 1,
                     'required' => true,
                 ),
                 'attended_before' =>
@@ -29,6 +30,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'type' => 'boolean',
                     'description' => 'Have you attended this conference before?',
                     'value' => true,
+                    'weight' => -1,
                     'required' => true,
                 ),
                 'sved_before' =>
@@ -36,6 +38,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'type' => 'boolean',
                     'description' => 'Have you been an SV at this conference before?',
                     'value' => false,
+                    'weight' => 0,
                     'required' => true,
                 ),
                 'need_visa' =>
@@ -44,6 +47,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'description' => 'Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)',
                     'hint' => 'Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.',
                     'value' => true,
+                    'weight' => 0,
                     'required' => true,
                 ),
                 'why_you_want_to_be_sv' =>

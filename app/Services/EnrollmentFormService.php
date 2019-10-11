@@ -80,4 +80,28 @@ class EnrollmentFormService
 
         return $form;
     }
+
+    /**
+     * Removes the weights from within the body->fields
+     * and returns a version where only these weights are
+     * missing
+     * @param EnrollmentForm $form An enrollmentForm with field carrying weights
+     * @return EnrollmentForm An enrollmentForm which has the weights removed
+     */
+    public function removeWeights(EnrollmentForm $form)
+    {
+        $body = json_decode($form->body, true);
+        $fields = $body['fields'];
+
+        foreach ($fields as $key => $value) {
+            if (key_exists('weight', $fields[$key])) {
+                unset($fields[$key]['weight']);
+            }
+        }
+
+        $body['fields'] = $fields;
+        $form->body = json_encode($body);
+
+        return $form;
+    }
 }

@@ -58,9 +58,9 @@ export default {
       form: new Form({
         user_id: this.getUserId(),
         id: this.getPermission().id,
-        role_id: this.getPermission().role_id,
-        conference_id: this.getPermission().conference_id,
-        state_id: this.getPermission().state_id
+        role_id: this.getPermission().role.id,
+        conference_id: this.getPermission().conference.id,
+        state_id: this.getPermission().state.id
       })
     };
   },
@@ -106,7 +106,7 @@ export default {
       }
     },
     getPermission: function() {
-      if (this.permission && this.permission) {
+      if (this.permission) {
         return this.permission;
       } else {
         return { id: null, role_id: null, conference_id: null, state_id: null };

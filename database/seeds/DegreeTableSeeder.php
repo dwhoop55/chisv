@@ -19,6 +19,7 @@ class DegreeTableSeeder extends Seeder
             ["id" => 5, "name" => "PhD - 3rd year"],
             ["id" => 6, "name" => "PhD - 4th year"],
             ["id" => 7, "name" => "PhD - >5 years"],
+            ["id" => 8, "name" => "none of the above"],
         ];
         DB::table('degrees')->insert($degrees);
     }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Conference extends Model
 {
@@ -26,6 +27,11 @@ class Conference extends Model
     public function enrollmentForm()
     {
         return $this->belongsTo('App\EnrollmentForm');
+    }
+
+    public function enrollmentForms()
+    {
+        // return $this->hasManyThrough()
     }
 
     public function state()

@@ -37,16 +37,31 @@
         </b-table-column>
         <b-table-column width="130" field="sv_state.id" label="SV State" sortable>
           <template>
-            <b-taglist attached>
-              <b-tag
-                v-if="props.row.sv_permission"
-                rounded
-                :type="stateType(props.row.sv_permission.state)"
-              >
-                <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
-              </b-tag>
-              <state-tag :state="props.row.sv_state" />
-            </b-taglist>
+            <b-dropdown aria-role="list">
+              <b-taglist class="is-clickable" slot="trigger" role="button" attached>
+                <b-tag
+                  v-if="props.row.sv_permission"
+                  rounded
+                  :type="stateType(props.row.sv_permission.state)"
+                >
+                  <b-icon icon="pencil" size="is-small"></b-icon>
+                </b-tag>
+                <state-tag :state="props.row.sv_state" />
+              </b-taglist>
+
+              <b-dropdown-item aria-role="listitem">
+                <p class="has-text-weight-bold">Enrolled</p>
+              </b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">
+                <p class="has-text-weight-bold has-text-success">Accepted</p>
+              </b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">
+                <p class="has-text-weight-bold has-text-warning">Waitlisted</p>
+              </b-dropdown-item>
+              <b-dropdown-item aria-role="listitem">
+                <p class="has-text-weight-bold has-text-danger">Dropped</p>
+              </b-dropdown-item>
+            </b-dropdown>
           </template>
         </b-table-column>
         <b-table-column width="150" field="sv_state.created_at" label="enrolled" sortable>

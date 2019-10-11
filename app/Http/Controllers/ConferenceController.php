@@ -113,10 +113,20 @@ class ConferenceController extends Controller
             ->where('user_id', auth()->user()->id)
             ->where('role_id', Role::byName('sv')->id)->first();
 
+        $enrollmentFormService = new EnrollmentFormService;
+
+        // In any case, make sure that we remove the weights before
+        // sending the form back to the user
         if ($permission) {
+            // Return the filled enrollmentForm
+            $form = $permission->enrollmentForm;
+            $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
             return ["permission" => $permission];
         } else {
-            return ["enrollment_form" => $conference->enrollmentForm->only('is_filled', 'body', 'id')];
+            // Return a new and empty form
+            $form = $conference->enrollmentForm;
+            $form = $enrollmentFormService->removeWeights($form)->only('is_filled', 'body', 'id');
+            return ["enrollment_form" => $form];
         }
     }
 

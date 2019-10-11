@@ -54,10 +54,7 @@
       <permission-modal @updated="$emit('updated')" :permission="permission"></permission-modal>
     </b-modal>
     <b-modal :active.sync="showEnrollmentForm" has-modal-card>
-      <enrollment-form-modal
-        :enrollment-form="permission.enrollment_form"
-        :conference="permission.conference"
-      ></enrollment-form-modal>
+      <enrollment-form-modal v-model="parsedEnrollmentForm" disabled></enrollment-form-modal>
     </b-modal>
   </section>
 </template>
@@ -137,6 +134,11 @@ export default {
   computed: {
     conferenceUrl: function() {
       return `/conference/${this.permission.conference.key}`;
+    },
+    parsedEnrollmentForm: function() {
+      if (this.permission && this.permission.enrollment_form) {
+        return this.parseEnrollmentForm(this.permission.enrollment_form);
+      }
     }
   }
 };
