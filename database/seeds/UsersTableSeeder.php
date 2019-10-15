@@ -74,13 +74,12 @@ class UsersTableSeeder extends Seeder
         ];
         DB::table('users')->insert($users);
 
-        factory(App\User::class, 5)->create()->each(function ($user) {
-            $randomStateId = 10 + rand(1, State::where('id', '>', '10')->count());
-            $state = State::find($randomStateId);
+        factory(App\User::class, 100)->create()->each(function ($user) {
+            $state = State::where('id', '>', '10')->inRandomOrder()->first();
 
             $conference = Conference::inRandomOrder()->first();
             $language = Language::inRandomOrder()->first();
-            $language2 = Language::inRandomOrder()->first();
+            $language2 = Language::where('id', '!=', $language->id)->inRandomOrder()->first();
 
             $role = Role::byName('sv');
 

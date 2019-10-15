@@ -11,6 +11,7 @@ class EnrollmentFormsTableSeeder extends Seeder
      */
     public function run()
     {
+
         $body = array(
             'header' => 'Please answer the following questions',
             'agreement' => 'Please read this carefully: SVs will work for approximately 14 hours during the conference',
