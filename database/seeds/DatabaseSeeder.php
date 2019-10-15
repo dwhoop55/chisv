@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
             LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
-            EnrollmentFormsTableSeeder::class,
         ]);
     }
 }
