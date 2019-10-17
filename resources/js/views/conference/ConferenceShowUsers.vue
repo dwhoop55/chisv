@@ -9,13 +9,14 @@
       paginated
       per-page="25"
       detailed
+      :loading="isLoading"
       :hoverable="true"
       sort-icon="chevron-up"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
-      default-sort="sv_state.id"
+      default-sort="permission.state.id"
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
@@ -35,42 +36,50 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column width="130" field="sv_state.id" label="SV State" sortable>
+        <b-table-column width="130" field="permission.state.id" label="SV State" sortable>
           <template>
-            <b-dropdown aria-role="list">
+            <b-dropdown
+              :value="props.row.permission.state.id"
+              @change="updateSvState(props.row, $event)"
+              aria-role="list"
+            >
               <b-taglist class="is-clickable" slot="trigger" role="button" attached>
                 <b-tag
-                  v-if="props.row.sv_permission"
+                  v-if="canChangeEnrollment"
                   rounded
-                  :type="stateType(props.row.sv_permission.state)"
+                  :type="stateType(props.row.permission.state)"
                 >
                   <b-icon icon="pencil" size="is-small"></b-icon>
                 </b-tag>
-                <state-tag :state="props.row.sv_state" />
+                <state-tag :state="props.row.permission.state" />
               </b-taglist>
 
-              <b-dropdown-item aria-role="listitem">
-                <p class="has-text-weight-bold">Enrolled</p>
-              </b-dropdown-item>
-              <b-dropdown-item aria-role="listitem">
-                <p class="has-text-weight-bold has-text-success">Accepted</p>
-              </b-dropdown-item>
-              <b-dropdown-item aria-role="listitem">
-                <p class="has-text-weight-bold has-text-warning">Waitlisted</p>
-              </b-dropdown-item>
-              <b-dropdown-item aria-role="listitem">
-                <p class="has-text-weight-bold has-text-danger">Dropped</p>
+              <b-dropdown-item
+                v-for="state in svStates"
+                :key="state.id"
+                :value="state.id"
+                aria-role="listitem"
+              >
+                <p
+                  :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
+                >{{ state.name }}</p>
               </b-dropdown-item>
             </b-dropdown>
           </template>
         </b-table-column>
-        <b-table-column width="150" field="sv_state.created_at" label="enrolled" sortable>
+        <b-table-column
+          v-if="props.row.permission.created_at"
+          width="150"
+          field="permission.created_at"
+          label="enrolled"
+          sortable
+        >
           <template>
             <b-tooltip
               type="is-light"
-              :label="props.row.sv_state.created_at | moment('lll') "
+              :label="props.row.permission.created_at | moment('lll') "
               multilined
-            >{{ $moment(props.row.sv_state.created_at).fromNow() }}</b-tooltip>
+            >{{ $moment(props.row.permission.created_at).fromNow() }}</b-tooltip>
           </template>
         </b-table-column>
       </template>
@@ -115,6 +124,7 @@
 <script>
 import api from "@/api.js";
 import auth from "@/auth.js";
+import Form from "vform";
 
 export default {
   props: ["conference"],
@@ -122,6 +132,7 @@ export default {
   data() {
     return {
       users: [],
+      states: [],
       isLoading: true,
       // columns: [],
       canChangeEnrollment: false
@@ -130,10 +141,53 @@ export default {
 
   created() {
     this.getUsers();
+    this.getStates();
     this.getCan();
   },
 
   methods: {
+    updateSvState(user, $event) {
+      var vform = new Form({
+        id: user.permission.id,
+        user_id: user.id,
+        conference_id: user.permission.conference.id,
+        role_id: user.permission.role.id,
+        state_id: $event
+      });
+
+      this.isLoading = true;
+      api
+        .updatePermission(vform, user.permission.id)
+        .then(response => {
+          user.permission = response.data.result;
+        })
+        .catch(error => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: error.message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    getStates: function() {
+      api
+        .getStates()
+        .then(response => {
+          this.states = response.data.data;
+        })
+        .catch(error => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: error.message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        });
+    },
     getCan: async function() {
       this.canChangeEnrollment = await auth.can(
         "update",
@@ -166,6 +220,12 @@ export default {
     },
     toggle(row) {
       this.$refs.table.toggleDetails(row);
+    }
+  },
+
+  computed: {
+    svStates: function() {
+      return this.filterStates(this.states, "App\\User");
     }
   }
 };

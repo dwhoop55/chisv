@@ -78,10 +78,10 @@ export default {
         return axios.delete(`image/${id}`);
     },
 
-    grantPermission: function (vform) {
+    createPermission: function (vform) {
         return vform.post("permission");
     },
-    revokePermission: function (id) {
+    deletePermission: function (id) {
         return axios.delete(`permission/${id}`);
     },
     updatePermission: function (vform, id) {

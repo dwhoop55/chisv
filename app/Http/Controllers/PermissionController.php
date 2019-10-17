@@ -76,33 +76,11 @@ class PermissionController extends Controller
         // return a message then
         try {
             $oldPermission = Permission::find($request->get('id'));
-            $result = $oldPermission->update($request->all(['role_id', 'conference_id', 'state_id']));
+            $oldPermission->update($request->all(['role_id', 'conference_id', 'state_id']));
+            $updatedPermission = Permission::find($request->get('id'));
         } catch (\Throwable $th) {
             abort(400, 'Permission already exists');
         }
-        return ["result" => $result, "message" => "Permission updated!"];
+        return ["result" => $updatedPermission, "message" => "Permission updated!"];
     }
-
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  \App\Permission  $permission
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Permission $permission)
-    // {
-    //     //
-    // }
-
-
 }

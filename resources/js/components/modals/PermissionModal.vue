@@ -73,7 +73,7 @@ export default {
         promise = api.updatePermission(this.form, this.permission.id);
       } else {
         // No Permission given, create a new one
-        promise = api.grantPermission(this.form);
+        promise = api.createPermission(this.form);
       }
 
       promise

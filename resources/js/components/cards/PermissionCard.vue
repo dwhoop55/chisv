@@ -109,7 +109,7 @@ export default {
     },
     revoke: function() {
       api
-        .revokePermission(this.permission.id)
+        .deletePermission(this.permission.id)
         .then(data => {
           this.$buefy.toast.open({
             type: "is-success",

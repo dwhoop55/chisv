@@ -67,6 +67,15 @@ class PermissionPolicy
             // and is not trying to grant admin, we allow
             return true;
         }
+
+        if (
+            $user->isCaptain($conference)
+            && $permission->role == Role::byName('sv')
+        ) {
+            // If the user is captain for the conference in the permission
+            // and is creating sv, we allow
+            return true;
+        }
     }
 
     /**
@@ -87,12 +96,15 @@ class PermissionPolicy
             return true;
         }
 
-        if (
-            $conference && ($user->isChair($conference) || $user->isCaptain($conference))
-        ) {
-            // Allow update if the user is chair or captain
-            // for the conference in the permission and
-            // the permission has the same role level
+        if ($conference && ($user->isChair($conference)) && $permission->role != Role::byName('admin')) {
+            // Allow update if the permission is associated as chair to user
+            // and not the admin role
+            return true;
+        }
+
+        if ($conference && ($user->isCaptain($conference)) && $permission->role == Role::byName('sv')) {
+            // Allow update if the permission is associated as captain to user
+            // and is the sv role
             return true;
         }
 
