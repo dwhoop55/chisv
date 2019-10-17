@@ -41,8 +41,12 @@
                 <div class="level-item is-block">
                   <p
                     class="has-text-weight-medium"
-                  >{{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
-                  <p class="has-text-weight-medium">{{ conference.location }}</p>
+                  >{{ conference.location }} | {{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
+                  <a
+                    v-if="conference.email_chair"
+                    class="has-text-weight-medium"
+                    :href="'mailto:' + conference.email_chair"
+                  >{{ conference.email_chair }}</a>
                 </div>
               </div>
               <div class="level-right">

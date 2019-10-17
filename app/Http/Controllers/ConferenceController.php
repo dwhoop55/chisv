@@ -233,6 +233,9 @@ class ConferenceController extends Controller
             'url',
             'description',
             'state_id',
+            'volunteer_hours',
+            'volunteer_max',
+            'email_chair',
             'enable_bidding'
         );
 

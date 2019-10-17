@@ -29,6 +29,9 @@ class ConferenceUpdateRequest extends FormRequest
             'url_name' => 'nullable|string|max:100',
             'url' => 'nullable|string|max:300|url',
             'state_id' => 'integer|exists:states,id',
+            'volunteer_hours' => 'integer|min:0',
+            'volunteer_max' => 'integer|min:0',
+            'email_chair' => 'string|email',
             'enable_bidding' => 'boolean',
         ];
 

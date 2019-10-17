@@ -106,6 +106,34 @@
             <state-picker :range="[0,10]" v-model="generalForm.state_id"></state-picker>
           </b-field>
 
+          <b-field grouped>
+            <b-field
+              label="Hours volunteers should work (used by auction)"
+              expanded
+              :type="{ 'is-danger': generalForm.errors.has('volunteer_hours') }"
+              :message="generalForm.errors.get('volunteer_hours')"
+            >
+              <b-numberinput min="0" v-model="generalForm.volunteer_hours"></b-numberinput>
+            </b-field>
+            <b-field
+              label="Max volunteers allowed (used by lottery)"
+              expanded
+              :type="{ 'is-danger': generalForm.errors.has('volunteer_max') }"
+              :message="generalForm.errors.get('volunteer_max')"
+            >
+              <b-numberinput min="0" v-model="generalForm.volunteer_max"></b-numberinput>
+            </b-field>
+          </b-field>
+
+          <b-field
+            expanded
+            :type="{ 'is-danger': generalForm.errors.has('email_chair') }"
+            :message="generalForm.errors.get('email_chair')"
+            label="Email of the chair managing the conference (will be in the reply-to field of all emails)"
+          >
+            <b-input required v-model="generalForm.email_chair"></b-input>
+          </b-field>
+
           <b-field
             label="Enable bidding on tasks"
             expanded
@@ -300,6 +328,9 @@ export default {
         url_name: null,
         url: null,
         state_id: null,
+        volunteer_hours: null,
+        volunteer_max: null,
+        email_chair: null,
         enable_bidding: null,
         created_at: null,
         updated_at: null
@@ -311,13 +342,20 @@ export default {
   created() {
     this.getCan();
     this.timezone = this.conference.timezone;
-    this.generalForm.fill(this.conference);
-    this.imageForm.fill(this.conference);
-    this.generalForm.enable_bidding =
-      this.generalForm.enable_bidding == "1" ? true : false;
+    this.updateForms(this.conference);
   },
 
   methods: {
+    updateForms: function(conference) {
+      this.generalForm.fill(this.conference);
+      this.imageForm.fill(this.conference);
+      this.generalForm.enable_bidding =
+        this.generalForm.enable_bidding == "1" ? true : false;
+      this.generalForm.volunteer_hours = parseInt(
+        this.generalForm.volunteer_hours
+      );
+      this.generalForm.volunteer_max = parseInt(this.generalForm.volunteer_max);
+    },
     getCan: async function() {
       this.canDelete = await auth.can(
         "delete",

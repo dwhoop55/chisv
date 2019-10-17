@@ -30,7 +30,6 @@ class DatabaseSeeder extends Seeder
             PermissionsTableSeeder::class,
 
             EnrollmentFormsTableSeeder::class,
-
         ]);
     }
 }
