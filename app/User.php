@@ -73,6 +73,16 @@ class User extends Authenticatable
         return $this->belongsTo('App\City');
     }
 
+    public function country()
+    {
+        return $this->belongsTo('App\Country');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo('App\Region');
+    }
+
     public function university()
     {
         // TODO: add fallback case for no id attached

@@ -1,13 +1,33 @@
 <template>
   <div>
+    <b-field grouped>
+      <b-input v-model="searchString" placeholder="Search anything..." type="search" icon="magnify"></b-input>
+      <b-dropdown v-model="selectedStates" multiple aria-role="list">
+        <button class="button" type="button" slot="trigger">
+          <span>SV states {{ selectedStates.length }} / {{ svStates.length }}</span>
+          <b-icon icon="menu-down"></b-icon>
+        </button>
+
+        <b-dropdown-item
+          v-for="state in svStates"
+          :key="state.id"
+          :value="state.id"
+          aria-role="listitem"
+        >
+          <p
+            :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
+          >{{ state.name }}</p>
+        </b-dropdown-item>
+      </b-dropdown>
+    </b-field>
     <b-table
       ref="table"
-      :data="users"
+      @click="toggle($event)"
+      :data="filteredUsers"
       detail-key="id"
       :show-detail-icon="true"
-      :opened-detailed="[1]"
       paginated
-      per-page="25"
+      :per-page="perPage"
       detailed
       :loading="isLoading"
       :hoverable="true"
@@ -30,30 +50,36 @@
             <a
               v-if="props.row.university && props.row.university.id"
               target="_blank"
+              :title="props.row.university.name"
               :href="props.row.university.url"
-            >{{ props.row.university.name }}</a>
-            <p v-else-if="props.row.university">{{ props.row.university }}</p>
+            >{{ props.row.university.name | textlimit(35) }}</a>
+            <p
+              v-else-if="props.row.university"
+              :title="props.row.university"
+            >{{ props.row.university | textlimit(35) }}</p>
             <p v-else>N/A</p>
+          </template>
+        </b-table-column>
+        <b-table-column v-if="props.row.email" width="130" field="email" label="E-Mail" sortable>
+          <template>
+            <a :href="'mailto:' + props.row.email">{{ props.row.email }}</a>
           </template>
         </b-table-column>
         <b-table-column width="130" field="permission.state.id" label="SV State" sortable>
           <template>
             <b-dropdown
+              v-if="canChangeEnrollment"
               :value="props.row.permission.state.id"
               @change="updateSvState(props.row, $event)"
               aria-role="list"
             >
-              <b-taglist class="is-clickable" slot="trigger" role="button" attached>
-                <b-tag
-                  v-if="canChangeEnrollment"
-                  rounded
-                  :type="stateType(props.row.permission.state)"
-                >
-                  <b-icon icon="pencil" size="is-small"></b-icon>
-                </b-tag>
-                <state-tag :state="props.row.permission.state" />
-              </b-taglist>
-
+              <button
+                :class="'button is-small ' + stateType(props.row.permission.state)"
+                slot="trigger"
+              >
+                <span>{{ props.row.permission.state.name }}</span>
+                <b-icon icon="menu-down"></b-icon>
+              </button>
               <b-dropdown-item
                 v-for="state in svStates"
                 :key="state.id"
@@ -65,6 +91,7 @@
                 >{{ state.name }}</p>
               </b-dropdown-item>
             </b-dropdown>
+            <state-tag v-else :state="props.row.permission.state" />
           </template>
         </b-table-column>
         <b-table-column
@@ -96,11 +123,13 @@
             <div class="content">
               <p>
                 <strong>{{ props.row.firstname }} {{ props.row.lastname }}</strong>
-                <small>@test</small>
-                <small>31m</small>
-                <br />Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                Proin ornare magna eros, eu pellentesque tortor vestibulum ut.
-                Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.
+                {{ props.row.city ? " – " + props.row.city.name : "" }}
+                <br />
+                <small>{{ props.row.region.name }}, {{ props.row.country.name }}</small>
+                <enrollment-summary
+                  v-if="props.row.permission.enrollment_form"
+                  v-model="props.row.permission.enrollment_form"
+                ></enrollment-summary>
               </p>
             </div>
           </div>
@@ -113,9 +142,37 @@
             <p>
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
-            <p>No users found yet.</p>
+            <p
+              v-if="searchString.length == 0 && selectedStates.length == svStates.length && !isLoading"
+            >No users found.</p>
+            <p v-if="isLoading">Loading..</p>
+            <p v-else-if="searchString.length > 0">
+              No users found for
+              <b>{{ searchString }}</b>
+              in {{ selectedStates.length }} SV States
+            </p>
+            <p v-else>No users found in {{ selectedStates.length }} SV States</p>
           </div>
         </section>
+      </template>
+
+      <template slot="footer">
+        <div class="has-text-right">
+          <b-dropdown v-model="perPage" aria-role="list">
+            <button class="button is-small" slot="trigger">
+              <span>{{ perPage }} per page</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+
+            <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
+            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
+            <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
+            <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
+            <b-dropdown-item value="80" aria-role="listitem">80 per page</b-dropdown-item>
+            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
+            <b-dropdown-item value="200" aria-role="listitem">200 per page</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </template>
     </b-table>
   </div>
@@ -134,6 +191,9 @@ export default {
       users: [],
       states: [],
       isLoading: true,
+      searchString: "",
+      selectedStates: [],
+      perPage: 20,
       // columns: [],
       canChangeEnrollment: false
     };
@@ -178,6 +238,9 @@ export default {
         .getStates()
         .then(response => {
           this.states = response.data.data;
+          this.svStates.forEach(state => {
+            this.selectedStates.push(state.id);
+          });
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -218,7 +281,7 @@ export default {
           this.isLoading = false;
         });
     },
-    toggle(row) {
+    toggle: function(row) {
       this.$refs.table.toggleDetails(row);
     }
   },
@@ -226,6 +289,25 @@ export default {
   computed: {
     svStates: function() {
       return this.filterStates(this.states, "App\\User");
+    },
+    filteredUsers: function() {
+      // First filter states
+      var users = this.users.filter(user => {
+        if (
+          user.permission.state &&
+          this.selectedStates.includes(user.permission.state.id)
+        ) {
+          return true;
+        }
+      });
+
+      // Then take this output from above
+      // and filter for the searchField
+      return users.filter(user => {
+        // No search input? Always show item
+        if (this.searchString == "") return true;
+        return this.stringInObject(this.searchString, user);
+      });
     }
   }
 };

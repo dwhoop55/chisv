@@ -53,6 +53,34 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        stringInObject: function (searchInput, object) {
+            if (!object) return false;
+            let search = searchInput.toLowerCase();
+            var found = false;
+            // We first get the keys of the object
+            // to loop through them. When the key
+            // is a string we compare it (and return true on match)
+            // or recusively go into the object if the key
+            // points to one and do matching there again
+            var keys = Object.keys(object);
+            keys.forEach(key => {
+                // Only compare strings
+                if (typeof object[key] === "string" || object[key] instanceof String) {
+                    let value = object[key].toLowerCase();
+                    if (value.indexOf(search) >= 0) {
+                        // console.log("Found in " + key + " (" + value + ")");
+                        found = true;
+                    }
+                }
+
+                // Recursively go into the objects
+                if (typeof object[key] === "object" || object[key] instanceof Object) {
+                    if (this.stringInObject(searchInput, object[key])) found = true;
+                }
+            });
+
+            return found;
+        },
         filterStates: function (states, filter) {
             return states.filter((value, index) => {
                 return value.for == filter;

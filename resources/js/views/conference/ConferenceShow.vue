@@ -63,7 +63,12 @@
               </div>
             </nav>
 
-            <b-tabs v-model="activeTab" :animated="false" position="is-centered">
+            <b-tabs
+              v-model="activeTab"
+              :destroy-on-hide="true"
+              :animated="false"
+              position="is-centered"
+            >
               <b-tab-item label="Overview">
                 <conference-show-overview v-if="conference" v-model="conference"></conference-show-overview>
               </b-tab-item>

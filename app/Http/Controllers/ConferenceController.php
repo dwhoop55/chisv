@@ -64,6 +64,8 @@ class ConferenceController extends Controller
             $safeUser['university'] = $user->university ? $user->university : $user->university_fallback;
             $safeUser['permission'] = new Permission();
             $safeUser['permission']->state = $user->svPermissionFor(request()->conference)->state;
+            $safeUser['country'] = $user->country;
+            $safeUser['region'] = $user->region;
 
             // $safeUser['sv_state']->created_at = $user->svPermissionFor(request()->conference)->created_at;
             if (
@@ -79,6 +81,7 @@ class ConferenceController extends Controller
                 $safeUser['city'] = $user->city;
                 $safeUser['shirt'] = $user->shirt;
                 $safeUser['permission'] = $user->svPermissionFor(request()->conference);
+                $safeUser['city'] = $user->city;
             } else {
                 // SV
                 // Only show basic information defined at the top
@@ -119,7 +122,7 @@ class ConferenceController extends Controller
 
         // In any case, make sure that we remove the weights before
         // sending the form back to the user
-        if ($permission) {
+        if ($permission && $permission->enrollmentForm) {
             // Return the filled enrollmentForm
             $form = $permission->enrollmentForm;
             $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
