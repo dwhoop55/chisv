@@ -18,7 +18,7 @@ class EnrollmentFormService
      */
     public function getFilledWith(Request $request)
     {
-        $emptyForm = $this->getEmptyFor($request);
+        $emptyForm = $this->getTemplateFor($request);
         $filledForm = $this->fill($emptyForm, $request);
 
         return $filledForm;
@@ -30,14 +30,14 @@ class EnrollmentFormService
      * @param Request $request An Illuminate request with the 'id' key set
      * @return EnrollmentForm An empty enrollmentForm fresh from the database
      */
-    public function getEmptyFor(Request $request)
+    public function getTemplateFor(Request $request)
     {
         $data = $request->toArray();
         if (!$data['id']) {
             abort(400, 'No id given!');
         }
         // Load the form from the database
-        $template = EnrollmentForm::findOrFail($data['id'])->where('is_filled', false)->first();
+        $template = EnrollmentForm::where('is_filled', false)->findOrFail($data['id']);
 
         // Create a new form, because we only wanted to duplicate the body and fields
         // There should be no id or permission id connected to it - just a raw form
