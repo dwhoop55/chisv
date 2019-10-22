@@ -111,11 +111,17 @@ Vue.mixin({
                     return null;
             }
         },
+        /**
+         * 
+         * @param {Object} jsonForm Form with object and key body which is a json-string
+         */
         parseEnrollmentForm: function (jsonForm) {
             var vform = new Form();
             var meta = {};
             var header = null;
             var agreement = null;
+            var name = jsonForm.name;
+            var id = jsonForm.id;
 
             let body = JSON.parse(jsonForm.body);
             if (body.header) {
@@ -124,6 +130,7 @@ Vue.mixin({
             if (body.agreement) {
                 agreement = body.agreement;
             }
+
 
             let fields = body.fields;
             vform['id'] = jsonForm.id;
@@ -139,7 +146,7 @@ Vue.mixin({
                 }
             }
 
-            return { vform: vform, meta: meta, header: header, agreement: agreement };
+            return { vform: vform, meta: meta, header: header, agreement: agreement, name: name, id: id };
         },
         conferenceArtworkBackground: function (conference) {
             if (conference && conference.artwork) {

@@ -120,17 +120,22 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['store', 'destroy', 'update']
         ]);
 
+
         Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
             ->middleware("can:enroll,conference,user")
             ->name('conference.enroll');
         Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference,user")
             ->name('conference.unenroll');
+
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/user', 'ConferenceController@user')
             ->middleware("can:view,conference")
             ->name('conference.user');
+        Route::get('enrollmentForm/templates', 'EnrollmentFormController@indexTemplates')
+            ->middleware("can:viewTemplates,App\EnrollmentForm")
+            ->name('enrollmentForm.templates');
 
 
         // Determine if a user can perform a certain action

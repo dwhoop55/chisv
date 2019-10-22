@@ -105,6 +105,7 @@
           >
             <state-picker :range="[0,10]" v-model="generalForm.state_id"></state-picker>
           </b-field>
+          <br />
 
           <b-field grouped>
             <b-field
@@ -124,6 +125,17 @@
               <b-numberinput min="0" v-model="generalForm.volunteer_max"></b-numberinput>
             </b-field>
           </b-field>
+          <br />
+
+          <b-field
+            expanded
+            label="Active Enrollment Form"
+            :type="{ 'is-danger': generalForm.errors.has('enrollment_form_id') }"
+            :message="generalForm.errors.get('enrollment_form_id')"
+          >
+            <enrollment-form-template-picker v-model="generalForm.enrollment_form_id"></enrollment-form-template-picker>
+          </b-field>
+          <br />
 
           <b-field
             expanded
@@ -270,6 +282,7 @@ import { Form } from "vform";
 import api from "@/api.js";
 import auth from "@/auth.js";
 import moment from "moment-timezone";
+import { parse } from "path";
 
 export default {
   props: ["conference"],
@@ -313,6 +326,7 @@ export default {
       canDelete: false,
       activeTab: 0,
       timezone: null,
+      enrollmentFormTemplates: [],
       imageForm: new Form({
         image: null,
         icon: null
@@ -328,6 +342,7 @@ export default {
         url_name: null,
         url: null,
         state_id: null,
+        enrollment_form_id: null,
         volunteer_hours: null,
         volunteer_max: null,
         email_chair: null,

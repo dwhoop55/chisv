@@ -237,6 +237,7 @@ class ConferenceController extends Controller
             'url_name',
             'url',
             'description',
+            'enrollment_form_id',
             'state_id',
             'volunteer_hours',
             'volunteer_max',

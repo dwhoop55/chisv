@@ -11,6 +11,9 @@ export default {
     getUser: function (id) {
         return axios.get(`user/${id}`);
     },
+    getEnrollmentFormTemplates: function () {
+        return axios.get(`enrollmentForm/templates`)
+    },
     getEnrollment: function (key) {
         return axios.get(`conference/${key}/enrollment`)
     },

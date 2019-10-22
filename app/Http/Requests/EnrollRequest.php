@@ -22,7 +22,7 @@ class EnrollRequest extends FormRequest
         // request has the id set
         // Based on these fields we build the rules array
         $enrollmentFormService = new EnrollmentFormService();
-        $form = $enrollmentFormService->getEmptyFor(request());
+        $form = $enrollmentFormService->getTemplateFor(request());
         $fields = json_decode($form->body, true)['fields'];
 
         foreach ($fields as $key => $value) {

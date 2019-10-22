@@ -2,7 +2,12 @@
   <div>
     <b-field grouped>
       <b-input v-model="searchString" placeholder="Search anything..." type="search" icon="magnify"></b-input>
-      <b-dropdown v-model="selectedStates" multiple aria-role="list">
+      <b-dropdown
+        v-model="selectedStates"
+        v-if="selectedStates && svStates"
+        multiple
+        aria-role="list"
+      >
         <button class="button" type="button" slot="trigger">
           <span>SV states {{ selectedStates.length }} / {{ svStates.length }}</span>
           <b-icon icon="menu-down"></b-icon>
@@ -71,6 +76,7 @@
               v-if="canChangeEnrollment"
               :value="props.row.permission.state.id"
               @change="updateSvState(props.row, $event)"
+              @active-change="ignoreNextToggleClick=true"
               aria-role="list"
             >
               <button
@@ -126,10 +132,10 @@
                 {{ props.row.city ? " – " + props.row.city.name : "" }}
                 <br />
                 <small>{{ props.row.region.name }}, {{ props.row.country.name }}</small>
-                <enrollment-summary
+                <enrollment-form-summary
                   v-if="props.row.permission.enrollment_form"
                   v-model="props.row.permission.enrollment_form"
-                ></enrollment-summary>
+                ></enrollment-form-summary>
               </p>
             </div>
           </div>
@@ -145,7 +151,7 @@
             <p
               v-if="searchString.length == 0 && selectedStates.length == svStates.length && !isLoading"
             >No users found.</p>
-            <p v-if="isLoading">Loading..</p>
+            <p v-else-if="isLoading">Loading..</p>
             <p v-else-if="searchString.length > 0">
               No users found for
               <b>{{ searchString }}</b>
@@ -194,14 +200,16 @@ export default {
       searchString: "",
       selectedStates: [],
       perPage: 20,
-      // columns: [],
+      // This will ensure that the details won't open
+      // on SV state dropdown click
+      ignoreNextToggleClick: false,
       canChangeEnrollment: false
     };
   },
 
   created() {
-    this.getUsers();
     this.getStates();
+    this.getUsers();
     this.getCan();
   },
 
@@ -264,9 +272,8 @@ export default {
         .then(data => {
           if (data.data.length > 0) {
             this.users = data.data;
-            // this.columns = Object.keys(this.users[0]);
           } else {
-            this.users = null;
+            this.users = [];
           }
         })
         .catch(error => {
@@ -282,7 +289,11 @@ export default {
         });
     },
     toggle: function(row) {
-      this.$refs.table.toggleDetails(row);
+      if (this.ignoreNextToggleClick) {
+        this.ignoreNextToggleClick = false;
+      } else {
+        this.$refs.table.toggleDetails(row);
+      }
     }
   },
 
@@ -291,6 +302,11 @@ export default {
       return this.filterStates(this.states, "App\\User");
     },
     filteredUsers: function() {
+      // No users? No Output!
+      if (!this.users) {
+        return null;
+      }
+
       // First filter states
       var users = this.users.filter(user => {
         if (

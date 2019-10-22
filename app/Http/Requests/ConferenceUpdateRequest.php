@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Conference;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ConferenceUpdateRequest extends FormRequest
 {
@@ -28,6 +29,15 @@ class ConferenceUpdateRequest extends FormRequest
             'description' => 'string|max:1000',
             'url_name' => 'nullable|string|max:100',
             'url' => 'nullable|string|max:300|url',
+            // Make sure the selected enrollment form is existing
+            // and a template (unfilled)
+            'enrollment_form_id' => [
+                'required',
+                'integer',
+                Rule::exists('enrollment_forms', 'id')->where(function ($query) {
+                    $query->where('is_filled', false);
+                }),
+            ],
             'state_id' => 'integer|exists:states,id',
             'volunteer_hours' => 'integer|min:0',
             'volunteer_max' => 'integer|min:0',
@@ -49,7 +59,8 @@ class ConferenceUpdateRequest extends FormRequest
             "key.alpha_num" => "This has to be a valid part of an http url",
             "timezone_id.*" => "Please pick a timezone from the list",
             "location.*" => "Please specify a location",
-            "description.string" => "Please give a short intro into the conference"
+            "description.string" => "Please give a short intro into the conference",
+            "enrollment_form_id.*" => "Please select an enrollment form from the list"
         ];
     }
 }
