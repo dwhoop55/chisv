@@ -12,6 +12,49 @@ class ConferencePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine whether the user can see SVs
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return boolean
+     */
+    public function viewUsers(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // Only allow users associated with a conference
+        if ($user->isChair($conference) || $user->isCaptain($conference) || $user->isSv($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can change/update 
+     * a state of an enrolled user
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return boolean
+     */
+    public function updateEnrollment(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
      * Determine whether the user can enroll in the conferences.
      *
      * @param  \App\User  $user
@@ -46,6 +89,8 @@ class ConferencePolicy
             // then grant access if the conference is in state enrollment
             return true;
         }
+
+        return false;
     }
 
     /**
@@ -82,6 +127,8 @@ class ConferencePolicy
         } else {
             return false;
         }
+
+        return false;
     }
 
     /**

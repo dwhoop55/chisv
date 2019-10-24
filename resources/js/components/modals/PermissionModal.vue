@@ -57,10 +57,16 @@ export default {
     return {
       form: new Form({
         user_id: this.getUserId(),
-        id: this.getPermission().id,
-        role_id: this.getPermission().role.id,
-        conference_id: this.getPermission().conference.id,
-        state_id: this.getPermission().state.id
+        id: this.permission ? this.permission.id : null,
+        role_id: this.permission ? this.permission.role.id : null,
+        conference_id:
+          this.permission && this.permission.conference
+            ? this.permission.conference.id
+            : null,
+        state_id:
+          this.permission && this.permission.state
+            ? this.permission.state.id
+            : null
       })
     };
   },
@@ -103,13 +109,6 @@ export default {
         return this.user.id;
       } else {
         return;
-      }
-    },
-    getPermission: function() {
-      if (this.permission) {
-        return this.permission;
-      } else {
-        return { id: null, role_id: null, conference_id: null, state_id: null };
       }
     }
   }

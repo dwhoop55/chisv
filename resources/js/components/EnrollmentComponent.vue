@@ -24,46 +24,42 @@
     </transition>
 
     <!-- Enrolled, Accepted, Waitlisted or Dropped -->
-    <transition name="slide-top-fade">
-      <b-notification
+    <b-notification
+      v-if="!loading && permission"
+      :type="stateType(permission.state)"
+      has-icon
+      :closable="false"
+    >
+      <p>
+        You are
+        <b-tooltip
+          :type="stateType(permission.state)"
+          multilined
+          :label="permission.state.description"
+        >
+          <strong>{{ permission.state.name }}</strong>
+        </b-tooltip>
+      </p>
+      <b-button
         v-if="!loading && permission"
-        :type="stateType(permission.state)"
-        has-icon
-        :closable="false"
-      >
-        <p>
-          You are
-          <b-tooltip
-            :type="stateType(permission.state)"
-            multilined
-            :label="permission.state.description"
-          >
-            <strong>{{ permission.state.name }}</strong>
-          </b-tooltip>
-        </p>
-        <b-button
-          v-if="!loading && permission"
-          type="is-primary"
-          class="has-margin-t-7"
-          outlined
-          icon-left="format-list-bulleted"
-          @click="showEnrollmentForm=true"
-        >Show Enrollment Form</b-button>
-        <!-- Unenroll -->
-        <transition name="slide-left-fade">
-          <b-button
-            v-if="!loading && canUnenroll"
-            type="is-danger"
-            class="has-margin-t-7"
-            outlined
-            icon-left="account-remove"
-            @click="confirmUnenroll"
-          >Unenroll</b-button>
-        </transition>
+        type="is-primary"
+        class="has-margin-t-7"
+        outlined
+        icon-left="format-list-bulleted"
+        @click="showEnrollmentForm=true"
+      >Show Enrollment Form</b-button>
+      <!-- Unenroll -->
+      <b-button
+        v-if="!loading && canUnenroll"
+        type="is-danger"
+        class="has-margin-t-7"
+        outlined
+        icon-left="account-remove"
+        @click="confirmUnenroll"
+      >Unenroll</b-button>
 
-        <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
-      </b-notification>
-    </transition>
+      <p v-if="!loading && canUnenroll==false">You can no longer unenroll</p>
+    </b-notification>
 
     <!-- Enroll form -->
     <transition name="slide-top-fade">
@@ -116,6 +112,9 @@ import Form from "vform";
 
 export default {
   props: ["conference"],
+  model: {
+    prop: "conference"
+  },
 
   data() {
     return {
@@ -162,6 +161,7 @@ export default {
         .then(data => {
           this.errored = null;
           this.permission = null;
+          this.$emit("input", "unenrolled");
         })
         .catch(error => {
           this.errored = error.message;
@@ -180,6 +180,7 @@ export default {
         .then(data => {
           this.permission = data.data.result;
           this.errored = null;
+          this.$emit("input", "enrolled");
         })
         .catch(error => {
           if (error.response.status != 422) {
@@ -193,6 +194,9 @@ export default {
     },
 
     getState: function() {
+      if (!this.conference) {
+        return;
+      }
       this.loading = true;
       this.errored = null;
       this.permission = null;

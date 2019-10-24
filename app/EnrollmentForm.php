@@ -15,6 +15,11 @@ class EnrollmentForm extends Model
 
     public function permission()
     {
-        return $this->belongsTo('App\Permission');
+        return $this->hasOne('App\Permission');
+    }
+
+    public function conferences()
+    {
+        return $this->hasMany('App\Conference');
     }
 }

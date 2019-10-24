@@ -33,6 +33,6 @@ class Permission extends Model
 
     public function enrollmentForm()
     {
-        return $this->hasOne('App\EnrollmentForm');
+        return $this->belongsTo('App\EnrollmentForm');
     }
 }

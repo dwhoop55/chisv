@@ -18,7 +18,7 @@ class CreatePermissions extends Migration
             $table->integer('user_id')->unsigned()->index();
             $table->integer('role_id')->unsigned()->index();
             $table->integer('conference_id')->unsigned()->index()->nullable()->comment('Restrict to this conference');
-            $table->integer('state_id')->unsigned()->index()->nullable()->comment('Some roles may have a state, like ENROLLMENT');
+            $table->integer('state_id')->unsigned()->index()->nullable()->comment('Some roles may have a state, like enrollment');
 
             $table->unique(['user_id', 'role_id', 'conference_id']);
 

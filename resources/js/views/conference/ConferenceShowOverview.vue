@@ -2,7 +2,7 @@
   <div>
     <div class="columns is-centered">
       <div class="column is-two-thirds">
-        <enrollment-component :conference="conference"></enrollment-component>
+        <enrollment-component @input="$emit('input',$event)" v-model="conference"></enrollment-component>
       </div>
     </div>
 
@@ -12,10 +12,9 @@
 
 <script>
 export default {
-  props: ["conference", "canEdit"],
+  props: ["conference"],
   model: {
-    prop: "conference",
-    event: "updated"
+    prop: "conference"
   }
 };
 </script>

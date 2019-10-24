@@ -18,7 +18,7 @@
       </div>
       <div v-if="showType">
         <i>&lt;{{ field.type }}&gt;</i>
-        <i v-if="field.required != undefined">| required</i>
+        <i v-if="field.required != undefined">| required={{field.required}}</i>
         <i v-if="field.maxlength != undefined">| maxlength={{field.maxlength}}</i>
         <i v-if="field.value != undefined">| default={{field.value}}</i>
         <i v-if="field.weight != undefined">| weight={{field.weight}}</i>

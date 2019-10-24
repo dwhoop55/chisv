@@ -48,7 +48,7 @@ class EnrollmentFormController extends Controller
      */
     public function show(EnrollmentForm $enrollmentForm)
     {
-        //
+        return $enrollmentForm;
     }
 
     /**

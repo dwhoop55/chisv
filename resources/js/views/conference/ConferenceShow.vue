@@ -7,7 +7,7 @@
       ></div>
 
       <div class="columns is-centered">
-        <div class="column is-two-thirds">
+        <div class="column is-three-quarters">
           <nav class="level">
             <div class="level-left">
               <div class="level-item">
@@ -68,12 +68,18 @@
               :destroy-on-hide="true"
               :animated="false"
               position="is-centered"
+              @input="goTo('#' + $event)"
             >
               <b-tab-item label="Overview">
-                <conference-show-overview v-if="conference" v-model="conference"></conference-show-overview>
+                <conference-show-overview
+                  @input="getConference()"
+                  v-if="conference"
+                  v-model="conference"
+                ></conference-show-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
-                <conference-show-users :conference="conference"></conference-show-users>
+                <conference-show-users v-if="canViewUsers" :conference="conference"></conference-show-users>
+                <p v-else>You need to be enrolled to see other SVs!</p>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Edit">
                 <conference-edit v-model="conference"></conference-edit>
@@ -84,7 +90,7 @@
       </div>
       <!--  -->
     </div>
-    <b-loading :is-full-page="false" :active="!conference"></b-loading>
+    <b-loading :is-full-page="false" :active="loading"></b-loading>
   </div>
 </template>
 
@@ -97,7 +103,10 @@ export default {
 
   data() {
     return {
+      loading: true,
       canEdit: false,
+      canUpdateEnrollment: false,
+      canViewUsers: false,
       activeTab: 0,
       conference: null
     };
@@ -105,14 +114,34 @@ export default {
 
   created() {
     this.getConference();
-    if (window.location.hash == "#edit") {
+
+    // Using the hash for when the browser goes to
+    // previous page, which should show the tab
+    // we saw when we left the page. I know vue-router
+    // would handle this but we don't have access to
+    // that
+    let hash = window.location.hash.substr(1);
+    if (hash == "edit") {
       this.activeTab = 2;
+    } else if (Number.isInteger(parseInt(hash))) {
+      console.log(hash);
+      this.activeTab = parseInt(hash);
     }
   },
 
   methods: {
     getCan: async function() {
       this.canEdit = await auth.can("update", "Conference", this.conference.id);
+      this.canUpdateEnrollment = await auth.can(
+        "updateEnrollment",
+        "Conference",
+        this.conference.id
+      );
+      this.canViewUsers = await auth.can(
+        "viewUsers",
+        "Conference",
+        this.conference.id
+      );
     },
     getConference: function() {
       api
@@ -123,6 +152,9 @@ export default {
         })
         .catch(error => {
           this.$buefy.notification(error.message);
+        })
+        .finally(() => {
+          this.loading = false;
         });
     }
   }

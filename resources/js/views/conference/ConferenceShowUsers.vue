@@ -1,7 +1,13 @@
 <template>
   <div>
     <b-field grouped>
-      <b-input v-model="searchString" placeholder="Search anything..." type="search" icon="magnify"></b-input>
+      <b-input
+        expanded
+        v-model="searchString"
+        placeholder="Search anything..."
+        type="search"
+        icon="magnify"
+      ></b-input>
       <b-dropdown
         v-model="selectedStates"
         v-if="selectedStates && svStates"
@@ -45,7 +51,15 @@
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
-          <template>{{ props.row.firstname }}</template>
+          <template>
+            <a
+              v-if="canUpdateEnrollment"
+              title="Go to the users profile"
+              @click.native="ignoreNextToggleClick=true"
+              :href="'/user/' + props.row.id + '/edit'"
+            >{{ props.row.firstname }}</a>
+            <div v-else>{{ props.row.firstname }}</div>
+          </template>
         </b-table-column>
         <b-table-column field="lastname" label="Lastname" sortable>
           <template>{{ props.row.lastname }}</template>
@@ -73,7 +87,7 @@
         <b-table-column width="130" field="permission.state.id" label="SV State" sortable>
           <template>
             <b-dropdown
-              v-if="canChangeEnrollment"
+              v-if="canUpdateEnrollment"
               :value="props.row.permission.state.id"
               @change="updateSvState(props.row, $event)"
               @active-change="ignoreNextToggleClick=true"
@@ -203,7 +217,7 @@ export default {
       // This will ensure that the details won't open
       // on SV state dropdown click
       ignoreNextToggleClick: false,
-      canChangeEnrollment: false
+      canUpdateEnrollment: false
     };
   },
 
@@ -260,8 +274,8 @@ export default {
         });
     },
     getCan: async function() {
-      this.canChangeEnrollment = await auth.can(
-        "update",
+      this.canUpdateEnrollment = await auth.can(
+        "updateEnrollment",
         "Conference",
         this.conference.id
       );

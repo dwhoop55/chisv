@@ -48,6 +48,8 @@ class ConferenceController extends Controller
      */
     public function user(Conference $conference)
     {
+        $this->authorize('viewUsers', $conference);
+
         // First we filter the users, to only get the SVs
         $users = $conference->users->filter(function ($user) {
             return $user->isSv(request()->conference);
@@ -152,12 +154,20 @@ class ConferenceController extends Controller
             $user = auth()->user();
         }
 
+        // Now create the enrollmentForm
+        $enrollmentFormService = new EnrollmentFormService();
+        $enrollmentForm = $enrollmentFormService->getFilledWith($request);
+
+        if (!$enrollmentForm->save()) {
+            return ["result" => null, "message" => "There was an error while creating the enrollment form"];
+        }
 
         $permission = new Permission();
         $permission->conference()->associate($conference);
         $permission->user()->associate($user);
         $permission->state()->associate(State::byName('enrolled'));
         $permission->role()->associate(Role::byName('sv'));
+        $permission->enrollmentForm()->associate($enrollmentForm);
 
         // Create the permission
         $permission->save();
@@ -166,22 +176,15 @@ class ConferenceController extends Controller
             return ["result" => null, "message" => "There was an error while granting SV permissions"];
         }
 
-        // Now create the enrollmentForm
-        $enrollmentFormService = new EnrollmentFormService();
-        $enrollmentForm = $enrollmentFormService->getFilledWith($request);
-
-        if (!$enrollmentForm) {
-            return ["result" => null, "message" => "There was an error while creating the enrollment form"];
-        }
-
-        $permission->enrollmentForm()->save($enrollmentForm);
-        // We painfully reload manually here because ->refresh on the
-        // model does not work..
-        // We need to reload to have the permission that we return also
-        // carry the enrollmentForm
-        $permission = Permission::find($permission->id);
-
         return ["result" => $permission, "message" => "You are now enrolled"];
+
+        // $permission->enrollmentForm()->save($enrollmentForm);
+        // // We painfully reload manually here because ->refresh on the
+        // // model does not work..
+        // // We need to reload to have the permission that we return also
+        // // carry the enrollmentForm
+        // $permission = Permission::find($permission->id);
+
     }
 
     /** 

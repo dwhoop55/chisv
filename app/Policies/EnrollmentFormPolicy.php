@@ -47,7 +47,13 @@ class EnrollmentFormPolicy
      */
     public function view(User $user, EnrollmentForm $enrollmentForm)
     {
-        //
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        // || $user->isChair($enrollmentForm->conference)) {
+
+        return false;
     }
 
     /**

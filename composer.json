@@ -16,7 +16,8 @@
         "laravel/passport": "^7.3",
         "laravel/telescope": "^2.0",
         "laravel/tinker": "^1.0",
-        "fzaninotto/faker": "^1.4"
+        "fzaninotto/faker": "^1.4",
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.2",
