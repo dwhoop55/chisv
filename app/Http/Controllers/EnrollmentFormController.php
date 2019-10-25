@@ -9,6 +9,16 @@ class EnrollmentFormController extends Controller
 {
 
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(EnrollmentForm::class);
+    }
+
+    /**
      * Display a listing of template
      * (unfilled) forms.
      *

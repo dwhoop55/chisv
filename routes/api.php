@@ -119,8 +119,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('image', 'ImageController', [
             'only' => ['store', 'destroy', 'update']
         ]);
+        Route::resource('enrollment_form', 'EnrollmentFormController', [
+            'only' => ['show']
+        ]);
 
-
+        // Custom posts (may extend ressource routes from above)
         Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
             ->middleware("can:enroll,conference,user")
             ->name('conference.enroll');
@@ -128,6 +131,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:unenroll,conference,user")
             ->name('conference.unenroll');
 
+        // Custom gets (may extend ressource routes from above)
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/user', 'ConferenceController@user')
@@ -136,7 +140,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('enrollmentForm/templates', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');
-
+        Route::get('enrollment_form/templates', 'EnrollmentFormController@indexTemplates')
+            ->middleware("can:viewTemplates,App\EnrollmentForm")
+            ->name('enrollmentForm.templates');
 
         // Determine if a user can perform a certain action
         Route::get('can/{ability}/{model}/{id?}', function ($ability, $model, $id = null) {

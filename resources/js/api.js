@@ -12,7 +12,10 @@ export default {
         return axios.get(`user/${id}`);
     },
     getEnrollmentFormTemplates: function () {
-        return axios.get(`enrollmentForm/templates`)
+        return axios.get(`enrollment_form/templates`)
+    },
+    getEnrollmentFormTemplate: function (id) {
+        return axios.get(`enrollment_form/${id}`)
     },
     getEnrollment: function (key) {
         return axios.get(`conference/${key}/enrollment`)

@@ -29,11 +29,6 @@ class Conference extends Model
         return $this->belongsTo('App\EnrollmentForm');
     }
 
-    public function enrollmentForms()
-    {
-        // return $this->hasManyThrough()
-    }
-
     public function state()
     {
         return $this->belongsTo('App\State');

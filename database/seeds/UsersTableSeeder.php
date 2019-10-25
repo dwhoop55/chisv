@@ -74,7 +74,7 @@ class UsersTableSeeder extends Seeder
         ];
         DB::table('users')->insert($users);
 
-        factory(App\User::class, 5)->create()->each(function ($user) {
+        factory(App\User::class, 10)->create()->each(function ($user) {
             $state = State::where('id', '>', '10')->inRandomOrder()->first();
 
             $conference = Conference::inRandomOrder()->first();

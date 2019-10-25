@@ -20,10 +20,6 @@ class CreateEnrollmentFormsTable extends Migration
             $table->boolean('is_filled')->default(true)->index();
             $table->json('body');
 
-            $table->foreign('permission_id')
-                ->references('id')->on('permissions')
-                ->onDelete('cascade');
-
             $table->timestamps();
         });
     }

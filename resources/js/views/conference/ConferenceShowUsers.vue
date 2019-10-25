@@ -8,7 +8,9 @@
         type="search"
         icon="magnify"
       ></b-input>
+
       <b-dropdown
+        class="control"
         v-model="selectedStates"
         v-if="selectedStates && svStates"
         multiple
@@ -30,6 +32,12 @@
           >{{ state.name }}</p>
         </b-dropdown-item>
       </b-dropdown>
+
+      <enrollment-form-settings-button
+        v-if="enrollmentFormTemplate"
+        class="control"
+        :value="enrollmentFormTemplate"
+      ></enrollment-form-settings-button>
     </b-field>
     <b-table
       ref="table"
@@ -52,13 +60,24 @@
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
           <template>
-            <a
-              v-if="canUpdateEnrollment"
-              title="Go to the users profile"
-              @click.native="ignoreNextToggleClick=true"
-              :href="'/user/' + props.row.id + '/edit'"
-            >{{ props.row.firstname }}</a>
-            <div v-else>{{ props.row.firstname }}</div>
+            <div style="align-items:center;" class="is-flex">
+              <figure class="media-left">
+                <p class="image is-32x32">
+                  <img :src="userAvatar(props.row)" />
+                </p>
+              </figure>
+              <div class="media-content">
+                <div class="content">
+                  <a
+                    v-if="canUpdateEnrollment"
+                    title="Go to the users profile"
+                    @click.native="ignoreNextToggleClick=true"
+                    :href="'/user/' + props.row.id + '/edit'"
+                  >{{ props.row.firstname }}</a>
+                  <div v-else>{{ props.row.firstname }}</div>
+                </div>
+              </div>
+            </div>
           </template>
         </b-table-column>
         <b-table-column field="lastname" label="Lastname" sortable>
@@ -118,7 +137,7 @@
           v-if="props.row.permission.created_at"
           width="150"
           field="permission.created_at"
-          label="enrolled"
+          label="Enrolled"
           sortable
         >
           <template>
@@ -129,31 +148,30 @@
             >{{ $moment(props.row.permission.created_at).fromNow() }}</b-tooltip>
           </template>
         </b-table-column>
+        <b-table-column v-if="canUpdateEnrollment" width="150" label="Lottery position" sortable>
+          <template>
+            <p>test</p>
+          </template>
+        </b-table-column>
       </template>
 
       <template slot="detail" slot-scope="props">
-        <article class="media">
-          <figure class="media-left">
-            <p class="image is-64x64">
-              <img v-if="props.row.avatar" :src="userAvatar(props.row)" />
-              <img v-else :src="userAvatar(props.row)" />
-            </p>
-          </figure>
-          <div class="media-content">
-            <div class="content">
-              <p>
-                <strong>{{ props.row.firstname }} {{ props.row.lastname }}</strong>
-                {{ props.row.city ? " – " + props.row.city.name : "" }}
-                <br />
-                <small>{{ props.row.region.name }}, {{ props.row.country.name }}</small>
-                <enrollment-form-summary
-                  v-if="props.row.permission.enrollment_form"
-                  v-model="props.row.permission.enrollment_form"
-                ></enrollment-form-summary>
-              </p>
-            </div>
-          </div>
-        </article>
+        <strong>{{ props.row.firstname }} {{ props.row.lastname }}</strong>
+
+        <br />
+        {{ props.row.city ? props.row.city.name + ", " : "" }}
+        {{ props.row.region.name }}, {{ props.row.country.name }}
+        <br />
+
+        <div v-if="props.row.degree">
+          Study Program:
+          {{ props.row.degree.name }}
+        </div>Enrollment form:
+        <enrollment-form-summary
+          class="section has-padding-t-8"
+          v-if="props.row.permission.enrollment_form"
+          v-model="props.row.permission.enrollment_form"
+        ></enrollment-form-summary>
       </template>
 
       <template slot="empty">
@@ -217,7 +235,9 @@ export default {
       // This will ensure that the details won't open
       // on SV state dropdown click
       ignoreNextToggleClick: false,
-      canUpdateEnrollment: false
+      canUpdateEnrollment: false,
+
+      enrollmentFormTemplate: null
     };
   },
 
@@ -225,9 +245,17 @@ export default {
     this.getStates();
     this.getUsers();
     this.getCan();
+    this.getEnrollmentFormTemplate();
   },
 
   methods: {
+    getEnrollmentFormTemplate() {
+      api
+        .getEnrollmentFormTemplate(this.conference.enrollment_form_id)
+        .then(data => {
+          this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
+        });
+    },
     updateSvState(user, $event) {
       var vform = new Form({
         id: user.permission.id,
