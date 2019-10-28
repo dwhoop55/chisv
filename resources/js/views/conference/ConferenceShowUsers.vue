@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-field grouped>
+    <b-field grouped group-multiline>
       <b-input
         expanded
         v-model="searchString"
@@ -35,6 +35,7 @@
 
       <enrollment-form-settings-button
         v-if="enrollmentFormTemplate"
+        @input="updateLotteryPositions()"
         class="control"
         :value="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
@@ -148,9 +149,16 @@
             >{{ $moment(props.row.permission.created_at).fromNow() }}</b-tooltip>
           </template>
         </b-table-column>
-        <b-table-column v-if="canUpdateEnrollment" width="150" label="Lottery position" sortable>
+        <b-table-column
+          field="lottery_position"
+          v-if="canUpdateEnrollment"
+          width="150"
+          label="Lottery position"
+          sortable
+        >
           <template>
-            <p>test</p>
+            <p v-if="props.row.lottery_position">{{ props.row.lottery_position }}</p>
+            <small v-else>No valid enrollment form, user ignored</small>
           </template>
         </b-table-column>
       </template>
@@ -249,11 +257,59 @@ export default {
   },
 
   methods: {
+    calculateLotteryPositionFor(user) {
+      if (!this.enrollmentFormTemplate || !this.enrollmentFormTemplate.meta) {
+        // We have no enrollment form template loaded in data()
+        console.log("No enrollment form template", user);
+        return null;
+      } else if (!user.permission.enrollment_form) {
+        // No enrollment form - empty test seeds, abort
+        console.log("No enrollment form", user);
+        return null;
+      } else if (
+        user.permission.enrollment_form.parent_id !=
+        this.enrollmentFormTemplate.id
+      ) {
+        // User has enrollment form but not the one currently active
+        // for the conference. The user will be ignored and logged
+        console.log("Not form currently active", user);
+        return null;
+      } else {
+        // Valid enrollment form (fits data()'s enrollment form template)
+        // Calculate the position
+        console.log("OK", user);
+        var position = 0;
+
+        for (const [key, value] of Object.entries(
+          this.enrollmentFormTemplate.meta
+        )) {
+          if (this.enrollmentFormTemplate.meta[key].type == "boolean") {
+            let userForm = this.parseEnrollmentForm(
+              user.permission.enrollment_form
+            );
+            let choice = userForm.meta[key].value;
+            let weight = this.enrollmentFormTemplate.meta[key].weight;
+            position = position + choice * weight;
+            console.log(choice, weight, position);
+          }
+        }
+
+        return position;
+      }
+    },
+    updateLotteryPositions() {
+      if (!this.users) return;
+      this.users.forEach(user => {
+        user.lottery_position = this.calculateLotteryPositionFor(user);
+      });
+      this.$forceUpdate();
+    },
     getEnrollmentFormTemplate() {
       api
         .getEnrollmentFormTemplate(this.conference.enrollment_form_id)
         .then(data => {
           this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
+          this.updateLotteryPositions();
         });
     },
     updateSvState(user, $event) {

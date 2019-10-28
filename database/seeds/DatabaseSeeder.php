@@ -25,11 +25,12 @@ class DatabaseSeeder extends Seeder
             UniversityTableSeeder::class,
             ConferenceTableSeeder::class,
 
+            EnrollmentFormsTableSeeder::class,
+
             UsersTableSeeder::class,
             LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
-            EnrollmentFormsTableSeeder::class,
         ]);
     }
 }

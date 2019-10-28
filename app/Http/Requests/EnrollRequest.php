@@ -25,6 +25,10 @@ class EnrollRequest extends FormRequest
         $form = $enrollmentFormService->getTemplateFor(request());
         $fields = json_decode($form->body, true)['fields'];
 
+        // Make sure we reference an existing enrollment form (id will later
+        // be the parent_id)
+        $rules['id'] = "required|exists:enrollment_forms";
+
         foreach ($fields as $key => $value) {
             $rule = collect();
             if (array_key_exists('type', $value)) {

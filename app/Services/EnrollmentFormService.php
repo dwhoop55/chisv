@@ -3,14 +3,16 @@
 namespace App\Services;
 
 use App\EnrollmentForm;
-use App\Http\Requests\EnrollRequest;
+use Faker\Generator;
+use Faker\Provider\Miscellaneous;
 use Illuminate\Http\Request;
+
 
 class EnrollmentFormService
 {
     /**
      * Will load the enrollmentForm from database
-     * (based in the id in the body) and then fill
+     * (based on the id in the body) and then fill
      * the form with the data params.
      * The filled form is the returned
      * @param Request $request Request from the user
@@ -22,6 +24,44 @@ class EnrollmentFormService
         $filledForm = $this->fill($emptyForm, $request);
 
         return $filledForm;
+    }
+
+    /**
+     * This will create a new fake enrollment form
+     * with random values. It is used for test seeding
+     * @return EnrollmentForm A filled enrollmentForm
+     */
+    public function getFilledFake()
+    {
+        $randomForm = EnrollmentForm::inRandomOrder()->first();
+        $filledForm = new EnrollmentForm([
+            'parent_id' => $randomForm->id,
+            'name' => $randomForm->name,
+            'body' => $this->fillBodyWithFake(json_decode($randomForm->body, true)),
+            'is_filled' => true,
+        ]);
+
+        return $filledForm;
+    }
+
+    private function fillBodyWithFake($body)
+    {
+        $generator = new Generator;
+        $misc = new \Faker\Provider\Miscellaneous($generator);
+        $lorem = new \Faker\Provider\Lorem($generator);
+        foreach ($body["fields"] as $key => $field) {
+            switch ($field['type']) {
+                case 'string':
+                    $body['fields'][$key]['value'] = $lorem->paragraph();
+                    break;
+                case 'boolean':
+                    $body['fields'][$key]['value'] = $misc->boolean();
+                    break;
+                default:
+                    break;
+            }
+        }
+        return $body;
     }
 
     /** 
@@ -42,6 +82,7 @@ class EnrollmentFormService
         // Create a new form, because we only wanted to duplicate the body and fields
         // There should be no id or permission id connected to it - just a raw form
         $form = new EnrollmentForm([
+            'parent_id' => $data['id'],
             'name' => $template->name,
             'body' => $template->body,
             'is_filled' => false

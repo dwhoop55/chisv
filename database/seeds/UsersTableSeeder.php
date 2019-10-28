@@ -6,6 +6,7 @@ use App\Language;
 use App\Role;
 use App\State;
 use App\Conference;
+use App\Services\EnrollmentFormService;
 
 class UsersTableSeeder extends Seeder
 {
@@ -74,7 +75,7 @@ class UsersTableSeeder extends Seeder
         ];
         DB::table('users')->insert($users);
 
-        factory(App\User::class, 10)->create()->each(function ($user) {
+        factory(App\User::class, 1)->create()->each(function ($user) {
             $state = State::where('id', '>', '10')->inRandomOrder()->first();
 
             $conference = Conference::inRandomOrder()->first();
@@ -83,8 +84,11 @@ class UsersTableSeeder extends Seeder
 
             $role = Role::byName('sv');
 
+            $enrollmentFormService = new EnrollmentFormService;
+            $form = $enrollmentFormService->getFilledFake();
+            $user->grant($role, $conference, $state, $form);
+
             $user->languages()->attach([$language->id, $language2->id]);
-            $user->grant($role, $conference, $state);
         });
     }
 }

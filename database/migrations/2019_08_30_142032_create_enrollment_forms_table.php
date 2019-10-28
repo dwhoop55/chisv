@@ -15,6 +15,7 @@ class CreateEnrollmentFormsTable extends Migration
     {
         Schema::create('enrollment_forms', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->bigInteger('parent_id')->nullable()->index();
             $table->bigInteger('permission_id', false, true)->nullable()->index();
             $table->string('name')->index()->nullable(false);
             $table->boolean('is_filled')->default(true)->index();
