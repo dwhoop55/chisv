@@ -35,7 +35,7 @@
 
       <enrollment-form-settings-button
         v-if="enrollmentFormTemplate"
-        @input="updateLotteryPositions()"
+        @input="updateLotteryPriorities()"
         class="control"
         :value="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
@@ -150,15 +150,19 @@
           </template>
         </b-table-column>
         <b-table-column
-          field="lottery_position"
+          field="lottery_priority"
           v-if="canUpdateEnrollment"
           width="150"
-          label="Lottery position"
+          label="Lottery priority"
           sortable
         >
           <template>
-            <p v-if="props.row.lottery_position">{{ props.row.lottery_position }}</p>
-            <small v-else>No valid enrollment form, user ignored</small>
+            <div class="is-relative">
+              <b-loading :active="props.row.lottery_priority_loading" :is-full-page="false"></b-loading>
+              <p v-if="props.row.lottery_priority != undefined">{{ props.row.lottery_priority }}</p>
+              <small v-else-if="props.row.lottery_priority_loading">Calculating..</small>
+              <small v-else>No valid enrollment form, user ignored</small>
+            </div>
           </template>
         </b-table-column>
       </template>
@@ -174,12 +178,14 @@
         <div v-if="props.row.degree">
           Study Program:
           {{ props.row.degree.name }}
-        </div>Enrollment form:
-        <enrollment-form-summary
-          class="section has-padding-t-8"
-          v-if="props.row.permission.enrollment_form"
-          v-model="props.row.permission.enrollment_form"
-        ></enrollment-form-summary>
+        </div>
+        <div v-if="props.row.permission.enrollment_form">
+          Enrollment form (Name: {{ props.row.permission.enrollment_form.name }}):
+          <enrollment-form-summary
+            class="section has-padding-t-8"
+            v-model="props.row.permission.enrollment_form"
+          ></enrollment-form-summary>
+        </div>
       </template>
 
       <template slot="empty">
@@ -257,59 +263,89 @@ export default {
   },
 
   methods: {
-    calculateLotteryPositionFor(user) {
-      if (!this.enrollmentFormTemplate || !this.enrollmentFormTemplate.meta) {
-        // We have no enrollment form template loaded in data()
-        console.log("No enrollment form template", user);
-        return null;
-      } else if (!user.permission.enrollment_form) {
-        // No enrollment form - empty test seeds, abort
-        console.log("No enrollment form", user);
-        return null;
-      } else if (
-        user.permission.enrollment_form.parent_id !=
-        this.enrollmentFormTemplate.id
-      ) {
-        // User has enrollment form but not the one currently active
-        // for the conference. The user will be ignored and logged
-        console.log("Not form currently active", user);
-        return null;
-      } else {
-        // Valid enrollment form (fits data()'s enrollment form template)
-        // Calculate the position
-        console.log("OK", user);
-        var position = 0;
+    calculateLotteryPriorityFor(user) {
+      return new Promise((resolve, reject) => {
+        if (!this.enrollmentFormTemplate || !this.enrollmentFormTemplate.meta) {
+          // We have no enrollment form template loaded in data()
+          console.log("No enrollment form template", user);
+          reject(null);
+        } else if (!user.permission.enrollment_form) {
+          // No enrollment form - empty test seeds, abort
+          console.log("No enrollment form", user);
+          reject(null);
+        } else if (
+          user.permission.enrollment_form.parent_id !=
+          this.enrollmentFormTemplate.id
+        ) {
+          // User has enrollment form but not the one currently active
+          // for the conference. The user will be ignored and logged
+          console.log("Not form currently active", user);
+          reject(null);
+        } else {
+          // Valid enrollment form (fits data()'s enrollment form template)
+          // Calculate the priority
+          // console.log("OK", user);
+          var priority = 0;
 
-        for (const [key, value] of Object.entries(
-          this.enrollmentFormTemplate.meta
-        )) {
-          if (this.enrollmentFormTemplate.meta[key].type == "boolean") {
-            let userForm = this.parseEnrollmentForm(
-              user.permission.enrollment_form
-            );
-            let choice = userForm.meta[key].value;
-            let weight = this.enrollmentFormTemplate.meta[key].weight;
-            position = position + choice * weight;
-            console.log(choice, weight, position);
+          for (const [key, value] of Object.entries(
+            this.enrollmentFormTemplate.meta
+          )) {
+            if (this.enrollmentFormTemplate.meta[key].type == "boolean") {
+              let userForm = this.parseEnrollmentForm(
+                user.permission.enrollment_form
+              );
+              let choice = userForm.meta[key].value;
+              let weight = this.enrollmentFormTemplate.meta[key].weight;
+              priority = priority + choice * weight;
+              // console.log(choice, weight, priority);
+            }
           }
-        }
 
-        return position;
-      }
-    },
-    updateLotteryPositions() {
-      if (!this.users) return;
-      this.users.forEach(user => {
-        user.lottery_position = this.calculateLotteryPositionFor(user);
+          resolve(priority);
+        }
       });
-      this.$forceUpdate();
+    },
+    updateLotteryPriorities() {
+      // No users? Nothing to do
+      if (!this.users) return;
+
+      // Create an array to later be able to
+      // respond when all promises are resolved
+      var promises = [];
+
+      // Calculate priority for every user via promise
+      this.users.forEach(user => {
+        user.lottery_priority_loading = true;
+        let promise = this.calculateLotteryPriorityFor(user)
+          .then(value => {
+            user.lottery_priority = value;
+            user.lottery_priority_loading = false;
+            // console.log("ok", user.firstname, value);
+          })
+          .catch(value => {
+            user.lottery_priority = value;
+            user.lottery_priority_loading = false;
+            console.log("fail", user.firstname, value);
+          })
+          .finally(() => {
+            this.$forceUpdate();
+          });
+        promises.push(promise);
+      });
+
+      Promise.all(promises).then(() => {
+        console.log("Lottery ran");
+      });
     },
     getEnrollmentFormTemplate() {
       api
         .getEnrollmentFormTemplate(this.conference.enrollment_form_id)
         .then(data => {
           this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
-          this.updateLotteryPositions();
+          this.updateLotteryPriorities();
+        })
+        .catch(error => {
+          this.enrollmentFormTemplate = null;
         });
     },
     updateSvState(user, $event) {

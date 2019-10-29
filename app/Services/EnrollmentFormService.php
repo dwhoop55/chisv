@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\EnrollmentForm;
 use Faker\Generator;
-use Faker\Provider\Miscellaneous;
 use Illuminate\Http\Request;
 
 
@@ -33,11 +32,11 @@ class EnrollmentFormService
      */
     public function getFilledFake()
     {
-        $randomForm = EnrollmentForm::inRandomOrder()->first();
+        $randomForm = EnrollmentForm::where('is_filled', 0)->first();
         $filledForm = new EnrollmentForm([
             'parent_id' => $randomForm->id,
             'name' => $randomForm->name,
-            'body' => $this->fillBodyWithFake(json_decode($randomForm->body, true)),
+            'body' => json_encode($this->fillBodyWithFake(json_decode($randomForm->body, true))),
             'is_filled' => true,
         ]);
 
