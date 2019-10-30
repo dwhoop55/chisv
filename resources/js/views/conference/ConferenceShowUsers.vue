@@ -40,7 +40,7 @@
         :value="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
 
-      <div style="align-items:center;">
+      <div v-if="canUpdateEnrollment" style="align-items:center;">
         <b-taglist>
           <b-tag type="is-success" size="is-medium" rounded>
             {{ usersByStateName('accepted').length }} / {{ conference.volunteer_max }}
@@ -96,16 +96,10 @@
         <b-table-column field="lastname" label="Lastname" sortable>
           <template>{{ props.row.lastname }}</template>
         </b-table-column>
-        <b-table-column field="university" label="University" sortable>
+        <b-table-column width="300" field="university" label="University" sortable>
           <template>
-            <a
-              v-if="props.row.university && props.row.university.id"
-              target="_blank"
-              :title="props.row.university.name"
-              :href="props.row.university.url"
-            >{{ props.row.university.name | textlimit(35) }}</a>
             <p
-              v-else-if="props.row.university"
+              v-if="props.row.university"
               :title="props.row.university"
             >{{ props.row.university | textlimit(35) }}</p>
             <p v-else>N/A</p>
@@ -183,13 +177,13 @@
         <strong>{{ props.row.firstname }} {{ props.row.lastname }}</strong>
 
         <br />
-        {{ props.row.city ? props.row.city.name + ", " : "" }}
-        {{ props.row.region.name }}, {{ props.row.country.name }}
+        {{ props.row.city ? props.row.city + ", " : "" }}
+        {{ props.row.region }}, {{ props.row.country }}
         <br />
 
         <div v-if="props.row.degree">
           Study Program:
-          {{ props.row.degree.name }}
+          {{ props.row.degree }}
         </div>
         <div v-if="props.row.permission.enrollment_form">
           Enrollment form (Name: {{ props.row.permission.enrollment_form.name }}):
@@ -204,7 +198,8 @@
         <section class="section">
           <div class="content has-text-grey has-text-centered">
             <p>
-              <b-icon icon="emoticon-sad" size="is-large"></b-icon>
+              <b-icon v-if="isLoading" icon="emoticon" size="is-large"></b-icon>
+              <b-icon v-else icon="emoticon-sad" size="is-large"></b-icon>
             </p>
             <p
               v-if="searchString.length == 0 && selectedStates.length == svStates.length && !isLoading"

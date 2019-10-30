@@ -50,43 +50,40 @@ class ConferenceController extends Controller
     {
         $this->authorize('viewUsers', $conference);
 
+        $showMore =
+            auth()->user()->isAdmin()
+            || auth()->user()->isChair(request()->conference)
+            || auth()->user()->isCaptain(request()->conference);
+        $conference = request()->conference;
+
         // First we filter the users, to only get the SVs
         $users = $conference->users->filter(function ($user) {
             return $user->isSv(request()->conference);
         });
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $users = $users->map(function ($user) {
-            if (!$user->isSv(request()->conference)) {
-                return;
-            }
+        $users = $users->map(function ($user) use ($showMore, $conference) {
+            // if (!$user->isSv(request()->conference)) {
+            //     return;
+            // }
             $safeUser = null;
             $safeUser = $user->only('firstname', 'lastname', 'id');
             $safeUser['avatar'] = $user->avatar;
-            $safeUser['university'] = $user->university ? $user->university : $user->university_fallback;
+            $safeUser['university'] = $user->university ? $user->university->name : $user->university_fallback;
             $safeUser['permission'] = new Permission();
-            $safeUser['permission']->state = $user->svPermissionFor(request()->conference)->state;
-            $safeUser['country'] = $user->country;
-            $safeUser['region'] = $user->region;
+            $safeUser['permission']->state = $user->svPermissionFor($conference)->state;
+            $safeUser['country'] = $user->country->name;
+            $safeUser['region'] = $user->region->name;
 
-            // $safeUser['sv_state']->created_at = $user->svPermissionFor(request()->conference)->created_at;
-            if (
-                auth()->user()->isAdmin()
-                || auth()->user()->isChair(request()->conference)
-                || auth()->user()->isCaptain(request()->conference)
-            ) {
+            if ($showMore) {
                 // Show more information
                 $safeUser['email'] = $user->email;
-                $safeUser['degree'] = $user->degree;
-                $safeUser['past_conferences'] = $user->past_conferences;
-                $safeUser['past_conferences_sv'] = $user->past_conferences_sv;
-                $safeUser['city'] = $user->city;
-                $safeUser['shirt'] = $user->shirt;
-                $safeUser['permission'] = $user->svPermissionFor(request()->conference);
-                $safeUser['city'] = $user->city;
-            } else {
-                // SV
-                // Only show basic information defined at the top
+                $safeUser['degree'] = $user->degree->name;
+                // $safeUser['past_conferences'] = $user->past_conferences;
+                // $safeUser['past_conferences_sv'] = $user->past_conferences_sv;
+                $safeUser['city'] = $user->city->name;
+                $safeUser['shirt'] = $user->shirt->name;
+                $safeUser['permission'] = $user->svPermissionFor($conference);
             }
             return $safeUser;
         });
