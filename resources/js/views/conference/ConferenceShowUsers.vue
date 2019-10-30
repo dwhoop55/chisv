@@ -35,15 +35,26 @@
 
       <enrollment-form-settings-button
         v-if="enrollmentFormTemplate"
-        @input="updateLotteryPriorities()"
+        @input="updateLotteryPriorities($event)"
         class="control"
         :value="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
+
+      <div style="align-items:center;">
+        <b-taglist>
+          <b-tag type="is-success" size="is-medium" rounded>
+            {{ usersByStateName('accepted').length }} / {{ conference.volunteer_max }}
+            SVs accepted
+          </b-tag>
+        </b-taglist>
+      </div>
     </b-field>
+
+    <br />
     <b-table
       ref="table"
       @click="toggle($event)"
-      :data="filteredUsers"
+      :data="usersBySearchAndState"
       detail-key="id"
       :show-detail-icon="true"
       paginated
@@ -51,6 +62,7 @@
       detailed
       :loading="isLoading"
       :hoverable="true"
+      :pagination-simple="true"
       sort-icon="chevron-up"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
@@ -234,6 +246,7 @@
 import api from "@/api.js";
 import auth from "@/auth.js";
 import Form from "vform";
+import { filter } from "minimatch";
 
 export default {
   props: ["conference"],
@@ -305,7 +318,7 @@ export default {
         }
       });
     },
-    updateLotteryPriorities() {
+    updateLotteryPriorities(sender) {
       // No users? Nothing to do
       if (!this.users) return;
 
@@ -333,8 +346,17 @@ export default {
         promises.push(promise);
       });
 
-      Promise.all(promises).then(() => {
-        console.log("Lottery ran");
+      Promise.all(promises).then(values => {
+        console.log("Lottery ran", values);
+        if (sender) {
+          this.$buefy.dialog.alert({
+            title: "Lottery priorities updated",
+            message:
+              "The table has <b>not been</b> resorted. Please click a the column to sort.",
+            type: "is-info",
+            hasIcon: true
+          });
+        }
       });
     },
     getEnrollmentFormTemplate() {
@@ -428,6 +450,20 @@ export default {
       } else {
         this.$refs.table.toggleDetails(row);
       }
+    },
+    usersByStateName(stateName) {
+      let stateId = this.getStateId(stateName);
+      return this.users.filter(user => {
+        if (
+          user.permission &&
+          user.permission.state &&
+          user.permission.state.id == stateId
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
     }
   },
 
@@ -435,7 +471,7 @@ export default {
     svStates: function() {
       return this.filterStates(this.states, "App\\User");
     },
-    filteredUsers: function() {
+    usersBySearchAndState: function() {
       // No users? No Output!
       if (!this.users) {
         return null;
