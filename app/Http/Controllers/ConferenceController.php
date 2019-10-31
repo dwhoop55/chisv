@@ -43,6 +43,11 @@ class ConferenceController extends Controller
 
     /**
      * Show all users of a conference.
+     * This code is super time critical. For around
+     * 100 users it may take up to 3 seconds before we can
+     * return the users. Anything you add here will slow it down
+     * even more! This is why the data returned is very optimized
+     * for the gui
      *
      * @return \Illuminate\Http\Response
      */
@@ -55,8 +60,8 @@ class ConferenceController extends Controller
             || auth()->user()->isChair(request()->conference)
             || auth()->user()->isCaptain(request()->conference);
         $conference = request()->conference;
-
         // First we filter the users, to only get the SVs
+
         $users = $conference->users->filter(function ($user) {
             return $user->isSv(request()->conference);
         });
@@ -71,7 +76,8 @@ class ConferenceController extends Controller
             $safeUser['avatar'] = $user->avatar;
             $safeUser['university'] = $user->university ? $user->university->name : $user->university_fallback;
             $safeUser['permission'] = new Permission();
-            $safeUser['permission']->state = $user->svPermissionFor($conference)->state;
+            $fullPermission = $user->svPermissionFor($conference);
+            $safeUser['permission']->state = $fullPermission->state->only(['name', 'description', 'id']);
             $safeUser['country'] = $user->country->name;
             $safeUser['region'] = $user->region->name;
 
@@ -79,15 +85,19 @@ class ConferenceController extends Controller
                 // Show more information
                 $safeUser['email'] = $user->email;
                 $safeUser['degree'] = $user->degree->name;
-                // $safeUser['past_conferences'] = $user->past_conferences;
-                // $safeUser['past_conferences_sv'] = $user->past_conferences_sv;
                 $safeUser['city'] = $user->city->name;
                 $safeUser['shirt'] = $user->shirt->name;
-                $safeUser['permission'] = $user->svPermissionFor($conference);
+                $safeUser['permission']->id = $fullPermission->id;
+                $safeUser['permission']->created_at = $fullPermission->created_at;
+                $safeUser['permission']->enrollment_form = $fullPermission->enrollmentForm->only(['name', 'id', 'parent_id', 'body']);
+                $safeUser['permission']->conference = $fullPermission->conference->only(['id']);
+                $safeUser['permission']->role = $fullPermission->role->only(['id']);
+                $safeUser['permission']->state = $fullPermission->state->only(['name', 'id']);
             }
             return $safeUser;
         });
         return $users->unique()->values();
+        dd('time');
     }
 
     /**

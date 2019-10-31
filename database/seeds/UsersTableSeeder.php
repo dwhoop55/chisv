@@ -84,7 +84,7 @@ class UsersTableSeeder extends Seeder
         $conference = Conference::inRandomOrder()->first();
         User::find(3)->grant($role, $conference, $state, $form);
 
-        factory(App\User::class, 20)->create()->each(function ($user) {
+        factory(App\User::class, 1000)->create()->each(function ($user) {
             $state = State::where('id', '>', '10')->inRandomOrder()->first();
 
             $conference = Conference::inRandomOrder()->first();

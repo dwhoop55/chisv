@@ -68,7 +68,7 @@
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
-      default-sort="permission.state.id"
+      default-sort="lastname"
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
@@ -110,9 +110,10 @@
             <a :href="'mailto:' + props.row.email">{{ props.row.email }}</a>
           </template>
         </b-table-column>
-        <b-table-column width="130" field="permission.state.id" label="SV State" sortable>
+        <b-table-column width="130" label="SV State">
           <template>
             <b-dropdown
+              ref="stateDropdown"
               v-if="canUpdateEnrollment"
               :value="props.row.permission.state.id"
               @change="updateSvState(props.row, $event)"
@@ -342,7 +343,7 @@ export default {
       });
 
       Promise.all(promises).then(values => {
-        console.log("Lottery ran", values);
+        console.log("Lottery ran for ", values.length);
         if (sender) {
           this.$buefy.dialog.alert({
             title: "Lottery priorities updated",
@@ -463,6 +464,9 @@ export default {
   },
 
   computed: {
+    returnConst(value) {
+      return "10";
+    },
     svStates: function() {
       return this.filterStates(this.states, "App\\User");
     },
