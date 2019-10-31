@@ -54,6 +54,7 @@ class ConferenceController extends Controller
     public function user(Conference $conference)
     {
         $this->authorize('viewUsers', $conference);
+        $enrollmentFormService = new EnrollmentFormService();
 
         $showMore =
             auth()->user()->isAdmin()
@@ -88,8 +89,9 @@ class ConferenceController extends Controller
                 $safeUser['city'] = $user->city->name;
                 $safeUser['shirt'] = $user->shirt->name;
                 $safeUser['permission']->id = $fullPermission->id;
+                $safeUser['permission']->lottery_position = $fullPermission->lottery_position;
                 $safeUser['permission']->created_at = $fullPermission->created_at;
-                $safeUser['permission']->enrollment_form = $fullPermission->enrollmentForm->only(['name', 'id', 'parent_id', 'body']);
+                $safeUser['permission']->enrollment_form = $fullPermission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
                 $safeUser['permission']->conference = $fullPermission->conference->only(['id']);
                 $safeUser['permission']->role = $fullPermission->role->only(['id']);
                 $safeUser['permission']->state = $fullPermission->state->only(['name', 'id']);
@@ -164,6 +166,7 @@ class ConferenceController extends Controller
         // Now create the enrollmentForm
         $enrollmentFormService = new EnrollmentFormService();
         $enrollmentForm = $enrollmentFormService->getFilledWith($request);
+        $enrollmentForm = $enrollmentFormService->removeWeights($enrollmentForm);
 
         if (!$enrollmentForm->save()) {
             return ["result" => null, "message" => "There was an error while creating the enrollment form"];

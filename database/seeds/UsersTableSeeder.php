@@ -77,14 +77,14 @@ class UsersTableSeeder extends Seeder
         DB::table('users')->insert($users);
 
         $enrollmentFormService = new EnrollmentFormService;
-        $form = $enrollmentFormService->getFilledFake();
+        $form = $enrollmentFormService->removeWeights($enrollmentFormService->getFilledFake());
         $form->save();
         $state = State::where('id', '>', '10')->inRandomOrder()->first();
         $role = Role::byName('sv');
         $conference = Conference::inRandomOrder()->first();
         User::find(3)->grant($role, $conference, $state, $form);
 
-        factory(App\User::class, 1000)->create()->each(function ($user) {
+        factory(App\User::class, 5)->create()->each(function ($user) {
             $state = State::where('id', '>', '10')->inRandomOrder()->first();
 
             $conference = Conference::inRandomOrder()->first();

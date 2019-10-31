@@ -157,18 +157,30 @@
           </template>
         </b-table-column>
         <b-table-column
-          field="lottery_priority"
+          field="lottery_position"
           v-if="canUpdateEnrollment"
           width="150"
-          label="Lottery priority"
+          label="Lottery position"
           sortable
         >
           <template>
             <div class="is-relative">
-              <b-loading :active="props.row.lottery_priority_loading" :is-full-page="false"></b-loading>
-              <p v-if="props.row.lottery_priority != undefined">{{ props.row.lottery_priority }}</p>
-              <small v-else-if="props.row.lottery_priority_loading">Calculating..</small>
-              <small v-else>No valid enrollment form, user ignored</small>
+              <p v-if="props.row.lottery_position != undefined">{{ props.row.lottery_position }}</p>
+            </div>
+          </template>
+        </b-table-column>
+        <b-table-column
+          field="enrollment_form_value"
+          v-if="canUpdateEnrollment"
+          width="150"
+          label="Weighted enrollment form"
+          sortable
+        >
+          <template>
+            <div class="is-relative">
+              <p
+                v-if="props.row.enrollment_form_value != undefined"
+              >{{ props.row.enrollment_form_value }}</p>
             </div>
           </template>
         </b-table-column>

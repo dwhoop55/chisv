@@ -63,6 +63,15 @@ class EnrollmentFormService
         return $body;
     }
 
+    public function calculateTotalWeightFor(EnrollmentForm $form)
+    {
+        $parent = EnrollmentForm::find($form->parent_id);
+        $body = json_decode($parent->body, true);
+        foreach ($body['fields'] as $field) {
+            dd($field);
+        }
+    }
+
     /** 
      * Will return an unfilled EnrollmentForm
      * for the id in the request
