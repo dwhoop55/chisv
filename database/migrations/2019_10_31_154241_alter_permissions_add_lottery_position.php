@@ -14,7 +14,13 @@ class AlterPermissionsAddLotteryPosition extends Migration
     public function up()
     {
         Schema::table('permissions', function (Blueprint $table) {
-            $table->integer('lottery_position')->after('enrollment_form_id')->unsigned()->index()->nullable()->comment('Current lottery position the user is in as SV');
+            $table->integer('lottery_position')
+                ->after('enrollment_form_id')
+                ->default(null)
+                ->unsigned()
+                ->index()
+                ->nullable()
+                ->comment('Current lottery position the user is in as SV');
         });
     }
 

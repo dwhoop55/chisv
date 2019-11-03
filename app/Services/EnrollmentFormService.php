@@ -32,15 +32,34 @@ class EnrollmentFormService
      */
     public function getFilledFake()
     {
-        $randomForm = EnrollmentForm::where('is_filled', 0)->first();
+        $randomForm = EnrollmentForm::where('is_template', 1)->first();
         $filledForm = new EnrollmentForm([
             'parent_id' => $randomForm->id,
             'name' => $randomForm->name,
             'body' => json_encode($this->fillBodyWithFake(json_decode($randomForm->body, true))),
-            'is_filled' => true,
+            'is_template' => false,
         ]);
 
         return $filledForm;
+    }
+    /**
+     * Extracts the weights from a form and returns them
+     * @param EnrollmentForm form A template enrollmentForm with
+     * weights in the fieldset
+     * @return Collection
+     */
+    public function extractWeights(EnrollmentForm $form)
+    {
+        $weights = collect();
+        $body = json_decode($form->body, true);
+
+        foreach ($body['fields'] as $key => $field) {
+            if (key_exists('weight', $field)) {
+                $weights[$key] = $field['weight'];
+            }
+        }
+
+        return $weights;
     }
 
     private function fillBodyWithFake($body)
@@ -73,7 +92,7 @@ class EnrollmentFormService
     }
 
     /** 
-     * Will return an unfilled EnrollmentForm
+     * Will return a template EnrollmentForm
      * for the id in the request
      * @param Request $request An Illuminate request with the 'id' key set
      * @return EnrollmentForm An empty enrollmentForm fresh from the database
@@ -85,7 +104,7 @@ class EnrollmentFormService
             abort(400, 'No id given!');
         }
         // Load the form from the database
-        $template = EnrollmentForm::where('is_filled', false)->findOrFail($data['id']);
+        $template = EnrollmentForm::where('is_template', true)->findOrFail($data['id']);
 
         // Create a new form, because we only wanted to duplicate the body and fields
         // There should be no id or permission id connected to it - just a raw form
@@ -93,7 +112,7 @@ class EnrollmentFormService
             'parent_id' => $data['id'],
             'name' => $template->name,
             'body' => $template->body,
-            'is_filled' => false
+            'is_template' => true
         ]);
 
         return $form;
@@ -124,8 +143,8 @@ class EnrollmentFormService
         $body['fields'] = $fields;
         $form->body = json_encode($body);
 
-        // Form is now filled, so mark it
-        $form->is_filled = true;
+        // Form is now longer a template
+        $form->is_template = false;
 
         return $form;
     }

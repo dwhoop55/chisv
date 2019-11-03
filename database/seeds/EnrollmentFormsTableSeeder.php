@@ -70,7 +70,7 @@ class EnrollmentFormsTableSeeder extends Seeder
         );
 
         $enrollmentForms = [
-            ["id" => 1, "name" => "Default", "is_filled" => false, "body" => json_encode($body)],
+            ["id" => 1, "name" => "Default", "is_template" => true, "body" => json_encode($body)],
         ];
         DB::table('enrollment_forms')->insert($enrollmentForms);
     }

@@ -16,6 +16,7 @@ use App\Http\Resources\Conferences;
 use App\Permission;
 use App\Services\EnrollmentFormService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 use function PHPSTORM_META\type;
 
@@ -42,6 +43,79 @@ class ConferenceController extends Controller
     }
 
     /**
+     * Run the lottery for the conference
+     */
+    public function runLottery(Conference $conference)
+    {
+        if ($conference->users(Role::byName('sv'))->get()->count() == 0) {
+            abort(400, "The conference has no SVs. Lottery aborted");
+        }
+
+        $total = [
+            'processed' => 0,
+            'accepted' => 0,
+            'waitlisted' => 0,
+            'still_waitlisted' => 0
+        ];
+
+        // First we give out new lottery positions to all the 'enrolled'
+        // SVs
+        $permissionsToPosition = $conference->permissions
+            ->where('role_id', Role::byName('sv')->id)
+            ->where('state_id', State::byName('enrolled')->id);
+
+        // Randomly order the permissions for the lottery
+        $permissionsToPosition->shuffle();
+
+        // Get the largest lottery position and assign new SVs
+        // a number larger
+        $maxPosition = $conference->permissions->max('lottery_position');
+
+        // Give out the numbers
+        foreach ($permissionsToPosition as $permission) {
+            $permission->lottery_position = ++$maxPosition;
+            $permission->save();
+            $total['processed']++;
+        }
+
+        // Second we need to accept SVs ('enrolled' and 'waitlisted')
+        // For that we need to know the free slots:
+        $openPositions = ($conference->volunteer_max)
+            - ($conference
+                ->permissions
+                ->where('state_id', State::byName('accepted')->id)
+                ->count());
+
+        // Since Elloquent has easier api for AND WHERE we negate the argument
+        $permissionsToAccept = $conference->permissions
+            ->where('role_id', Role::byName('sv')->id)
+            ->where('state_id', '!=', State::byName('dropped')->id)
+            ->where('state_id', '!=', State::byName('accepted')->id)
+            ->sortBy('lottery_position');
+
+        // Loop through all permissions which have to be accepted
+        foreach ($permissionsToAccept as $permission) {
+            if ($total['accepted'] < $openPositions) {
+                // Still slots available for SVs,
+                // make the current SV 'accepted'
+                $permission->state()->associate(State::byName('accepted'));
+                $total['accepted']++;
+            } else if ($permission->state != State::byName('waitlisted')) {
+                // No more slots, put the SV which is not on the
+                // waitlist yet on the waitlist 
+                $permission->state()->associate(State::byName('waitlisted'));
+                $total['waitlisted']++;
+            }
+            $permission->save();
+        }
+
+        return ["result" => true, "message" => "The lottery assigned new positions to "
+            . $total['processed'] . " SVs. The first "
+            . $total['accepted'] . " in the line (lottery position) were accepted due to free slots. "
+            . $total['waitlisted'] . " have been waitlisted."];
+    }
+
+    /**
      * Show all users of a conference.
      * This code is super time critical. For around
      * 100 users it may take up to 3 seconds before we can
@@ -51,27 +125,20 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function user(Conference $conference)
+    public function sv(Conference $conference)
     {
         $this->authorize('viewUsers', $conference);
-        $enrollmentFormService = new EnrollmentFormService();
-
         $showMore =
             auth()->user()->isAdmin()
             || auth()->user()->isChair(request()->conference)
             || auth()->user()->isCaptain(request()->conference);
         $conference = request()->conference;
-        // First we filter the users, to only get the SVs
 
-        $users = $conference->users->filter(function ($user) {
-            return $user->isSv(request()->conference);
-        });
+        $svs = $conference->users(Role::byName('sv'))->get();
+
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $users = $users->map(function ($user) use ($showMore, $conference) {
-            // if (!$user->isSv(request()->conference)) {
-            //     return;
-            // }
+        $svs = $svs->map(function ($user) use ($showMore, $conference) {
             $safeUser = null;
             $safeUser = $user->only('firstname', 'lastname', 'id');
             $safeUser['avatar'] = $user->avatar;
@@ -98,8 +165,7 @@ class ConferenceController extends Controller
             }
             return $safeUser;
         });
-        return $users->unique()->values();
-        dd('time');
+        return $svs->unique()->values();
     }
 
     /**
@@ -140,8 +206,8 @@ class ConferenceController extends Controller
             return ["permission" => $permission];
         } else {
             // Return a new and empty form
-            $form = $conference->enrollmentForm;
-            $form = $enrollmentFormService->removeWeights($form)->only('is_filled', 'body', 'id');
+            $form = $conference->templateEnrollmentForm;
+            $form = $enrollmentFormService->removeWeights($form)->only('is_template', 'body', 'id');
             return ["enrollment_form" => $form];
         }
     }
@@ -195,6 +261,30 @@ class ConferenceController extends Controller
         // // carry the enrollmentForm
         // $permission = Permission::find($permission->id);
 
+    }
+
+    /** Update all enrollmentForms of a conference with new weights
+     * @param Conference conference The conference where all forms will be updated
+     * @param Collection weights A key value collection where the key
+     * is the fieldname and the value represents the weight
+     * @return \Illuminate\Http\Response
+     */
+    public function updateEnrollmentFormWeights(Conference $conference, EnrollmentFormService $enrollmentFormService)
+    {
+        $weights = request()->toArray();
+        $total = 0;
+        if (!$weights) {
+            // load the default weights from the default conference
+            // enrollmentForm
+            $weights = $enrollmentFormService->extractWeights($conference->templateEnrollmentForm);
+        }
+
+        foreach ($conference->filledEnrollmentForms as $form) {
+            $form->updateTotalWeight($weights);
+            $total++;
+        }
+
+        return ["result" => true, "message" => "Updated " . $total . " enrollment forms!"];
     }
 
     /** 

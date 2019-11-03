@@ -79,13 +79,16 @@ class UsersTableSeeder extends Seeder
         $enrollmentFormService = new EnrollmentFormService;
         $form = $enrollmentFormService->removeWeights($enrollmentFormService->getFilledFake());
         $form->save();
-        $state = State::where('id', '>', '10')->inRandomOrder()->first();
+        $form->updateTotalWeight();
+        // $state = State::where('id', '>', '10')->inRandomOrder()->first();
+        $state = State::byName('enrolled');
         $role = Role::byName('sv');
         $conference = Conference::inRandomOrder()->first();
         User::find(3)->grant($role, $conference, $state, $form);
 
-        factory(App\User::class, 5)->create()->each(function ($user) {
+        factory(App\User::class, 10)->create()->each(function ($user) {
             $state = State::where('id', '>', '10')->inRandomOrder()->first();
+            $state = State::byName('enrolled');
 
             $conference = Conference::inRandomOrder()->first();
             $language = Language::inRandomOrder()->first();
@@ -96,6 +99,7 @@ class UsersTableSeeder extends Seeder
             $enrollmentFormService = new EnrollmentFormService;
             $form = $enrollmentFormService->getFilledFake();
             $form->save();
+            $form->updateTotalWeight();
             $user->grant($role, $conference, $state, $form);
 
             $user->languages()->attach([$language->id, $language2->id]);

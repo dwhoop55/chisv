@@ -14,8 +14,7 @@ class AlterEnrollmentFormsAddTotalWeight extends Migration
     public function up()
     {
         Schema::table('enrollment_forms', function (Blueprint $table) {
-            $table->integer('total_weight')->after('is_filled')->index()->nullable();
-            //
+            $table->integer('total_weight')->after('is_template')->index()->nullable()->default(null);
         });
     }
 

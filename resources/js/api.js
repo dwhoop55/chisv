@@ -5,8 +5,8 @@ export default {
     getConference: function (key) {
         return axios.get(`conference/${key}`);
     },
-    getConferenceUsers: function (key) {
-        return axios.get(`conference/${key}/user`)
+    getConferenceSvs: function (key) {
+        return axios.get(`conference/${key}/sv`)
     },
     getUser: function (id) {
         return axios.get(`user/${id}`);
@@ -66,6 +66,9 @@ export default {
             }
         });
     },
+    updateConferenceEnrollmentFormWeights(key, weights) {
+        return axios.post(`conference/${key}/update_enrollment_form_weights`, weights);
+    },
     // updateEnrollment: function (action, onConference, forUser = null) {
     //     if (forUser) {
     //         return axios.post(`conference/${onConference}/${action}/${forUser}`)
@@ -94,13 +97,16 @@ export default {
         return vform.put(`permission/${id}`);
     },
 
-    enroll: function (conference, vform) {
+    runLottery(conference) {
+        return axios.post(`conference/${conference}/lottery`);
+    },
+    enroll(conference, vform) {
         return vform.post(`conference/${conference}/enroll`)
     },
-    unenroll: function (conference) {
+    unenroll(conference) {
         return axios.post(`conference/${conference}/unenroll`)
     },
-    can: function (ability, model, id = null) {
+    can(ability, model, id = null) {
         if (id) {
             return axios.get(`can/${ability}/${model}/${id}`);
         } else {

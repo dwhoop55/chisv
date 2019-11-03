@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EnrollmentForm;
+use App\Services\EnrollmentFormService;
 use Illuminate\Http\Request;
 
 class EnrollmentFormController extends Controller
@@ -19,14 +20,13 @@ class EnrollmentFormController extends Controller
     }
 
     /**
-     * Display a listing of template
-     * (unfilled) forms.
+     * Displays a listing of template forms.
      *
      * @return \Illuminate\Http\Response
      */
     public function indexTemplates()
     {
-        return EnrollmentForm::where('is_filled', false)->get();
+        return EnrollmentForm::where('is_template', true)->get();
     }
 
     /**

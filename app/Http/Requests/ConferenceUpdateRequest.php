@@ -30,12 +30,12 @@ class ConferenceUpdateRequest extends FormRequest
             'url_name' => 'nullable|string|max:100',
             'url' => 'nullable|string|max:300|url',
             // Make sure the selected enrollment form is existing
-            // and a template (unfilled)
+            // and a template
             'enrollment_form_id' => [
                 'required',
                 'integer',
                 Rule::exists('enrollment_forms', 'id')->where(function ($query) {
-                    $query->where('is_filled', false);
+                    $query->where('is_template', true);
                 }),
             ],
             'state_id' => 'integer|exists:states,id',

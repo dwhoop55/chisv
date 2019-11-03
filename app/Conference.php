@@ -24,9 +24,19 @@ class Conference extends Model
         return 'key';
     }
 
-    public function enrollmentForm()
+    public function templateEnrollmentForm()
     {
-        return $this->belongsTo('App\EnrollmentForm');
+        return $this->belongsTo('App\EnrollmentForm', 'enrollment_form_id');
+    }
+
+    public function filledEnrollmentForms()
+    {
+        return $this->hasManyThrough('App\EnrollmentForm', 'App\Permission', 'conference_id', 'id', 'id', 'enrollment_form_id');
+    }
+
+    public function permissions()
+    {
+        return $this->hasMany('App\Permission');
     }
 
     public function state()
@@ -49,8 +59,12 @@ class Conference extends Model
         return $this->morphOne('App\Image', 'owner')->orderBy('updated_at', 'DESC')->where('type', '=', 'icon');;
     }
 
-    public function users()
+    public function users(Role $role = null)
     {
-        return $this->hasManyThrough('App\User', 'App\Permission', 'conference_id', 'id', 'id', 'user_id');
+        if (!$role) {
+            return $this->hasManyThrough('App\User', 'App\Permission', 'conference_id', 'id', 'id', 'user_id');
+        } else {
+            return $this->hasManyThrough('App\User', 'App\Permission', 'conference_id', 'id', 'id', 'user_id')->where('role_id', '=', $role->id);
+        }
     }
 }

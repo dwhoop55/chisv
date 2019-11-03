@@ -123,6 +123,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['show']
         ]);
 
+
         // Custom posts (may extend ressource routes from above)
         Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
             ->middleware("can:enroll,conference,user")
@@ -132,14 +133,17 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.unenroll');
 
         // Custom gets (may extend ressource routes from above)
+        Route::post('conference/{conference}/lottery', 'ConferenceController@runLottery')
+            ->name('conference.runLottery');
+        // ->middleware("can:runLottery,conference");
+        Route::post('conference/{conference}/update_enrollment_form_weights', 'ConferenceController@updateEnrollmentFormWeights')
+            ->name('conference.updateEnrollmentFormWeights')
+            ->middleware("can:updateEnrollmentFormWeights,conference");
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
-        Route::get('conference/{conference}/user', 'ConferenceController@user')
+        Route::get('conference/{conference}/sv', 'ConferenceController@sv')
             ->middleware("can:view,conference")
-            ->name('conference.user');
-        Route::get('enrollmentForm/templates', 'EnrollmentFormController@indexTemplates')
-            ->middleware("can:viewTemplates,App\EnrollmentForm")
-            ->name('enrollmentForm.templates');
+            ->name('conference.sv');
         Route::get('enrollment_form/templates', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');

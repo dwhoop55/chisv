@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Permission extends Model
 {
 
+    /** 
+     * Ensure some attributes are casted correctly as int
+     * They end up as string in the frontend which destroys sorting
+     */
+    protected $casts = [
+        'lottery_position' => 'integer',
+    ];
+
     protected $with = ['role', 'user', 'conference', 'state', 'enrollmentForm'];
     protected $hidden = ['role_id', 'user_id', 'conference_id', 'state_id', 'enrollment_form_id'];
     protected $guarded = [];

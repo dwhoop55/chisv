@@ -18,7 +18,7 @@ class CreateEnrollmentFormsTable extends Migration
             $table->bigInteger('parent_id')->nullable()->index();
             $table->bigInteger('permission_id', false, true)->nullable()->index();
             $table->string('name')->index()->nullable(false);
-            $table->boolean('is_filled')->default(true)->index();
+            $table->boolean('is_template')->default(false)->index();
             $table->json('body');
 
             $table->timestamps();

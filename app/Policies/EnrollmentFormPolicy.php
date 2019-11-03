@@ -24,7 +24,7 @@ class EnrollmentFormPolicy
 
     /**
      * Determine whether the user can view any template
-     * (unfilled) enrollment forms.
+     * enrollment forms.
      *
      * @param  \App\User  $user
      * @return mixed
@@ -51,10 +51,10 @@ class EnrollmentFormPolicy
         if ($user->isAdmin()) {
             return true;
         }
-        // Also allow view when the enrollment form is a template (unfilled)
+        // Also allow view when the enrollment form is a template
         // and also used by one of
         // the conferences the user can manage
-        if ($enrollmentForm->is_filled == false) {
+        if ($enrollmentForm->is_template == true) {
             $conferencesAssociated = $enrollmentForm->conferences;
             $conferencesAsChair = $user->conferencesByRole(Role::byName('chair'));
             foreach ($conferencesAsChair as $conference) {

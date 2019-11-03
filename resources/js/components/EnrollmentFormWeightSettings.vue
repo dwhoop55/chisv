@@ -2,7 +2,7 @@
   <div>
     <b-field
       v-for="(field, index) in value.meta"
-      :key="`fruit-${index}`"
+      :key="`field-${index}`"
       :label="field.description"
     >
       <div v-if="field.type=='boolean'">

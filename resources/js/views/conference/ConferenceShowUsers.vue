@@ -35,10 +35,14 @@
 
       <enrollment-form-settings-button
         v-if="enrollmentFormTemplate"
-        @input="updateLotteryPriorities($event)"
         class="control"
-        :value="enrollmentFormTemplate"
+        @input="templateSettingsChanged()"
+        v-model="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
+
+      <b-field>
+        <b-button @click="runLottery()" type="is-warning">Run lottery</b-button>
+      </b-field>
 
       <div v-if="canUpdateEnrollment" style="align-items:center;">
         <b-taglist>
@@ -157,7 +161,7 @@
           </template>
         </b-table-column>
         <b-table-column
-          field="lottery_position"
+          field="permission.lottery_position"
           v-if="canUpdateEnrollment"
           width="150"
           label="Lottery position"
@@ -165,22 +169,30 @@
         >
           <template>
             <div class="is-relative">
-              <p v-if="props.row.lottery_position != undefined">{{ props.row.lottery_position }}</p>
+              <p
+                v-if="props.row.permission.lottery_position != undefined"
+              >{{ props.row.permission.lottery_position }}</p>
+              <b-tooltip
+                v-else
+                label="The lottery was not run yet. Run the lottery to generate a random position."
+              >
+                <b-icon icon="help" size="is-small"></b-icon>
+              </b-tooltip>
             </div>
           </template>
         </b-table-column>
         <b-table-column
-          field="enrollment_form_value"
+          field="permission.enrollment_form.total_weight"
           v-if="canUpdateEnrollment"
           width="150"
-          label="Weighted enrollment form"
+          label="Weighted form"
           sortable
         >
           <template>
             <div class="is-relative">
               <p
-                v-if="props.row.enrollment_form_value != undefined"
-              >{{ props.row.enrollment_form_value }}</p>
+                v-if="props.row.permission.enrollment_form.total_weight != undefined"
+              >{{ props.row.permission.enrollment_form.total_weight }}</p>
             </div>
           </template>
         </b-table-column>
@@ -284,95 +296,79 @@ export default {
   },
 
   methods: {
-    calculateLotteryPriorityFor(user) {
-      return new Promise((resolve, reject) => {
-        if (!this.enrollmentFormTemplate || !this.enrollmentFormTemplate.meta) {
-          // We have no enrollment form template loaded in data()
-          console.log("No enrollment form template", user);
-          reject(null);
-        } else if (!user.permission.enrollment_form) {
-          // No enrollment form - empty test seeds, abort
-          console.log("No enrollment form", user);
-          reject(null);
-        } else if (
-          user.permission.enrollment_form.parent_id !=
-          this.enrollmentFormTemplate.id
-        ) {
-          // User has enrollment form but not the one currently active
-          // for the conference. The user will be ignored and logged
-          console.log("Not form currently active", user);
-          reject(null);
-        } else {
-          // Valid enrollment form (fits data()'s enrollment form template)
-          // Calculate the priority
-          // console.log("OK", user);
-          var priority = 0;
+    runLottery() {
+      this.isLoading = true;
 
-          for (const [key, value] of Object.entries(
-            this.enrollmentFormTemplate.meta
-          )) {
-            if (this.enrollmentFormTemplate.meta[key].type == "boolean") {
-              let userForm = this.parseEnrollmentForm(
-                user.permission.enrollment_form
-              );
-              let choice = userForm.meta[key].value;
-              let weight = this.enrollmentFormTemplate.meta[key].weight;
-              priority = priority + choice * weight;
-              // console.log(choice, weight, priority);
-            }
-          }
-
-          resolve(priority);
-        }
-      });
-    },
-    updateLotteryPriorities(sender) {
-      // No users? Nothing to do
-      if (!this.users) return;
-
-      // Create an array to later be able to
-      // respond when all promises are resolved
-      var promises = [];
-
-      // Calculate priority for every user via promise
-      this.users.forEach(user => {
-        user.lottery_priority_loading = true;
-        let promise = this.calculateLotteryPriorityFor(user)
-          .then(value => {
-            user.lottery_priority = value;
-            user.lottery_priority_loading = false;
-            // console.log("ok", user.firstname, value);
-          })
-          .catch(value => {
-            user.lottery_priority = value;
-            user.lottery_priority_loading = false;
-            console.log("fail", user.firstname, value);
-          })
-          .finally(() => {
-            this.$forceUpdate();
-          });
-        promises.push(promise);
-      });
-
-      Promise.all(promises).then(values => {
-        console.log("Lottery ran for ", values.length);
-        if (sender) {
-          this.$buefy.dialog.alert({
-            title: "Lottery priorities updated",
-            message:
-              "The table has <b>not been</b> resorted. Please click a the column to sort.",
-            type: "is-info",
+      api
+        .runLottery(this.conference.key)
+        .then(data => {
+          this.$buefy.notification.open({
+            indefinite: true,
+            message: data.data.message,
+            type: "is-success",
             hasIcon: true
           });
+          this.getUsers();
+        })
+        .catch(error => {
+          var message = error.response.data.message
+            ? error.response.data.message
+            : error.message;
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    templateSettingsChanged() {
+      var weights = {};
+
+      for (var key in this.enrollmentFormTemplate.meta) {
+        if (
+          this.enrollmentFormTemplate.meta.hasOwnProperty(key) &&
+          this.enrollmentFormTemplate.meta[key].weight != undefined
+        ) {
+          weights[key] = this.enrollmentFormTemplate.meta[key].weight;
         }
-      });
+      }
+
+      this.updateWeights(weights);
+    },
+    updateWeights(weights) {
+      this.isLoading = true;
+      api
+        .updateConferenceEnrollmentFormWeights(this.conference.key, weights)
+        .then(data => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: data.data.message,
+            type: "is-success",
+            hasIcon: true
+          });
+          this.getUsers();
+        })
+        .catch(error => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: error.message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
     },
     getEnrollmentFormTemplate() {
       api
         .getEnrollmentFormTemplate(this.conference.enrollment_form_id)
         .then(data => {
           this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
-          this.updateLotteryPriorities();
         })
         .catch(error => {
           this.enrollmentFormTemplate = null;
@@ -432,7 +428,7 @@ export default {
     },
     getUsers: function() {
       api
-        .getConferenceUsers(this.conference.key)
+        .getConferenceSvs(this.conference.key)
         .then(data => {
           if (data.data.length > 0) {
             this.users = data.data;
