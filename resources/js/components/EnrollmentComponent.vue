@@ -38,6 +38,9 @@
           :label="permission.state.description"
         >
           <strong>{{ permission.state.name }}</strong>
+          <p
+            v-if="permission.state.name == 'waitlisted' && permission.waitlist_position"
+          >&nbsp;on position {{ permission.waitlist_position.position }}</p>
         </b-tooltip>
       </p>
       <b-button

@@ -49,6 +49,9 @@ export default {
         form.append("name", conference.key + "-" + type);
         return this.createImage(form);
     },
+    createPermission: function (vform) {
+        return vform.post("permission");
+    },
 
     updateUser: function (id, vform) {
         return vform.put(`user/${id}`);
@@ -67,7 +70,13 @@ export default {
         });
     },
     updateConferenceEnrollmentFormWeights(key, weights) {
-        return axios.post(`conference/${key}/update_enrollment_form_weights`, weights);
+        return axios.put(`conference/${key}/update_enrollment_form_weights`, weights);
+    },
+    updateConferenceResetEnrollmentsToEnrolled(key) {
+        return axios.put(`conference/${key}/reset_enrollments_to_enrolled`);
+    },
+    updatePermission: function (vform, id) {
+        return vform.put(`permission/${id}`);
     },
     // updateEnrollment: function (action, onConference, forUser = null) {
     //     if (forUser) {
@@ -86,15 +95,8 @@ export default {
     deleteImage: function (id) {
         return axios.delete(`image/${id}`);
     },
-
-    createPermission: function (vform) {
-        return vform.post("permission");
-    },
     deletePermission: function (id) {
         return axios.delete(`permission/${id}`);
-    },
-    updatePermission: function (vform, id) {
-        return vform.put(`permission/${id}`);
     },
 
     runLottery(conference) {

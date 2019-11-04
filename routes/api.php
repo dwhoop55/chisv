@@ -134,11 +134,14 @@ Route::group(['prefix' => 'v1'], function () {
 
         // Custom gets (may extend ressource routes from above)
         Route::post('conference/{conference}/lottery', 'ConferenceController@runLottery')
-            ->name('conference.runLottery');
-        // ->middleware("can:runLottery,conference");
-        Route::post('conference/{conference}/update_enrollment_form_weights', 'ConferenceController@updateEnrollmentFormWeights')
+            ->name('conference.runLottery')
+            ->middleware("can:runLottery,conference");
+        Route::put('conference/{conference}/update_enrollment_form_weights', 'ConferenceController@updateEnrollmentFormWeights')
             ->name('conference.updateEnrollmentFormWeights')
             ->middleware("can:updateEnrollmentFormWeights,conference");
+        Route::put('conference/{conference}/reset_enrollments_to_enrolled', 'ConferenceController@resetEnrollmentsToEnrolled')
+            ->name('conference.resetEnrollmentsToEnrolled')
+            ->middleware("can:updateEnrollment,conference");
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/sv', 'ConferenceController@sv')

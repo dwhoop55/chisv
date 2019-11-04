@@ -1,7 +1,7 @@
 <template>
   <div class="modal-card" style="width: auto">
     <header class="modal-card-head">
-      <p class="modal-card-title">Lottery Weight Settings</p>
+      <p class="modal-card-title">Enrollment form weight settings</p>
     </header>
     <section class="modal-card-body">
       <p>These weights are sent to the backend. Next, form weights get recalculated. After that the table reloads with the new values</p>

@@ -40,8 +40,15 @@
         v-model="enrollmentFormTemplate"
       ></enrollment-form-settings-button>
 
-      <b-field>
+      <b-field v-if="canRunLottery">
         <b-button @click="runLottery()" type="is-warning">Run lottery</b-button>
+      </b-field>
+
+      <b-field v-if="canUpdateEnrollment">
+        <b-button @click="resetEnrolled()" type="is-warning">
+          Reset
+          <b>all</b> SVs to 'enrolled'
+        </b-button>
       </b-field>
 
       <div v-if="canUpdateEnrollment" style="align-items:center;">
@@ -282,7 +289,9 @@ export default {
       // This will ensure that the details won't open
       // on SV state dropdown click
       ignoreNextToggleClick: false,
+
       canUpdateEnrollment: false,
+      canRunLottery: false,
 
       enrollmentFormTemplate: null
     };
@@ -296,18 +305,76 @@ export default {
   },
 
   methods: {
+    resetEnrolled() {
+      this.$buefy.dialog.confirm({
+        title: "Caution!",
+        message:
+          "Are you sure you want to <b>reset all SVs to state enrolled?</b> This action cannot be undone.",
+        confirmText: "Yes, reset all SVs",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () =>
+          api
+            .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
+            .then(data => {
+              let total = data.data.result;
+              if (total > 0) {
+                this.$buefy.dialog.alert({
+                  title: "SVs reset",
+                  message: `${total} SVs have been reset to state 'enrolled'`,
+                  type: "is-success",
+                  hasIcon: true,
+                  icon: "check-circle",
+                  ariaRole: "alertdialog",
+                  ariaModal: true
+                });
+              } else {
+                this.$buefy.dialog.alert({
+                  title: "No SVs reset",
+                  message: `There are no SVs with a state different from 'enrolled'. No SV states have been modified.`,
+                  type: "is-warning",
+                  hasIcon: true,
+                  icon: "alert-circle",
+                  icon: "alert",
+                  ariaRole: "alertdialog",
+                  ariaModal: true
+                });
+              }
+            })
+            .catch(error => {
+              this.$buefy.notification.open({
+                duration: 5000,
+                message: error.message,
+                type: "is-danger",
+                hasIcon: true
+              });
+            })
+            .finally(() => {
+              this.getUsers();
+            })
+      });
+    },
     runLottery() {
       this.isLoading = true;
 
       api
         .runLottery(this.conference.key)
         .then(data => {
-          this.$buefy.notification.open({
-            indefinite: true,
-            message: data.data.message,
+          let total = data.data.result;
+
+          this.$buefy.dialog.alert({
+            title: "Lottery ran",
+            message: `'Enrolled' users processed: ${total.processed}<br/>
+              Users newly accepted: ${total.accepted}<br/>
+              Users new on waitlist: ${total.waitlisted}<br/>
+              Users still waiting: ${total.still_waitlisted}`,
             type: "is-success",
-            hasIcon: true
+            hasIcon: true,
+            icon: "emoticon-cool-outline",
+            ariaRole: "alertdialog",
+            ariaModal: true
           });
+
           this.getUsers();
         })
         .catch(error => {
@@ -422,6 +489,11 @@ export default {
     getCan: async function() {
       this.canUpdateEnrollment = await auth.can(
         "updateEnrollment",
+        "Conference",
+        this.conference.id
+      );
+      this.canRunLottery = await auth.can(
+        "runLottery",
         "Conference",
         this.conference.id
       );

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
+use App\Country;
 use App\EnrollmentForm;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
@@ -14,6 +15,7 @@ use App\Image;
 use App\Role;
 use App\Http\Resources\Conferences;
 use App\Permission;
+use App\Region;
 use App\Services\EnrollmentFormService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -43,7 +45,29 @@ class ConferenceController extends Controller
     }
 
     /**
+     * Reset all SVs to 'enrolled' state
+     * @return \Illuminate\Http\Response
+     */
+    public function resetEnrollmentsToEnrolled(Conference $conference)
+    {
+        $permissions = $conference->permissions
+            ->where('role_id', Role::byName('sv')->id)
+            ->where('state_id', '!=', State::byName('enrolled')->id);
+
+        $total = 0;
+        foreach ($permissions as $permission) {
+            $permission->state()->associate(State::byName('enrolled'));
+            $permission->lottery_position = null;
+            $permission->save();
+            $total++;
+        }
+
+        return ["result" => $total, "message" => "$total SVs have been reset to state 'enrolled'"];
+    }
+
+    /**
      * Run the lottery for the conference
+     * @return \Illuminate\Http\Response
      */
     public function runLottery(Conference $conference)
     {
@@ -65,7 +89,7 @@ class ConferenceController extends Controller
             ->where('state_id', State::byName('enrolled')->id);
 
         // Randomly order the permissions for the lottery
-        $permissionsToPosition->shuffle();
+        $permissionsToPosition = $permissionsToPosition->shuffle();
 
         // Get the largest lottery position and assign new SVs
         // a number larger
@@ -109,7 +133,7 @@ class ConferenceController extends Controller
             $permission->save();
         }
 
-        return ["result" => true, "message" => "The lottery assigned new positions to "
+        return ["result" => $total, "message" => "The lottery assigned new positions to "
             . $total['processed'] . " SVs. The first "
             . $total['accepted'] . " in the line (lottery position) were accepted due to free slots. "
             . $total['waitlisted'] . " have been waitlisted."];
@@ -145,7 +169,10 @@ class ConferenceController extends Controller
             $safeUser['university'] = $user->university ? $user->university->name : $user->university_fallback;
             $safeUser['permission'] = new Permission();
             $fullPermission = $user->svPermissionFor($conference);
-            $safeUser['permission']->state = $fullPermission->state->only(['name', 'description', 'id']);
+            $safeUser['permission']->state = new State();
+            $safeUser['permission']->state->id = $fullPermission->state->id;
+            $safeUser['permission']->state->name = $fullPermission->state->name;
+            $safeUser['permission']->state->description = $fullPermission->state->description;
             $safeUser['country'] = $user->country->name;
             $safeUser['region'] = $user->region->name;
 
@@ -159,9 +186,10 @@ class ConferenceController extends Controller
                 $safeUser['permission']->lottery_position = $fullPermission->lottery_position;
                 $safeUser['permission']->created_at = $fullPermission->created_at;
                 $safeUser['permission']->enrollment_form = $fullPermission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
-                $safeUser['permission']->conference = $fullPermission->conference->only(['id']);
-                $safeUser['permission']->role = $fullPermission->role->only(['id']);
-                $safeUser['permission']->state = $fullPermission->state->only(['name', 'id']);
+                $safeUser['permission']->conference = new Conference();
+                $safeUser['permission']->conference->id = $fullPermission->conference->id;
+                $safeUser['permission']->role = new Role();
+                $safeUser['permission']->role->id = $fullPermission->role->id;
             }
             return $safeUser;
         });
@@ -284,7 +312,7 @@ class ConferenceController extends Controller
             $total++;
         }
 
-        return ["result" => true, "message" => "Updated " . $total . " enrollment forms!"];
+        return ["result" => true, "message" => "Updated " . $total . " enrollment forms weights"];
     }
 
     /** 
