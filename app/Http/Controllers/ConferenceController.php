@@ -190,6 +190,9 @@ class ConferenceController extends Controller
                 $safeUser['permission']->conference->id = $fullPermission->conference->id;
                 $safeUser['permission']->role = new Role();
                 $safeUser['permission']->role->id = $fullPermission->role->id;
+                if ($fullPermission->state == State::byName('waitlisted')) {
+                    $safeUser['permission']->waitlist_position = $fullPermission->waitlist_position;
+                }
             }
             return $safeUser;
         });

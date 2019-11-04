@@ -63,14 +63,14 @@ class Permission extends Model
      */
     public function getWaitlistPositionAttribute()
     {
-
-        $pre = Permission::where('conference_id', $this->conference_id)
+        $conferenceId = $this->conference->id || $this->conference_id;
+        $pre = Permission::where('conference_id', $conferenceId)
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', State::byName('waitlisted')->id)
             ->where('lottery_position', '<', $this->lottery_position)
             ->count();
 
-        $post = Permission::where('conference_id', $this->conference_id)
+        $post = Permission::where('conference_id', $conferenceId)
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', State::byName('waitlisted')->id)
             ->where('lottery_position', '>', $this->lottery_position)

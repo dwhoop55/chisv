@@ -135,7 +135,7 @@
                 :class="'button is-small ' + stateType(props.row.permission.state)"
                 slot="trigger"
               >
-                <span>{{ props.row.permission.state.name }}</span>
+                <span>{{ props.row.permission.state.name + (props.row.permission.waitlist_position ? " ("+props.row.permission.waitlist_position.position+")" : "") }}</span>
                 <b-icon icon="menu-down"></b-icon>
               </button>
               <b-dropdown-item
