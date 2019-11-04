@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Requests\PermissionRequest;
+use App\State;
 
 class PermissionController extends Controller
 {
@@ -65,6 +66,7 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission)
     {
+        $oldPermission = Permission::find($request->get('id'));
         $updatedPermission = new Permission($request->all());
         $user = auth()->user();
 
@@ -72,15 +74,24 @@ class PermissionController extends Controller
         // this specific permission for the given user
         abort_unless($user->can('createThis', $updatedPermission), 403, 'You don\'t have permission to update the permission in this way');
 
-        // Now try to save - when the permission already exists this will fail
-        // return a message then
-        try {
-            $oldPermission = Permission::find($request->get('id'));
-            $oldPermission->update($request->all(['role_id', 'conference_id', 'state_id']));
-            $updatedPermission = Permission::find($request->get('id'));
-        } catch (\Throwable $th) {
-            abort(400, 'Permission already exists');
+        // Make sure to adjust lottery_position
+        // -> Waitlist
+        if ($oldPermission->state != State::byName('waitlisted') && $updatedPermission->state == State::byName('waitlisted')) {
+            // User was put onto the waitlist. Assign new (max) lottery_position
+            // may return null
+            $max = $updatedPermission->conference->permissions->max('lottery_position');
+            // null + 1 = 1
+            $updatedPermission->lottery_position = $max + 1;
+        } else if ($oldPermission->state != State::byName('enrolled') && $updatedPermission->state == State::byName('enrolled')) {
+            // -> Enrolled
+            $updatedPermission->lottery_position = null;
+        } else {
+            $updatedPermission->lottery_position = $oldPermission->lottery_position;
         }
+
+        $oldPermission->update($updatedPermission->only('conference_id', 'state_id', 'role_id', 'lottery_position'));
+        $updatedPermission = Permission::find($request->get('id'));
+
         return ["result" => $updatedPermission, "message" => "Permission updated!"];
     }
 }

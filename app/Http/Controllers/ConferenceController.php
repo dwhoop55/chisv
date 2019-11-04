@@ -181,7 +181,6 @@ class ConferenceController extends Controller
                 $safeUser['email'] = $user->email;
                 $safeUser['degree'] = $user->degree->name;
                 $safeUser['city'] = $user->city->name;
-                $safeUser['shirt'] = $user->shirt->name;
                 $safeUser['permission']->id = $fullPermission->id;
                 $safeUser['permission']->lottery_position = $fullPermission->lottery_position;
                 $safeUser['permission']->created_at = $fullPermission->created_at;
