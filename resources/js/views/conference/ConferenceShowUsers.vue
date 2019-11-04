@@ -3,6 +3,7 @@
     <b-field grouped group-multiline>
       <b-input
         expanded
+        @input="debounceGetUsers()"
         v-model="searchString"
         placeholder="Search anything..."
         type="search"
@@ -11,6 +12,7 @@
 
       <b-dropdown
         class="control"
+        @input="getUsers()"
         v-model="selectedStates"
         v-if="selectedStates && svStates"
         multiple
@@ -54,7 +56,7 @@
       <div v-if="canUpdateEnrollment" style="align-items:center;">
         <b-taglist>
           <b-tag type="is-success" size="is-medium" rounded>
-            {{ usersByStateName('accepted').length }} / {{ conference.volunteer_max }}
+            {{ volunteers_count }} / {{ conference.volunteer_max }}
             SVs accepted
           </b-tag>
         </b-taglist>
@@ -65,21 +67,25 @@
     <b-table
       ref="table"
       @click="toggle($event)"
-      :data="usersBySearchAndState"
+      :data="users"
       detail-key="id"
       :show-detail-icon="true"
-      paginated
-      :per-page="perPage"
       detailed
+      paginated
+      backend-pagination
+      :total="totalUsers"
+      :per-page="perPage"
+      @page-change="onPageChange"
       :loading="isLoading"
       :hoverable="true"
-      :pagination-simple="true"
+      backend-sorting
+      default-sort="lastname"
+      @sort="onSort"
       sort-icon="chevron-up"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
-      default-sort="lastname"
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
@@ -249,7 +255,7 @@
 
       <template slot="footer">
         <div class="has-text-right">
-          <b-dropdown v-model="perPage" aria-role="list">
+          <b-dropdown @change="perPage=$event;getUsers()" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
@@ -258,10 +264,8 @@
             <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
+            <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
             <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
-            <b-dropdown-item value="80" aria-role="listitem">80 per page</b-dropdown-item>
-            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
-            <b-dropdown-item value="200" aria-role="listitem">200 per page</b-dropdown-item>
           </b-dropdown>
         </div>
       </template>
@@ -274,6 +278,7 @@ import api from "@/api.js";
 import auth from "@/auth.js";
 import Form from "vform";
 import { filter } from "minimatch";
+import debounce from "lodash/debounce";
 
 export default {
   props: ["conference"],
@@ -281,27 +286,31 @@ export default {
   data() {
     return {
       users: [],
+      totalUsers: 0,
+      volunteers_count: 0,
       states: [],
       isLoading: true,
       searchString: "",
       selectedStates: [],
+      sortField: "lastname",
+      sortOrder: "asc",
       perPage: 20,
+      page: 1,
+      enrollmentFormTemplate: null,
+
       // This will ensure that the details won't open
       // on SV state dropdown click
       ignoreNextToggleClick: false,
 
       canUpdateEnrollment: false,
-      canRunLottery: false,
-
-      enrollmentFormTemplate: null
+      canRunLottery: false
     };
   },
 
   created() {
-    this.getStates();
-    this.getUsers();
     this.getCan();
     this.getEnrollmentFormTemplate();
+    this.getStates(); // Also calls getUsers()
   },
 
   methods: {
@@ -476,6 +485,7 @@ export default {
           this.svStates.forEach(state => {
             this.selectedStates.push(state.id);
           });
+          this.getUsers();
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -484,6 +494,7 @@ export default {
             type: "is-danger",
             hasIcon: true
           });
+          reject();
         });
     },
     getCan: async function() {
@@ -498,81 +509,56 @@ export default {
         this.conference.id
       );
     },
-    getUsers: function() {
+    onPageChange(page) {
+      this.page = page;
+      this.getUsers();
+    },
+    onSort(field, order) {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.getUsers();
+    },
+    getUsers() {
+      const params = [
+        `sort_by=${this.sortField}`,
+        `sort_order=${this.sortOrder}`,
+        `page=${this.page}`,
+        `per_page=${this.perPage}`,
+        `search_string=${this.searchString}`,
+        `selected_states=${this.selectedStates}`
+      ].join("&");
+
+      this.isLoading = true;
       api
-        .getConferenceSvs(this.conference.key)
-        .then(data => {
-          if (data.data.length > 0) {
-            this.users = data.data;
-          } else {
-            this.users = [];
-          }
+        .getConferenceSvs(this.conference.key, `?${params}`)
+        .then(({ data }) => {
+          this.users = data.data;
+          this.totalUsers = data.total;
         })
         .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: error.message,
-            type: "is-danger",
-            hasIcon: true
-          });
+          this.data = [];
+          this.total = 0;
+          throw error;
         })
         .finally(() => {
           this.isLoading = false;
         });
     },
+    debounceGetUsers: debounce(function() {
+      this.getUsers();
+    }, 250),
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
         this.ignoreNextToggleClick = false;
       } else {
         this.$refs.table.toggleDetails(row);
       }
-    },
-    usersByStateName(stateName) {
-      let stateId = this.getStateId(stateName);
-      return this.users.filter(user => {
-        if (
-          user.permission &&
-          user.permission.state &&
-          user.permission.state.id == stateId
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
     }
   },
 
   computed: {
-    returnConst(value) {
-      return "10";
-    },
     svStates: function() {
       return this.filterStates(this.states, "App\\User");
-    },
-    usersBySearchAndState: function() {
-      // No users? No Output!
-      if (!this.users) {
-        return null;
-      }
-
-      // First filter states
-      var users = this.users.filter(user => {
-        if (
-          user.permission.state &&
-          this.selectedStates.includes(user.permission.state.id)
-        ) {
-          return true;
-        }
-      });
-
-      // Then take this output from above
-      // and filter for the searchField
-      return users.filter(user => {
-        // No search input? Always show item
-        if (this.searchString == "") return true;
-        return this.stringInObject(this.searchString, user);
-      });
     }
   }
 };

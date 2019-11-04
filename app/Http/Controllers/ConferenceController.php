@@ -152,17 +152,33 @@ class ConferenceController extends Controller
     public function sv(Conference $conference)
     {
         $this->authorize('viewUsers', $conference);
+        // Determine if we can show more infos based on if
+        // the user is only an SV or also Chair/Captain
         $showMore =
             auth()->user()->isAdmin()
             || auth()->user()->isChair(request()->conference)
             || auth()->user()->isCaptain(request()->conference);
         $conference = request()->conference;
+        $searchString = request()->search_string;
+        $selectedStates = request()->selected_states;
 
-        $svs = $conference->users(Role::byName('sv'))->get();
+        // Do the actual query
+        $query = $conference
+            ->users(Role::byName('sv'))
+            ->orderBy(request()->sort_by, request()->sort_order);
+
+        if ($selectedStates) {
+            // collect(explode(',', $selectedStates))->each(function ($item, $key) use ($query) {
+            //     $query->whereHas
+            // });
+        }
+
+        $paginatedSvs = $query->paginate(request()->per_page);
+
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $svs = $svs->map(function ($user) use ($showMore, $conference) {
+        $paginatedSvs->getCollection()->transform(function ($user, $key) use ($showMore, $conference) {
             $safeUser = null;
             $safeUser = $user->only('firstname', 'lastname', 'id');
             $safeUser['avatar'] = $user->avatar;
@@ -195,7 +211,8 @@ class ConferenceController extends Controller
             }
             return $safeUser;
         });
-        return $svs->unique()->values();
+
+        return $paginatedSvs;
     }
 
     /**

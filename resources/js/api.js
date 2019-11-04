@@ -5,8 +5,8 @@ export default {
     getConference: function (key) {
         return axios.get(`conference/${key}`);
     },
-    getConferenceSvs: function (key) {
-        return axios.get(`conference/${key}/sv`)
+    getConferenceSvs: function (key, params) {
+        return axios.get(`conference/${key}/sv${params}`)
     },
     getUser: function (id) {
         return axios.get(`user/${id}`);
