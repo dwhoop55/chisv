@@ -41,7 +41,7 @@
       ></enrollment-form-settings-button>
 
       <b-field v-if="canRunLottery">
-        <b-button @click="runLottery()" type="is-warning">Run lottery</b-button>
+        <b-button @click="runLottery()" type="is-warning">Run lottery & Accept</b-button>
       </b-field>
 
       <b-field v-if="canUpdateEnrollment">
@@ -181,7 +181,7 @@
               >{{ props.row.permission.lottery_position }}</p>
               <b-tooltip
                 v-else
-                label="The lottery was not run yet. Run the lottery to generate a random position."
+                label="This user does not have a lottery position yet. Run the lottery to generate a random position."
               >
                 <b-icon icon="help" size="is-small"></b-icon>
               </b-tooltip>
