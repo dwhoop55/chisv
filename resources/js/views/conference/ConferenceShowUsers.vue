@@ -113,7 +113,7 @@
         <b-table-column field="lastname" label="Lastname" sortable>
           <template>{{ props.row.lastname }}</template>
         </b-table-column>
-        <b-table-column width="300" field="university" label="University" sortable>
+        <b-table-column width="300" field="universities.name" label="University" sortable>
           <template>
             <p
               v-if="props.row.university"
@@ -161,7 +161,7 @@
         <b-table-column
           v-if="props.row.permission.created_at"
           width="150"
-          field="permission.created_at"
+          field="created_at"
           label="Enrolled"
           sortable
         >
@@ -174,7 +174,7 @@
           </template>
         </b-table-column>
         <b-table-column
-          field="permission.lottery_position"
+          field="lottery_position"
           v-if="canUpdateEnrollment"
           width="150"
           label="Lottery position"
@@ -195,7 +195,7 @@
           </template>
         </b-table-column>
         <b-table-column
-          field="permission.enrollment_form.total_weight"
+          field="enrollment_forms.total_weight"
           v-if="canUpdateEnrollment"
           width="150"
           label="Weighted form"

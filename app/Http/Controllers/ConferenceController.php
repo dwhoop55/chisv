@@ -160,59 +160,80 @@ class ConferenceController extends Controller
             || auth()->user()->isCaptain(request()->conference);
         $conference = request()->conference;
         $searchString = request()->search_string;
-        $selectedStates = request()->selected_states;
+        $selectedStates = collect(explode(',', request()->selected_states));
 
         // Do the actual query
-        $query = $conference
-            ->users(Role::byName('sv'))
+        $query = Permission
+            ::with('user')
+            // We have to join users to make it (1) searchable (2) sortable
+            ->join('users', 'permissions.user_id', '=', 'users.id')
+            // We have to join enrollment_forms to make it sortable
+            ->join('enrollment_forms', 'permissions.enrollment_form_id', '=', 'enrollment_forms.id')
+            // We have to join universities to make it searchable
+            ->join('universities', 'users.university_id', '=', 'universities.id')
+            // Stay bond to this $converence and 'sv' state
+            ->where('conference_id', $conference->id)
+            ->where("role_id", Role::byName('sv')->id)
             ->orderBy(request()->sort_by, request()->sort_order);
 
-        if ($selectedStates) {
-            // collect(explode(',', $selectedStates))->each(function ($item, $key) use ($query) {
-            //     $query->whereHas
-            // });
+        // Only add queries when we are searching for something
+        if (strlen($searchString) > 0) {
+            $query->where(function ($query) use ($searchString) {
+                $query->orWhere('users.firstname', 'LIKE', '%' . $searchString . '%');
+                $query->orWhere('users.lastname', 'LIKE', '%' . $searchString . '%');
+                $query->orWhere('universities.name', 'LIKE', '%' . $searchString . '%');
+                $query->orWhere('users.email', 'LIKE', '%' . $searchString . '%');
+            });
         }
 
-        $paginatedSvs = $query->paginate(request()->per_page);
+        $query->where(function ($query) use ($selectedStates) {
+            foreach ($selectedStates as $state) {
+                $query->orWhere('state_id', $state);
+            }
+        });
 
+        // Load the paginated results from the database
+        // Only retreive 'permissions.*' or we would have collision
+        // due to the joins we did earlier
+        $paginatedPermissions = $query->paginate(request()->per_page, ['permissions.*']);
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $paginatedSvs->getCollection()->transform(function ($user, $key) use ($showMore, $conference) {
-            $safeUser = null;
-            $safeUser = $user->only('firstname', 'lastname', 'id');
-            $safeUser['avatar'] = $user->avatar;
-            $safeUser['university'] = $user->university ? $user->university->name : $user->university_fallback;
-            $safeUser['permission'] = new Permission();
-            $fullPermission = $user->svPermissionFor($conference);
-            $safeUser['permission']->state = new State();
-            $safeUser['permission']->state->id = $fullPermission->state->id;
-            $safeUser['permission']->state->name = $fullPermission->state->name;
-            $safeUser['permission']->state->description = $fullPermission->state->description;
-            $safeUser['country'] = $user->country->name;
-            $safeUser['region'] = $user->region->name;
+        $paginatedPermissions->getCollection()->transform(function ($permission) use ($showMore, $conference) {
+            $safe = null;
+            $user = $permission->user;
+            $safe = $user->only('firstname', 'lastname', 'id');
+            $safe['avatar'] = $user->avatar;
+            $safe['university'] = $user->university ? $user->university->name : $user->university_fallback;
+            $safe['permission'] = new Permission();
+            $safe['permission']->state = new State();
+            $safe['permission']->state->id = $permission->state->id;
+            $safe['permission']->state->name = $permission->state->name;
+            $safe['permission']->state->description = $permission->state->description;
+            $safe['country'] = $user->country->name;
+            $safe['region'] = $user->region->name;
 
             if ($showMore) {
                 // Show more information
-                $safeUser['email'] = $user->email;
-                $safeUser['degree'] = $user->degree->name;
-                $safeUser['city'] = $user->city->name;
-                $safeUser['permission']->id = $fullPermission->id;
-                $safeUser['permission']->lottery_position = $fullPermission->lottery_position;
-                $safeUser['permission']->created_at = $fullPermission->created_at;
-                $safeUser['permission']->enrollment_form = $fullPermission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
-                $safeUser['permission']->conference = new Conference();
-                $safeUser['permission']->conference->id = $fullPermission->conference->id;
-                $safeUser['permission']->role = new Role();
-                $safeUser['permission']->role->id = $fullPermission->role->id;
-                if ($fullPermission->state == State::byName('waitlisted')) {
-                    $safeUser['permission']->waitlist_position = $fullPermission->waitlist_position;
+                $safe['email'] = $user->email;
+                $safe['degree'] = $user->degree->name;
+                $safe['city'] = $user->city->name;
+                $safe['permission']->id = $permission->id;
+                $safe['permission']->lottery_position = $permission->lottery_position;
+                $safe['permission']->created_at = $permission->created_at;
+                $safe['permission']->enrollment_form = $permission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
+                $safe['permission']->conference = new Conference();
+                $safe['permission']->conference->id = $permission->conference->id;
+                $safe['permission']->role = new Role();
+                $safe['permission']->role->id = $permission->role->id;
+                if ($permission->state == State::byName('waitlisted')) {
+                    $safe['permission']->waitlist_position = $permission->waitlist_position;
                 }
             }
-            return $safeUser;
+            return $safe;
         });
 
-        return $paginatedSvs;
+        return $paginatedPermissions;
     }
 
     /**
