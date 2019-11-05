@@ -56,7 +56,7 @@
       <div v-if="canUpdateEnrollment" style="align-items:center;">
         <b-taglist>
           <b-tag type="is-success" size="is-medium" rounded>
-            {{ volunteers_count }} / {{ conference.volunteer_max }}
+            {{ acceptedCount }} / {{ conference.volunteer_max }}
             SVs accepted
           </b-tag>
         </b-taglist>
@@ -287,7 +287,7 @@ export default {
     return {
       users: [],
       totalUsers: 0,
-      volunteers_count: 0,
+      acceptedCount: 0,
       states: [],
       isLoading: true,
       searchString: "",
@@ -322,7 +322,8 @@ export default {
         confirmText: "Yes, reset all SVs",
         type: "is-danger",
         hasIcon: true,
-        onConfirm: () =>
+        onConfirm: () => {
+          this.isLoading = true;
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
             .then(data => {
@@ -359,8 +360,10 @@ export default {
               });
             })
             .finally(() => {
+              this.isLoading = false;
               this.getUsers();
-            })
+            });
+        } // onConfirm
       });
     },
     runLottery() {
@@ -383,8 +386,6 @@ export default {
             ariaRole: "alertdialog",
             ariaModal: true
           });
-
-          this.getUsers();
         })
         .catch(error => {
           var message = error.response.data.message
@@ -399,6 +400,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.getUsers();
         });
     },
     templateSettingsChanged() {
@@ -464,6 +466,7 @@ export default {
         .updatePermission(vform, user.permission.id)
         .then(response => {
           user.permission = response.data.result;
+          this.getAcceptedCount();
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -509,6 +512,16 @@ export default {
         this.conference.id
       );
     },
+    getAcceptedCount() {
+      api
+        .getConferenceAcceptedCount(this.conference.key)
+        .then(data => {
+          this.acceptedCount = data.data.result;
+        })
+        .catch(error => {
+          this.acceptedCount = "error";
+        });
+    },
     onPageChange(page) {
       this.page = page;
       this.getUsers();
@@ -527,6 +540,8 @@ export default {
         `search_string=${this.searchString}`,
         `selected_states=${this.selectedStates}`
       ].join("&");
+
+      this.getAcceptedCount();
 
       this.isLoading = true;
       api

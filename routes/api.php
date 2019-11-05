@@ -21,6 +21,8 @@ use App\Http\Resources\Users;
 use App\Http\Resources\Timezones;
 use App\Timezone;
 use App\Conference;
+use App\Role;
+use App\State;
 
 /*
 |--------------------------------------------------------------------------
@@ -125,28 +127,39 @@ Route::group(['prefix' => 'v1'], function () {
 
 
         // Custom posts (may extend ressource routes from above)
-        Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
-            ->middleware("can:enroll,conference,user")
-            ->name('conference.enroll');
-        Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
-            ->middleware("can:unenroll,conference,user")
-            ->name('conference.unenroll');
-
-        // Custom gets (may extend ressource routes from above)
+        // Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
+        //     ->middleware("can:enroll,conference,user")
+        //     ->name('conference.enroll');
+        // Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
+        //     ->middleware("can:unenroll,conference,user")
+        //     ->name('conference.unenroll');
         Route::post('conference/{conference}/lottery', 'ConferenceController@runLottery')
             ->name('conference.runLottery')
             ->middleware("can:runLottery,conference");
+
+        // Custom put 
         Route::put('conference/{conference}/update_enrollment_form_weights', 'ConferenceController@updateEnrollmentFormWeights')
             ->name('conference.updateEnrollmentFormWeights')
             ->middleware("can:updateEnrollmentFormWeights,conference");
         Route::put('conference/{conference}/reset_enrollments_to_enrolled', 'ConferenceController@resetEnrollmentsToEnrolled')
             ->name('conference.resetEnrollmentsToEnrolled')
             ->middleware("can:updateEnrollment,conference");
+
+        // Custom gets (may extend ressource routes from above)
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/sv', 'ConferenceController@sv')
             ->middleware("can:view,conference")
             ->name('conference.sv');
+        Route::get('conference/{conference}/sv/count', function (Conference $conference) {
+            return [
+                "result" => $conference
+                    ->permissions(Role::byName('sv'))
+                    ->where('state_id', State::byName('accepted')->id)
+                    ->count(),
+                "message" => null
+            ];
+        })->name('conference.svCount');
         Route::get('enrollment_form/templates', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');

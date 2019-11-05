@@ -8,6 +8,9 @@ export default {
     getConferenceSvs: function (key, params) {
         return axios.get(`conference/${key}/sv${params}`)
     },
+    getConferenceAcceptedCount: function (key) {
+        return axios.get(`conference/${key}/sv/count`)
+    },
     getUser: function (id) {
         return axios.get(`user/${id}`);
     },
@@ -78,13 +81,6 @@ export default {
     updatePermission: function (vform, id) {
         return vform.put(`permission/${id}`);
     },
-    // updateEnrollment: function (action, onConference, forUser = null) {
-    //     if (forUser) {
-    //         return axios.post(`conference/${onConference}/${action}/${forUser}`)
-    //     } else {
-    //         return axios.post(`conference/${onConference}/${action}`)
-    //     }
-    // },
 
     deleteUser: function (id) {
         return axios.delete(`user/${id}`);
