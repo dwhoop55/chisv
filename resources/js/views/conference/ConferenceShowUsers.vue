@@ -12,7 +12,7 @@
 
       <b-dropdown
         class="control"
-        @input="getUsers()"
+        @active-change="($event == false) ? getUsers() : null"
         v-model="selectedStates"
         v-if="selectedStates && svStates"
         multiple
