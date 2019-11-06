@@ -17,7 +17,7 @@ export default {
     getEnrollmentFormTemplates: function () {
         return axios.get(`enrollment_form/templates`)
     },
-    getEnrollmentFormTemplate: function (id) {
+    getEnrollmentForm: function (id) {
         return axios.get(`enrollment_form/${id}`)
     },
     getEnrollment: function (key) {

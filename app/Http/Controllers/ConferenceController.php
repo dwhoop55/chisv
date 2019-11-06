@@ -129,6 +129,8 @@ class ConferenceController extends Controller
                 // waitlist yet on the waitlist 
                 $permission->state()->associate(State::byName('waitlisted'));
                 $total['waitlisted']++;
+            } else if ($permission->state == State::byName('waitlisted')) {
+                $total['still_waitlisted']++;
             }
             $permission->save();
         }

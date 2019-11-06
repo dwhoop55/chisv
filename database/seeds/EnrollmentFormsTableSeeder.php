@@ -22,7 +22,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'description' => 'Are you local to where the conference will be this year?',
                     'hint' => 'If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.',
                     'value' => true,
-                    'weight' => 10,
+                    'weight' => 0,
                     'required' => true,
                 ),
                 'attended_before' =>
@@ -30,7 +30,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'type' => 'boolean',
                     'description' => 'Have you attended this conference before?',
                     'value' => true,
-                    'weight' => 5,
+                    'weight' => 0,
                     'required' => true,
                 ),
                 'sved_before' =>

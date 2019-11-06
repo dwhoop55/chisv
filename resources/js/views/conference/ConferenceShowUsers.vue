@@ -267,6 +267,7 @@
             <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
             <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
           </b-dropdown>
+          <small class="has-text-weight-light">Total SVs: {{ totalUsers }}</small>
         </div>
       </template>
     </b-table>
@@ -444,7 +445,7 @@ export default {
     },
     getEnrollmentFormTemplate() {
       api
-        .getEnrollmentFormTemplate(this.conference.enrollment_form_id)
+        .getEnrollmentForm(this.conference.enrollment_form_id)
         .then(data => {
           this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
         })

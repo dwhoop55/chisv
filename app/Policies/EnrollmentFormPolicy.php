@@ -31,7 +31,7 @@ class EnrollmentFormPolicy
      */
     public function viewTemplates(User $user)
     {
-        // Allo view when the user is managing conferences
+        // Allow view when the user is managing conferences
         if ($user->isAdmin() || $user->isChair() || $user->isCaptain()) {
             return true;
         } else {
