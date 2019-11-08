@@ -3,22 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
-use App\Country;
-use App\EnrollmentForm;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
 use App\Http\Requests\EnrollRequest;
 use App\State;
-use App\Timezone;
 use App\User;
-use App\Image;
 use App\Role;
 use App\Http\Resources\Conferences;
+use App\Jobs\Lottery;
 use App\Permission;
-use App\Region;
 use App\Services\EnrollmentFormService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Queue;
 
 use function PHPSTORM_META\type;
 
@@ -75,70 +71,10 @@ class ConferenceController extends Controller
             abort(400, "The conference has no SVs. Lottery aborted");
         }
 
-        $total = [
-            'processed' => 0,
-            'accepted' => 0,
-            'waitlisted' => 0,
-            'still_waitlisted' => 0
-        ];
+        $lottery = new Lottery($conference);
+        $queuedItem = Queue::push($lottery);
 
-        // First we give out new lottery positions to all the 'enrolled'
-        // SVs
-        $permissionsToPosition = $conference->permissions
-            ->where('role_id', Role::byName('sv')->id)
-            ->where('state_id', State::byName('enrolled')->id);
-
-        // Randomly order the permissions for the lottery
-        $permissionsToPosition = $permissionsToPosition->shuffle();
-
-        // Get the largest lottery position and assign new SVs
-        // a number larger
-        $maxPosition = $conference->permissions->max('lottery_position');
-
-        // Give out the numbers
-        foreach ($permissionsToPosition as $permission) {
-            $permission->lottery_position = ++$maxPosition;
-            $permission->save();
-            $total['processed']++;
-        }
-
-        // Second we need to accept SVs ('enrolled' and 'waitlisted')
-        // For that we need to know the free slots:
-        $openPositions = ($conference->volunteer_max)
-            - ($conference
-                ->permissions
-                ->where('state_id', State::byName('accepted')->id)
-                ->count());
-
-        // Since Elloquent has easier api for AND WHERE we negate the argument
-        $permissionsToAccept = $conference->permissions
-            ->where('role_id', Role::byName('sv')->id)
-            ->where('state_id', '!=', State::byName('dropped')->id)
-            ->where('state_id', '!=', State::byName('accepted')->id)
-            ->sortBy('lottery_position');
-
-        // Loop through all permissions which have to be accepted
-        foreach ($permissionsToAccept as $permission) {
-            if ($total['accepted'] < $openPositions) {
-                // Still slots available for SVs,
-                // make the current SV 'accepted'
-                $permission->state()->associate(State::byName('accepted'));
-                $total['accepted']++;
-            } else if ($permission->state != State::byName('waitlisted')) {
-                // No more slots, put the SV which is not on the
-                // waitlist yet on the waitlist 
-                $permission->state()->associate(State::byName('waitlisted'));
-                $total['waitlisted']++;
-            } else if ($permission->state == State::byName('waitlisted')) {
-                $total['still_waitlisted']++;
-            }
-            $permission->save();
-        }
-
-        return ["result" => $total, "message" => "The lottery assigned new positions to "
-            . $total['processed'] . " SVs. The first "
-            . $total['accepted'] . " in the line (lottery position) were accepted due to free slots. "
-            . $total['waitlisted'] . " have been waitlisted."];
+        return ["result" => $queuedItem, "message" => "Running the lottery for $conference->name has been queued as a new job"];
     }
 
     /**

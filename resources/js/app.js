@@ -243,5 +243,6 @@ export const vm = new Vue({
     el: "#app",
     data: {
         showMobileNav: false,
+        showJobsOverview: false,
     }
 });

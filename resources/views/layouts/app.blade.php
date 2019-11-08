@@ -76,6 +76,11 @@
                             <a class="navbar-item" href="{{ route('user.showEdit', Auth::user()->id) }}">
                                 My Profile
                             </a>
+                            @can('viewAny', App\Job::class)
+                            <a class="navbar-item" @click="showJobsOverview = !showJobsOverview">
+                                Background Jobs
+                            </a>
+                            @endcan
                             <nav-build-info></nav-build-info>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
@@ -90,6 +95,9 @@
                     </div>
                     @endguest
                 </div>
+
+                {{-- Placing stuff here that gets activated only by vuejs --}}
+                <jobs-overview-modal></jobs-overview-modal>
 
             </div>
         </nav>
