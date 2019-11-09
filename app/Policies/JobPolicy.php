@@ -17,7 +17,7 @@ class JobPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->isAdmin || $user->isChair) {
+        if ($user->isAdmin() || $user->isChair()) {
             return true;
         }
     }

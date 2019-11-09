@@ -86,31 +86,6 @@ Vue.mixin({
                 return value.for == filter;
             });
         },
-        getStateId: function (stateName) {
-            switch (stateName) {
-                case 'planning':
-                    return 1;
-                case 'enrollment':
-                    return 2;
-                case 'registration':
-                    return 3;
-                case 'running':
-                    return 5;
-                case 'over':
-                    return 6;
-                case 'enrolled':
-                    return 11;
-                case 'accepted':
-                    return 12;
-                case 'waitlisted':
-                    return 13;
-                case 'dropped':
-                    return 14;
-
-                default:
-                    return null;
-            }
-        },
         /**
          * 
          * @param {Object} jsonForm Form with object and key body which is a json-string
