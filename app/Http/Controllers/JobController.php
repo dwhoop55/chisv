@@ -15,7 +15,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        return new Jobs(Job::all());
+        return new Jobs(Job::orderBy('id', 'desc')->take(10)->get());
     }
 
     /**

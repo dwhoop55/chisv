@@ -10,9 +10,11 @@ use App\State;
 use App\User;
 use App\Role;
 use App\Http\Resources\Conferences;
+use App\Job;
 use App\Jobs\Lottery;
 use App\Permission;
 use App\Services\EnrollmentFormService;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
@@ -72,9 +74,14 @@ class ConferenceController extends Controller
             abort(400, "The conference has no SVs. Lottery aborted");
         }
 
-        Queue::push(new Lottery($conference));
+        $job = new Job([
+            'handler' => 'App\Jobs\Lottery',
+            'name' => "Lottery for " . $conference->key,
+            'payload' => $conference,
+        ]);
+        $job->saveAndDispatch();
 
-        return ["result" => true, "message" => "Running the lottery for $conference->name has been queued as a new job"];
+        return ["result" => $job->id, "message" => "Running the lottery for $conference->name has been queued as a new job"];
     }
 
     /**

@@ -53,6 +53,9 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        showJobView(jobId) {
+
+        },
         stringInObject: function (searchInput, object) {
             if (!object) return false;
             let search = searchInput.toLowerCase();

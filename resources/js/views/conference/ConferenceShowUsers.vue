@@ -373,17 +373,19 @@ export default {
       api
         .runLottery(this.conference.key)
         .then(data => {
-          // let total = data.data.result;
+          let jobId = data.data.result;
 
-          this.$buefy.dialog.alert({
-            title: "Lottery",
-            message: data.data.message,
-            type: "is-success",
-            hasIcon: true,
-            icon: "emoticon-cool-outline",
-            ariaRole: "alertdialog",
-            ariaModal: true
-          });
+          this.showJobView(jobId);
+
+          // this.$buefy.dialog.alert({
+          //   title: "Lottery",
+          //   message: data.data.message,
+          //   type: "is-success",
+          //   hasIcon: true,
+          //   icon: "emoticon-cool-outline",
+          //   ariaRole: "alertdialog",
+          //   ariaModal: true
+          // });
         })
         .catch(error => {
           var message = error.response.data.message

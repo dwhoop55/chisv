@@ -12,17 +12,15 @@
  * So: App\Job is just a Eloquent Model to represent
  * multiple jobs and persist their existence to the
  * 'jobs' table. An App\Job object will receive a
- * reference to the Class of the App\Jobs\* to run
+ * reference to the Class ($handler) of the App\Jobs\* to run
  * and also the payload the job may need.
  * To make App\Job and App\Jobs\* distinguishable
  * from now on we call App\Jobs\* a 'handler'.
  * 
  * When then executing the job the App\Job object will
  * persist it self to 'jobs' table and dispatch the App\Jobs\*
- * job based on the start_at parameter.
- * 
- * When creating the new App\Jobs\* instance this object (here - App\Job)
- * will also pass it self as reference.
+ * job while passing a helper object JobParameters to
+ * that handler. It contains the jobId and the payload
  * 
  * This reference is used by the App\Jobs\* job to
  * mark itself as complete, return additional data
@@ -38,24 +36,13 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\App;
+use App\JobParameters;
 
 class Job extends Model
 {
 
     protected $with = ['state'];
-
-    public function setLaravelIdentifier(String $laravelIdentifier)
-    {
-        $this->laravel_identifier = $laravelIdentifier;
-        return $this;
-    }
-
-    public function setName(String $name)
-    {
-        $this->name = $name;
-        return $this;
-    }
+    protected $guarded = [];
 
     public function setState(State $state)
     {
@@ -68,9 +55,11 @@ class Job extends Model
         return $this->belongsTo('App\State');
     }
 
-    public function jobResult()
+    public function saveAndDispatch(int $delay = 0)
     {
-        return $this->hasOne('App\JobResult');
+        $this->save();
+        $params = new JobParameters($this->id, json_decode($this->payload));
+        return $this->handler::dispatch($params)->delay($delay);
     }
 
     public function setResult($result)
