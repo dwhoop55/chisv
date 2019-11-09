@@ -15,14 +15,10 @@ class CreateJobsTable extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->string('laravel_identifier')->unique()->index();
             $table->string('name')->nullable();
-            $table->unsignedInteger('creator_id')->nullable();
             $table->unsignedInteger('state_id')->nullable(false)->default(21);
-            $table->string('handler')->nullable(false);
-            $table->string('payload')->nullable(true);
-            $table->string('result')->nullable(true);
-            $table->timestamp('start_at')->nullable(false)->useCurrent();
-            $table->timestamp('ended_at')->nullable(true);
+            $table->timestamp('ended_at')->nullable();
             $table->timestamps();
         });
     }

@@ -36,74 +36,31 @@
 
 namespace App;
 
-use App\Jobs\Lottery;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
 
 class Job extends Model
 {
-    /**
-     * Create a new Job instance, persist it to the
-     * database and place the handler in the jobs queue
-     * @param string $name An identifing name used showed to the user
-     * @param ShouldQueue $handler A class reference to a job from App\Jobs\
-     * @param $payload Generic payload parameter, will be used to instanciate the $handler
-     * @return App\Job The job object
-     */
-    public function __construct(string $name = "No Name", string $handler, $payload = null, Carbon $startAt = null)
+
+    protected $with = ['state'];
+
+    public function setLaravelIdentifier(String $laravelIdentifier)
     {
-        $this->name = $name;
-        $this->handler = $handler;
-        $this->payload = $payload;
-        $this->start_at = $startAt ?? Carbon::now();
-        // Use the authenticated user or the admin user (which has id 1)
-        $this->creator()->associate(auth()->user() ?? User::find(1));
-
-        // The dispatcher uses seconds for delays, but we want to expose an api
-        // which takes the absolute date(time)
-        $delay = $this->start_at->diffInSeconds(Carbon::now());
-
-        // Save it so that this job has an id in database
-        $this->save();
-
-        // $job = get_class(app($this->handler));
-        $job = Lottery::dispatch($this)->delay(Carbon::now()->addSeconds($delay));
-
-
-        // // I haven't found a way to instanciate a Jobs class from the
-        // // service container AND provide dynamic parameters
-        // // We throw an exception to remind the developer
-        // // to implement the switch case below when he/she
-        // // adds a new App\Jobs\* which uses this wrapper
-        // switch ($this->handler) {
-        //     case 'App\Jobs\Lottery':
-        //         $job = new Lottery($this->payload, $this);
-        //         $job->delay(Carbon::now()->addSeconds($delay));
-        //         // ::dispatch('conference' => $this->payload, 'model' => $this])
-        //         // ->delay(Carbon::now()->addSeconds($delay));
-        //         break;
-
-        //     default:
-        //         throw new Exception("Missing switch case for " . $this->handler . " in the App\Job constructor");
-        //         break;
-        // }
-
-        // dispatch($job);
+        $this->laravel_identifier = $laravelIdentifier;
         return $this;
     }
 
-    public function markAs(State $state)
+    public function setName(String $name)
     {
-        $this->ended_at = Carbon::now();
-        $this->state()->associate($state);
-        $this->save();
+        $this->name = $name;
+        return $this;
     }
 
-    public function saveResult($result)
+    public function setState(State $state)
     {
-        $this->result = $result;
-        $this->save();
+        $this->state()->associate($state);
+        return $this;
     }
 
     public function state()
@@ -111,8 +68,32 @@ class Job extends Model
         return $this->belongsTo('App\State');
     }
 
-    public function creator()
+    public function jobResult()
     {
-        return $this->belongsTo('App\User');
+        return $this->hasOne('App\JobResult');
+    }
+
+    public function setResult($result)
+    {
+        $this->result = json_encode($result);
+        return $this;
+    }
+
+    public function markAsFailed()
+    {
+        $this->setState(State::byName('failed'));
+        return $this;
+    }
+
+    public function markAsSuccessful()
+    {
+        $this->setState(State::byName('successful'));
+        return $this;
+    }
+
+    public function setEndedNow()
+    {
+        $this->ended_at = Carbon::now();
+        return $this;
     }
 }

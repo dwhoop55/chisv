@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Conference;
 use App\Job;
+use App\JobResult;
 use App\Role;
 use App\State;
 use Exception;
@@ -12,23 +13,22 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class Lottery implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $conference;
-    public $jobModel;
 
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct(Job $job)
+    public function __construct(Conference $conference)
     {
-        $this->conference = $job->payload;
-        $this->jobModel = $job;
+        $this->conference = $conference;
     }
 
     /**
@@ -97,8 +97,5 @@ class Lottery implements ShouldQueue
             }
             $permission->save();
         }
-
-        $this->jobModel->markAs(State::byName('successful'));
-        $this->jobModel->saveResult($total);
     }
 }

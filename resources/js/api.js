@@ -32,6 +32,9 @@ export default {
     getStates: function () {
         return axios.get("state");
     },
+    getJobs() {
+        return axios.get("job");
+    },
 
     createConference: function (vform) {
         return vform.post(`conference`);

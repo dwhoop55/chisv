@@ -14,6 +14,7 @@ use App\Jobs\Lottery;
 use App\Permission;
 use App\Services\EnrollmentFormService;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Queue;
 
 use function PHPSTORM_META\type;
@@ -71,10 +72,9 @@ class ConferenceController extends Controller
             abort(400, "The conference has no SVs. Lottery aborted");
         }
 
-        $lottery = new Lottery($conference);
-        $queuedItem = Queue::push($lottery);
+        Queue::push(new Lottery($conference));
 
-        return ["result" => $queuedItem, "message" => "Running the lottery for $conference->name has been queued as a new job"];
+        return ["result" => true, "message" => "Running the lottery for $conference->name has been queued as a new job"];
     }
 
     /**

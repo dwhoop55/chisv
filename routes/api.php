@@ -174,6 +174,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('enrollment_form', 'EnrollmentFormController', [
             'only' => ['show']
         ]);
+        Route::resource('job', 'JobController', [
+            'only' => ['index']
+        ]);
     });
     //// AUTHENTICATED ////
 

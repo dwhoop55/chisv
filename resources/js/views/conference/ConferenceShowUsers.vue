@@ -373,14 +373,11 @@ export default {
       api
         .runLottery(this.conference.key)
         .then(data => {
-          let total = data.data.result;
+          // let total = data.data.result;
 
           this.$buefy.dialog.alert({
-            title: "Lottery ran",
-            message: `'Enrolled' users processed: ${total.processed}<br/>
-              Users newly accepted: ${total.accepted}<br/>
-              Users new on waitlist: ${total.waitlisted}<br/>
-              Users still waiting: ${total.still_waitlisted}`,
+            title: "Lottery",
+            message: data.data.message,
             type: "is-success",
             hasIcon: true,
             icon: "emoticon-cool-outline",
