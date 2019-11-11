@@ -329,29 +329,13 @@ export default {
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
             .then(data => {
-              let total = data.data.result;
-              if (total > 0) {
-                this.$buefy.dialog.alert({
-                  title: "SVs reset",
-                  message: `${total} SVs have been reset to state 'enrolled'`,
-                  type: "is-success",
-                  hasIcon: true,
-                  icon: "check-circle",
-                  ariaRole: "alertdialog",
-                  ariaModal: true
-                });
-              } else {
-                this.$buefy.dialog.alert({
-                  title: "No SVs reset",
-                  message: `There are no SVs with a state different from 'enrolled'. No SV states have been modified.`,
-                  type: "is-warning",
-                  hasIcon: true,
-                  icon: "alert-circle",
-                  icon: "alert",
-                  ariaRole: "alertdialog",
-                  ariaModal: true
-                });
-              }
+              let jobId = data.data.result;
+              this.$buefy.modal.open({
+                parent: this,
+                props: { id: jobId },
+                component: JobModalVue,
+                hasModalCard: true
+              });
             })
             .catch(error => {
               this.$buefy.notification.open({
@@ -370,21 +354,17 @@ export default {
     },
     runLottery() {
       this.isLoading = true;
-
-      this.$buefy.modal.open({
-        parent: this,
-        props: { id: 12 },
-        component: JobModalVue,
-        hasModalCard: true
-      });
-      this.isLoading = false;
-
-      return;
-
       api
         .runLottery(this.conference.key)
         .then(data => {
           let jobId = data.data.result;
+
+          this.$buefy.modal.open({
+            parent: this,
+            props: { id: jobId },
+            component: JobModalVue,
+            hasModalCard: true
+          });
         })
         .catch(error => {
           var message = error.response.data.message

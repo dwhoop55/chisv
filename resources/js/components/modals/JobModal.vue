@@ -3,7 +3,11 @@
     <header class="modal-card-head">
       <p class="modal-card-title">Job: {{ jobName }}</p>
     </header>
-    <section class="modal-card-body">
+    <section v-if="error" class="modal-card-body">
+      <p>An error occured:</p>
+      <strong>{{ error.response.data.message }}</strong>
+    </section>
+    <section v-else class="modal-card-body">
       <b-progress
         :show-value="true"
         :type="stateType(job.state)"
@@ -42,12 +46,27 @@ export default {
   methods: {
     getJob() {
       this.isLoading = true;
+      this.error = null;
       api
         .getJob(this.id)
         .then(data => {
           this.job = data.data;
+
+          // When the modal is shown and the state is
+          // either planned or processing
+          // schedule a timeout to refresh the data
+          if (
+            this.$parent.isActive &&
+            (this.job.state.name == "planned" ||
+              this.job.state.name == "processing")
+          ) {
+            // Set a refresh in one second
+            setTimeout(this.getJob, 1000);
+          }
         })
-        .catch(error => {})
+        .catch(error => {
+          this.error = error;
+        })
         .finally(() => {
           this.isLoading = false;
         });
@@ -57,7 +76,9 @@ export default {
   data() {
     return {
       job: null,
-      isLoading: true
+      isLoading: true,
+      error: null,
+      active: false
     };
   },
 
