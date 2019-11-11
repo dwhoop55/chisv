@@ -16,7 +16,7 @@ class ConferenceTableSeeder extends Seeder
                 'id' => 1,
                 'name' => 'CHI 2020',
                 'key' => 'chi20',
-                'state_id' => 6,
+                'state_id' => 1,
                 'location' => 'Honolulu, Hawaiʻi, USA',
                 'timezone_id' => 366,
                 'start_date' => '2019-04-24',

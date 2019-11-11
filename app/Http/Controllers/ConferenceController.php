@@ -49,19 +49,13 @@ class ConferenceController extends Controller
      */
     public function resetEnrollmentsToEnrolled(Conference $conference)
     {
-        $permissions = $conference->permissions
-            ->where('role_id', Role::byName('sv')->id)
-            ->where('state_id', '!=', State::byName('enrolled')->id);
-
-        $total = 0;
-        foreach ($permissions as $permission) {
-            $permission->state()->associate(State::byName('enrolled'));
-            $permission->lottery_position = null;
-            $permission->save();
-            $total++;
-        }
-
-        return ["result" => $total, "message" => "$total SVs have been reset to state 'enrolled'"];
+        $job = new Job([
+            'handler' => 'App\Jobs\ResetToEnrolled',
+            'name' => "Reset SVs to enrolled for " . $conference->key,
+            'payload' => $conference,
+        ]);
+        $job->saveAndDispatch();
+        return ["result" => $job->id, "message" => "Resetting SVs to 'enrolled' at $conference->name has been queued as a new job"];
     }
 
     /**
@@ -361,6 +355,7 @@ class ConferenceController extends Controller
         );
 
         $result = $conference->update($data);
+        $conference->refresh();
         return ["result" => $conference, "message" => "Conference updated"];
     }
 

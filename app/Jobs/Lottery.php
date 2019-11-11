@@ -14,7 +14,6 @@ use App\Conference;
 use App\JobParameters;
 use App\Role;
 use App\State;
-use Exception;
 
 class Lottery extends AdvancedJob implements ExecutableJob
 {
@@ -34,7 +33,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
     /**
      * Execute the job.
      *
-     * @return mixed The jobs result
+     * @return mixed The job's result
      */
     public function execute()
     {
@@ -97,7 +96,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
             }
             $permission->save();
         }
-        sleep(10);
+
         return $total;
     }
 }

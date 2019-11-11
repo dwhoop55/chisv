@@ -53,6 +53,24 @@
                         Users
                     </a>
                     @endcan
+                    @if (Auth::user()->isAdmin() || Auth::user()->isChair())
+
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">
+                            System
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            @can('viewAny', App\Job::class)
+                            <a class="navbar-item" @click="showJobsOverview = !showJobsOverview">
+                                Background Jobs
+                            </a>
+                            @endcan
+                            <hr class="navbar-divider">
+                            <nav-build-info></nav-build-info>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="navbar-end">
@@ -76,12 +94,6 @@
                             <a class="navbar-item" href="{{ route('user.showEdit', Auth::user()->id) }}">
                                 My Profile
                             </a>
-                            @can('viewAny', App\Job::class)
-                            <a class="navbar-item" @click="showJobsOverview = !showJobsOverview">
-                                Background Jobs
-                            </a>
-                            @endcan
-                            <nav-build-info></nav-build-info>
                             <hr class="navbar-divider">
                             <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
                             $('#logout-form').submit();">

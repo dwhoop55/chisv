@@ -8,7 +8,7 @@
         <div
           :style="stateBackground"
           class="has-text-weight-bold has-text-shadow is-rounded-b-l is-rounded-b-r is-pinned-t is-pinned-r has-text-white-bis is-absolute has-margin-r-7 has-padding-l-5 has-padding-r-5 has-padding-b-7 has-padding-t-7"
-        >{{ conference.state.name }}</div>
+        >{{ (conference.state && conference.state.name) ? conference.state.name : "Unknown status" }}</div>
       </div>
       <div class="card-content">
         <div class="media">
@@ -36,6 +36,9 @@ export default {
 
   computed: {
     stateBackground: function() {
+      if (!this.conference.state || this.conference.state.name) {
+        return "background: grey;";
+      }
       let start = "#3cac8a";
       let end = "#5cceac";
       switch (this.conference.state.name) {

@@ -175,7 +175,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['show']
         ]);
         Route::resource('job', 'JobController', [
-            'only' => ['index']
+            'only' => ['index', 'show']
         ]);
     });
     //// AUTHENTICATED ////

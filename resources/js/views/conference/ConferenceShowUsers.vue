@@ -280,6 +280,7 @@ import auth from "@/auth.js";
 import Form from "vform";
 import { filter } from "minimatch";
 import debounce from "lodash/debounce";
+import JobModalVue from "@/components/modals/JobModal.vue";
 
 export default {
   props: ["conference"],
@@ -370,22 +371,20 @@ export default {
     runLottery() {
       this.isLoading = true;
 
+      this.$buefy.modal.open({
+        parent: this,
+        props: { id: 12 },
+        component: JobModalVue,
+        hasModalCard: true
+      });
+      this.isLoading = false;
+
+      return;
+
       api
         .runLottery(this.conference.key)
         .then(data => {
           let jobId = data.data.result;
-
-          this.showJobView(jobId);
-
-          // this.$buefy.dialog.alert({
-          //   title: "Lottery",
-          //   message: data.data.message,
-          //   type: "is-success",
-          //   hasIcon: true,
-          //   icon: "emoticon-cool-outline",
-          //   ariaRole: "alertdialog",
-          //   ariaModal: true
-          // });
         })
         .catch(error => {
           var message = error.response.data.message

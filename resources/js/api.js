@@ -35,6 +35,9 @@ export default {
     getJobs() {
         return axios.get("job");
     },
+    getJob(id) {
+        return axios.get(`job/${id}`);
+    },
 
     createConference: function (vform) {
         return vform.post(`conference`);
