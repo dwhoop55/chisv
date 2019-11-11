@@ -80,8 +80,7 @@ class ConferenceController extends Controller
             'payload' => $conference,
         ]);
         $job->saveAndDispatch();
-
-        return ["result" => $job->id, "message" => "Running the lottery for $conference->name has been queued as a new job"];
+        return ["result" => $job->id, "message" => "Lottery for $conference->name has been queued as a new job"];
     }
 
     /**

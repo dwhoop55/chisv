@@ -21,6 +21,7 @@ class CreateJobsTable extends Migration
             $table->string('payload')->nullable();
             $table->unsignedInteger('state_id')->nullable(false)->default(21);
             $table->timestamp('ended_at')->nullable();
+            $table->timestamp('start_at')->nullable();
             $table->timestamps();
         });
     }

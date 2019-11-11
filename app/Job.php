@@ -46,7 +46,7 @@ class Job extends Model
 
     public function setState(State $state)
     {
-        $this->state()->associate($state);
+        $this->state()->associate($state)->save();
         return $this;
     }
 
@@ -55,9 +55,13 @@ class Job extends Model
         return $this->belongsTo('App\State');
     }
 
-    public function saveAndDispatch(int $delay = 0)
+    public function saveAndDispatch(Carbon $startAt = null)
     {
+        $startAt = $startAt ?? Carbon::now();
+        $this->start_at = $startAt;
+        $delay = $startAt->diffInSeconds(Carbon::now());
         $this->save();
+
         $params = new JobParameters($this->id, json_decode($this->payload));
         return $this->handler::dispatch($params)->delay($delay);
     }
@@ -65,24 +69,38 @@ class Job extends Model
     public function setResult($result)
     {
         $this->result = json_encode($result);
+        $this->save();
         return $this;
     }
 
-    public function markAsFailed()
+    public function markAsProcessing()
+    {
+        $this->setState(State::byName('processing'));
+        return $this;
+    }
+
+    public function markAsFailed($result = null)
     {
         $this->setState(State::byName('failed'));
+        if ($result) {
+            $this->setResult($result)->setEndedNow();
+        }
         return $this;
     }
 
-    public function markAsSuccessful()
+    public function markAsSuccessful($result = null)
     {
         $this->setState(State::byName('successful'));
+        if ($result) {
+            $this->setResult($result)->setEndedNow();
+        }
         return $this;
     }
 
     public function setEndedNow()
     {
         $this->ended_at = Carbon::now();
+        $this->save();
         return $this;
     }
 }
