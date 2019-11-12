@@ -37,6 +37,8 @@ class Lottery extends AdvancedJob implements ExecutableJob
      */
     public function execute()
     {
+
+        $this->setProgress(5);
         $total = [
             'processed' => 0,
             'accepted' => 0,
@@ -50,8 +52,10 @@ class Lottery extends AdvancedJob implements ExecutableJob
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', State::byName('enrolled')->id);
 
+        $this->setProgress(15);
         // Randomly order the permissions for the lottery
         $permissionsToPosition = $permissionsToPosition->shuffle();
+        $this->setProgress(20);
 
         // Get the largest lottery position and assign new SVs
         // a number larger
@@ -63,6 +67,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
             $permission->save();
             $total['processed']++;
         }
+        $this->setProgress(30);
 
         // Second we need to accept SVs ('enrolled' and 'waitlisted')
         // For that we need to know the free slots:
@@ -78,6 +83,8 @@ class Lottery extends AdvancedJob implements ExecutableJob
             ->where('state_id', '!=', State::byName('dropped')->id)
             ->where('state_id', '!=', State::byName('accepted')->id)
             ->sortBy('lottery_position');
+
+        $this->setProgress(50);
 
         // Loop through all permissions which have to be accepted
         foreach ($permissionsToAccept as $permission) {
@@ -96,6 +103,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
             }
             $permission->save();
         }
+
 
         return $total;
     }

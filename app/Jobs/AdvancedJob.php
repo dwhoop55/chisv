@@ -50,6 +50,19 @@ class AdvancedJob implements ShouldQueue
             $job->markAsFailed($e->getMessage())->save();
         }
     }
+
+    /**
+     * Set the jobs progress for longer running tasks
+     * This is optional and only really recommended for
+     * tasks that run more than a few seconds.
+     * 
+     * @param $percent The progress in percent (0-100)
+     * @return void
+     */
+    public function setProgress($percent)
+    {
+        $job = Job::find($this->job_id)->setProgress($percent);
+    }
 }
 
 interface ExecutableJob

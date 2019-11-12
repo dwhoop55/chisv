@@ -2,6 +2,7 @@
   <div>
     <b-field grouped group-multiline>
       <b-input
+        :disabled="isLoading"
         expanded
         @input="debounceGetUsers()"
         v-model="searchString"
@@ -11,6 +12,7 @@
       ></b-input>
 
       <b-dropdown
+        :disabled="isLoading"
         class="control"
         @active-change="($event == false) ? getUsers() : null"
         v-model="selectedStates"
@@ -24,6 +26,7 @@
         </button>
 
         <b-dropdown-item
+          :disabled="isLoading"
           v-for="state in svStates"
           :key="state.id"
           :value="state.id"
@@ -36,6 +39,7 @@
       </b-dropdown>
 
       <enrollment-form-settings-button
+        :disabled="isLoading"
         v-if="enrollmentFormTemplate"
         class="control"
         @input="templateSettingsChanged()"
@@ -43,11 +47,11 @@
       ></enrollment-form-settings-button>
 
       <b-field v-if="canRunLottery">
-        <b-button @click="runLottery()" type="is-warning">Run lottery & Accept</b-button>
+        <b-button :disabled="isLoading" @click="runLottery()" type="is-warning">Run lottery & Accept</b-button>
       </b-field>
 
       <b-field v-if="canUpdateEnrollment">
-        <b-button @click="resetEnrolled()" type="is-warning">
+        <b-button :disabled="isLoading" @click="resetEnrolled()" type="is-warning">
           Reset
           <b>all</b> SVs to 'enrolled'
         </b-button>
@@ -334,7 +338,10 @@ export default {
                 parent: this,
                 props: { id: jobId },
                 component: JobModalVue,
-                hasModalCard: true
+                hasModalCard: true,
+                onCancel: () => {
+                  this.getUsers();
+                }
               });
             })
             .catch(error => {
@@ -358,12 +365,14 @@ export default {
         .runLottery(this.conference.key)
         .then(data => {
           let jobId = data.data.result;
-
           this.$buefy.modal.open({
             parent: this,
             props: { id: jobId },
             component: JobModalVue,
-            hasModalCard: true
+            hasModalCard: true,
+            onCancel: () => {
+              this.getUsers();
+            }
           });
         })
         .catch(error => {

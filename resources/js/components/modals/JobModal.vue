@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card" style="width: auto">
+  <div class="modal-card" style="min-width:300px; min-height:200px">
     <header class="modal-card-head">
       <p class="modal-card-title">Job: {{ jobName }}</p>
     </header>
@@ -7,7 +7,7 @@
       <p>An error occured:</p>
       <strong>{{ error.response.data.message }}</strong>
     </section>
-    <section v-else class="modal-card-body">
+    <section v-else-if="job" class="modal-card-body">
       <b-progress
         :show-value="true"
         :type="stateType(job.state)"
@@ -25,11 +25,16 @@
       <p v-if="job.ended_at">Ended at: {{ job.ended_at | moment('lll') }}</p>
       <p v-else>Job did not end running</p>
       <br />
-      <p>Result: {{job.result}}</p>
+      <p>
+        <strong>Result</strong>
+        <br />
+        <span v-html="formattedJobResult"></span>
+      </p>
     </section>
-    <footer class="modal-card-foot">
-      <button @click="$parent.close()" class="button is-primary">Close</button>
-    </footer>
+    <section v-else class="modal-card-body">
+      <p>Job view is loading ..</p>
+      <b-loading :active="isLoading" :is-full-page="false"></b-loading>
+    </section>
   </div>
 </template>
 
@@ -70,6 +75,13 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    getProgressForProcessingState() {
+      if (this.job && this.job.progress) {
+        return parseInt(this.job.progress);
+      } else {
+        return undefined;
+      }
     }
   },
 
@@ -89,7 +101,7 @@ export default {
           return 0;
           break;
         case "processing":
-          return undefined;
+          return this.getProgressForProcessingState();
           break;
         case "successful":
           return 100;
@@ -108,6 +120,31 @@ export default {
         return this.job.name;
       } else {
         return "Unnamed job";
+      }
+    },
+    formattedJobResult() {
+      let r = JSON.parse(this.job.result);
+
+      if (this.job.state.name == "successful") {
+        switch (this.job.handler) {
+          case "App\\Jobs\\Lottery":
+            return `<ul>
+                    <li><i>enrolled</i> SVs processed: ${r.processed}</li>
+                    <li><i>accepted</i>: ${r.accepted}</li>
+                    <li><i>waitlisted</i>: ${r.waitlisted}</li>
+                    <li>Still on the waitlist: ${r.still_waitlisted}</li>
+                  </ul>`;
+            break;
+          case "App\\Jobs\\ResetToEnrolled":
+            return `<p>${r.reset} SVs have been reset to state <i>enrolled</i>`;
+            break;
+
+          default:
+            return this.job.result;
+            break;
+        }
+      } else {
+        return JSON.parse(this.job.result);
       }
     }
   }

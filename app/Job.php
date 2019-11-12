@@ -66,6 +66,21 @@ class Job extends Model
         return $this->handler::dispatch($params)->delay($delay);
     }
 
+    /**
+     * Set the jobs progress in percent
+     */
+    public function setProgress(int $percent)
+    {
+        if ($percent > 100) {
+            $percent = 100;
+        } else if ($percent < 0) {
+            $percent = 0;
+        }
+        $this->progress = $percent;
+        $this->save();
+        return $this;
+    }
+
     public function setResult($result)
     {
         $this->result = json_encode($result);
