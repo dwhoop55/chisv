@@ -27,8 +27,7 @@ Auth::routes(['register' => false]);
 Route::group(['middleware' => ['auth']], function () {
 
     Route::get('conference', 'ConferenceController@showIndex')->middleware("can:viewAny,App\Conference")->name('conference.showIndex');
-    // Route::get('conference/create', 'ConferenceController@showCreate')->middleware("can:create,App\Conference")->name('conference.showCreate');
-    // Route::get('conference/{conference}/edit', 'ConferenceController@showEdit')->middleware("can:update,conference")->name('conference.showEdit');
+    Route::get('job', 'JobController@showIndex')->middleware("can:viewAny,App\Job")->name('job.showIndex');
     Route::get('conference/{conference}', 'ConferenceController@showModel')->middleware("can:view,conference")->name('conference.showModel');
 
     Route::get('user', 'UserController@showIndex')->middleware("can:viewAny,App\User")->name('user.showIndex');

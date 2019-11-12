@@ -15,7 +15,7 @@ class JobController extends Controller
      */
     public function index()
     {
-        return new Jobs(Job::orderBy('id', 'desc')->take(10)->get());
+        return new Jobs(Job::orderBy('id', 'desc')->take(50)->get());
     }
 
     /**
@@ -27,5 +27,19 @@ class JobController extends Controller
     public function show(Job $job)
     {
         return $job;
+    }
+
+
+
+    // Blade views
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showIndex()
+    {
+        return view('job.index');
     }
 }

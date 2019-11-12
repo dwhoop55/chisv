@@ -257,6 +257,9 @@
         </section>
       </template>
 
+      <template slot="bottom-left">
+        <small class="has-text-weight-light">Total SVs: {{ totalUsers }}</small>
+      </template>
       <template slot="footer">
         <div class="has-text-right">
           <b-dropdown @change="perPage=$event;getUsers()" :value="perPage" aria-role="list">
@@ -271,7 +274,6 @@
             <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
             <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
           </b-dropdown>
-          <small class="has-text-weight-light">Total SVs: {{ totalUsers }}</small>
         </div>
       </template>
     </b-table>

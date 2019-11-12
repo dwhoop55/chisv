@@ -62,7 +62,7 @@
 
                         <div class="navbar-dropdown">
                             @can('viewAny', App\Job::class)
-                            <a class="navbar-item" @click="showJobsOverview = !showJobsOverview">
+                            <a class="navbar-item" href="{{ route('job.showIndex') }}">
                                 Background Jobs
                             </a>
                             @endcan
