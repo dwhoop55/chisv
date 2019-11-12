@@ -32,7 +32,6 @@
         <b-table-column sortable field="ended_at" label="Ended At">
           <div v-if="props.row.ended_at">{{ props.row.ended_at | moment('lll') }}</div>
           <div v-else>Not ended yet</div>
-          {{ props.row.ended_at | moment('lll') }}
         </b-table-column>
       </template>
     </b-table>
