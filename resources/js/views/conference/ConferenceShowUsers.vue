@@ -47,11 +47,11 @@
       ></enrollment-form-settings-button>
 
       <b-field v-if="canRunLottery">
-        <b-button :disabled="isLoading" @click="runLottery()" type="is-warning">Run lottery & Accept</b-button>
+        <b-button :disabled="isLoading" @click="runLottery()" type="is-primary">Run lottery & Accept</b-button>
       </b-field>
 
       <b-field v-if="canUpdateEnrollment">
-        <b-button :disabled="isLoading" @click="resetEnrolled()" type="is-warning">
+        <b-button :disabled="isLoading" @click="resetEnrolled()" type="is-danger">
           Reset
           <b>all</b> SVs to 'enrolled'
         </b-button>
