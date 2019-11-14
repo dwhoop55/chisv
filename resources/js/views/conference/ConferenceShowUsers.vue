@@ -540,7 +540,7 @@ export default {
           this.totalUsers = data.total;
         })
         .catch(error => {
-          this.data = [];
+          this.users = [];
           this.totalUsers = 0;
           throw error;
         })
