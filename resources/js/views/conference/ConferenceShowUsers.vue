@@ -541,7 +541,7 @@ export default {
         })
         .catch(error => {
           this.data = [];
-          this.total = 0;
+          this.totalUsers = 0;
           throw error;
         })
         .finally(() => {
