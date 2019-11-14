@@ -2,7 +2,6 @@
   <div>
     <b-field grouped group-multiline>
       <b-input
-        :disabled="isLoading"
         expanded
         @input="debounceGetUsers()"
         v-model="searchString"
