@@ -302,7 +302,7 @@ export default {
       selectedStates: [],
       sortField: "lastname",
       sortOrder: "asc",
-      perPage: 20,
+      perPage: 10,
       page: 1,
       enrollmentFormTemplate: null,
 
