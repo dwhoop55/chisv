@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 
 class ConferenceTableSeeder extends Seeder
 {
@@ -19,8 +20,8 @@ class ConferenceTableSeeder extends Seeder
                 'state_id' => 1,
                 'location' => 'Honolulu, Hawaiʻi, USA',
                 'timezone_id' => 366,
-                'start_date' => '2019-04-24',
-                'end_date' => '2019-04-29',
+                'start_date' => Carbon::now()->addWeeks(-1),
+                'end_date' => Carbon::now()->addWeeks(1),
                 'description' => 'Aloha! The ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. CHI – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology. From April 25th to 30th, CHI will, for the first time, take place in beautiful Honolulu, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs generalchairs@chi2020.acm.org',
             ],
             // [

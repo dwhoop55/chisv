@@ -15,8 +15,8 @@ class TaskTableSeeder extends Seeder
         $tasks = [
             [
                 "conference_id" => 1,
-                "name" => "Sample task name",
-                "description" => "This is a fancy task description",
+                "name" => "1Sample task name",
+                "description" => "1This is a fancy task description",
                 "location" => "1 Awesome Road",
                 "date" => Carbon::today(),
                 "start_at" => "13:00:00",
@@ -25,6 +25,31 @@ class TaskTableSeeder extends Seeder
                 "priority" => 2,
                 "slots" => 2
             ],
+            [
+                "conference_id" => 1,
+                "name" => "2Sample task name",
+                "description" => "2This is a fancy task description",
+                "location" => "2 Awesome Road",
+                "date" => Carbon::today(),
+                "start_at" => "16:00:00",
+                "end_at" => "16:15:00",
+                "hours" => 2.2,
+                "priority" => 2,
+                "slots" => 6
+            ],
+            [
+                "conference_id" => 1,
+                "name" => "3Sample task name",
+                "description" => "3This is a fancy task description",
+                "location" => "3 Awesome Road",
+                "date" => Carbon::today(),
+                "start_at" => "09:00:00",
+                "end_at" => "12:04:00",
+                "hours" => 6,
+                "priority" => 2,
+                "slots" => 1
+            ],
+
             [
                 "conference_id" => 1,
                 "name" => "Two task name",
@@ -36,7 +61,8 @@ class TaskTableSeeder extends Seeder
                 "hours" => 3,
                 "priority" => 1,
                 "slots" => 3
-            ]
+            ],
+
 
         ];
         DB::table('tasks')->insert($tasks);

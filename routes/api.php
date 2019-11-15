@@ -123,6 +123,9 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:updateEnrollment,conference");
 
         // Custom gets (may overwrite ressource routes from below)
+        Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
+            ->middleware("can:viewAny,App\Task")
+            ->name('conference.taskDays');
         Route::get('conference/{conference}/task', 'ConferenceController@task')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.task');
@@ -140,7 +143,7 @@ Route::group(['prefix' => 'v1'], function () {
                 "message" => null
             ];
         })->name('conference.svCount');
-        Route::get('enrollment_form/templates', 'EnrollmentFormController@indexTemplates')
+        Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');
 

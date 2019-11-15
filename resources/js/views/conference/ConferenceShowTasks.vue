@@ -1,27 +1,37 @@
 <template>
   <div>
     <b-field grouped group-multiline>
+      <b-datepicker
+        :date-formatter="dateFormatter"
+        :loading="isLoadingCalendar"
+        @input="getTasks()"
+        v-model="day"
+        :events="calendarEvents"
+        indicators="bars"
+      >
+        <template>
+          <small>Lengend</small>
+          <br />
+          <b-tag rounded type="is-primary">Conference days</b-tag>
+          <b-tag rounded type="is-warning">Day with tasks</b-tag>
+        </template>
+      </b-datepicker>
+
       <b-input
-        expanded
+        width="600"
         @input="debounceGetTasks()"
         v-model="searchString"
-        placeholder="Search anything..."
+        placeholder="Search.."
         type="search"
         icon="magnify"
       ></b-input>
 
-      <b-datepicker @input="getTasks()" v-model="day" :events="conferenceDays" indicators="bars">
-        <template slot="header">
-          <b-tag type="is-info">Conference days</b-tag>
-        </template>
-      </b-datepicker>
-
       <b-dropdown
+        v-if="canEdit"
         :disabled="isLoading"
         class="control"
         @active-change="($event == false) ? getTasks() : null"
         v-model="selectedPriorities"
-        v-if="selectedPriorities"
         multiple
         aria-role="list"
       >
@@ -43,15 +53,41 @@
 
     <br />
 
-    <b-table :data="tasks" narrowed hoverable :loading="isLoading">
+    <b-table
+      @click="toggle($event)"
+      @page-change="onPageChange"
+      @sort="onSort"
+      ref="table"
+      :data="tasks"
+      detail-key="id"
+      :show-detail-icon="true"
+      detailed
+      paginated
+      backend-pagination
+      :total="totalTasks"
+      :per-page="perPage"
+      :loading="isLoading"
+      :hoverable="true"
+      backend-sorting
+      default-sort="tasks.start_at"
+      sort-icon="chevron-up"
+      aria-next-label="Next page"
+      aria-previous-label="Previous page"
+      aria-page-label="Page"
+      aria-current-label="Current page"
+    >
       <template slot-scope="props">
-        <!-- <b-table-column field="id" label="ID" width="40" numeric>{{ props.row.id }}</b-table-column> -->
+        <b-table-column field="tasks.start_at" sortable label="Starts">{{ props.row.start_at }}</b-table-column>
+        <b-table-column field="tasks.end_at" sortable label="Ends">{{ props.row.end_at }}</b-table-column>
+        <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
+        <b-table-column field="tasks.location" sortable label="Location">{{ props.row.location }}</b-table-column>
+        <b-table-column field="tasks.priority" sortable label="Priority">{{ props.row.priority }}</b-table-column>
+        <b-table-column field="tasks.slots" sortable label="Available slots">{{ props.row.slots }}</b-table-column>
+        <b-table-column field="tasks.hours" sortable label="Hours">{{ props.row.hours }}</b-table-column>
+      </template>
 
-        <b-table-column field="task.name" label="Name" sortable>{{ props.row.name }}</b-table-column>
-        <b-table-column field="task.location" label="Location">{{ props.row.location }}</b-table-column>
-        <b-table-column field="task.priority" label="Priority">{{ props.row.priority }}</b-table-column>
-        <b-table-column field="task.slots" label="Available slots">{{ props.row.slots }}</b-table-column>
-        <b-table-column field="task.hours" label="Hours">{{ props.row.hours }}</b-table-column>
+      <template slot="detail" slot-scope="props">
+        <p>{{ props.row.description }}</p>
       </template>
 
       <template slot="empty">
@@ -60,9 +96,32 @@
             <p>
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
-            <p>No tasks found.</p>
+            <p>No tasks found for {{ this.day | moment('ll') }}</p>
           </div>
         </section>
+      </template>
+
+      <template slot="bottom-left">
+        <small
+          class="has-text-weight-light"
+        >{{ totalTasks > 0 ? totalTasks : 'No' }} {{ totalTasks == 1 ? 'task' : 'tasks' }} for {{ this.day | moment('ll') }}</small>
+      </template>
+
+      <template slot="footer">
+        <div class="has-text-right">
+          <b-dropdown @change="perPage=$event;getTasks()" :value="perPage" aria-role="list">
+            <button class="button is-small" slot="trigger">
+              <span>{{ perPage }} per page</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+
+            <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
+            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
+            <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
+            <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
+            <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
+          </b-dropdown>
+        </div>
       </template>
     </b-table>
   </div>
@@ -77,19 +136,39 @@ export default {
   data() {
     return {
       tasks: [],
+      taskDays: [],
+      totalTasks: null,
       searchString: "",
-      day: new Date(this.conference.start_date),
+      day: new Date(),
       selectedPriorities: [1, 2, 3],
       allPriorities: [1, 2, 3],
       sortField: "name",
       sortOrder: "asc",
       perPage: 10,
       page: 1,
-      isLoading: true
+
+      isLoading: true,
+      isLoadingCalendar: true,
+
+      canEdit: false
     };
   },
 
   methods: {
+    getTaskDays() {
+      this.isLoadingCalendar = true;
+      api
+        .getConferenceTaskDays(this.conference.key)
+        .then(data => {
+          this.taskDays = data.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        })
+        .finally(() => {
+          this.isLoadingCalendar = false;
+        });
+    },
     getTasks() {
       const params = [
         `sort_by=${this.sortField}`,
@@ -117,17 +196,37 @@ export default {
           this.isLoading = false;
         });
     },
+    onPageChange(page) {
+      this.page = page;
+      this.getTasks();
+    },
+    onSort(field, order) {
+      this.sortField = field;
+      this.sortOrder = order;
+      this.getTasks();
+    },
     debounceGetTasks: debounce(function() {
       this.getTasks();
-    }, 250)
+    }, 250),
+    toggle: function(row) {
+      if (this.ignoreNextToggleClick) {
+        this.ignoreNextToggleClick = false;
+      } else {
+        this.$refs.table.toggleDetails(row);
+      }
+    },
+    dateFormatter(date) {
+      return `Tasks for ${date.toLocaleDateString()}`;
+    }
   },
 
   created() {
     this.getTasks();
+    this.getTaskDays();
   },
 
   computed: {
-    conferenceDays() {
+    calendarEvents() {
       if (!this.conference.start_date || !this.conference.end_date) {
         return null;
       }
@@ -140,9 +239,16 @@ export default {
       for (var d = start; d <= end; d.setDate(d.getDate() + 1)) {
         days.push({
           date: new Date(d),
-          type: "is-info"
+          type: "is-primary"
         });
       }
+
+      this.taskDays.forEach(day => {
+        days.push({
+          date: new Date(day),
+          type: "is-warning"
+        });
+      });
       return days;
     }
   }

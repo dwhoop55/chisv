@@ -10,10 +10,12 @@ use App\State;
 use App\User;
 use App\Role;
 use App\Http\Resources\Conferences;
+use App\Http\Resources\Tasks;
 use App\Job;
 use App\Permission;
 use App\Services\EnrollmentFormService;
 use App\Task;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 
 class ConferenceController extends Controller
@@ -97,6 +99,7 @@ class ConferenceController extends Controller
             ->leftJoin('users', 'user_id', '=', 'users.id')
             // Stay bond to this $converence
             ->where('tasks.conference_id', $conference->id)
+            ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
 
         // Only add queries when we are searching for something
@@ -131,6 +134,24 @@ class ConferenceController extends Controller
 
         return $paginatedTasks;
     }
+
+    /**
+     * Return an Array with all days where the conference has
+     * tasks. We need this for the calendar in the GUI
+     * 
+     * @return Collection<Carbon>
+     */
+    public function taskDays(Conference $conference)
+    {
+        $tasks = $conference->tasks->sortBy('date');
+
+        $tasks->transform(function ($task) {
+            return Carbon::parse($task->date)->toDateString();
+        });
+
+        return new Tasks($tasks);
+    }
+
 
     /**
      * Show all users of a conference.

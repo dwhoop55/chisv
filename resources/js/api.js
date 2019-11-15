@@ -14,11 +14,14 @@ export default {
     getConferenceTasks(key, params) {
         return axios.get(`conference/${key}/task${params}`);
     },
+    getConferenceTaskDays(key) {
+        return axios.get(`conference/${key}/task/day`);
+    },
     getUser: function (id) {
         return axios.get(`user/${id}`);
     },
     getEnrollmentFormTemplates: function () {
-        return axios.get(`enrollment_form/templates`)
+        return axios.get(`enrollment_form/template`)
     },
     getEnrollmentForm: function (id) {
         return axios.get(`enrollment_form/${id}`)

@@ -67,4 +67,9 @@ class Conference extends Model
             return $this->hasManyThrough('App\User', 'App\Permission', 'conference_id', 'id', 'id', 'user_id')->where('role_id', '=', $role->id);
         }
     }
+
+    public function tasks()
+    {
+        return $this->hasMany('App\Task');
+    }
 }
