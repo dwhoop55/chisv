@@ -7,7 +7,7 @@
       ></div>
 
       <div class="columns is-centered">
-        <div class="column is-three-quarters">
+        <div class="column is-11">
           <nav class="level">
             <div class="level-left">
               <div class="level-item">
@@ -81,6 +81,10 @@
                 <conference-show-users v-if="canViewUsers" :conference="conference"></conference-show-users>
                 <p v-else>You need to be enrolled to see other SVs!</p>
               </b-tab-item>
+              <b-tab-item label="Tasks">
+                <conference-show-tasks v-if="canViewUsers" :conference="conference"></conference-show-tasks>
+                <p v-else>You need to be enrolled to see tasks!</p>
+              </b-tab-item>
               <b-tab-item v-if="canEdit" label="Edit">
                 <conference-edit v-model="conference"></conference-edit>
               </b-tab-item>
@@ -124,7 +128,6 @@ export default {
     if (hash == "edit") {
       this.activeTab = 2;
     } else if (Number.isInteger(parseInt(hash))) {
-      console.log(hash);
       this.activeTab = parseInt(hash);
     }
   },

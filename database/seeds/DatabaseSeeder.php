@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
+            TaskTableSeeder::class
         ]);
     }
 }

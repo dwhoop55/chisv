@@ -2,7 +2,6 @@
   <div>
     <b-field grouped group-multiline>
       <b-input
-        :disabled="isLoading"
         expanded
         @input="debounceGetUsers()"
         v-model="searchString"
@@ -541,8 +540,8 @@ export default {
           this.totalUsers = data.total;
         })
         .catch(error => {
-          this.data = [];
-          this.total = 0;
+          this.users = [];
+          this.totalUsers = 0;
           throw error;
         })
         .finally(() => {

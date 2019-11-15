@@ -17,8 +17,8 @@ class CreateJobsTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->nullable();
             $table->string('handler');
-            $table->string('result')->nullable();
-            $table->string('payload')->nullable();
+            $table->json('result')->nullable();
+            $table->json('payload')->nullable();
             $table->integer('progress')->nullable();
             $table->unsignedInteger('state_id')->nullable(false)->default(21);
             $table->timestamp('ended_at')->nullable();

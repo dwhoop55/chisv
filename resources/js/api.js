@@ -11,6 +11,9 @@ export default {
     getConferenceAcceptedCount: function (key) {
         return axios.get(`conference/${key}/sv/count`)
     },
+    getConferenceTasks(key, params) {
+        return axios.get(`conference/${key}/task${params}`);
+    },
     getUser: function (id) {
         return axios.get(`user/${id}`);
     },

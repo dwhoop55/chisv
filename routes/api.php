@@ -123,10 +123,13 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:updateEnrollment,conference");
 
         // Custom gets (may overwrite ressource routes from below)
+        Route::get('conference/{conference}/task', 'ConferenceController@task')
+            ->middleware("can:viewAny,App\Task")
+            ->name('conference.task');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/sv', 'ConferenceController@sv')
-            ->middleware("can:view,conference")
+            ->middleware("can:viewUsers,conference")
             ->name('conference.sv');
         Route::get('conference/{conference}/sv/count', function (Conference $conference) {
             return [
@@ -176,6 +179,9 @@ Route::group(['prefix' => 'v1'], function () {
         ]);
         Route::resource('job', 'JobController', [
             'only' => ['index', 'show']
+        ]);
+        Route::resource('task', 'TaskController', [
+            'only' => ['show', 'update', 'destroy']
         ]);
     });
     //// AUTHENTICATED ////

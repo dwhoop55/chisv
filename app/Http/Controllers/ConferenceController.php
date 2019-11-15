@@ -11,15 +11,10 @@ use App\User;
 use App\Role;
 use App\Http\Resources\Conferences;
 use App\Job;
-use App\Jobs\Lottery;
 use App\Permission;
 use App\Services\EnrollmentFormService;
-use Carbon\Carbon;
+use App\Task;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\Queue;
-
-use function PHPSTORM_META\type;
 
 class ConferenceController extends Controller
 {
@@ -78,6 +73,66 @@ class ConferenceController extends Controller
     }
 
     /**
+     * Show all tasks for a conference
+     * which match the params
+     * 
+     * @return \Illuminate\Http\Response All tasks for the requestes params
+     */
+    public function task(Conference $conference)
+    {
+        // Determine if we can show more infos based on if
+        // the user is only an SV or also Chair/Captain
+        $showMore =
+            auth()->user()->isAdmin()
+            || auth()->user()->isChair($conference)
+            || auth()->user()->isCaptain($conference);
+        $search = request()->search_string;
+        $day = request()->day;
+        $priorities = collect(explode(',', request()->priorities));
+
+        $query = Task
+            ::with('users')
+            // We have to join bids, then users to make it (1) searchable (2) sortable
+            ->leftJoin('bids', 'tasks.id', '=', 'bids.task_id')
+            ->leftJoin('users', 'user_id', '=', 'users.id')
+            // Stay bond to this $converence
+            ->where('tasks.conference_id', $conference->id)
+            ->orderBy(request()->sort_by, request()->sort_order);
+
+        // Only add queries when we are searching for something
+        if (strlen($search) > 0) {
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('users.firstname', 'LIKE', '%' . $search . '%');
+                $query->orWhere('users.lastname', 'LIKE', '%' . $search . '%');
+                $query->orWhere('tasks.name', 'LIKE', '%' . $search . '%');
+                $query->orWhere('tasks.location', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        $query->where(function ($query) use ($priorities) {
+            foreach ($priorities as $priority) {
+                $query->orWhere('priority', $priority);
+            }
+        });
+
+        // Load the paginated results from the database
+        // Only retreive 'tasks.*' or we would have collision
+        // due to the joins we did earlier
+        $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
+
+        // $paginatedTasks->getCollection()->transform(function ($task) use ($showMore, $conference) {
+        //     $safe = null;
+
+        //     if ($showMore) {
+        //         // Show more information
+        //     }
+        //     return $safe;
+        // });
+
+        return $paginatedTasks;
+    }
+
+    /**
      * Show all users of a conference.
      * This code is super time critical. For around
      * 100 users it may take up to 3 seconds before we can
@@ -89,14 +144,12 @@ class ConferenceController extends Controller
      */
     public function sv(Conference $conference)
     {
-        $this->authorize('viewUsers', $conference);
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain
         $showMore =
             auth()->user()->isAdmin()
-            || auth()->user()->isChair(request()->conference)
-            || auth()->user()->isCaptain(request()->conference);
-        $conference = request()->conference;
+            || auth()->user()->isChair($conference)
+            || auth()->user()->isCaptain($conference);
         $searchString = request()->search_string;
         $selectedStates = collect(explode(',', request()->selected_states));
 
