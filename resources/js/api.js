@@ -116,8 +116,12 @@ export default {
     unenroll(conference) {
         return axios.post(`conference/${conference}/unenroll`)
     },
-    can(ability, model, id = null) {
-        if (id) {
+    can(ability, model, id = null, onModel = null, onId = null) {
+        if (onModel && onId) {
+            return axios.get(`can/${ability}/${model}/${id}/${onModel}/${onId}`);
+        } else if (onModel) {
+            return axios.get(`can/${ability}/${model}/${id}/${onModel}`);
+        } else if (id) {
             return axios.get(`can/${ability}/${model}/${id}`);
         } else {
             return axios.get(`can/${ability}/${model}`);
