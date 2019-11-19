@@ -9,6 +9,7 @@ class Task extends Model
 {
     protected $guarded = [];
     protected $dates = ['date'];
+    protected $hidden = ['bids'];
 
     public function conference()
     {
@@ -20,14 +21,8 @@ class Task extends Model
         return $this->hasManyThrough('App\User', 'App\Bid', 'task_id', 'id', 'id', 'user_id');
     }
 
-    // public function getAccountedHoursAttribute()
-    // {
-    //     if ($this->override_hours) {
-    //         return $this->override_hours;
-    //     } else {
-    //         $start = Carbon::parse($this->start_at);
-    //         $end = Carbon::parse($this->end_at);
-    //         return $start->diffInHours($end);
-    //     }
-    // }
+    public function bids()
+    {
+        return $this->hasMany('App\Bid');
+    }
 }

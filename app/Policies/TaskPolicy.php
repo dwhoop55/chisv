@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Conference;
 use App\Task;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -54,6 +55,19 @@ class TaskPolicy
     public function create(User $user)
     {
         return $user->isAdmin() || $user->isChair();
+    }
+
+    /**
+     * Determine whether the user can create tasks
+     * for a given conference.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function createForConference(User $user, Task $task, Conference $conference)
+    {
+        return $user->isAdmin() || $user->isChair($conference);
     }
 
     /**

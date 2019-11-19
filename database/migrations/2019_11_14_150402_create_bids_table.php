@@ -18,7 +18,7 @@ class CreateBidsTable extends Migration
             $table->unsignedInteger('user_id')->index();
             $table->unsignedInteger('task_id')->index();
             $table->unsignedInteger('preference')->index();
-            $table->unsignedInteger('status')->index();
+            $table->unsignedInteger('state_id')->index()->default(31);
 
             $table->timestamps();
         });

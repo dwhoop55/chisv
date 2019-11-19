@@ -10,7 +10,7 @@
         indicators="bars"
       >
         <template>
-          <small>Lengend</small>
+          <small>Legend</small>
           <br />
           <b-tag rounded type="is-primary">Conference days</b-tag>
           <b-tag rounded type="is-warning">Day with tasks</b-tag>
@@ -77,13 +77,25 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column field="tasks.start_at" sortable label="Starts">{{ props.row.start_at }}</b-table-column>
-        <b-table-column field="tasks.end_at" sortable label="Ends">{{ props.row.end_at }}</b-table-column>
+        <b-table-column width="60" sortable label="Bids">{{ props.row.own_bids }}</b-table-column>
+        <b-table-column
+          field="tasks.start_at"
+          width="90"
+          sortable
+          label="Starts"
+        >{{ props.row.start_at }}</b-table-column>
+        <b-table-column field="tasks.end_at" sortable width="90" label="Ends">{{ props.row.end_at }}</b-table-column>
+        <b-table-column field="tasks.hours" width="10" sortable label="Hours">{{ props.row.hours }}</b-table-column>
         <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
         <b-table-column field="tasks.location" sortable label="Location">{{ props.row.location }}</b-table-column>
-        <b-table-column field="tasks.priority" sortable label="Priority">{{ props.row.priority }}</b-table-column>
-        <b-table-column field="tasks.slots" sortable label="Available slots">{{ props.row.slots }}</b-table-column>
-        <b-table-column field="tasks.hours" sortable label="Hours">{{ props.row.hours }}</b-table-column>
+        <b-table-column field="tasks.slots" width="10" sortable label="Slots">{{ props.row.slots }}</b-table-column>
+        <b-table-column
+          v-if="canEdit"
+          field="tasks.priority"
+          width="10"
+          sortable
+          label="Priority"
+        >{{ props.row.priority }}</b-table-column>
       </template>
 
       <template slot="detail" slot-scope="props">
@@ -129,6 +141,7 @@
 
 <script>
 import api from "@/api.js";
+import auth from "@/auth.js";
 
 export default {
   props: ["conference"],
@@ -142,7 +155,7 @@ export default {
       day: new Date(),
       selectedPriorities: [1, 2, 3],
       allPriorities: [1, 2, 3],
-      sortField: "name",
+      sortField: "tasks.start_at",
       sortOrder: "asc",
       perPage: 10,
       page: 1,
@@ -150,17 +163,34 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
-      canEdit: false
+      canEdit: false,
+      canBid: false
     };
   },
 
   methods: {
+    getCan: async function() {
+      this.canEdit = await auth.can(
+        "createForConference",
+        "Task",
+        null,
+        "Conference",
+        this.conference.id
+      );
+      this.canBid = await auth.can(
+        "createForConference",
+        "Bid",
+        null,
+        "Conference",
+        this.conference.id
+      );
+    },
     getTaskDays() {
       this.isLoadingCalendar = true;
       api
         .getConferenceTaskDays(this.conference.key)
         .then(data => {
-          this.taskDays = data.data.data;
+          this.taskDays = data.data;
         })
         .catch(error => {
           console.error(error);
@@ -223,6 +253,7 @@ export default {
   created() {
     this.getTasks();
     this.getTaskDays();
+    this.getCan();
   },
 
   computed: {
@@ -243,12 +274,15 @@ export default {
         });
       }
 
-      this.taskDays.forEach(day => {
-        days.push({
-          date: new Date(day),
-          type: "is-warning"
-        });
-      });
+      for (var day in this.taskDays) {
+        if (this.taskDays.hasOwnProperty(day)) {
+          days.push({
+            date: new Date(day),
+            type: "is-warning"
+          });
+        }
+      }
+
       return days;
     }
   }

@@ -10,7 +10,6 @@ use App\State;
 use App\User;
 use App\Role;
 use App\Http\Resources\Conferences;
-use App\Http\Resources\Tasks;
 use App\Job;
 use App\Permission;
 use App\Services\EnrollmentFormService;
@@ -82,23 +81,22 @@ class ConferenceController extends Controller
      */
     public function task(Conference $conference)
     {
-        // Determine if we can show more infos based on if
-        // the user is only an SV or also Chair/Captain
-        $showMore =
-            auth()->user()->isAdmin()
-            || auth()->user()->isChair($conference)
-            || auth()->user()->isCaptain($conference);
+        // // Determine if we can show more infos based on if
+        // // the user is only an SV or also Chair/Captain
+        // $showMore =
+        //     auth()->user()->isAdmin()
+        //     || auth()->user()->isChair($conference)
+        //     || auth()->user()->isCaptain($conference);
         $search = request()->search_string;
         $day = request()->day;
         $priorities = collect(explode(',', request()->priorities));
 
-        $query = Task
-            ::with('users')
+        $query = Task::
             // We have to join bids, then users to make it (1) searchable (2) sortable
-            ->leftJoin('bids', 'tasks.id', '=', 'bids.task_id')
-            ->leftJoin('users', 'user_id', '=', 'users.id')
+            // leftJoin('bids', 'tasks.id', '=', 'bids.task_id')
+            // leftJoin('users', 'user_id', '=', 'users.id')
             // Stay bond to this $converence
-            ->where('tasks.conference_id', $conference->id)
+            where('tasks.conference_id', $conference->id)
             ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
 
@@ -123,14 +121,13 @@ class ConferenceController extends Controller
         // due to the joins we did earlier
         $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
 
-        // $paginatedTasks->getCollection()->transform(function ($task) use ($showMore, $conference) {
-        //     $safe = null;
-
-        //     if ($showMore) {
-        //         // Show more information
-        //     }
-        //     return $safe;
-        // });
+        // We need to add the own bids to every task we return
+        $paginatedTasks->getCollection()->transform(function ($task) {
+            $task->own_bids = $task->bids->filter(function ($bid) {
+                return $bid->user_id == auth()->user()->id;
+            });
+            return $task;
+        });
 
         return $paginatedTasks;
     }
@@ -145,11 +142,18 @@ class ConferenceController extends Controller
     {
         $tasks = $conference->tasks->sortBy('date');
 
-        $tasks->transform(function ($task) {
-            return Carbon::parse($task->date)->toDateString();
-        });
+        $days = collect();
 
-        return new Tasks($tasks);
+        foreach ($tasks as $task) {
+            $day = $task->date->toDateString();
+            if ($days->has($day)) {
+                $days[$day] = $days[$day] + 1;
+            } else {
+                $days->put($day, 1);
+            }
+        }
+
+        return $days;
     }
 
 

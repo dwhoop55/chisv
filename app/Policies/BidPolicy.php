@@ -3,6 +3,8 @@
 namespace App\Policies;
 
 use App\Bid;
+use App\Conference;
+use App\Task;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -34,14 +36,44 @@ class BidPolicy
     }
 
     /**
-     * Determine whether the user can create bids.
+     * Determine whether the user can create a bid for given task
      *
      * @param  \App\User  $user
+     * @param  \App\Task  $task
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Task $task)
     {
-        //
+        if ($task->users->has($user)) {
+            // We only allow one bid per user per task
+            return false;
+        } else if ($user->isAdmin()) {
+            // Allow admin to always bid
+            return true;
+        } else if ($user->isSv($task->conference)) {
+            // Allow bidding if the user is SV for the task's conference
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Determine whether the user can create bid for a conference.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conferece  $conference
+     * @return mixed
+     */
+    public function createForConference(User $user, Bid $bid, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        } else if ($user->isSv($conference)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
