@@ -2,7 +2,7 @@
   <div>
     <div v-if="conference">
       <div
-        class="is-absolute is-100hw is-100vh is-cover is-pinned-t is-pinned-l is-below is-blurred is-visible-8"
+        class="is-fixed is-100hw is-100vh is-pinned-l is-pinned-t is-cover is-below is-blurred is-visible-8"
         :style="conferenceArtworkBackground(conference)"
       ></div>
 

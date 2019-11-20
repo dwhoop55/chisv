@@ -87,6 +87,10 @@ h3 {
   position: absolute;
 }
 
+.is-fixed {
+  position: fixed;
+}
+
 .is-rounded-b-l {
   border-bottom-left-radius: 0.5rem;
 }
@@ -125,7 +129,6 @@ h3 {
   -o-filter: blur(4px);
   -ms-filter: blur(4px);
   filter: blur(4px);
-  transform: scale(1.1);
 }
 
 .is-visible-8 {

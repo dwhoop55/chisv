@@ -8,6 +8,7 @@
         v-model="day"
         :events="calendarEvents"
         indicators="bars"
+        :mobile-native="false"
       >
         <template>
           <small>Legend</small>
