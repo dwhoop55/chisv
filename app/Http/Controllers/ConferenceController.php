@@ -81,20 +81,18 @@ class ConferenceController extends Controller
      */
     public function task(Conference $conference)
     {
-        // // Determine if we can show more infos based on if
-        // // the user is only an SV or also Chair/Captain
-        // $showMore =
-        //     auth()->user()->isAdmin()
-        //     || auth()->user()->isChair($conference)
-        //     || auth()->user()->isCaptain($conference);
+        // Determine if we can show more infos based on if
+        // the user is only an SV or also Chair/Captain
+        $showMore =
+            auth()->user()->isAdmin()
+            || auth()->user()->isChair($conference)
+            || auth()->user()->isCaptain($conference);
         $search = request()->search_string;
         $day = request()->day;
         $priorities = collect(explode(',', request()->priorities));
+        $user = auth()->user();
 
         $query = Task::
-            // We have to join bids, then users to make it (1) searchable (2) sortable
-            // leftJoin('bids', 'tasks.id', '=', 'bids.task_id')
-            // leftJoin('users', 'user_id', '=', 'users.id')
             // Stay bond to this $converence
             where('tasks.conference_id', $conference->id)
             ->whereDate('tasks.date', $day)
@@ -103,8 +101,6 @@ class ConferenceController extends Controller
         // Only add queries when we are searching for something
         if (strlen($search) > 0) {
             $query->where(function ($query) use ($search) {
-                $query->orWhere('users.firstname', 'LIKE', '%' . $search . '%');
-                $query->orWhere('users.lastname', 'LIKE', '%' . $search . '%');
                 $query->orWhere('tasks.name', 'LIKE', '%' . $search . '%');
                 $query->orWhere('tasks.location', 'LIKE', '%' . $search . '%');
             });
@@ -121,11 +117,45 @@ class ConferenceController extends Controller
         // due to the joins we did earlier
         $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
 
-        // We need to add the own bids to every task we return
-        $paginatedTasks->getCollection()->transform(function ($task) {
-            $task->own_bids = $task->bids->filter(function ($bid) {
-                return $bid->user_id == auth()->user()->id;
-            });
+        // // We joined users and bids before so we now have multiple rows of the same
+        // // tasks but with a different bid
+        // // So we go through all tasks and create a new collection which
+        // // only contain one entry per task but with a collection of users
+        // $tasks = collect();
+        // $processedTaskIds = collect();
+
+        // $paginatedTasks->each(function ($task) use ($user, $tasks, $processedTaskIds, $showMore) {
+        //     if (!$processedTaskIds->contains($task->id)) {
+        //         foreach ($task->bids as $bid) {
+        //             if ($bid->user_id == $user->id) {
+        //                 $task->own_bid = $bid;
+        //                 // We found the one bid from the user
+        //                 // due to the database scheme there can only
+        //                 // be one bid per user per task, so we can
+        //                 // break the loop now
+        //                 break;
+        //             }
+        //         }
+        //         // Remove the bids when tasklist is for SV
+        //         if (!$showMore) unset($task->bids);
+        //         $tasks->push($task);
+        //         $processedTaskIds->push($task->id);
+        //     }
+        // });
+
+        $paginatedTasks->getCollection()->transform(function ($task) use ($user) {
+            foreach ($task->bids as $bid) {
+                if ($bid->user_id == $user->id) {
+                    $task->own_bid = $bid;
+                    $task->own_bid->can_update = $user->can('update', $bid);
+                    // We found the one bid from the user
+                    // due to the database scheme there can only
+                    // be one bid per user per task, so we can
+                    // break the loop now
+                    break;
+                }
+            }
+            $task->can_bid = $user->can('create', ['App\Bid', $task]);
             return $task;
         });
 

@@ -78,7 +78,9 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column width="60" sortable label="Bids">{{ props.row.own_bids }}</b-table-column>
+        <b-table-column width="60" sortable label="Bids">
+          <bid-picker v-model="props.row.own_bid"></bid-picker>
+        </b-table-column>
         <b-table-column
           field="tasks.start_at"
           width="90"

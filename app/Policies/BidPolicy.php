@@ -44,7 +44,7 @@ class BidPolicy
      */
     public function create(User $user, Task $task)
     {
-        if ($task->users->has($user)) {
+        if ($task->users->contains($user)) {
             // We only allow one bid per user per task
             return false;
         } else if ($user->isAdmin()) {
@@ -84,9 +84,7 @@ class BidPolicy
      * @return mixed
      */
     public function update(User $user, Bid $bid)
-    {
-        //
-    }
+    { }
 
     /**
      * Determine whether the user can delete the bid.

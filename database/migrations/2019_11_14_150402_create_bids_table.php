@@ -20,6 +20,8 @@ class CreateBidsTable extends Migration
             $table->unsignedInteger('preference')->index();
             $table->unsignedInteger('state_id')->index()->default(31);
 
+            $table->unique(['user_id', 'task_id'], 'allow_only_one_bid_per_task_per_user');
+
             $table->timestamps();
         });
     }

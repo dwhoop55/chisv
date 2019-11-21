@@ -104,7 +104,7 @@
                   <a
                     v-if="canUpdateEnrollment"
                     title="Go to the users profile"
-                    @click.native="ignoreNextToggleClick=true"
+                    @click="ignoreNextToggleClick=true"
                     :href="'/user/' + props.row.id + '/edit'"
                   >{{ props.row.firstname }}</a>
                   <div v-else>{{ props.row.firstname }}</div>
@@ -127,7 +127,10 @@
         </b-table-column>
         <b-table-column v-if="props.row.email" width="130" field="email" label="E-Mail" sortable>
           <template>
-            <a :href="'mailto:' + props.row.email">{{ props.row.email }}</a>
+            <a
+              @click="ignoreNextToggleClick=true"
+              :href="'mailto:' + props.row.email"
+            >{{ props.row.email }}</a>
           </template>
         </b-table-column>
         <b-table-column width="130" label="SV State">
