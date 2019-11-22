@@ -67,6 +67,9 @@ export default {
     createPermission: function (vform) {
         return vform.post("permission");
     },
+    createBid(bid) {
+        return axios.post(`bid`, bid);
+    },
 
     updateUser: function (id, vform) {
         return vform.put(`user/${id}`);
@@ -92,6 +95,9 @@ export default {
     },
     updatePermission: function (vform, id) {
         return vform.put(`permission/${id}`);
+    },
+    updateBid(bid) {
+        return axios.put(`bid/${bid.id}`, bid);
     },
 
     deleteUser: function (id) {

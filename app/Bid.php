@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Bid extends Model
 {
     protected $with = ['state'];
+    protected $guarded = [];
+    protected $casts = [
+        'preference' => 'integer',
+        'state_id' => 'integer',
+        'user_id' => 'integer',
+        'conference_id' => 'integer',
+        'task_id' => 'integer',
+    ];
 
     public function task()
     {

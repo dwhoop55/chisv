@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class JobController extends Controller
 {
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Job::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

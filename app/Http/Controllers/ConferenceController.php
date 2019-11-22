@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Bid;
 use App\Conference;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
@@ -143,7 +144,13 @@ class ConferenceController extends Controller
         //     }
         // });
 
-        $paginatedTasks->getCollection()->transform(function ($task) use ($user) {
+        $paginatedTasks->getCollection()->transform(function ($task) use ($user, $conference) {
+            // Provide some dummy bid so that the frontend can fill it out
+            $task->own_bid = new Bid([
+                'user_id' => $user->id,
+                'task_id' => $task->id,
+            ]);
+
             foreach ($task->bids as $bid) {
                 if ($bid->user_id == $user->id) {
                     $task->own_bid = $bid;
@@ -155,7 +162,8 @@ class ConferenceController extends Controller
                     break;
                 }
             }
-            $task->can_bid = $user->can('create', ['App\Bid', $task]);
+
+            $task->can_create_bid = $user->can('createForTask', ['App\Bid', $task]);
             return $task;
         });
 

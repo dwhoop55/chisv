@@ -7,6 +7,17 @@ use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Task::class);
+    }
+
     /**
      * Display a listing of the resource.
      *

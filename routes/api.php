@@ -209,7 +209,10 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index', 'show']
         ]);
         Route::resource('task', 'TaskController', [
-            'only' => ['show', 'update', 'destroy']
+            'only' => ['store', 'update', 'destroy']
+        ]);
+        Route::resource('bid', 'BidController', [
+            'only' => ['store', 'update']
         ]);
     });
     //// AUTHENTICATED ////

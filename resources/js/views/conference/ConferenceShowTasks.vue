@@ -28,7 +28,7 @@
       ></b-input>
 
       <b-dropdown
-        v-if="canEdit"
+        v-if="canCreateTask"
         :disabled="isLoading"
         class="control"
         @active-change="($event == false) ? getTasks() : null"
@@ -55,7 +55,6 @@
     <br />
 
     <b-table
-      @click="toggle($event)"
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
@@ -78,8 +77,11 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column width="60" sortable label="Bids">
-          <bid-picker v-model="props.row.own_bid"></bid-picker>
+        <b-table-column width="190" label="Your preference">
+          <template slot="header" slot-scope="{ column }">
+            <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
+          </template>
+          <task-bid-picker size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
         <b-table-column
           field="tasks.start_at"
@@ -89,11 +91,13 @@
         >{{ props.row.start_at }}</b-table-column>
         <b-table-column field="tasks.end_at" sortable width="90" label="Ends">{{ props.row.end_at }}</b-table-column>
         <b-table-column field="tasks.hours" width="10" sortable label="Hours">{{ props.row.hours }}</b-table-column>
-        <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
+        <b-table-column field="tasks.name" sortable label="Name">
+          <a @click="toggle(props.row)">{{ props.row.name }}</a>
+        </b-table-column>
         <b-table-column field="tasks.location" sortable label="Location">{{ props.row.location }}</b-table-column>
         <b-table-column field="tasks.slots" width="10" sortable label="Slots">{{ props.row.slots }}</b-table-column>
         <b-table-column
-          v-if="canEdit"
+          v-if="canCreateTask"
           field="tasks.priority"
           width="10"
           sortable
@@ -166,23 +170,17 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
-      canEdit: false,
-      canBid: false
+      ignoreNextToggleClick: false,
+
+      canCreateTask: false
     };
   },
 
   methods: {
     getCan: async function() {
-      this.canEdit = await auth.can(
+      this.canCreateTask = await auth.can(
         "createForConference",
         "Task",
-        null,
-        "Conference",
-        this.conference.id
-      );
-      this.canBid = await auth.can(
-        "createForConference",
-        "Bid",
         null,
         "Conference",
         this.conference.id

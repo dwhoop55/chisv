@@ -36,13 +36,32 @@ class BidPolicy
     }
 
     /**
+     * Determine whether the user can create a bid
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function create(User $user)
+    {
+        if ($user->isAdmin()) {
+            // Allow admin to always bid
+            return true;
+        } else if ($user->isSv()) {
+            // Allow bidding if the user is SV
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine whether the user can create a bid for given task
      *
      * @param  \App\User  $user
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function create(User $user, Task $task)
+    public function createForTask(User $user, Task $task)
     {
         if ($task->users->contains($user)) {
             // We only allow one bid per user per task
@@ -58,23 +77,24 @@ class BidPolicy
         }
     }
 
-    /**
-     * Determine whether the user can create bid for a conference.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Conferece  $conference
-     * @return mixed
-     */
-    public function createForConference(User $user, Bid $bid, Conference $conference)
-    {
-        if ($user->isAdmin()) {
-            return true;
-        } else if ($user->isSv($conference)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
+    // /**
+    //  * Determine whether the user can create bid for a conference.
+    //  *
+    //  * @param  \App\User  $user
+    //  * @param  \App\Conferece  $conference
+    //  * @return mixed
+    //  */
+    // public function createForConference(User $user, Bid $bid, Conference $conference)
+    // {
+    //     if ($user->isAdmin()) {
+    //         return true;
+    //     } else if ($user->isSv($conference)) {
+    //         return true;
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
     /**
      * Determine whether the user can update the bid.
@@ -84,7 +104,15 @@ class BidPolicy
      * @return mixed
      */
     public function update(User $user, Bid $bid)
-    { }
+    {
+        if ($user->isAdmin()) {
+            return true;
+        } else if ($user->isSv($bid->conference)) {
+            return true;
+        } else if ($user->isChair($bid->confernce)) {
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can delete the bid.
