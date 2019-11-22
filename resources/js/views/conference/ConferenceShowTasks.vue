@@ -81,7 +81,7 @@
           <template slot="header" slot-scope="{ column }">
             <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
           </template>
-          <task-bid-picker size="is-small" v-model="props.row"></task-bid-picker>
+          <task-bid-picker @error="getTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
         <b-table-column
           field="tasks.start_at"

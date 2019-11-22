@@ -76,6 +76,7 @@ export default {
           })
           .catch(error => {
             this.showError();
+            this.$emit("error");
           })
           .finally(() => {
             this.isLoading = false;
@@ -91,6 +92,7 @@ export default {
           })
           .catch(error => {
             this.showError();
+            this.$emit("error");
           })
           .finally(() => {
             this.isLoading = false;
@@ -126,7 +128,7 @@ export default {
       this.showErrorIcon = true;
       setTimeout(() => {
         this.showErrorIcon = false;
-      }, 1200);
+      }, 2000);
     }
   },
 
