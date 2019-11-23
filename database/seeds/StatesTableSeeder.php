@@ -29,10 +29,10 @@ class StatesTableSeeder extends Seeder
             ["id" => 23, "for" => "App\Job", "name" => "successful", "description" => "The job finished successfully"],
             ["id" => 24, "for" => "App\Job", "name" => "failed", "description" => "The job stopped and failed"],
 
-            // Id 31 has to be always 'pending'!
-            ["id" => 31, "for" => "App\Bid", "name" => "pending", "description" => "The bid is in the system waiting for the auction to take place"],
-            ["id" => 32, "for" => "App\Bid", "name" => "won", "description" => "The bid won the auction"],
-            ["id" => 33, "for" => "App\Bid", "name" => "blank", "description" => "The bid did not win the auction"],
+            // Id 31 has to be always 'placed'!
+            ["id" => 31, "for" => "App\Bid", "name" => "placed", "description" => "The bid is in the system waiting for the auction to take place"],
+            ["id" => 32, "for" => "App\Bid", "name" => "successful", "description" => "The bid won the auction"],
+            ["id" => 33, "for" => "App\Bid", "name" => "unsuccessful", "description" => "The bid did not win the auction"],
 
         ];
         DB::table('states')->insert($states);
