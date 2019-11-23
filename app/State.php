@@ -8,9 +8,20 @@ class State extends Model
 {
     public $timestamps = false;
 
-    public static function byName($name)
+    /**
+     * Get a state by name.
+     * 
+     * @param string $name State's name
+     * @param string $for e.g 'App\User'
+     * @return State The requested state from database 
+     */
+    public static function byName($name, $for = null)
     {
-        return State::where('name', $name)->first();
+        if ($for) {
+            return State::where('name', $name)->where('for', $for)->orderBy('id')->first();
+        } else {
+            return State::where('name', $name)->orderBy('id')->first();
+        }
     }
 
     public function conferences()
