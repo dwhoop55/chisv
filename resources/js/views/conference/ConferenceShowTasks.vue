@@ -77,6 +77,15 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
+        <b-table-column width="150" :visible="canCreateTask" label="Manage">
+          <b-button @click="editTask(props.row)" outlined size="is-small" type="is-primary">Edit</b-button>
+          <b-button
+            @click="confirmDeleteTask(props.row)"
+            outlined
+            size="is-small"
+            type="is-danger"
+          >Delete</b-button>
+        </b-table-column>
         <b-table-column width="190" label="Your preference">
           <template slot="header" slot-scope="{ column }">
             <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
@@ -85,12 +94,22 @@
         </b-table-column>
         <b-table-column
           field="tasks.start_at"
-          width="90"
+          width="10"
           sortable
           label="Starts"
-        >{{ props.row.start_at }}</b-table-column>
-        <b-table-column field="tasks.end_at" sortable width="90" label="Ends">{{ props.row.end_at }}</b-table-column>
-        <b-table-column field="tasks.hours" width="10" sortable label="Hours">{{ props.row.hours }}</b-table-column>
+        >{{ hoursFromTime(props.row.start_at) }}</b-table-column>
+        <b-table-column
+          field="tasks.end_at"
+          sortable
+          width="10"
+          label="Ends"
+        >{{ hoursFromTime(props.row.end_at) }}</b-table-column>
+        <b-table-column
+          field="tasks.hours"
+          width="10"
+          sortable
+          label="Hours"
+        >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
         <b-table-column field="tasks.name" sortable label="Name">
           <a @click="toggle(props.row)">{{ props.row.name }}</a>
         </b-table-column>
@@ -149,6 +168,7 @@
 <script>
 import api from "@/api.js";
 import auth from "@/auth.js";
+import TaskModalVue from "@/components/modals/TaskModal.vue";
 
 export default {
   props: ["conference"],
@@ -177,6 +197,57 @@ export default {
   },
 
   methods: {
+    editTask(task) {
+      this.$buefy.modal.open({
+        parent: this,
+        props: {
+          task: task,
+          calendarEvents: this.calendarEvents
+        },
+        component: TaskModalVue,
+        hasModalCard: true
+      });
+    },
+    confirmDeleteTask(task) {
+      this.$buefy.dialog.confirm({
+        title: "Caution!",
+        message: `Are you sure you want to
+        <b>permanently delete</b> the task <i>${task.name}</i>?
+        <br/><br/>
+        This will also remove all associated bids and assignments.
+        This action cannot be undone.`,
+        confirmText: "Yes, delete this task",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+          this.deleteTask(task);
+        }
+      });
+    },
+    deleteTask(task) {
+      console.log(task);
+      this.isLoading = true;
+      api
+        .deleteTask(task.id)
+        .then(data => {
+          this.getTasks();
+          this.getTaskDays();
+        })
+        .catch(error => {
+          var message = error.response.data.message
+            ? error.response.data.message
+            : error.message;
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
     getCan: async function() {
       this.canCreateTask = await auth.can(
         "createForConference",

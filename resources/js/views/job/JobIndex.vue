@@ -41,7 +41,7 @@
 <script>
 import api from "@/api.js";
 import auth from "@/auth.js";
-import JobModalVue from "../../components/modals/JobModal.vue";
+import JobModalVue from "@/components/modals/JobModal.vue";
 
 export default {
   data() {

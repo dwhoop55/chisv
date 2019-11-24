@@ -20,6 +20,7 @@ Date.prototype.toMySqlDate = function () {
     );
 };
 
+
 Date.prototype.toMySqlDateTime = function () {
     return (
         this.getFullYear() +

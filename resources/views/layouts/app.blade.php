@@ -108,9 +108,6 @@
                     @endguest
                 </div>
 
-                {{-- Placing stuff here that gets activated only by vuejs --}}
-                <jobs-overview-modal></jobs-overview-modal>
-
             </div>
         </nav>
 

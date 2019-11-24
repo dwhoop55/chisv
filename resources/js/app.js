@@ -12,6 +12,7 @@ import Buefy from "buefy";
 import { Form, HasError, AlertError } from 'vform'
 import VueMoment from 'vue-moment'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
+import moment from "moment-timezone";
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -53,6 +54,15 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        hoursFromTime(time) {
+            var d = new moment(time, "HH:mm:ss");
+            return d.format("HH:mm");
+        },
+        timeFromDecimal(decimal) {
+            var n = new Date(0, 0);
+            n.setSeconds(+decimal * 60 * 60);
+            return n.toTimeString().slice(0, 8);
+        },
         stringInObject: function (searchInput, object) {
             if (!object) return false;
             let search = searchInput.toLowerCase();
