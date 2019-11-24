@@ -1,14 +1,14 @@
 export default {
-    getConferences: function () {
+    getConferences() {
         return axios.get("conference");
     },
-    getConference: function (key) {
+    getConference(key) {
         return axios.get(`conference/${key}`);
     },
-    getConferenceSvs: function (key, params) {
+    getConferenceSvs(key, params) {
         return axios.get(`conference/${key}/sv${params}`)
     },
-    getConferenceAcceptedCount: function (key) {
+    getConferenceAcceptedCount(key) {
         return axios.get(`conference/${key}/sv/count`)
     },
     getConferenceTasks(key, params) {
@@ -17,25 +17,25 @@ export default {
     getConferenceTaskDays(key) {
         return axios.get(`conference/${key}/task/day`);
     },
-    getUser: function (id) {
+    getUser(id) {
         return axios.get(`user/${id}`);
     },
-    getEnrollmentFormTemplates: function () {
+    getEnrollmentFormTemplates() {
         return axios.get(`enrollment_form/template`)
     },
-    getEnrollmentForm: function (id) {
+    getEnrollmentForm(id) {
         return axios.get(`enrollment_form/${id}`)
     },
-    getEnrollment: function (key) {
+    getEnrollment(key) {
         return axios.get(`conference/${key}/enrollment`)
     },
-    getVersion: function () {
+    getVersion() {
         return axios.get(`version`)
     },
-    getRoles: function () {
+    getRoles() {
         return axios.get("role");
     },
-    getStates: function () {
+    getStates() {
         return axios.get("state");
     },
     getJobs() {
@@ -45,17 +45,17 @@ export default {
         return axios.get(`job/${id}`);
     },
 
-    createConference: function (vform) {
+    createConference(vform) {
         return vform.post(`conference`);
     },
-    createImage: function (form) {
+    createImage(form) {
         return axios.post(`image`, form, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
     },
-    createConferenceImage: function (conference, type, image) {
+    createConferenceImage(conference, type, image) {
         let form = new FormData();
         form.append('image', image);
         form.append('type', type);
@@ -64,20 +64,20 @@ export default {
         form.append("name", conference.key + "-" + type);
         return this.createImage(form);
     },
-    createPermission: function (vform) {
+    createPermission(vform) {
         return vform.post("permission");
     },
     createBid(bid) {
         return axios.post(`bid`, bid);
     },
 
-    updateUser: function (id, vform) {
+    updateUser(id, vform) {
         return vform.put(`user/${id}`);
     },
-    updateConference: function (key, vform) {
+    updateConference(key, vform) {
         return vform.put(`conference/${key}`);
     },
-    updateImage: function (id, image) {
+    updateImage(id, image) {
         let form = new FormData();
         form.append('image', image);
         form.append('_method', 'PUT');
@@ -93,24 +93,30 @@ export default {
     updateConferenceResetEnrollmentsToEnrolled(key) {
         return axios.put(`conference/${key}/reset_enrollments_to_enrolled`);
     },
-    updatePermission: function (vform, id) {
+    updatePermission(vform, id) {
         return vform.put(`permission/${id}`);
     },
     updateBid(bid) {
         return axios.put(`bid/${bid.id}`, bid);
     },
+    updateTask(task) {
+        return axios.pu(`task/${task.id}`, task);
+    },
 
-    deleteUser: function (id) {
+    deleteUser(id) {
         return axios.delete(`user/${id}`);
     },
-    deleteConference: function (key) {
+    deleteConference(key) {
         return axios.delete(`conference/${key}`);
     },
-    deleteImage: function (id) {
+    deleteImage(id) {
         return axios.delete(`image/${id}`);
     },
-    deletePermission: function (id) {
+    deletePermission(id) {
         return axios.delete(`permission/${id}`);
+    },
+    deleteTask(id) {
+        return axios.delete(`task/${id}`);
     },
 
     runLottery(conference) {
