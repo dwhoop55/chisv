@@ -50,6 +50,20 @@
           <p>{{ priority }}</p>
         </b-dropdown-item>
       </b-dropdown>
+
+      <b-button
+        class="control"
+        @click="createTask('single')"
+        type="is-primary"
+        v-if="canCreateTask"
+      >New task</b-button>
+
+      <b-button
+        class="control"
+        @click="createTask('multiple')"
+        type="is-primary"
+        v-if="canCreateTask"
+      >Import task</b-button>
     </b-field>
 
     <br />
@@ -116,7 +130,7 @@
         <b-table-column field="tasks.location" sortable label="Location">{{ props.row.location }}</b-table-column>
         <b-table-column field="tasks.slots" width="10" sortable label="Slots">{{ props.row.slots }}</b-table-column>
         <b-table-column
-          v-if="canCreateTask"
+          :visible="canCreateTask"
           field="tasks.priority"
           width="10"
           sortable
@@ -197,11 +211,44 @@ export default {
   },
 
   methods: {
+    createTask(type) {
+      if (type == "single") {
+        this.$buefy.modal.open({
+          parent: this,
+          props: {
+            task: {
+              name: "",
+              location: "",
+              description: "",
+              date: new Date().toMySqlDate(),
+              start_at: "09:00:00",
+              end_at: "09:00:00",
+              hours: 0,
+              priority: 1,
+              slots: 1,
+              conference_id: this.conference.id
+            },
+            updated: () => {
+              this.getTasks();
+              this.getTaskDays();
+            },
+            calendarEvents: this.calendarEvents
+          },
+          component: TaskModalVue,
+          hasModalCard: true
+        });
+      } else if (type == "multiple") {
+      }
+    },
     editTask(task) {
       this.$buefy.modal.open({
         parent: this,
         props: {
           task: task,
+          updated: () => {
+            this.getTasks();
+            this.getTaskDays();
+          },
           calendarEvents: this.calendarEvents
         },
         component: TaskModalVue,

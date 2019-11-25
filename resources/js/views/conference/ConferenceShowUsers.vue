@@ -125,7 +125,13 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column v-if="props.row.email" width="130" field="email" label="E-Mail" sortable>
+        <b-table-column
+          :visible="props.row.email"
+          width="130"
+          field="email"
+          label="E-Mail"
+          sortable
+        >
           <template>
             <a
               @click="ignoreNextToggleClick=true"
@@ -202,7 +208,7 @@
         </b-table-column>
         <b-table-column
           field="enrollment_forms.total_weight"
-          v-if="canUpdateEnrollment"
+          :visible="canUpdateEnrollment"
           width="150"
           label="Weighted form"
           sortable

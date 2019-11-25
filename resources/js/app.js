@@ -63,6 +63,14 @@ Vue.mixin({
             n.setSeconds(+decimal * 60 * 60);
             return n.toTimeString().slice(0, 8);
         },
+        dateFromDecimal(decimal) {
+            var n = new Date(0, 0);
+            n.setSeconds(+decimal * 60 * 60);
+            return n;
+        },
+        dateFromTime(time) {
+            return new Date(`1970-01-01 ${time}`);
+        },
         stringInObject: function (searchInput, object) {
             if (!object) return false;
             let search = searchInput.toLowerCase();

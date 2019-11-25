@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TaskRequest;
 use App\Task;
 use Illuminate\Http\Request;
 
@@ -29,24 +30,27 @@ class TaskController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        //
+        $data = $request->only(
+            'conference_id',
+            'name',
+            'location',
+            'description',
+            'date',
+            'start_at',
+            'end_at',
+            'hours',
+            'priority',
+            'slots'
+        );
+        $task = new Task($data);
+        $task->save();
     }
 
     /**
@@ -60,16 +64,6 @@ class TaskController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -78,9 +72,20 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        //
+        $data = $request->only(
+            'name',
+            'location',
+            'description',
+            'date',
+            'start_at',
+            'end_at',
+            'hours',
+            'priority',
+            'slots'
+        );
+        $task->update($data);
     }
 
     /**

@@ -70,6 +70,9 @@ export default {
     createBid(bid) {
         return axios.post(`bid`, bid);
     },
+    createTask(vform) {
+        return vform.post(`task`);
+    },
 
     updateUser(id, vform) {
         return vform.put(`user/${id}`);
@@ -99,8 +102,8 @@ export default {
     updateBid(bid) {
         return axios.put(`bid/${bid.id}`, bid);
     },
-    updateTask(task) {
-        return axios.pu(`task/${task.id}`, task);
+    updateTask(vform, id) {
+        return vform.put(`task/${id}`);
     },
 
     deleteUser(id) {

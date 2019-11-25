@@ -37,6 +37,16 @@ Date.prototype.toMySqlDateTime = function () {
     );
 };
 
+Date.prototype.toMySqlTime = function () {
+    return (
+        twoDigits(this.getHours()) +
+        ":" +
+        twoDigits(this.getMinutes()) +
+        ":" +
+        twoDigits(this.getSeconds())
+    );
+};
+
 Array.prototype.column = function (column) {
     return this.map(function (value, index) {
         return value[column];
