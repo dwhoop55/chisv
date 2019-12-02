@@ -11,7 +11,7 @@
 
     <b-loading :is-full-page="false" :active.sync="loading"></b-loading>
     <b-modal :active.sync="showCreateModal" has-modal-card>
-      <create-conference-modal @created="goToConference"></create-conference-modal>
+      <create-conference-modal @created="editConference"></create-conference-modal>
     </b-modal>
   </section>
 </template>
@@ -52,8 +52,9 @@ export default {
           this.loading = false;
         });
     },
-    goToConference: function(key) {
-      this.goTo(`/conference/${key}#edit`);
+    editConference: function(key) {
+      this.$store.commit("CONFERENCE_TAB", 3);
+      this.goTo(`/conference/${key}`);
     }
   }
 };

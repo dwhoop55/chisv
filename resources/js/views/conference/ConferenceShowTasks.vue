@@ -159,7 +159,7 @@
         >
           <a
             @click.prevent="showDescription(props.row)"
-          >{{ props.row.description | textlimit(40) }} {{ (props.row.description.length > 40) ? ' (more)' : '' }}</a>
+          >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
         </b-table-column>
         <b-table-column
           :visible="canCreateTask && activeColumns.includes('slots')"
@@ -187,7 +187,11 @@
             <p>
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
-            <p>No tasks found for {{ this.day | moment('ll') }}</p>
+            <p>
+              No tasks found for
+              <b v-if="searchString.length > 0">{{ searchString }}</b>
+              {{ day | moment('ll') }}
+            </p>
           </div>
         </section>
       </template>

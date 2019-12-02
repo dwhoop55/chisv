@@ -202,7 +202,6 @@ export default {
       this.form.hours = (seconds / 60 / 60).toFixed(2);
       this.$buefy.toast.open({
         duration: 5000,
-        position: "is-bottom",
         message: `<b>Total hours</b> adjusted`,
         type: "is-warning"
       });
@@ -212,7 +211,6 @@ export default {
         this.form.end_at = this.form.start_at;
         this.$buefy.toast.open({
           duration: 5000,
-          position: "is-bottom",
           message: `<b>End time</b> adjusted`,
           type: "is-warning"
         });

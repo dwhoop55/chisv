@@ -117,18 +117,6 @@ export default {
 
   created() {
     this.getConference();
-
-    // Using the hash for when the browser goes to
-    // previous page, which should show the tab
-    // we saw when we left the page. I know vue-router
-    // would handle this but we don't have access to
-    // that
-    let hash = window.location.hash.substr(1);
-    if (hash == "edit") {
-      this.activeTab = 2;
-    } else if (Number.isInteger(parseInt(hash))) {
-      this.activeTab = parseInt(hash);
-    }
   },
 
   methods: {
