@@ -21,4 +21,17 @@ class JobPolicy
             return true;
         }
     }
+
+    /**
+     * Determine whether the user can view a specific job.
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function view(User $user)
+    {
+        if ($user->isAdmin() || $user->isChair()) {
+            return true;
+        }
+    }
 }
