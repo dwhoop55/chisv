@@ -118,32 +118,6 @@ class ConferenceController extends Controller
         // due to the joins we did earlier
         $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
 
-        // // We joined users and bids before so we now have multiple rows of the same
-        // // tasks but with a different bid
-        // // So we go through all tasks and create a new collection which
-        // // only contain one entry per task but with a collection of users
-        // $tasks = collect();
-        // $processedTaskIds = collect();
-
-        // $paginatedTasks->each(function ($task) use ($user, $tasks, $processedTaskIds, $showMore) {
-        //     if (!$processedTaskIds->contains($task->id)) {
-        //         foreach ($task->bids as $bid) {
-        //             if ($bid->user_id == $user->id) {
-        //                 $task->own_bid = $bid;
-        //                 // We found the one bid from the user
-        //                 // due to the database scheme there can only
-        //                 // be one bid per user per task, so we can
-        //                 // break the loop now
-        //                 break;
-        //             }
-        //         }
-        //         // Remove the bids when tasklist is for SV
-        //         if (!$showMore) unset($task->bids);
-        //         $tasks->push($task);
-        //         $processedTaskIds->push($task->id);
-        //     }
-        // });
-
         $paginatedTasks->getCollection()->transform(function ($task) use ($user, $conference) {
             // Provide some dummy bid so that the frontend can fill it out
             $task->own_bid = new Bid([
@@ -467,7 +441,8 @@ class ConferenceController extends Controller
             'volunteer_hours',
             'volunteer_max',
             'email_chair',
-            'enable_bidding'
+            'bidding_enabled',
+            'bidding_until'
         );
 
         $result = $conference->update($data);

@@ -155,13 +155,29 @@
             <b-input required v-model="generalForm.email_chair"></b-input>
           </b-field>
 
-          <b-field
-            label="Enable bidding on tasks"
-            expanded
-            :type="{ 'is-danger': generalForm.errors.has('enable_bidding') }"
-            :message="generalForm.errors.get('enable_bidding')"
-          >
-            <b-switch v-model="generalForm.enable_bidding"></b-switch>
+          <b-field grouped>
+            <b-field
+              label="Enable bidding on tasks"
+              :type="{ 'is-danger': generalForm.errors.has('bidding_enabled') }"
+              :message="generalForm.errors.get('bidding_enabled')"
+            >
+              <b-switch v-model="generalForm.bidding_enabled"></b-switch>
+            </b-field>
+            <b-field
+              expanded
+              v-if="generalForm.bidding_enabled"
+              label="Bidding open for tasks until"
+              :type="{ 'is-danger': generalForm.errors.has('bidding_until') }"
+              :message="generalForm.errors.get('bidding_until')"
+            >
+              <b-datepicker
+                :value="new Date(generalForm.bidding_until)"
+                @input="generalForm.bidding_until = $event.toMySqlDate()"
+                expanded
+                placeholder="Day (including) until which can be bid"
+                icon="calendar-today"
+              ></b-datepicker>
+            </b-field>
           </b-field>
 
           <b-field class="buttons" grouped position="is-right">
@@ -184,7 +200,7 @@
                 <div v-if="conference && conference.artwork">
                   <b-field>
                     <figure class="image">
-                      <img :src="conference.artwork.web_path" />
+                      <img :src="conferenceArtwork(conference)" />
                     </figure>
                   </b-field>
                   <b-field>
@@ -197,7 +213,7 @@
                 <div v-else>
                   <small>This is the default artwork which is active when no image is uploaded</small>
                   <figure class="image">
-                    <img src="/images/conference-default.jpg" />
+                    <img :src="conferenceArtwork(conference)" />
                   </figure>
                 </div>
               </div>
@@ -232,7 +248,7 @@
                 <div v-if="conference && conference.icon">
                   <b-field>
                     <figure class="image is-128x128">
-                      <img :src="conference.icon.web_path" />
+                      <img :src="conferenceIcon(conference)" />
                     </figure>
                   </b-field>
                   <b-field>
@@ -245,7 +261,7 @@
                 <div v-else>
                   <small>This is the default icon which is active when no icon is uploaded</small>
                   <figure class="image is-128x128">
-                    <img :src="`https://avatars.dicebear.com/v2/jdenticon/${conference.key}.svg`" />
+                    <img :src="conferenceIcon(conference)" />
                   </figure>
                 </div>
               </div>
@@ -355,7 +371,8 @@ export default {
         volunteer_hours: null,
         volunteer_max: null,
         email_chair: null,
-        enable_bidding: null,
+        bidding_enabled: null,
+        bidding_until: null,
         created_at: null,
         updated_at: null
       }),
@@ -373,12 +390,6 @@ export default {
     updateForms: function(conference) {
       this.generalForm.fill(this.conference);
       this.imageForm.fill(this.conference);
-      this.generalForm.enable_bidding =
-        this.generalForm.enable_bidding == "1" ? true : false;
-      this.generalForm.volunteer_hours = parseInt(
-        this.generalForm.volunteer_hours
-      );
-      this.generalForm.volunteer_max = parseInt(this.generalForm.volunteer_max);
     },
     getCan: async function() {
       this.canDelete = await auth.can(

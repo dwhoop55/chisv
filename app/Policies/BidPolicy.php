@@ -3,9 +3,10 @@
 namespace App\Policies;
 
 use App\Bid;
-use App\Conference;
+use App\State;
 use App\Task;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class BidPolicy
@@ -63,38 +64,27 @@ class BidPolicy
      */
     public function createForTask(User $user, Task $task)
     {
+        $conference = $task->conference;
         if ($task->users->contains($user)) {
             // We only allow one bid per user per task
             return false;
         } else if ($user->isAdmin()) {
             // Allow admin to always bid
             return true;
-        } else if ($user->isSv($task->conference)) {
+        } else if (
+            $user->isSv($conference, State::byName('accepted')) &&
+            $conference->bidding_enabled &&
+            $conference->bidding_until && // must be set
+            new Carbon($task->date) <= new Carbon($conference->bidding_until)
+        ) {
             // Allow bidding if the user is SV for the task's conference
+            // and the bidding is open
+            // and the task is within the bidable date range
             return true;
         } else {
             return false;
         }
     }
-
-
-    // /**
-    //  * Determine whether the user can create bid for a conference.
-    //  *
-    //  * @param  \App\User  $user
-    //  * @param  \App\Conferece  $conference
-    //  * @return mixed
-    //  */
-    // public function createForConference(User $user, Bid $bid, Conference $conference)
-    // {
-    //     if ($user->isAdmin()) {
-    //         return true;
-    //     } else if ($user->isSv($conference)) {
-    //         return true;
-    //     } else {
-    //         return false;
-    //     }
-    // }
 
     /**
      * Determine whether the user can update the bid.
@@ -105,11 +95,19 @@ class BidPolicy
      */
     public function update(User $user, Bid $bid)
     {
+        $task = $bid->task;
+        $conference = $task->conference;
         if ($user->isAdmin()) {
             return true;
-        } else if ($user->isSv($bid->conference)) {
-            return true;
-        } else if ($user->isChair($bid->confernce)) {
+        } else if (
+            $user->isSv($conference) &&
+            $conference->bidding_enabled &&
+            $conference->bidding_until && // must be set
+            new Carbon($task->date) <= new Carbon($conference->bidding_until)
+        ) {
+            // Allow bidding if the user is SV for the task's conference
+            // and the bidding is open
+            // and the task is within the bidable date range
             return true;
         }
     }

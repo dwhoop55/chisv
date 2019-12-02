@@ -13,6 +13,14 @@ class Conference extends Model
     // We guard there properties, such that they don't get assigned
     // when we mass-update the conference with an request
     protected $guarded = ['icon', 'image'];
+    protected $casts = [
+        'bidding_enabled' => 'boolean',
+        'enrollment_form_id' => 'int',
+        'state_id' => 'int',
+        'timezone_id' => 'int',
+        'volunteer_hours' => 'int',
+        'volunteer_max' => 'int',
+    ];
 
     /**
      * Get the route key for the model.

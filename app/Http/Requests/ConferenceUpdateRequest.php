@@ -42,7 +42,8 @@ class ConferenceUpdateRequest extends FormRequest
             'volunteer_hours' => 'integer|min:0',
             'volunteer_max' => 'integer|min:0',
             'email_chair' => 'string|email',
-            'enable_bidding' => 'boolean',
+            'bidding_enabled' => 'required|boolean',
+            'bidding_until' => 'required_if:bidding_enabled,true|nullable|date',
         ];
 
         return $rules;
@@ -60,7 +61,8 @@ class ConferenceUpdateRequest extends FormRequest
             "timezone_id.*" => "Please pick a timezone from the list",
             "location.*" => "Please specify a location",
             "description.string" => "Please give a short intro into the conference",
-            "enrollment_form_id.*" => "Please select an enrollment form from the list"
+            "enrollment_form_id.*" => "Please select an enrollment form from the list",
+            "bidding_until.*" => "Please select a day until (including) tasks will be bidable"
         ];
     }
 }

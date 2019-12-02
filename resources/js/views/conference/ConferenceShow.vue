@@ -26,7 +26,7 @@
                   <b-tag
                     rounded
                     size="is-medium"
-                    v-if="conference.enable_bidding==true"
+                    v-if="conference.bidding_enabled"
                     type="is-success"
                   >Bidding now open!</b-tag>
                   <b-tag rounded size="is-medium" v-else type="is-warning">Bidding currently closed</b-tag>

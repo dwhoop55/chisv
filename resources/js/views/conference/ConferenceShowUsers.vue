@@ -210,7 +210,9 @@
           <template>
             <div class="is-relative">
               <p
-                v-if="props.row.permission.enrollment_form.total_weight != undefined"
+                v-if="props.row.permission &&
+                 props.row.permission.enrollemnt_from &&
+                  props.row.permission.enrollment_form.total_weight != undefined"
               >{{ props.row.permission.enrollment_form.total_weight }}</p>
             </div>
           </template>

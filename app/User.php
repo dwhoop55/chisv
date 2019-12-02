@@ -119,9 +119,9 @@ class User extends Authenticatable
         return $this->hasPermission(Role::byName('captain'), $conference);
     }
 
-    public function isSv(Conference $conference = null)
+    public function isSv(Conference $conference = null, State $state = null)
     {
-        return $this->hasPermission(Role::byName('sv'), $conference);
+        return $this->hasPermission(Role::byName('sv'), $conference, $state);
     }
 
     public function grant(Role $role, Conference $conference, State $state = null, EnrollmentForm $enrollmentForm = null)
@@ -166,12 +166,32 @@ class User extends Authenticatable
         }
     }
 
-    public function hasPermission(Role $role, Conference $conference = null)
+    public function hasPermission(Role $role, Conference $conference = null, State $state = null)
     {
         if ($conference) {
-            return $this->permissions->where('role_id', $role->id)->where('conference_id', $conference->id)->isNotEmpty();
+            if ($state) {
+                return $this->permissions
+                    ->where('role_id', $role->id)
+                    ->where('conference_id', $conference->id)
+                    ->where('state_id', $state->id)
+                    ->isNotEmpty();
+            } else {
+                return $this->permissions
+                    ->where('role_id', $role->id)
+                    ->where('conference_id', $conference->id)
+                    ->isNotEmpty();
+            }
         } else {
-            return $this->permissions->where('role_id', $role->id)->isNotEmpty();
+            if ($state) {
+                return $this->permissions
+                    ->where('role_id', $role->id)
+                    ->where('state_id', $state->id)
+                    ->isNotEmpty();
+            } else {
+                return $this->permissions
+                    ->where('role_id', $role->id)
+                    ->isNotEmpty();
+            }
         }
     }
 

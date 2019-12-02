@@ -13,7 +13,7 @@ class Task extends Model
 
     public function conference()
     {
-        return $this->belongsTo('App\Task');
+        return $this->belongsTo('App\Conference');
     }
 
     public function users()

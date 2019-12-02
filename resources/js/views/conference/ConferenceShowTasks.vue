@@ -72,7 +72,7 @@
         aria-role="list"
       >
         <button class="button is-primary" slot="trigger">
-          <span>Columns {{ activeColumns.length }}/{{ canCreateTask ? '5' : '2'}}</span>
+          <span>Visible columns</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
 
