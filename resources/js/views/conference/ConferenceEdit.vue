@@ -133,7 +133,16 @@
             :type="{ 'is-danger': generalForm.errors.has('enrollment_form_id') }"
             :message="generalForm.errors.get('enrollment_form_id')"
           >
-            <enrollment-form-template-picker v-model="generalForm.enrollment_form_id"></enrollment-form-template-picker>
+            <enrollment-form-template-picker
+              v-if="generalForm.state_id == 1"
+              v-model="generalForm.enrollment_form_id"
+            ></enrollment-form-template-picker>
+            <b-notification
+              v-else
+              has-icon
+              type="is-warning"
+              :closable="false"
+            >The enrollment form can no longer be changed. The enrollment form must not be changed when there are SVs already enrolled</b-notification>
           </b-field>
           <br />
 
