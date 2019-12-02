@@ -20,7 +20,7 @@
         aria-role="list"
       >
         <button class="button" type="button" slot="trigger">
-          <span>SV states {{ selectedStates.length }} / {{ svStates.length }}</span>
+          <span>SV states {{ selectedStates.length }}/{{ svStates.length }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
 
@@ -59,7 +59,7 @@
       <div v-if="canUpdateEnrollment" style="align-items:center;">
         <b-taglist>
           <b-tag type="is-success" size="is-medium" rounded>
-            {{ acceptedCount }} / {{ conference.volunteer_max }}
+            {{ acceptedCount }}/{{ conference.volunteer_max }}
             SVs accepted
           </b-tag>
         </b-taglist>
@@ -125,13 +125,7 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column
-          :visible="props.row.email"
-          width="130"
-          field="email"
-          label="E-Mail"
-          sortable
-        >
+        <b-table-column :visible="canRunLottery" width="130" field="email" label="E-Mail" sortable>
           <template>
             <a
               @click="ignoreNextToggleClick=true"
@@ -306,7 +300,7 @@ export default {
       acceptedCount: 0,
       states: [],
       isLoading: true,
-      searchString: "",
+      searchString: this.$store.getters.svsSearch,
       selectedStates: [],
       sortField: "lastname",
       sortOrder: "asc",
@@ -559,6 +553,7 @@ export default {
     },
     debounceGetUsers: debounce(function() {
       this.getUsers();
+      this.$store.commit("SVS_SEARCH", this.searchString);
     }, 250),
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {

@@ -64,11 +64,10 @@
             </nav>
 
             <b-tabs
-              v-model="activeTab"
-              :destroy-on-hide="true"
+              :value="activeTab"
               :animated="false"
               position="is-centered"
-              @input="goTo('#' + $event)"
+              @input="$store.commit('CONFERENCE_TAB', $event)"
             >
               <b-tab-item label="Overview">
                 <conference-show-overview
@@ -111,7 +110,7 @@ export default {
       canEdit: false,
       canUpdateEnrollment: false,
       canViewUsers: false,
-      activeTab: 0,
+      activeTab: this.$store.getters.conferenceTab,
       conference: null
     };
   },

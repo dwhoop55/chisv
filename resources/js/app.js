@@ -13,6 +13,7 @@ import { Form, HasError, AlertError } from 'vform'
 import VueMoment from 'vue-moment'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
 import moment from "moment-timezone";
+import vuexStore from './store';
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -246,6 +247,7 @@ Vue.mixin({
 
 export const vm = new Vue({
     el: "#app",
+    store: vuexStore,
     data: {
         showMobileNav: false,
         showJobsOverview: false,

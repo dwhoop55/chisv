@@ -64,8 +64,25 @@
         type="is-primary"
         v-if="canCreateTask"
       >Import task</b-button>
-    </b-field>
 
+      <b-dropdown
+        :value="activeColumns"
+        @input="$store.commit('TASKS_COLUMNS', $event)"
+        multiple
+        aria-role="list"
+      >
+        <button class="button is-primary" slot="trigger">
+          <span>Columns {{ activeColumns.length }}/{{ canCreateTask ? '5' : '2'}}</span>
+          <b-icon icon="menu-down"></b-icon>
+        </button>
+
+        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="manage">Manage</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
+        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
+      </b-dropdown>
+    </b-field>
     <br />
 
     <b-table
@@ -75,7 +92,6 @@
       :data="tasks"
       detail-key="id"
       :show-detail-icon="true"
-      detailed
       paginated
       backend-pagination
       :total="totalTasks"
@@ -91,7 +107,11 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column width="150" :visible="canCreateTask" label="Manage">
+        <b-table-column
+          :visible="canCreateTask && activeColumns.includes('manage')"
+          width="150"
+          label="Manage"
+        >
           <b-button @click="editTask(props.row)" outlined size="is-small" type="is-primary">Edit</b-button>
           <b-button
             @click="confirmDeleteTask(props.row)"
@@ -124,13 +144,32 @@
           sortable
           label="Hours"
         >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
-        <b-table-column field="tasks.name" sortable label="Name">
-          <a @click="toggle(props.row)">{{ props.row.name }}</a>
-        </b-table-column>
-        <b-table-column field="tasks.location" sortable label="Location">{{ props.row.location }}</b-table-column>
-        <b-table-column field="tasks.slots" width="10" sortable label="Slots">{{ props.row.slots }}</b-table-column>
+        <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
         <b-table-column
-          :visible="canCreateTask"
+          :visible="activeColumns.includes('location')"
+          field="tasks.location"
+          sortable
+          label="Location"
+        >{{ props.row.location }}</b-table-column>
+        <b-table-column
+          :visible="activeColumns.includes('description')"
+          field="tasks.description"
+          sortable
+          label="Description"
+        >
+          <a
+            @click.prevent="showDescription(props.row)"
+          >{{ props.row.description | textlimit(40) }} {{ (props.row.description.length > 40) ? ' (more)' : '' }}</a>
+        </b-table-column>
+        <b-table-column
+          :visible="canCreateTask && activeColumns.includes('slots')"
+          field="tasks.slots"
+          width="10"
+          sortable
+          label="Slots"
+        >{{ props.row.slots }}</b-table-column>
+        <b-table-column
+          :visible="canCreateTask && activeColumns.includes('priority')"
           field="tasks.priority"
           width="10"
           sortable
@@ -192,7 +231,7 @@ export default {
       tasks: [],
       taskDays: [],
       totalTasks: null,
-      searchString: "",
+      searchString: this.$store.getters.tasksSearch,
       day: new Date(),
       selectedPriorities: [1, 2, 3],
       allPriorities: [1, 2, 3],
@@ -356,6 +395,7 @@ export default {
     },
     debounceGetTasks: debounce(function() {
       this.getTasks();
+      this.$store.commit("TASKS_SEARCH", this.searchString);
     }, 250),
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
@@ -366,6 +406,12 @@ export default {
     },
     dateFormatter(date) {
       return `Tasks for ${date.toLocaleDateString()}`;
+    },
+    showDescription(task) {
+      this.$buefy.dialog.alert({
+        title: task.name,
+        message: task.description
+      });
     }
   },
 
@@ -376,6 +422,9 @@ export default {
   },
 
   computed: {
+    activeColumns() {
+      return this.$store.getters.tasksColumns;
+    },
     calendarEvents() {
       if (!this.conference.start_date || !this.conference.end_date) {
         return null;
