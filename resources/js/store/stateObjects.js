@@ -1,6 +1,7 @@
 var tasks = {
     columns: ['manage', 'location', 'slots', 'priority', 'description'],
     search: "",
+    sort: { field: 'start_at', direction: 'asc' },
     day: new Date(),
 }
 

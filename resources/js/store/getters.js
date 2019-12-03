@@ -8,6 +8,12 @@ export default {
     tasksDay: state => {
         return state.tasks.day;
     },
+    tasksSortField: state => {
+        return state.tasks.sort.field;
+    },
+    tasksSortDirection: state => {
+        return state.tasks.sort.direction;
+    },
 
     svsSearch: state => {
         return state.svs.search;

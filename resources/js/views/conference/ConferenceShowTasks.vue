@@ -99,7 +99,8 @@
       :loading="isLoading"
       :hoverable="true"
       backend-sorting
-      default-sort="tasks.start_at"
+      :default-sort="sortField"
+      :default-sort-direction="sortDirection"
       sort-icon="chevron-up"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
@@ -239,8 +240,8 @@ export default {
       day: new Date(this.$store.getters.tasksDay),
       selectedPriorities: [1, 2, 3],
       allPriorities: [1, 2, 3],
-      sortField: "tasks.start_at",
-      sortOrder: "asc",
+      sortField: this.$store.getters.tasksSortField,
+      sortDirection: this.$store.getters.tasksSortDirection,
       perPage: 10,
       page: 1,
 
@@ -366,7 +367,7 @@ export default {
 
       const params = [
         `sort_by=${this.sortField}`,
-        `sort_order=${this.sortOrder}`,
+        `sort_order=${this.sortDirection}`,
         `page=${this.page}`,
         `per_page=${this.perPage}`,
         `search_string=${this.searchString}`,
@@ -394,9 +395,11 @@ export default {
       this.page = page;
       this.getTasks();
     },
-    onSort(field, order) {
+    onSort(field, direction) {
       this.sortField = field;
-      this.sortOrder = order;
+      this.sortDirection = direction;
+      this.$store.commit("TASKS_SORT_FIELD", field);
+      this.$store.commit("TASKS_SORT_DIRECTION", direction);
       this.getTasks();
     },
     debounceGetTasks: debounce(function() {
