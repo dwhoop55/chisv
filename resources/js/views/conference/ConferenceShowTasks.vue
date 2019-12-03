@@ -212,7 +212,6 @@
               <b-icon icon="menu-down"></b-icon>
             </button>
 
-            <b-dropdown-item value="1" aria-role="listitem">1 per page</b-dropdown-item>
             <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
@@ -415,8 +414,8 @@ export default {
       this.selectedPriorities = priorities;
     },
     debounceGetTasks: debounce(function() {
-      this.getTasks();
       this.$store.commit("TASKS_SEARCH", this.searchString);
+      this.getTasks();
     }, 250),
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
