@@ -29,10 +29,11 @@
 
       <b-dropdown
         v-if="canCreateTask"
+        @input="onPrioritiesChange"
+        @active-change="($event == false) ? getTasks() : null"
+        :value="selectedPriorities"
         :disabled="isLoading"
         class="control"
-        @active-change="($event == false) ? getTasks() : null"
-        v-model="selectedPriorities"
         multiple
         aria-role="list"
       >
@@ -205,12 +206,13 @@
 
       <template slot="footer">
         <div class="has-text-right">
-          <b-dropdown @change="perPage=$event;getTasks()" :value="perPage" aria-role="list">
+          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
             </button>
 
+            <b-dropdown-item value="1" aria-role="listitem">1 per page</b-dropdown-item>
             <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
@@ -238,12 +240,12 @@ export default {
       totalTasks: null,
       searchString: this.$store.getters.tasksSearch,
       day: new Date(this.$store.getters.tasksDay),
-      selectedPriorities: [1, 2, 3],
+      selectedPriorities: this.$store.getters.tasksPriorities,
       allPriorities: [1, 2, 3],
       sortField: this.$store.getters.tasksSortField,
       sortDirection: this.$store.getters.tasksSortDirection,
-      perPage: 10,
-      page: 1,
+      perPage: this.$store.getters.tasksPerPage,
+      page: this.$store.getters.tasksPage,
 
       isLoading: true,
       isLoadingCalendar: true,
@@ -392,7 +394,13 @@ export default {
         });
     },
     onPageChange(page) {
+      this.$store.commit("TASKS_PAGE", page);
       this.page = page;
+      this.getTasks();
+    },
+    onPerPageChange(perPage) {
+      this.$store.commit("TASKS_PER_PAGE", perPage);
+      this.perPage = perPage;
       this.getTasks();
     },
     onSort(field, direction) {
@@ -401,6 +409,10 @@ export default {
       this.$store.commit("TASKS_SORT_FIELD", field);
       this.$store.commit("TASKS_SORT_DIRECTION", direction);
       this.getTasks();
+    },
+    onPrioritiesChange(priorities) {
+      this.$store.commit("TASKS_PRIORITIES", priorities);
+      this.selectedPriorities = priorities;
     },
     debounceGetTasks: debounce(function() {
       this.getTasks();

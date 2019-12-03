@@ -21,6 +21,15 @@ export default {
             state.tasks.sort.direction = direction;
         }
     },
+    TASKS_PER_PAGE(state, perPage) {
+        state.tasks.page.items = perPage;
+    },
+    TASKS_PAGE(state, page) {
+        state.tasks.page.index = page;
+    },
+    TASKS_PRIORITIES(state, priorities) {
+        state.tasks.priorities = priorities;
+    },
 
     SVS_SEARCH(state, search) {
         state.svs.search = search;

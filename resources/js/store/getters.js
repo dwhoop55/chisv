@@ -14,6 +14,15 @@ export default {
     tasksSortDirection: state => {
         return state.tasks.sort.direction;
     },
+    tasksPerPage: state => {
+        return parseInt(state.tasks.page.items);
+    },
+    tasksPage: state => {
+        return parseInt(state.tasks.page.index);
+    },
+    tasksPriorities: state => {
+        return state.tasks.priorities;
+    },
 
     svsSearch: state => {
         return state.svs.search;
