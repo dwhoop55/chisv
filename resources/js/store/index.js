@@ -1,17 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
-import mutations from './mutations';
-import getters from './getters';
+
+import mutations from './mutations'; // Setters
+import getters from './getters'; // Getters
+import { tasks, svs, navigation } from './stateObjects'; // Statemodels
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-        tasksColumns: ['manage', 'location', 'slots', 'priority', 'description'],
-        tasksSearch: "",
-        svsSearch: "",
-        conferenceTab: 0,
+        tasks: tasks,
+        svs: svs,
+        navigation: navigation
     },
     plugins: [createPersistedState()],
     mutations: mutations,

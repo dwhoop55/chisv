@@ -1,17 +1,18 @@
 export default {
     tasksColumns: state => {
-        return state.tasksColumns;
+        return state.tasks.columns;
     },
     tasksSearch: state => {
-        return state.tasksSearch;
+        return state.tasks.search;
     },
+    tasksDay: state => {
+        return state.tasks.day;
+    },
+
     svsSearch: state => {
-        return state.svsSearch;
-    },
-    svsState: state => {
-        return state.svsState;
+        return state.svs.search;
     },
     conferenceTab: state => {
-        return state.conferenceTab;
+        return state.navigation.conferenceTab;
     }
 }

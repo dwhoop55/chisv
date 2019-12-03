@@ -236,7 +236,7 @@ export default {
       taskDays: [],
       totalTasks: null,
       searchString: this.$store.getters.tasksSearch,
-      day: new Date(),
+      day: new Date(this.$store.getters.tasksDay),
       selectedPriorities: [1, 2, 3],
       allPriorities: [1, 2, 3],
       sortField: "tasks.start_at",
@@ -362,6 +362,8 @@ export default {
         });
     },
     getTasks() {
+      this.$store.commit("TASKS_DAY", this.day);
+
       const params = [
         `sort_by=${this.sortField}`,
         `sort_order=${this.sortOrder}`,

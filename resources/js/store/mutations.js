@@ -1,18 +1,22 @@
 
 export default {
     TASKS_COLUMNS(state, columns) {
-        state.taskColumns = columns;
+        state.tasks.columns = columns;
     },
     TASKS_SEARCH(state, search) {
-        state.tasksSearch = search;
+        state.tasks.search = search;
     },
+    TASKS_DAY(state, day) {
+        if (day) {
+            state.tasks.day = day;
+        }
+    },
+
     SVS_SEARCH(state, search) {
-        state.svsSearch = search;
+        state.svs.search = search;
     },
-    SVS_STATES(state, svsStates) {
-        state.svsStates = svsStates;
-    },
+
     CONFERENCE_TAB(state, tab) {
-        state.conferenceTab = tab;
+        state.navigation.conferenceTab = tab;
     },
 }
