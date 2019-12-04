@@ -32,12 +32,6 @@ export default {
           name: "My Conferences",
           href: `/user/${this.user.id}/edit`,
           color: "is-warning"
-        },
-        { name: "All Tasks", href: `/tasks`, color: "is-primary" },
-        {
-          name: "My Tasks",
-          href: `/user/${this.user.id}/task`,
-          color: "is-info"
         }
       ]
     };

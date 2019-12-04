@@ -95,11 +95,10 @@
                                 My Profile
                             </a>
                             <hr class="navbar-divider">
-                            <a class="navbar-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                            $('#logout-form').submit();">
-                                Logout
-                            </a>
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+
+                            <a class="navbar-item" href="{{ route('logout') }}"
+                                @click.prevent="$refs.logout.submit()">Logout</a>
+                            <form ref="logout" action="{{ route('logout') }}" method="POST" style="display: none;">
                                 @csrf
                             </form>
 

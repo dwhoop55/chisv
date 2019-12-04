@@ -105,6 +105,35 @@
           >
             <state-picker :range="[0,10]" v-model="generalForm.state_id"></state-picker>
           </b-field>
+
+          <b-field grouped>
+            <b-field
+              label="Enable bidding on tasks (independent of state above)"
+              :type="{ 'is-danger': generalForm.errors.has('bidding_enabled') }"
+              :message="generalForm.errors.get('bidding_enabled')"
+            >
+              <b-switch
+                v-model="generalForm.bidding_enabled"
+              >{{ generalForm.bidding_enabled ? 'Bidding open until' : 'Bidding closed' }}</b-switch>
+            </b-field>
+            <b-field
+              expanded
+              v-if="generalForm.bidding_enabled"
+              label="Bidding open for tasks until"
+              :type="{ 'is-danger': generalForm.errors.has('bidding_until') }"
+              :message="generalForm.errors.get('bidding_until')"
+            >
+              <b-datepicker
+                :value="generalForm.bidding_until ? new Date(generalForm.bidding_until) : new Date()"
+                @input="generalForm.bidding_until = $event.toMySqlDate()"
+                :min-date="minDate"
+                expanded
+                placeholder="Day (including) until which can be bid"
+                icon="calendar-today"
+              ></b-datepicker>
+            </b-field>
+          </b-field>
+
           <br />
 
           <b-field grouped>
@@ -153,31 +182,6 @@
             label="Email of the chair managing the conference (will be in the reply-to field of all emails)"
           >
             <b-input required v-model="generalForm.email_chair"></b-input>
-          </b-field>
-
-          <b-field grouped>
-            <b-field
-              label="Enable bidding on tasks"
-              :type="{ 'is-danger': generalForm.errors.has('bidding_enabled') }"
-              :message="generalForm.errors.get('bidding_enabled')"
-            >
-              <b-switch v-model="generalForm.bidding_enabled"></b-switch>
-            </b-field>
-            <b-field
-              expanded
-              v-if="generalForm.bidding_enabled"
-              label="Bidding open for tasks until"
-              :type="{ 'is-danger': generalForm.errors.has('bidding_until') }"
-              :message="generalForm.errors.get('bidding_until')"
-            >
-              <b-datepicker
-                :value="new Date(generalForm.bidding_until)"
-                @input="generalForm.bidding_until = $event.toMySqlDate()"
-                expanded
-                placeholder="Day (including) until which can be bid"
-                icon="calendar-today"
-              ></b-datepicker>
-            </b-field>
           </b-field>
 
           <b-field class="buttons" grouped position="is-right">
@@ -535,6 +539,14 @@ export default {
             });
         }
       });
+    }
+  },
+
+  computed: {
+    minDate() {
+      var d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d;
     }
   }
 };

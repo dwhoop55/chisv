@@ -8,6 +8,7 @@ use App\State;
 use App\Conference;
 use App\Services\EnrollmentFormService;
 use App\User;
+use Illuminate\Support\Facades\DB;
 
 class UsersTableSeeder extends Seeder
 {

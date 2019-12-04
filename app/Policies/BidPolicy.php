@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Bid;
+use App\Conference;
 use App\State;
 use App\Task;
 use App\User;
@@ -64,26 +65,11 @@ class BidPolicy
      */
     public function createForTask(User $user, Task $task)
     {
-        $conference = $task->conference;
         if ($task->users->contains($user)) {
             // We only allow one bid per user per task
             return false;
-        } else if ($user->isAdmin()) {
-            // Allow admin to always bid
-            return true;
-        } else if (
-            $user->isSv($conference, State::byName('accepted')) &&
-            $conference->bidding_enabled &&
-            $conference->bidding_until && // must be set
-            new Carbon($task->date) <= new Carbon($conference->bidding_until)
-        ) {
-            // Allow bidding if the user is SV for the task's conference
-            // and the bidding is open
-            // and the task is within the bidable date range
-            return true;
-        } else {
-            return false;
         }
+        return $this->canBidTask($user, $task);
     }
 
     /**
@@ -95,20 +81,26 @@ class BidPolicy
      */
     public function update(User $user, Bid $bid)
     {
-        $task = $bid->task;
+        return $this->canBidTask($user, $bid->task);
+    }
+
+    public function canBidTask(User $user, Task $task)
+    {
         $conference = $task->conference;
-        if ($user->isAdmin()) {
-            return true;
-        } else if (
-            $user->isSv($conference) &&
+        if (
+            $user->isSv($conference, State::byName('accepted')) &&
             $conference->bidding_enabled &&
             $conference->bidding_until && // must be set
-            new Carbon($task->date) <= new Carbon($conference->bidding_until)
+            new Carbon($task->date) <= new Carbon($conference->bidding_until) &&
+            new Carbon($task->date) >= Carbon::today()
         ) {
-            // Allow bidding if the user is SV for the task's conference
-            // and the bidding is open
-            // and the task is within the bidable date range
+            // Allow bidding if the user is SV for the task's conference and 'accepted',
+            // the bidding is open
+            // the task is not after bidding_until
+            // the task is not in the past
             return true;
+        } else {
+            return false;
         }
     }
 

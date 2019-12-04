@@ -1,5 +1,5 @@
 <template>
-  <b-field class="is-relative">
+  <b-field @click.native="showDisabledHint()" class="is-relative">
     <b-radio-button
       @input="setPreference($event)"
       :value="task.own_bid.preference"
@@ -129,6 +129,15 @@ export default {
       setTimeout(() => {
         this.showErrorIcon = false;
       }, 2000);
+    },
+    showDisabledHint() {
+      if (this.disabled) {
+        this.$buefy.dialog.alert(
+          "You cannot bid or change your bid at the moment. One of the reasons might be:\
+            <li>Bidding is not open for this day</li>\
+            <li>You are not an SV with the state <i>accepted</i></li>"
+        );
+      }
     }
   },
 
