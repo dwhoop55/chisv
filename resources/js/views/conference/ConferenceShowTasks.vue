@@ -4,7 +4,7 @@
       <b-datepicker
         :date-formatter="dateFormatter"
         :loading="isLoadingCalendar"
-        @input="getTasks()"
+        @input="onDayChange()"
         v-model="day"
         :events="calendarEvents"
         indicators="bars"
@@ -412,6 +412,9 @@ export default {
     onPrioritiesChange(priorities) {
       this.$store.commit("TASKS_PRIORITIES", priorities);
       this.selectedPriorities = priorities;
+    },
+    onDayChange() {
+      this.onPageChange(1);
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("TASKS_SEARCH", this.searchString);
