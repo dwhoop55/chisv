@@ -22,6 +22,7 @@ use App\Timezone;
 use App\Conference;
 use App\Role;
 use App\State;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +129,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/task', 'ConferenceController@task')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.task');
+        Route::get('conference/{conference}/assignment', 'ConferenceController@assignment')
+            ->middleware("can:viewAny,App\Assignment")
+            ->name('conference.assignment');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
         Route::get('conference/{conference}/sv', 'ConferenceController@sv')

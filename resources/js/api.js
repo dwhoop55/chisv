@@ -14,6 +14,9 @@ export default {
     getConferenceTasks(key, params) {
         return axios.get(`conference/${key}/task${params}`);
     },
+    getConferenceAssignments(key, params) {
+        return axios.get(`conference/${key}/assignment${params}`);
+    },
     getConferenceTaskDays(key) {
         return axios.get(`conference/${key}/task/day`);
     },

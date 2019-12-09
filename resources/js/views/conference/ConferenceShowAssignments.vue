@@ -20,7 +20,7 @@
 
       <b-input
         width="600"
-        @input="debounceGetTasks()"
+        @input="debounceGetAssignments()"
         v-model="searchString"
         placeholder="Search.."
         type="search"
@@ -28,47 +28,8 @@
       ></b-input>
 
       <b-dropdown
-        v-if="canCreateTask"
-        @input="onPrioritiesChange"
-        @active-change="($event == false) ? getTasks() : null"
-        :value="selectedPriorities"
-        :disabled="isLoading"
-        class="control"
-        multiple
-        aria-role="list"
-      >
-        <button class="button" type="button" slot="trigger">
-          <span>Priorities {{ selectedPriorities.length }} / {{ allPriorities.length }}</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
-        <b-dropdown-item
-          :disabled="isLoading"
-          v-for="priority in allPriorities"
-          :key="priority"
-          :value="priority"
-          aria-role="listitem"
-        >
-          <p>{{ priority }}</p>
-        </b-dropdown-item>
-      </b-dropdown>
-
-      <b-button
-        class="control"
-        @click="createTask('single')"
-        type="is-primary"
-        v-if="canCreateTask"
-      >New task</b-button>
-
-      <b-button
-        class="control"
-        @click="createTask('multiple')"
-        type="is-primary"
-        v-if="canCreateTask"
-      >Import task</b-button>
-
-      <b-dropdown
         :value="activeColumns"
-        @input="$store.commit('TASKS_COLUMNS', $event)"
+        @input="$store.commit('ASSIGNMENTS_COLUMNS', $event)"
         multiple
         aria-role="list"
       >
@@ -77,11 +38,8 @@
           <b-icon icon="menu-down"></b-icon>
         </button>
 
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="manage">Manage</b-dropdown-item>
         <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
         <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
       </b-dropdown>
     </b-field>
     <br />
@@ -90,10 +48,10 @@
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
-      :data="tasks"
+      :data="assigmnents"
       paginated
       backend-pagination
-      :total="totalTasks"
+      :total="totalAssignments"
       :per-page="perPage"
       :loading="isLoading"
       :hoverable="true"
@@ -107,25 +65,6 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column
-          :visible="canCreateTask && activeColumns.includes('manage')"
-          width="150"
-          label="Manage"
-        >
-          <b-button @click="editTask(props.row)" outlined size="is-small" type="is-primary">Edit</b-button>
-          <b-button
-            @click="confirmDeleteTask(props.row)"
-            outlined
-            size="is-small"
-            type="is-danger"
-          >Delete</b-button>
-        </b-table-column>
-        <b-table-column width="190" label="Your preference">
-          <template slot="header" slot-scope="{ column }">
-            <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
-          </template>
-          <task-bid-picker @error="getTasks()" size="is-small" v-model="props.row"></task-bid-picker>
-        </b-table-column>
         <b-table-column
           field="tasks.start_at"
           width="10"
@@ -184,7 +123,7 @@
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
             <p>
-              No tasks found for
+              No assignments found for
               <b v-if="searchString.length > 0">{{ searchString }}</b>
               {{ day | moment('ll') }}
             </p>
@@ -195,7 +134,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >{{ totalTasks > 0 ? totalTasks : 'No' }} {{ totalTasks == 1 ? 'task' : 'tasks' }} for {{ this.day | moment('ll') }}</small>
+        >{{ totalAssignmnents > 0 ? totalAssignmnents : 'No' }} {{ totalAssignmnents == 1 ? 'assignment' : 'assignmnents' }} for {{ this.day | moment('ll') }}</small>
       </template>
 
       <template slot="footer">
@@ -221,20 +160,17 @@
 <script>
 import api from "@/api.js";
 import auth from "@/auth.js";
-import TaskModalVue from "@/components/modals/TaskModal.vue";
 
 export default {
   props: ["conference"],
 
   data() {
     return {
-      tasks: [],
+      assignments: [],
       taskDays: [],
-      totalTasks: null,
+      totalAssignments: null,
       searchString: this.$store.getters.tasksSearch,
       day: new Date(this.$store.getters.tasksDay),
-      selectedPriorities: this.$store.getters.tasksPriorities,
-      allPriorities: [1, 2, 3],
       sortField: this.$store.getters.tasksSortField,
       sortDirection: this.$store.getters.tasksSortDirection,
       perPage: this.$store.getters.tasksPerPage,
@@ -243,106 +179,11 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
-      ignoreNextToggleClick: false,
-
-      canCreateTask: false
+      ignoreNextToggleClick: false
     };
   },
 
   methods: {
-    createTask(type) {
-      if (type == "single") {
-        this.$buefy.modal.open({
-          parent: this,
-          props: {
-            task: {
-              name: "",
-              location: "",
-              description: "",
-              date: new Date().toMySqlDate(),
-              start_at: "09:00:00",
-              end_at: "09:00:00",
-              hours: 0,
-              priority: 1,
-              slots: 1,
-              conference_id: this.conference.id
-            },
-            updated: () => {
-              this.getTasks();
-              this.getTaskDays();
-            },
-            calendarEvents: this.calendarEvents
-          },
-          component: TaskModalVue,
-          hasModalCard: true
-        });
-      } else if (type == "multiple") {
-      }
-    },
-    editTask(task) {
-      this.$buefy.modal.open({
-        parent: this,
-        props: {
-          task: task,
-          updated: () => {
-            this.getTasks();
-            this.getTaskDays();
-          },
-          calendarEvents: this.calendarEvents
-        },
-        component: TaskModalVue,
-        hasModalCard: true
-      });
-    },
-    confirmDeleteTask(task) {
-      this.$buefy.dialog.confirm({
-        title: "Caution!",
-        message: `Are you sure you want to
-        <b>permanently delete</b> the task <i>${task.name}</i>?
-        <br/><br/>
-        This will also remove all associated bids and assignments.
-        This action cannot be undone.`,
-        confirmText: "Yes, delete this task",
-        type: "is-danger",
-        hasIcon: true,
-        onConfirm: () => {
-          this.deleteTask(task);
-        }
-      });
-    },
-    deleteTask(task) {
-      console.log(task);
-      this.isLoading = true;
-      api
-        .deleteTask(task.id)
-        .then(data => {
-          this.getTasks();
-          this.getTaskDays();
-        })
-        .catch(error => {
-          var message = error.response.data.message
-            ? error.response.data.message
-            : error.message;
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: message,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    getCan: async function() {
-      this.canCreateTask = await auth.can(
-        "createForConference",
-        "Task",
-        null,
-        "Conference",
-        this.conference.id
-      );
-    },
     getTaskDays() {
       this.isLoadingCalendar = true;
       api
@@ -357,8 +198,8 @@ export default {
           this.isLoadingCalendar = false;
         });
     },
-    getTasks() {
-      this.$store.commit("TASKS_DAY", this.day);
+    getAssignments() {
+      this.$store.commit("ASSIGNMENTS_DAY", this.day);
 
       const params = [
         `sort_by=${this.sortField}`,
@@ -366,20 +207,19 @@ export default {
         `page=${this.page}`,
         `per_page=${this.perPage}`,
         `search_string=${this.searchString}`,
-        `priorities=${this.selectedPriorities}`,
         `day=${this.day.toMySqlDate()}`
       ].join("&");
 
       this.isLoading = true;
       api
-        .getConferenceTasks(this.conference.key, `?${params}`)
+        .getConferenceAssignments(this.conference.key, `?${params}`)
         .then(({ data }) => {
-          this.tasks = data.data;
-          this.totalTasks = data.total;
+          this.assignments = data.data;
+          this.totalAssignments = data.total;
         })
         .catch(error => {
-          this.tasks = [];
-          this.totalTasks = 0;
+          this.assignments = [];
+          this.totalAssignments = 0;
           throw error;
         })
         .finally(() => {
@@ -387,43 +227,29 @@ export default {
         });
     },
     onPageChange(page) {
-      this.$store.commit("TASKS_PAGE", page);
+      this.$store.commit("ASSIGNMENTS_PAGE", page);
       this.page = page;
-      this.getTasks();
+      this.getAssignments();
     },
     onPerPageChange(perPage) {
-      this.$store.commit("TASKS_PER_PAGE", perPage);
+      this.$store.commit("ASSIGNMENTS_PER_PAGE", perPage);
       this.perPage = perPage;
-      this.getTasks();
+      this.getAssignments();
     },
     onSort(field, direction) {
       this.sortField = field;
       this.sortDirection = direction;
-      this.$store.commit("TASKS_SORT_FIELD", field);
-      this.$store.commit("TASKS_SORT_DIRECTION", direction);
-      this.getTasks();
-    },
-    onPrioritiesChange(priorities) {
-      this.$store.commit("TASKS_PRIORITIES", priorities);
-      this.selectedPriorities = priorities;
+      this.$store.commit("ASSIGNMENTS_SORT_FIELD", field);
+      this.$store.commit("ASSIGNMENTS_SORT_DIRECTION", direction);
+      this.getAssignments();
     },
     onDayChange() {
       this.onPageChange(1);
     },
     debounceGetTasks: debounce(function() {
-      this.$store.commit("TASKS_SEARCH", this.searchString);
-      this.getTasks();
+      this.$store.commit("ASSIGNMENTS_SEARCH", this.searchString);
+      this.getAssignments();
     }, 250),
-    toggle: function(row) {
-      if (this.ignoreNextToggleClick) {
-        this.ignoreNextToggleClick = false;
-      } else {
-        this.$refs.table.toggleDetails(row);
-      }
-    },
-    dateFormatter(date) {
-      return `Tasks for ${date.toLocaleDateString()}`;
-    },
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
@@ -433,14 +259,13 @@ export default {
   },
 
   created() {
-    this.getTasks();
+    this.getAssignments();
     this.getTaskDays();
-    this.getCan();
   },
 
   computed: {
     activeColumns() {
-      return this.$store.getters.tasksColumns;
+      return this.$store.getters.assignmentsColumns;
     },
     calendarEvents() {
       if (!this.conference.start_date || !this.conference.end_date) {

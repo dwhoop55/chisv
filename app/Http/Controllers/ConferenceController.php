@@ -74,6 +74,70 @@ class ConferenceController extends Controller
         return ["result" => $job->id, "message" => "Lottery for $conference->name has been queued as a new job"];
     }
 
+
+    /**
+     * Show all tasks for a conference including
+     * their assignments and users which match the params
+     * 
+     * @return \Illuminate\Http\Response All tasks for the requestes params
+     */
+    public function assignment(Conference $conference)
+    {
+        $search = request()->search_string;
+        $day = request()->day;
+        $user = auth()->user();
+
+        abort_unless(
+            $user->can('viewAssignments', $conference),
+            403,
+            'You have no permission to see any assignments for this conference!'
+        );
+
+        $query = Task
+            // join assignments to then join users
+            ::leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
+            ->leftJoin('users', 'assignments.user_id', '=', 'users.id')
+            // Stay bond to this $conference
+            ->where('tasks.conference_id', $conference->id)
+            ->whereDate('tasks.date', $day)
+            ->groupBy('tasks.id')
+            ->orderBy(request()->sort_by, request()->sort_order);
+
+        // Only add queries when we are searching for something
+        if (strlen($search) > 0) {
+            $query->where(function ($query) use ($search) {
+                $query->orWhere('tasks.name', 'LIKE', '%' . $search . '%');
+                $query->orWhere('tasks.location', 'LIKE', '%' . $search . '%');
+            });
+        }
+
+        // Load the paginated results from the database
+        // Only retreive 'tasks.*' or we would have collision
+        // due to the joins we did earlier
+        $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
+
+        // Now we have a collection which can have multiple items with the same task
+        // That is because we used left join and every assignment->user match results
+        // in a new item in the collection. We will now have to go through all these
+        // items and push the to a cleaner collection - but only once for every
+        // occurence. Based on the resulting collection we then load the assignments
+        // and users back in again. This way the task and the user is searchable
+        // from the frontend but send back over to the frontend efficiently
+        $uniqueTasks = collect();
+        $paginatedTasks->each(function ($task) use ($uniqueTasks) {
+            if (!$uniqueTasks->has($task->id)) {
+                $task->assignments = $task->assignments->transform(function ($assignment) {
+                    $cleanAssignment = $assignment->only(['id', 'task_id', 'override_hours']);
+                    $cleanAssignment['user'] = $assignment->user->only('id', 'firstname', 'lastname');
+                    return $cleanAssignment;
+                });
+                $uniqueTasks->put($task->id, $task);
+            }
+        });
+
+        return ["data" => $uniqueTasks, "total" => $uniqueTasks->count()];
+    }
+
     /**
      * Show all tasks for a conference
      * which match the params
@@ -94,7 +158,7 @@ class ConferenceController extends Controller
         $user = auth()->user();
 
         $query = Task::
-            // Stay bond to this $converence
+            // Stay bond to this $conference
             where('tasks.conference_id', $conference->id)
             ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
@@ -119,6 +183,12 @@ class ConferenceController extends Controller
         $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
 
         $paginatedTasks->getCollection()->transform(function ($task) use ($user, $conference) {
+            // Remove some fields when the user is not admin, chair or captain
+            if (!$user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference)) {
+                unset($task->slots);
+                unset($task->priority);
+            }
+
             // Provide some dummy bid so that the frontend can fill it out
             $task->own_bid = new Bid([
                 'user_id' => $user->id,
@@ -127,8 +197,9 @@ class ConferenceController extends Controller
 
             foreach ($task->bids as $bid) {
                 if ($bid->user_id == $user->id) {
-                    $task->own_bid = $bid;
-                    $task->own_bid->can_update = $user->can('update', $bid);
+                    $cleanBid = collect($bid->only(['id', 'preference', 'state']));
+                    $task->own_bid = $cleanBid;
+                    $task->own_bid->put('can_update', $user->can('update', $bid));
                     // We found the one bid from the user
                     // due to the database scheme there can only
                     // be one bid per user per task, so we can
@@ -199,7 +270,7 @@ class ConferenceController extends Controller
             ->join('enrollment_forms', 'permissions.enrollment_form_id', '=', 'enrollment_forms.id')
             // We have to join universities to make it searchable
             ->join('universities', 'users.university_id', '=', 'universities.id')
-            // Stay bond to this $converence and 'sv' state
+            // Stay bond to this $conference and 'sv' state
             ->where('conference_id', $conference->id)
             ->where("role_id", Role::byName('sv')->id)
             ->orderBy(request()->sort_by, request()->sort_order);

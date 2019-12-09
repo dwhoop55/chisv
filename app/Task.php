@@ -9,7 +9,7 @@ class Task extends Model
 {
     protected $guarded = [];
     protected $dates = ['date'];
-    protected $hidden = ['bids', 'users'];
+    protected $hidden = ['bids', 'users', 'hide', 'updated_at', 'created_at'];
 
     public function conference()
     {
@@ -24,5 +24,10 @@ class Task extends Model
     public function bids()
     {
         return $this->hasMany('App\Bid');
+    }
+
+    public function assignments()
+    {
+        return $this->hasMany('App\Assignment');
     }
 }

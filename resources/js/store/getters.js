@@ -24,6 +24,28 @@ export default {
         return state.tasks.priorities;
     },
 
+    assignmentsColumns: state => {
+        return state.assignments.columns;
+    },
+    assignmentsSearch: state => {
+        return state.assignments.search;
+    },
+    assignmentsDay: state => {
+        return state.assignments.day;
+    },
+    assignmentsSortField: state => {
+        return state.assignments.sort.field;
+    },
+    assignmentsSortDirection: state => {
+        return state.assignments.sort.direction;
+    },
+    assignmentsPerPage: state => {
+        return parseInt(state.assignments.page.items);
+    },
+    assignmentsPage: state => {
+        return parseInt(state.assignments.page.index);
+    },
+
     svsSearch: state => {
         return state.svs.search;
     },

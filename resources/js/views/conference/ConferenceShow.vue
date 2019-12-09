@@ -84,6 +84,9 @@
                 <conference-show-tasks v-if="canViewUsers" :conference="conference"></conference-show-tasks>
                 <p v-else>You need to be enrolled to see tasks!</p>
               </b-tab-item>
+              <b-tab-item :visible="canUpdateAssignment" label="Assignments">
+                <conference-show-assignments :conference="conference"></conference-show-assignments>
+              </b-tab-item>
               <b-tab-item v-if="canEdit" label="Conference">
                 <conference-edit v-model="conference"></conference-edit>
               </b-tab-item>
@@ -109,6 +112,7 @@ export default {
       loading: true,
       canEdit: false,
       canUpdateEnrollment: false,
+      canUpdateAssignment: false,
       canViewUsers: false,
       activeTab: this.$store.getters.conferenceTab,
       conference: null
@@ -129,6 +133,11 @@ export default {
       );
       this.canViewUsers = await auth.can(
         "viewUsers",
+        "Conference",
+        this.conference.id
+      );
+      this.canUpdateAssignment = await auth.can(
+        "viewAssignments",
         "Conference",
         this.conference.id
       );

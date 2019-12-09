@@ -53,6 +53,48 @@ class ConferencePolicy
         return false;
     }
 
+    /**
+     * Determine whether the user can view 
+     * task assignments
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return boolean
+     */
+    public function viewAssignments(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference) || $user->isCaptain($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can change/update 
+     * task assignments
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return boolean
+     */
+    public function updateAssignments(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference) || $user->isCaptain($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function updateEnrollmentFormWeights(User $user, Conference $conference)
     {
         if ($user->isAdmin()) {
