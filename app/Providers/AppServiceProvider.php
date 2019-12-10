@@ -2,15 +2,11 @@
 
 namespace App\Providers;
 
-use App\Job;
 use App\Services\EnrollmentFormService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Pixabay;
-use Illuminate\Queue\Events\JobFailed;
-use Illuminate\Support\Facades\Queue;
-use Illuminate\Queue\Events\JobProcessed;
-use Illuminate\Queue\Events\JobProcessing;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,5 +34,29 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
+
+
+        /**
+         * Paginate a standard Laravel Collection.
+         *
+         * @param int $perPage
+         * @param int $total
+         * @param int $page
+         * @param string $pageName
+         * @return array
+         */
+        Collection::macro('paginate', function ($perPage, $total = null, $page = null, $pageName = 'page') {
+            $page = $page ?: LengthAwarePaginator::resolveCurrentPage($pageName);
+            return new LengthAwarePaginator(
+                $this->forPage($page, $perPage),
+                $total ?: $this->count(),
+                $perPage,
+                $page,
+                [
+                    'path' => LengthAwarePaginator::resolveCurrentPath(),
+                    'pageName' => $pageName,
+                ]
+            );
+        });
     }
 }
