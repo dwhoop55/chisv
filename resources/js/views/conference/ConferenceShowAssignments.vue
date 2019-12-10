@@ -4,7 +4,7 @@
       <b-datepicker
         :date-formatter="dateFormatter"
         :loading="isLoadingCalendar"
-        @input="onDayChange()"
+        @input="onDayChange(day)"
         v-model="day"
         :events="calendarEvents"
         indicators="bars"
@@ -18,14 +18,21 @@
         </template>
       </b-datepicker>
 
-      <b-input
-        width="600"
-        @input="debounceGetAssignments()"
-        v-model="searchString"
-        placeholder="Search.."
-        type="search"
-        icon="magnify"
-      ></b-input>
+      <b-field>
+        <b-input
+          width="600"
+          @input="debounceGetTasks()"
+          v-model="searchString"
+          placeholder="Search.."
+          type="search"
+          icon="magnify"
+        ></b-input>
+        <p class="control">
+          <button @click="showSearchHelp()" class="button">
+            <b-icon type="is-primary" size="is-small" icon="help"></b-icon>
+          </button>
+        </p>
+      </b-field>
 
       <b-dropdown
         :value="activeColumns"
@@ -38,8 +45,14 @@
           <b-icon icon="menu-down"></b-icon>
         </button>
 
+        <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
         <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
         <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
+        <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
       </b-dropdown>
     </b-field>
     <br />
@@ -48,10 +61,10 @@
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
-      :data="assigmnents"
+      :data="tasks"
       paginated
       backend-pagination
-      :total="totalAssignments"
+      :total="totalTasks"
       :per-page="perPage"
       :loading="isLoading"
       :hoverable="true"
@@ -66,24 +79,32 @@
     >
       <template slot-scope="props">
         <b-table-column
+          :visible="activeColumns.includes('start_at')"
           field="tasks.start_at"
           width="10"
           sortable
           label="Starts"
         >{{ hoursFromTime(props.row.start_at) }}</b-table-column>
         <b-table-column
+          :visible="activeColumns.includes('end_at')"
           field="tasks.end_at"
           sortable
           width="10"
           label="Ends"
         >{{ hoursFromTime(props.row.end_at) }}</b-table-column>
         <b-table-column
+          :visible="activeColumns.includes('hours')"
           field="tasks.hours"
           width="10"
           sortable
           label="Hours"
         >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
-        <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
+        <b-table-column
+          :visible="activeColumns.includes('name')"
+          field="tasks.name"
+          sortable
+          label="Name"
+        >{{ props.row.name }}</b-table-column>
         <b-table-column
           :visible="activeColumns.includes('location')"
           field="tasks.location"
@@ -101,19 +122,16 @@
           >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
         </b-table-column>
         <b-table-column
-          :visible="canCreateTask && activeColumns.includes('slots')"
+          :visible="activeColumns.includes('slots')"
           field="tasks.slots"
           width="10"
           sortable
           label="Slots"
-        >{{ props.row.slots }}</b-table-column>
+        >{{ props.row.assignments.count }}/{{ props.row.slots }}</b-table-column>
         <b-table-column
-          :visible="canCreateTask && activeColumns.includes('priority')"
-          field="tasks.priority"
-          width="10"
-          sortable
-          label="Priority"
-        >{{ props.row.priority }}</b-table-column>
+          :visible="activeColumns.includes('assignments')"
+          label="Assignments"
+        >{{ props.row.assignments }}</b-table-column>
       </template>
 
       <template slot="empty">
@@ -123,7 +141,7 @@
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
             <p>
-              No assignments found for
+              No tasks found for
               <b v-if="searchString.length > 0">{{ searchString }}</b>
               {{ day | moment('ll') }}
             </p>
@@ -134,7 +152,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >{{ totalAssignmnents > 0 ? totalAssignmnents : 'No' }} {{ totalAssignmnents == 1 ? 'assignment' : 'assignmnents' }} for {{ this.day | moment('ll') }}</small>
+        >{{ totalTasks > 0 ? totalTasks : 'No' }} {{ totalTasks == 1 ? 'task' : 'tasks' }} for {{ this.day | moment('ll') }}</small>
       </template>
 
       <template slot="footer">
@@ -166,9 +184,9 @@ export default {
 
   data() {
     return {
-      assignments: [],
+      tasks: [],
       taskDays: [],
-      totalAssignments: null,
+      totalTasks: null,
       searchString: this.$store.getters.tasksSearch,
       day: new Date(this.$store.getters.tasksDay),
       sortField: this.$store.getters.tasksSortField,
@@ -184,6 +202,15 @@ export default {
   },
 
   methods: {
+    showSearchHelp() {
+      this.$buefy.dialog.alert(
+        "You can search all task assignments of the current day for:\
+            <li>Task name</li>\
+            <li>Task location</li>\
+            <li>SVs firstname</li>\
+            <li>SVs lastname</li>"
+      );
+    },
     getTaskDays() {
       this.isLoadingCalendar = true;
       api
@@ -198,9 +225,7 @@ export default {
           this.isLoadingCalendar = false;
         });
     },
-    getAssignments() {
-      this.$store.commit("ASSIGNMENTS_DAY", this.day);
-
+    getTasks() {
       const params = [
         `sort_by=${this.sortField}`,
         `sort_order=${this.sortDirection}`,
@@ -214,12 +239,12 @@ export default {
       api
         .getConferenceAssignments(this.conference.key, `?${params}`)
         .then(({ data }) => {
-          this.assignments = data.data;
-          this.totalAssignments = data.total;
+          this.tasks = data.data;
+          this.totalTasks = data.total;
         })
         .catch(error => {
-          this.assignments = [];
-          this.totalAssignments = 0;
+          this.tasks = [];
+          this.totalTasks = 0;
           throw error;
         })
         .finally(() => {
@@ -229,26 +254,27 @@ export default {
     onPageChange(page) {
       this.$store.commit("ASSIGNMENTS_PAGE", page);
       this.page = page;
-      this.getAssignments();
+      this.getTasks();
     },
     onPerPageChange(perPage) {
       this.$store.commit("ASSIGNMENTS_PER_PAGE", perPage);
       this.perPage = perPage;
-      this.getAssignments();
+      this.getTasks();
     },
     onSort(field, direction) {
       this.sortField = field;
       this.sortDirection = direction;
       this.$store.commit("ASSIGNMENTS_SORT_FIELD", field);
       this.$store.commit("ASSIGNMENTS_SORT_DIRECTION", direction);
-      this.getAssignments();
+      this.getTasks();
     },
-    onDayChange() {
+    onDayChange(day) {
+      this.$store.commit("ASSIGNMENTS_DAY", day);
       this.onPageChange(1);
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("ASSIGNMENTS_SEARCH", this.searchString);
-      this.getAssignments();
+      this.getTasks();
     }, 250),
     showDescription(task) {
       this.$buefy.dialog.alert({
@@ -259,7 +285,7 @@ export default {
   },
 
   created() {
-    this.getAssignments();
+    this.getTasks();
     this.getTaskDays();
   },
 

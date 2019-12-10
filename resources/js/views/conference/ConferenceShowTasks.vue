@@ -243,8 +243,6 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
-      ignoreNextToggleClick: false,
-
       canCreateTask: false
     };
   },
@@ -414,13 +412,6 @@ export default {
       this.$store.commit("TASKS_SEARCH", this.searchString);
       this.getTasks();
     }, 250),
-    toggle: function(row) {
-      if (this.ignoreNextToggleClick) {
-        this.ignoreNextToggleClick = false;
-      } else {
-        this.$refs.table.toggleDetails(row);
-      }
-    },
     dateFormatter(date) {
       return `Tasks for ${date.toLocaleDateString()}`;
     },

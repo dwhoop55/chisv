@@ -81,7 +81,7 @@ class ConferenceController extends Controller
      * 
      * @return \Illuminate\Http\Response All tasks for the requestes params
      */
-    public function assignment(Conference $conference)
+    public function assignments(Conference $conference)
     {
         $search = request()->search_string;
         $day = request()->day;
@@ -94,13 +94,15 @@ class ConferenceController extends Controller
         );
 
         $query = Task
+            ::with('assignments')
             // join assignments to then join users
-            ::leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
+            ->leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
             ->leftJoin('users', 'assignments.user_id', '=', 'users.id')
             // Stay bond to this $conference
             ->where('tasks.conference_id', $conference->id)
+            // Only the given day
             ->whereDate('tasks.date', $day)
-            ->groupBy('tasks.id')
+            // Order and sort the results as expected
             ->orderBy(request()->sort_by, request()->sort_order);
 
         // Only add queries when we are searching for something
@@ -108,23 +110,25 @@ class ConferenceController extends Controller
             $query->where(function ($query) use ($search) {
                 $query->orWhere('tasks.name', 'LIKE', '%' . $search . '%');
                 $query->orWhere('tasks.location', 'LIKE', '%' . $search . '%');
+                $query->orWhere('users.firstname', 'LIKE', '%' . $search . '%');
+                $query->orWhere('users.lastname', 'LIKE', '%' . $search . '%');
             });
         }
 
-        // Load the paginated results from the database
-        // Only retreive 'tasks.*' or we would have collision
-        // due to the joins we did earlier
-        $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
+        $tasksWithUsers = $query->get([
+            'tasks.*'
+        ]);
 
         // Now we have a collection which can have multiple items with the same task
         // That is because we used left join and every assignment->user match results
         // in a new item in the collection. We will now have to go through all these
-        // items and push the to a cleaner collection - but only once for every
+        // items and push them to a cleaner collection - but only once for every
         // occurence. Based on the resulting collection we then load the assignments
         // and users back in again. This way the task and the user is searchable
         // from the frontend but send back over to the frontend efficiently
         $uniqueTasks = collect();
-        $paginatedTasks->each(function ($task) use ($uniqueTasks) {
+        $tasksWithUsers->each(function ($task) use ($uniqueTasks) {
+            // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
                 $task->assignments = $task->assignments->transform(function ($assignment) {
                     $cleanAssignment = $assignment->only(['id', 'task_id', 'override_hours']);
@@ -135,7 +139,10 @@ class ConferenceController extends Controller
             }
         });
 
-        return ["data" => $uniqueTasks, "total" => $uniqueTasks->count()];
+        // Now we paginate on the collection (note this is a custom marco registered in AppServiceProvider)
+        $paginatedTasks = $uniqueTasks->flatten()->paginate(request()->per_page);
+
+        return $paginatedTasks;
     }
 
     /**
@@ -144,7 +151,7 @@ class ConferenceController extends Controller
      * 
      * @return \Illuminate\Http\Response All tasks for the requestes params
      */
-    public function task(Conference $conference)
+    public function tasks(Conference $conference)
     {
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain
@@ -250,7 +257,7 @@ class ConferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function sv(Conference $conference)
+    public function svs(Conference $conference)
     {
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain

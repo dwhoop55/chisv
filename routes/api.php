@@ -126,17 +126,17 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.taskDays');
-        Route::get('conference/{conference}/task', 'ConferenceController@task')
+        Route::get('conference/{conference}/task', 'ConferenceController@tasks')
             ->middleware("can:viewAny,App\Task")
-            ->name('conference.task');
-        Route::get('conference/{conference}/assignment', 'ConferenceController@assignment')
+            ->name('conference.tasks');
+        Route::get('conference/{conference}/assignment', 'ConferenceController@assignments')
             ->middleware("can:viewAny,App\Assignment")
-            ->name('conference.assignment');
+            ->name('conference.assignments');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
-        Route::get('conference/{conference}/sv', 'ConferenceController@sv')
+        Route::get('conference/{conference}/sv', 'ConferenceController@svs')
             ->middleware("can:viewUsers,conference")
-            ->name('conference.sv');
+            ->name('conference.svs');
         Route::get('conference/{conference}/sv/count', function (Conference $conference) {
             return [
                 "result" => $conference

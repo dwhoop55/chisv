@@ -321,7 +321,7 @@ export default {
   },
 
   computed: {
-    dateErrors: function() {
+    dateErrors() {
       if (this.hasDateErrors) {
         return (
           this.generalForm.errors.get("start_date") +
@@ -330,13 +330,13 @@ export default {
         );
       }
     },
-    hasDateErrors: function() {
+    hasDateErrors() {
       return (
         this.generalForm.errors.has("start_date") ||
         this.generalForm.errors.has("end_date")
       );
     },
-    dateRange: function() {
+    dateRange() {
       if (
         this.generalForm.start_date &&
         this.generalForm.end_date &&
@@ -346,7 +346,14 @@ export default {
           new Date(this.generalForm.start_date),
           new Date(this.generalForm.end_date)
         ];
+      } else {
+        return [new Date(), new Date()];
       }
+    },
+    minDate() {
+      var d = new Date();
+      d.setHours(0, 0, 0, 0);
+      return d;
     }
   },
 
@@ -539,14 +546,6 @@ export default {
             });
         }
       });
-    }
-  },
-
-  computed: {
-    minDate() {
-      var d = new Date();
-      d.setHours(0, 0, 0, 0);
-      return d;
     }
   }
 };
