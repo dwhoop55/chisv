@@ -219,6 +219,16 @@ Vue.mixin({
                 case "failed":
                     return "is-danger";
                     break;
+                // Assignments
+                case "assigned":
+                    return "is-light";
+                    break;
+                case "checked-in":
+                    return "is-warning";
+                    break;
+                case "done":
+                    return "is-success";
+                    break;
             }
         },
         roleType: function (role) {

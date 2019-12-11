@@ -131,8 +131,12 @@ class ConferenceController extends Controller
             // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
                 $task->assignments = $task->assignments->transform(function ($assignment) {
-                    $cleanAssignment = $assignment->only(['id', 'task_id', 'override_hours']);
-                    $cleanAssignment['user'] = $assignment->user->only('id', 'firstname', 'lastname');
+                    $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
+                    $cleanAssignment['state'] = $cleanAssignment['state']->only('name', 'id');
+                    $user = $assignment->user->only('id', 'firstname', 'lastname');
+                    $hours = $assignment->user->hoursFor($assignment->task->conference, State::byName('done', "App\Assignment"));
+                    $user['hours_done'] = $hours;
+                    $cleanAssignment['user'] = $user;
                     return $cleanAssignment;
                 });
                 $uniqueTasks->put($task->id, $task);

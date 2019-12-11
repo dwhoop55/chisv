@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Assignment extends Model
 {
+    protected $with = ['state'];
     protected $casts = [
         'user_id' => 'int',
         'task_id' => 'int',
@@ -19,5 +20,10 @@ class Assignment extends Model
     public function task()
     {
         return $this->belongsTo('App\Task');
+    }
+
+    public function state()
+    {
+        return $this->belongsTo('App\State');
     }
 }

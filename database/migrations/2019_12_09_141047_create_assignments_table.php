@@ -17,7 +17,8 @@ class CreateAssignmentsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id')->index();
             $table->unsignedBigInteger('task_id')->index();
-            $table->unsignedInteger('override_hours')->nullable()->index();
+            $table->double('hours')->nullable()->index();
+            $table->unsignedInteger('state_id')->nullable(false)->default(41);
             $table->timestamps();
 
             $table->unique(['user_id', 'task_id']);

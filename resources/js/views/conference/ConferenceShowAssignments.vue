@@ -2,7 +2,6 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        :date-formatter="dateFormatter"
         :loading="isLoadingCalendar"
         @input="onDayChange(day)"
         v-model="day"
@@ -34,26 +33,34 @@
         </p>
       </b-field>
 
-      <b-dropdown
-        :value="activeColumns"
-        @input="$store.commit('ASSIGNMENTS_COLUMNS', $event)"
-        multiple
-        aria-role="list"
-      >
-        <button class="button is-primary" slot="trigger">
-          <span>Visible columns</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
+      <b-field>
+        <b-dropdown
+          :value="activeColumns"
+          @input="$store.commit('ASSIGNMENTS_COLUMNS', $event)"
+          multiple
+          aria-role="list"
+        >
+          <button class="button is-primary" slot="trigger">
+            <span>Visible columns</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
 
-        <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
-      </b-dropdown>
+          <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
+        </b-dropdown>
+      </b-field>
+
+      <b-field expanded></b-field>
+
+      <b-field position="is-right">
+        <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
+      </b-field>
     </b-field>
     <br />
 
@@ -127,11 +134,18 @@
           width="10"
           sortable
           label="Slots"
-        >{{ props.row.assignments.count }}/{{ props.row.slots }}</b-table-column>
+        >
+          <p
+            :class="{ 'has-text-danger has-text-weight-medium': props.row.assignments.length > props.row.slots }"
+          >{{ props.row.assignments.length }} / {{ props.row.slots }}</p>
+        </b-table-column>
         <b-table-column
+          class="is-marginless is-paddingless"
           :visible="activeColumns.includes('assignments')"
           label="Assignments"
-        >{{ props.row.assignments }}</b-table-column>
+        >
+          <task-assignments-component v-model="props.row.assignments"></task-assignments-component>
+        </b-table-column>
       </template>
 
       <template slot="empty">
@@ -187,12 +201,12 @@ export default {
       tasks: [],
       taskDays: [],
       totalTasks: null,
-      searchString: this.$store.getters.tasksSearch,
-      day: new Date(this.$store.getters.tasksDay),
-      sortField: this.$store.getters.tasksSortField,
-      sortDirection: this.$store.getters.tasksSortDirection,
-      perPage: this.$store.getters.tasksPerPage,
-      page: this.$store.getters.tasksPage,
+      searchString: this.$store.getters.assignmentsSearch,
+      day: new Date(this.$store.getters.assignmentsDay),
+      sortField: this.$store.getters.assignmentsSortField,
+      sortDirection: this.$store.getters.assignmentsSortDirection,
+      perPage: this.$store.getters.assignmentsPerPage,
+      page: this.$store.getters.assignmentsPage,
 
       isLoading: true,
       isLoadingCalendar: true,

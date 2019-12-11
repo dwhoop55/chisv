@@ -37,6 +37,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function assignments()
+    {
+        return $this->hasMany('App\Assignment');
+    }
+
     public function conferencesAsChairOrCaptain()
     {
         return $this->conferencesByRole(Role::byName('chair'))
@@ -224,6 +229,34 @@ class User extends Authenticatable
         } else {
             return false;
         }
+    }
+
+    public function hoursFor(Conference $conference, State $state = null)
+    {
+        $assignments = collect();
+        $hours = 0.0;
+
+        // First we filter for the conference
+        $assignments = $this->assignments->filter(function ($assignment) use ($conference) {
+            if ($assignment->task->conference->id == $conference->id) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+
+        // Now we need to filter for the state if there is one
+        // and sum up all the hours
+        foreach ($assignments as $assignment) {
+            if (($state && $assignment->state->id == $state->id) || (!$state)) {
+                // Either there is a state and it matches
+                // or there is no state at all
+                // Either way we sum up the hours
+                $hours += $assignment->hours;
+            }
+        }
+
+        return $hours;
     }
 
     public function toTimezone($date)
