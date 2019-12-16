@@ -37,6 +37,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function bids()
+    {
+        return $this->hasMany('App\Bid');
+    }
+
+    public function bidsFor(Conference $conference, State $state = null, $preference = null)
+    {
+        $bids = $this->bids->filter(function ($bid) use ($conference, $state, $preference) {
+            if ($state) {
+                if ($preference) {
+                    return $bid->task->conference->id == $conference->id
+                        && $bid->state->id == $state->id
+                        && $bid->preference == $preference;
+                } else {
+                    return $bid->task->conference->id == $conference->id && $bid->state->id == $state->id;
+                }
+            } else {
+                if ($preference) {
+                    return $bid->task->conference->id == $conference->id
+                        && $bid->preference == $preference;
+                } else {
+                    return $bid->task->conference->id == $conference->id;
+                }
+            }
+        });
+        return $bids;
+    }
+
     public function assignments()
     {
         return $this->hasMany('App\Assignment');

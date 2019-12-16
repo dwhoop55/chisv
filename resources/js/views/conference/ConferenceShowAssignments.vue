@@ -144,7 +144,12 @@
           :visible="activeColumns.includes('assignments')"
           label="Assignments"
         >
-          <task-assignments-component v-model="props.row.assignments"></task-assignments-component>
+          <task-assignments-component
+            v-model="props.row.assignments"
+            :conference="conference"
+            :task="props.row"
+            @updated="getTasks()"
+          ></task-assignments-component>
         </b-table-column>
       </template>
 

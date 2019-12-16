@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Assignment;
+use App\Http\Requests\AssignmentRequest;
+use App\Task;
 use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
@@ -17,26 +19,21 @@ class AssignmentController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(AssignmentRequest $request)
+    {
+        $data = $request->only('user_id', 'task_id');
+        $data['hours'] = Task::find($data['task_id'])->hours;
+        $assignment = new Assignment($data);
+        $assignment->save();
+        $assignment->refresh();
+        return ["result" => true, "message" => "Assignment created"];
+    }
 
     // /**
     //  * Display the specified resource.
@@ -49,37 +46,31 @@ class AssignmentController extends Controller
     //     //
     // }
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  \App\Assignment  $assignment
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit(Assignment $assignment)
-    // {
-    //     //
-    // }
 
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  \App\Assignment  $assignment
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, Assignment $assignment)
-    // {
-    //     //
-    // }
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Assignment  $assignment
+     * @return \Illuminate\Http\Response
+     */
+    public function update(AssignmentRequest $request, Assignment $assignment)
+    {
+        $data = $request->only(['hours', 'state_id']);
+        $assignment->update($data);
+        $assignment->refresh();
+        return ["result" => $assignment, "message" => "Assignment updated"];
+    }
 
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  \App\Assignment  $assignment
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy(Assignment $assignment)
-    // {
-    //     //
-    // }
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Assignment  $assignment
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Assignment $assignment)
+    {
+        $assignment->delete();
+        return ["result" => true, "message" => "Assignment removed"];
+    }
 }

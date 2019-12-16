@@ -218,6 +218,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('bid', 'BidController', [
             'only' => ['store', 'update']
         ]);
+        Route::resource('assignment', 'AssignmentController', [
+            'only' => ['store', 'update', 'destroy']
+        ]);
     });
     //// AUTHENTICATED ////
 

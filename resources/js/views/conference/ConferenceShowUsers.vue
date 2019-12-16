@@ -133,6 +133,14 @@
             >{{ props.row.email }}</a>
           </template>
         </b-table-column>
+        <b-table-column
+          :visible="canRunLottery"
+          width="130"
+          field="stats.hours_done"
+          label="Hours done"
+        >
+          <template>{{ props.row.stats.hours_done }}</template>
+        </b-table-column>
         <b-table-column width="130" label="SV State">
           <template>
             <b-dropdown
@@ -231,12 +239,20 @@
           Study Program:
           {{ props.row.degree }}
         </div>
+
         <div v-if="props.row.permission.enrollment_form">
           Enrollment form (Name: {{ props.row.permission.enrollment_form.name }}):
           <enrollment-form-summary
             class="section has-padding-t-8"
             v-model="props.row.permission.enrollment_form"
           ></enrollment-form-summary>
+        </div>
+
+        <div v-if="props.row.stats">
+          <small>Bids below are displayed in [ X, 1, 2, 3 ] preference order</small>
+          <p>Bids placed: {{ props.row.stats.bids_placed }}</p>
+          <p>Bids successful: {{ props.row.stats.bids_successful }}</p>
+          <p>Bids unsuccessful: {{ props.row.stats.bids_unsuccessful }}</p>
         </div>
       </template>
 

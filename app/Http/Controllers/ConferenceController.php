@@ -271,6 +271,9 @@ class ConferenceController extends Controller
             || auth()->user()->isCaptain($conference);
         $searchString = request()->search_string;
         $selectedStates = collect(explode(',', request()->selected_states));
+        $sortBy = request()->sort_by ?? 'lastname';
+        $sortOrder = request()->sort_order ?? 'asc';
+        $perPage = request()->per_page ?? '999999';
 
         // Do the actual query
         $query = Permission
@@ -284,7 +287,7 @@ class ConferenceController extends Controller
             // Stay bond to this $conference and 'sv' state
             ->where('conference_id', $conference->id)
             ->where("role_id", Role::byName('sv')->id)
-            ->orderBy(request()->sort_by, request()->sort_order);
+            ->orderBy($sortBy, $sortOrder);
 
         // Only add queries when we are searching for something
         if (strlen($searchString) > 0) {
@@ -296,16 +299,19 @@ class ConferenceController extends Controller
             });
         }
 
-        $query->where(function ($query) use ($selectedStates) {
-            foreach ($selectedStates as $state) {
-                $query->orWhere('state_id', $state);
-            }
-        });
+        // Only add state filter when in the request
+        if (request()->selected_states) {
+            $query->where(function ($query) use ($selectedStates) {
+                foreach ($selectedStates as $state) {
+                    $query->orWhere('state_id', $state);
+                }
+            });
+        }
 
         // Load the paginated results from the database
         // Only retreive 'permissions.*' or we would have collision
         // due to the joins we did earlier
-        $paginatedPermissions = $query->paginate(request()->per_page, ['permissions.*']);
+        $paginatedPermissions = $query->paginate($perPage, ['permissions.*']);
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
@@ -325,6 +331,7 @@ class ConferenceController extends Controller
 
             if ($showMore) {
                 // Show more information
+                $conference = $permission->conference;
                 $safe['email'] = $user->email;
                 $safe['degree'] = $user->degree->name;
                 $safe['city'] = $user->city->name;
@@ -333,12 +340,35 @@ class ConferenceController extends Controller
                 $safe['permission']->created_at = $permission->created_at;
                 $safe['permission']->enrollment_form = $permission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
                 $safe['permission']->conference = new Conference();
-                $safe['permission']->conference->id = $permission->conference->id;
+                $safe['permission']->conference->id = $conference->id;
                 $safe['permission']->role = new Role();
                 $safe['permission']->role->id = $permission->role->id;
                 if ($permission->state == State::byName('waitlisted')) {
                     $safe['permission']->waitlist_position = $permission->waitlist_position;
                 }
+
+                // Now we add some statistics for the Chair/Captain
+                $safe['stats'] = [
+                    "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
+                    "bids_placed" => [
+                        $user->bidsFor($conference, State::byName('placed'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 3)->count()
+                    ],
+                    "bids_successful" => [
+                        $user->bidsFor($conference, State::byName('successful'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 3)->count()
+                    ],
+                    "bids_unsuccessful" => [
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 3)->count()
+                    ],
+                ];
             }
             return $safe;
         });

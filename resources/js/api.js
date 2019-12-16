@@ -48,6 +48,9 @@ export default {
         return axios.get(`job/${id}`);
     },
 
+    createAssignment(svId, taskId) {
+        return axios.post(`assignment`, { user_id: svId, task_id: taskId });
+    },
     createConference(vform) {
         return vform.post(`conference`);
     },
@@ -77,6 +80,9 @@ export default {
         return vform.post(`task`);
     },
 
+    updateAssignment(id, payload) {
+        return axios.put(`assignment/${id}`, payload);
+    },
     updateUser(id, vform) {
         return vform.put(`user/${id}`);
     },
@@ -109,6 +115,9 @@ export default {
         return vform.put(`task/${id}`);
     },
 
+    deleteAssignment(id) {
+        return axios.delete(`assignment/${id}`);
+    },
     deleteUser(id) {
         return axios.delete(`user/${id}`);
     },
