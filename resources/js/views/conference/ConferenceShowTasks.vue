@@ -120,7 +120,7 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="190" label="Your preference">
+        <b-table-column width="190" label="Your Bid">
           <template slot="header" slot-scope="{ column }">
             <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
           </template>

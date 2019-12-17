@@ -1,45 +1,69 @@
 <template>
-  <b-field @click.native="showDisabledHint()" class="is-relative">
-    <b-radio-button
-      @input="setPreference($event)"
-      :value="task.own_bid.preference"
-      :disabled="disabled"
-      :size="size"
-      type="is-danger"
-      :native-value="parseInt(0)"
-    >X</b-radio-button>
-    <b-radio-button
-      @input="setPreference($event)"
-      :value="task.own_bid.preference"
-      :disabled="disabled"
-      :size="size"
-      type="is-info"
-      :native-value="parseInt(1)"
-    >1</b-radio-button>
-    <b-radio-button
-      @input="setPreference($event)"
-      :value="task.own_bid.preference"
-      :disabled="disabled"
-      :size="size"
-      type="is-warning"
-      :native-value="parseInt(2)"
-    >2</b-radio-button>
-    <b-radio-button
-      @input="setPreference($event)"
-      :value="task.own_bid.preference"
-      :disabled="disabled"
-      :size="size"
-      type="is-success"
-      :native-value="parseInt(3)"
-    >3</b-radio-button>
-    <b-loading :is-full-page="false" :active="isLoading"></b-loading>
-    <transition name="slide-top-fade">
-      <b-icon class="has-margin-l-7" v-if="showSuccessIcon" type="is-success" icon="check-bold"></b-icon>
-    </transition>
-    <transition name="slide-top-fade">
-      <b-icon class="has-margin-l-7" v-if="showErrorIcon" type="is-danger" icon="alert"></b-icon>
-    </transition>
-  </b-field>
+  <div>
+    <div
+      @click="showHint('successful')"
+      class="button is-small"
+      v-if="bidIsPresent && bidIsStateSuccessful"
+    >
+      <b-icon type="is-success" icon="account-check" />
+      <span>your task!</span>
+    </div>
+
+    <div
+      @click="showHint('unsuccessful')"
+      class="button is-small"
+      v-if="bidIsPresent && bidIsStateUnsuccessful"
+    >
+      <b-icon type="is-warning" icon="account-off" />
+      <span>not assigned</span>
+    </div>
+
+    <b-field
+      v-if="bidIsStatePlaced || !bidIsPresent"
+      @click.native="showHint('disabled')"
+      class="is-relative"
+    >
+      <b-radio-button
+        @input="setPreference($event)"
+        :value="task.own_bid.preference"
+        :disabled="disabled"
+        :size="size"
+        type="is-danger"
+        :native-value="parseInt(0)"
+      >X</b-radio-button>
+      <b-radio-button
+        @input="setPreference($event)"
+        :value="task.own_bid.preference"
+        :disabled="disabled"
+        :size="size"
+        type="is-info"
+        :native-value="parseInt(1)"
+      >1</b-radio-button>
+      <b-radio-button
+        @input="setPreference($event)"
+        :value="task.own_bid.preference"
+        :disabled="disabled"
+        :size="size"
+        type="is-warning"
+        :native-value="parseInt(2)"
+      >2</b-radio-button>
+      <b-radio-button
+        @input="setPreference($event)"
+        :value="task.own_bid.preference"
+        :disabled="disabled"
+        :size="size"
+        type="is-success"
+        :native-value="parseInt(3)"
+      >3</b-radio-button>
+      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+      <transition name="slide-top-fade">
+        <b-icon class="has-margin-l-7" v-if="showSuccessIcon" type="is-success" icon="check-bold"></b-icon>
+      </transition>
+      <transition name="slide-top-fade">
+        <b-icon class="has-margin-l-7" v-if="showErrorIcon" type="is-danger" icon="alert"></b-icon>
+      </transition>
+    </b-field>
+  </div>
 </template>
 
 <script>
@@ -130,14 +154,42 @@ export default {
         this.showErrorIcon = false;
       }, 2000);
     },
-    showDisabledHint() {
-      if (this.disabled) {
-        this.$buefy.dialog.alert(
-          "You cannot bid or change your bid at the moment. One of the reasons might be:\
+    showHint(type) {
+      switch (type) {
+        case "disabled":
+          if (this.disabled) {
+            this.$buefy.dialog.alert(
+              "You cannot bid or change your bid at the moment. One of the reasons might be:\
             <li>Bidding is not open for this day</li>\
             <li>The task is in the past</li>\
             <li>You are not an SV with the state <i>accepted</i></li>"
-        );
+            );
+          }
+          break;
+        case "successful":
+          this.$buefy.dialog.alert({
+            title: `Your bid won!`,
+            message:
+              "This task is now assigned to you. Please be there in time.",
+            type: "is-success",
+            hasIcon: true,
+            icon: "check",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
+        case "unsuccessful":
+          this.$buefy.dialog.alert({
+            title: `Your bid did not win`,
+            message:
+              "This task was not assigned to you - So a different SV will take care of this :)",
+            type: "is-warning",
+            hasIcon: true,
+            icon: "emoticon-sad",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
       }
     }
   },
@@ -158,6 +210,30 @@ export default {
       } else {
         return true;
       }
+    },
+    bidIsStatePlaced() {
+      return (
+        this.task.own_bid &&
+        this.task.own_bid.state &&
+        this.task.own_bid.state.name == "placed"
+      );
+    },
+    bidIsStateSuccessful() {
+      return (
+        this.task.own_bid &&
+        this.task.own_bid.state &&
+        this.task.own_bid.state.name == "successful"
+      );
+    },
+    bidIsStateUnsuccessful() {
+      return (
+        this.task.own_bid &&
+        this.task.own_bid.state &&
+        this.task.own_bid.state.name == "unsuccessful"
+      );
+    },
+    bidIsPresent() {
+      return this.task.own_bid && this.task.own_bid.state;
     }
   }
 };
