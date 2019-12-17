@@ -55,6 +55,9 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        decimalFormat(decimal) {
+            return parseFloat(parseFloat(decimal).toFixed(2));
+        },
         hoursFromTime(time) {
             var d = new moment(time, "HH:mm:ss");
             return d.format("HH:mm");

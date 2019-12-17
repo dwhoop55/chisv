@@ -11,7 +11,7 @@
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
           <div class="column column-small">
-            {{ assignment.user.firstname }} {{ assignment.user.lastname }} (did {{ hours(assignment.user.hours_done) }})
+            {{ assignment.user.firstname }} {{ assignment.user.lastname }} (did {{ decimalFormat(assignment.user.hours_done) }})
             <a
               @click.prevent="remove(assignment)"
             >(remove)</a>
@@ -19,14 +19,17 @@
           <div class="column has-text-right is-narrow column-small">
             <b-button
               @click="adjustHours(assignment)"
-              type="is-text"
-            >{{ assignment.state.name == 'done' ? 'Got' : "Will get"}} {{ hours(assignment.hours) }} hours</b-button>
+              class="has-text-dark"
+              :type="stateType(assignment.state)"
+            >{{ assignment.state.name == 'done' ? 'Got' : "Will get"}} {{ decimalFormat(assignment.hours) }} hours</b-button>
           </div>
           <div class="column has-text-right is-narrow column-small">
-            <a
-              class="has-text-weight-bold"
-              @click="cycleState(assignment)"
-            >{{ assignment.state.name }}</a>
+            <b-button
+              expanded
+              :type="stateType(assignment.state)"
+              class="has-text-weight-bold has-text-dark"
+              @click.prevent="cycleState(assignment)"
+            >{{ assignment.state.name }}</b-button>
           </div>
         </div>
       </div>
@@ -73,12 +76,22 @@ export default {
           // Now we add/remove the hours in the frontend model to the user
           // so that is stays consistent
           // Without it would only show the correct hours on page reload
+          // Since the user can be also assigned to other tasks but this one
+          // we need to throw an event to be handled by the parent component
+          // which has access to all the tasks. It will then take care
+          // that every user model gets updated
           if (nextStateId == 43) {
-            // done
-            assignment.user.hours_done += assignment.hours;
+            // done, add hours from the asignment
+            this.$emit("updateHours", {
+              userId: assignment.user.id,
+              hours: parseFloat(assignment.hours)
+            });
           } else if (nextStateId == 41) {
-            // assigned
-            assignment.user.hours_done -= assignment.hours;
+            // assigned, remove hours from assignment
+            this.$emit("updateHours", {
+              userId: assignment.user.id,
+              hours: -parseFloat(assignment.hours)
+            });
           }
         });
     },
@@ -87,7 +100,7 @@ export default {
       api
         .createAssignment(sv.id, this.task.id)
         .then(data => {
-          this.$emit("updated");
+          this.$emit("reload");
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -111,7 +124,12 @@ export default {
             .deleteAssignment(assignment.id)
             .then(data => {
               for (let index = 0; index < this.assignments.length; index++) {
-                if (this.assignments[index].id == assignment.id) {
+                let currentAssignment = this.assignments[index];
+                if (currentAssignment.id == assignment.id) {
+                  this.$emit("updateHours", {
+                    userId: currentAssignment.user.id,
+                    hours: -currentAssignment.hours
+                  });
                   this.assignments.splice(index, 1);
                 }
               }
@@ -135,15 +153,57 @@ export default {
         message: `Modify the hours the SV gets`,
         inputAttrs: {
           placeholder: "Hours the SV will get",
-          value: assignment.hours
+          // Show correctly formatted input to help provide correct format
+          value: parseFloat(assignment.hours).toFixed(2)
         },
         trapFocus: true,
         onConfirm: value => {
           this.isLoading = true;
+          // Kinda hacky but will ensure user can enter , or .
+          let newHours = parseFloat(
+            parseFloat(value.replace(",", ".")).toFixed(2)
+          );
+
+          if (newHours == assignment.hours) {
+            console.log("No change, returning");
+            return;
+          }
+          if (isNaN(newHours) || parseFloat(newHours) == 0.0) {
+            this.$buefy.notification.open({
+              duration: 5000,
+              message: `Your input is not a valid number. (E.g. 2.25 or 5.75)`,
+              type: "is-danger",
+              hasIcon: true
+            });
+            return;
+          }
           api
-            .updateAssignment(assignment.id, { hours: value })
+            .updateAssignment(assignment.id, { hours: newHours })
             .then(data => {
-              assignment.hours = value;
+              // The backend updated the hours
+              // But instead of reloading the entire page
+              // we will only update the hours in the frontent
+
+              // This will update the user model when the task is done
+              // so that all places where the
+              // user is show it will be shown consistently
+              if (assignment.state.id == 43) {
+                // done
+                this.$emit("updateHours", {
+                  userId: assignment.user.id,
+                  // We subtract the new - old value so that we get
+                  // something positive in case the hours increased
+                  // or negative in case we reduced the hours.
+                  // The parent handler will update all models
+                  hours:
+                    parseFloat(data.data.result.hours) -
+                    parseFloat(assignment.hours)
+                });
+              }
+
+              // This will make the row to show the correct hours for the
+              // assignment
+              assignment.hours = data.data.result.hours;
             })
             .catch(error => {
               this.$buefy.notification.open({

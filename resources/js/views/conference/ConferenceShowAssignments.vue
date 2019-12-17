@@ -148,7 +148,9 @@
             v-model="props.row.assignments"
             :conference="conference"
             :task="props.row"
-            @updated="getTasks()"
+            @reload="getTasks()"
+            @updateHours="updateHoursForUser($event.userId, $event.hours)"
+            @removeAssignment="removeAssignment($event)"
           ></task-assignments-component>
         </b-table-column>
       </template>
@@ -221,6 +223,18 @@ export default {
   },
 
   methods: {
+    updateHoursForUser(userId, hours) {
+      // Yes this is inefficient O(n^2)
+      this.isLoading = true;
+      this.tasks.forEach(task => {
+        task.assignments.forEach(assignment => {
+          if (assignment.user.id == userId) {
+            assignment.user.hours_done += hours;
+          }
+        });
+      });
+      this.isLoading = false;
+    },
     showSearchHelp() {
       this.$buefy.dialog.alert(
         "You can search all task assignments of the current day for:\

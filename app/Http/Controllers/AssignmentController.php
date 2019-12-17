@@ -57,6 +57,10 @@ class AssignmentController extends Controller
     public function update(AssignmentRequest $request, Assignment $assignment)
     {
         $data = $request->only(['hours', 'state_id']);
+        if (isset($data['hours']) && !is_numeric($data['hours'])) {
+            abort(400, "Hours have to be int (1,2,3) or float (0.25,3.75)!");
+        }
+
         $assignment->update($data);
         $assignment->refresh();
         return ["result" => $assignment, "message" => "Assignment updated"];
