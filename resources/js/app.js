@@ -186,6 +186,8 @@ Vue.mixin({
             window.history.back();
         },
         stateType: function (state) {
+            if (!state || !state.name) return "is-light";
+
             switch (state.name) {
                 // states for users
                 case "accepted":
@@ -237,6 +239,9 @@ Vue.mixin({
                     break;
                 case "done":
                     return "is-success";
+                    break;
+                default:
+                    return "is-light";
                     break;
             }
         },

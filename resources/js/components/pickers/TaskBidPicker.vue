@@ -1,25 +1,40 @@
 <template>
   <div>
     <div
-      @click="showHint('successful')"
+      @click="showHint('successful-not-assigned')"
       class="button is-small"
-      v-if="bidIsPresent && bidIsStateSuccessful"
+      v-if="bidIsPresent && bidIsStateSuccessful && !assignmentIsPresent"
     >
-      <b-icon type="is-success" icon="account-check" />
-      <span>your task!</span>
+      <b-icon type="is-light" icon="account-question" />
+      <span>&nbsp;Bid won, not assigned</span>
     </div>
 
     <div
       @click="showHint('unsuccessful')"
       class="button is-small"
-      v-if="bidIsPresent && bidIsStateUnsuccessful"
+      v-if="bidIsPresent && bidIsStateUnsuccessful && !assignmentIsPresent"
     >
-      <b-icon type="is-warning" icon="account-off" />
-      <span>not assigned</span>
+      <b-icon type="is-light" icon="account-off" />
+      <span>&nbsp;Bid negative</span>
+    </div>
+
+    <div @click="showHint('assigned')" class="button is-small" v-if="assignmentIsStateAssigned">
+      <b-icon type="is-warning" icon="account-check" />
+      <span>&nbsp;Scheduled</span>
+    </div>
+
+    <div @click="showHint('checked-in')" class="button is-small" v-if="assignmentIsStateCheckedIn">
+      <b-icon type="is-warning" icon="account-clock" />
+      <span>&nbsp;Checked-in</span>
+    </div>
+
+    <div @click="showHint('done')" class="button is-small" v-if="assignmentIsStateDone">
+      <b-icon type="is-success" icon="account-heart" />
+      <span>&nbsp;Done</span>
     </div>
 
     <b-field
-      v-if="bidIsStatePlaced || !bidIsPresent"
+      v-if="(bidIsStatePlaced || !bidIsPresent) && !assignmentIsPresent"
       @click.native="showHint('disabled')"
       class="is-relative"
     >
@@ -154,6 +169,18 @@ export default {
         this.showErrorIcon = false;
       }, 2000);
     },
+    formatPreference(task) {
+      switch (task.own_bid.preference) {
+        case 1:
+        case 2:
+        case 3:
+          return task.own_bid.preference;
+          break;
+        default:
+          return "X";
+          break;
+      }
+    },
     showHint(type) {
       switch (type) {
         case "disabled":
@@ -166,14 +193,19 @@ export default {
             );
           }
           break;
-        case "successful":
+        case "successful-not-assigned":
           this.$buefy.dialog.alert({
-            title: `Your bid won!`,
-            message:
-              "This task is now assigned to you. Please be there in time.",
-            type: "is-success",
+            title: `Your bid won - but..`,
+            message: `Your bid won the auction. However you are not assigned to the task.\
+              That can happen when there are necessary last-minute changes to the assignments.\
+              So that the assignments are as fair as possible on average for everyone. Never mind though, you'll\
+              get an awesome task soon for sure!\
+              <br/><br/><small>Your bid: ${this.formatPreference(
+                this.task
+              )}</small>`,
+            type: "is-dark",
             hasIcon: true,
-            icon: "check",
+            icon: "cat",
             ariaRole: "alertdialog",
             ariaModal: true
           });
@@ -181,11 +213,54 @@ export default {
         case "unsuccessful":
           this.$buefy.dialog.alert({
             title: `Your bid did not win`,
-            message:
-              "This task was not assigned to you - So a different SV will take care of this :)",
+            message: `This task was not assigned to you - So a different SV will take care of this\
+            <br/><br/><small>Your bid: ${this.formatPreference(
+              this.task
+            )}</small>`,
+            type: "is-dark",
+            hasIcon: true,
+            icon: "ice-cream",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
+        case "assigned":
+          this.$buefy.dialog.alert({
+            title: `This is your task`,
+            message: `This task is assigned to you\
+                      <br/><br/><small>Your bid: ${this.formatPreference(
+                        this.task
+                      )}</small>`,
+            type: "is-primary",
+            hasIcon: true,
+            icon: "check",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
+        case "checked-in":
+          this.$buefy.dialog.alert({
+            title: `In progress..`,
+            message: `You are currently working on this task. Please let the Day Captain known when you're done and leave\
+                      <br/><br/><small>Your bid: ${this.formatPreference(
+                        this.task
+                      )}</small>`,
             type: "is-warning",
             hasIcon: true,
-            icon: "emoticon-sad",
+            icon: "clock",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
+        case "done":
+          this.$buefy.dialog.alert({
+            title: `You're awesome!`,
+            message: `This task is done.<br/>Thank you!\
+                      <br/><br/><small>Your bid:\
+                      ${this.formatPreference(this.task)}</small>`,
+            type: "is-danger",
+            hasIcon: true,
+            icon: "heart",
             ariaRole: "alertdialog",
             ariaModal: true
           });
@@ -234,6 +309,27 @@ export default {
     },
     bidIsPresent() {
       return this.task.own_bid && this.task.own_bid.state;
+    },
+    assignmentIsPresent() {
+      return this.task.own_assignment && true;
+    },
+    assignmentIsStateAssigned() {
+      return (
+        this.task.own_assignment &&
+        this.task.own_assignment.state.name == "assigned"
+      );
+    },
+    assignmentIsStateCheckedIn() {
+      return (
+        this.task.own_assignment &&
+        this.task.own_assignment.state.name == "checked-in"
+      );
+    },
+    assignmentIsStateDone() {
+      return (
+        this.task.own_assignment &&
+        this.task.own_assignment.state.name == "done"
+      );
     }
   }
 };

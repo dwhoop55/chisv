@@ -12,8 +12,8 @@ class Bid extends Model
         'preference' => 'integer',
         'state_id' => 'integer',
         'user_id' => 'integer',
-        'conference_id' => 'integer',
         'task_id' => 'integer',
+        'assignment_id' => 'integer',
     ];
 
     public function task()
@@ -29,5 +29,10 @@ class Bid extends Model
     public function state()
     {
         return $this->belongsTo('App\State');
+    }
+
+    public function assignment()
+    {
+        return $this->belongsTo('App\Assignment');
     }
 }

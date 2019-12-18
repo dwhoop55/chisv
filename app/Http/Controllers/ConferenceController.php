@@ -206,11 +206,19 @@ class ConferenceController extends Controller
                 'task_id' => $task->id,
             ]);
 
+            // Add bid and assignment information
             foreach ($task->bids as $bid) {
                 if ($bid->user_id == $user->id) {
+                    // We found the bid of the auth()->user()
                     $cleanBid = collect($bid->only(['id', 'preference', 'state']));
                     $task->own_bid = $cleanBid;
                     $task->own_bid->put('can_update', $user->can('update', $bid));
+
+                    // Add assignment when available
+                    if ($bid->assignment) {
+                        $task->own_assignment = $bid->assignment->only('id', 'hours', 'state');
+                    }
+
                     // We found the one bid from the user
                     // due to the database scheme there can only
                     // be one bid per user per task, so we can
