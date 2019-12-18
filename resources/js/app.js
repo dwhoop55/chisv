@@ -62,6 +62,12 @@ Vue.mixin({
             var d = new moment(time, "HH:mm:ss");
             return d.format("HH:mm");
         },
+        decimalFromTime(time) {
+            var hoursMinutes = time.split(/[:]/);
+            var hours = parseInt(hoursMinutes[0], 10);
+            var minutes = hoursMinutes[1] ? parseInt(hoursMinutes[1], 10) : 0;
+            return hours + minutes / 60;
+        },
         timeFromDecimal(decimal) {
             var n = new Date(0, 0);
             n.setSeconds(+decimal * 60 * 60);

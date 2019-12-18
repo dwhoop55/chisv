@@ -150,7 +150,7 @@ export default {
     },
     adjustHours(assignment) {
       this.$buefy.dialog.prompt({
-        message: `Modify the hours the SV gets`,
+        message: `Modify the hours the SV gets. You can use:<br/><li>Decimal like 2,5 or 1.25</li><li>Hours (HH:MM) like 1:15 or 02:30</li>`,
         inputAttrs: {
           placeholder: "Hours the SV will get",
           // Show correctly formatted input to help provide correct format
@@ -159,10 +159,28 @@ export default {
         trapFocus: true,
         onConfirm: value => {
           this.isLoading = true;
-          // Kinda hacky but will ensure user can enter , or .
-          let newHours = parseFloat(
-            parseFloat(value.replace(",", ".")).toFixed(2)
-          );
+          var newHours = assignment.hours;
+          if (value.match(/\d{1,2}:\d{1,2}/g)) {
+            // matches hours format
+            // matches 11:23 or 1:15 but NOT 10:5
+            newHours = parseFloat(
+              this.decimalFormat(this.decimalFromTime(value))
+            );
+          } else if (value.match(/\d{1,}([,.]\d{1,})?/g)) {
+            // matches decimal format
+            // matches 1,5 or 10,99 or 1 or 1.40
+            newHours = parseFloat(
+              parseFloat(value.replace(",", ".")).toFixed(2)
+            );
+          } else {
+            // unknown format
+            this.$buefy.notification.open({
+              duration: 5000,
+              message: `Your input is not a valid number. Provide numeric (1.15 or 2 or 2,25) or time (01:15, 1:30)`,
+              type: "is-danger",
+              hasIcon: true
+            });
+          }
 
           if (newHours == assignment.hours) {
             console.log("No change, returning");
