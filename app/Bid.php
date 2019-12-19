@@ -33,6 +33,9 @@ class Bid extends Model
 
     public function assignment()
     {
-        return $this->belongsTo('App\Assignment');
+        return Assignment
+            ::where('user_id', $this->user_id)
+            ->where('task_id', $this->itask_id)
+            ->first();
     }
 }

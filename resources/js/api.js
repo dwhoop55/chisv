@@ -154,6 +154,17 @@ export default {
             return axios.get(`can/${ability}/${model}`);
         }
     },
+    hasPermission(role, conferenceKey = null, state = null) {
+        if (role && conferenceKey && state) {
+            return axios.get(`has_permission/${role}/${conferenceKey}/${state}`);
+        } else if (role && conferenceKey) {
+            return axios.get(`has_permission/${role}/${conferenceKey}`);
+        } else if (role) {
+            return axios.get(`has_permission/${role}`);
+        } else {
+            console.error("No role given");
+        }
+    },
 
 
 }

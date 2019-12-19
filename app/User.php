@@ -37,6 +37,14 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function assignmentFor(Task $task)
+    {
+        return Assignment
+            ::where('user_id', $this->id)
+            ->where('task_id', $task->id)
+            ->first();
+    }
+
     public function bids()
     {
         return $this->hasMany('App\Bid');

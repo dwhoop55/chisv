@@ -146,6 +146,11 @@ h3 {
   align-items: stretch;
 }
 
+.is-vertical-center {
+  display: flex;
+  align-items: center;
+}
+
 .is-100vh {
   height: 100%;
 }

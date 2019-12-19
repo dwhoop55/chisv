@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Observers\TaskObserver;
 use App\Services\EnrollmentFormService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Pixabay;
+use App\Task;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -35,6 +37,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
 
+        Task::observe(TaskObserver::class);
 
         /**
          * Paginate a standard Laravel Collection.

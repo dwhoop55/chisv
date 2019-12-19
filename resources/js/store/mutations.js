@@ -30,6 +30,9 @@ export default {
     TASKS_PRIORITIES(state, priorities) {
         state.tasks.priorities = priorities;
     },
+    TASKS_ONLY_OWN_TASKS(state, bool) {
+        state.tasks.onlyOwnTasks = bool;
+    },
 
 
     ASSIGNMENTS_COLUMNS(state, columns) {

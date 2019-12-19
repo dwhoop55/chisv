@@ -64,6 +64,12 @@
           </b-tag>
         </b-taglist>
       </div>
+
+      <b-field expanded></b-field>
+
+      <b-field position="is-right">
+        <b-button @click="getUsers()" type="is-primary" icon-left="refresh">Reload</b-button>
+      </b-field>
     </b-field>
 
     <br />
@@ -116,12 +122,12 @@
         <b-table-column field="lastname" label="Lastname" sortable>
           <template>{{ props.row.lastname }}</template>
         </b-table-column>
-        <b-table-column width="300" field="universities.name" label="University" sortable>
+        <b-table-column width="400" field="universities.name" label="University" sortable>
           <template>
             <p
               v-if="props.row.university"
               :title="props.row.university"
-            >{{ props.row.university | textlimit(35) }}</p>
+            >{{ props.row.university | textlimit(45) }}</p>
             <p v-else>N/A</p>
           </template>
         </b-table-column>
@@ -134,12 +140,12 @@
           </template>
         </b-table-column>
         <b-table-column
-          :visible="canRunLottery"
+          :visible="canUpdateEnrollment"
           width="130"
           field="stats.hours_done"
           label="Hours done"
         >
-          <template>{{ props.row.stats.hours_done }}</template>
+          <template>{{ (props.row.stats) ? props.row.stats.hours_done : null }}</template>
         </b-table-column>
         <b-table-column width="130" label="SV State">
           <template>
@@ -331,7 +337,9 @@ export default {
       ignoreNextToggleClick: false,
 
       canUpdateEnrollment: false,
-      canRunLottery: false
+      canRunLottery: false,
+
+      isCaptain: false
     };
   },
 

@@ -25,7 +25,11 @@
               <div>
                 <p class="heading">Hours done</p>
                 <div class="subtitle">
-                  <small>{{ props.option.stats.hours_done }}/{{ conference.volunteer_max }}</small>
+                  <small
+                    :class="{
+                'has-text-danger has-text-weight-bold': props.option.stats.hours_done >= conference.volunteer_max,
+            }"
+                  >{{ props.option.stats.hours_done }}/{{ conference.volunteer_max }}</small>
                 </div>
               </div>
             </div>

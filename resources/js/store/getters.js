@@ -23,6 +23,9 @@ export default {
     tasksPriorities: state => {
         return state.tasks.priorities;
     },
+    tasksOnlyOwnTasks: state => {
+        return state.tasks.onlyOwnTasks;
+    },
 
     assignmentsColumns: state => {
         return state.assignments.columns;

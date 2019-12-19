@@ -28,4 +28,12 @@ class Assignment extends Model
     {
         return $this->belongsTo('App\State');
     }
+
+    public function bid()
+    {
+        return Bid
+            ::where('user_id', $this->user_id)
+            ->where('task_id', $this->id)
+            ->first();
+    }
 }

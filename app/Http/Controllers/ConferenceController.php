@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Bid;
 use App\Conference;
 use App\Http\Requests\ConferenceCreateRequest;
@@ -167,12 +168,19 @@ class ConferenceController extends Controller
         $day = request()->day;
         $priorities = collect(explode(',', request()->priorities));
         $user = auth()->user();
+        $onlyOwnTasks = request()->only_own_tasks;
 
         $query = Task::
+            // Left join assignments to filter for 'onlyOwnTasks'
+            leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
             // Stay bond to this $conference
-            where('tasks.conference_id', $conference->id)
+            ->where('tasks.conference_id', $conference->id)
             ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
+
+        if ($onlyOwnTasks == "true") {
+            $query->where('assignments.user_id', $user->id);
+        }
 
         // Only add queries when we are searching for something
         if (strlen($search) > 0) {
@@ -188,48 +196,65 @@ class ConferenceController extends Controller
             }
         });
 
-        // Load the paginated results from the database
+        // The following section with uniqueTasks and sorting is
+        // a copy of the method 'assignments' from above
+        // Take a look at the comment there
+
+        // Load all results from the database
         // Only retreive 'tasks.*' or we would have collision
         // due to the joins we did earlier
-        $paginatedTasks = $query->paginate(request()->per_page, ['tasks.*']);
+        $tasks = $query->get(['tasks.*']);
 
-        $paginatedTasks->getCollection()->transform(function ($task) use ($user, $conference) {
-            // Remove some fields when the user is not admin, chair or captain
-            if (!$user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference)) {
-                unset($task->slots);
-                unset($task->priority);
-            }
-
-            // Provide some dummy bid so that the frontend can fill it out
-            $task->own_bid = new Bid([
-                'user_id' => $user->id,
-                'task_id' => $task->id,
-            ]);
-
-            // Add bid and assignment information
-            foreach ($task->bids as $bid) {
-                if ($bid->user_id == $user->id) {
-                    // We found the bid of the auth()->user()
-                    $cleanBid = collect($bid->only(['id', 'preference', 'state']));
-                    $task->own_bid = $cleanBid;
-                    $task->own_bid->put('can_update', $user->can('update', $bid));
-
-                    // Add assignment when available
-                    if ($bid->assignment) {
-                        $task->own_assignment = $bid->assignment->only('id', 'hours', 'state');
-                    }
-
-                    // We found the one bid from the user
-                    // due to the database scheme there can only
-                    // be one bid per user per task, so we can
-                    // break the loop now
-                    break;
+        $uniqueTasks = collect();
+        $tasks->each(function ($task) use ($uniqueTasks, $user, $conference) {
+            // Only do the following once per task (unique in uniqueTasks)
+            if (!$uniqueTasks->has($task->id)) {
+                // Remove some fields when the user is not admin, chair or captain
+                if (!$user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference)) {
+                    unset($task->slots);
+                    unset($task->priority);
                 }
-            }
 
-            $task->can_create_bid = $user->can('createForTask', ['App\Bid', $task]);
-            return $task;
+                // Provide some dummy bid so that the frontend can fill it out
+                $task->own_bid = new Bid([
+                    'user_id' => $user->id,
+                    'task_id' => $task->id,
+                ]);
+
+                // Add bid and assignment information
+                foreach ($task->bids as $bid) {
+                    if ($bid->user_id == $user->id) {
+                        // We found the bid of the auth()->user()
+                        $cleanBid = collect($bid->only(['id', 'preference', 'state']));
+                        $task->own_bid = $cleanBid;
+                        $task->own_bid->put('can_update', $user->can('update', $bid));
+
+                        // We found the one bid from the user
+                        // due to the database scheme there can only
+                        // be one bid per user per task, so we can
+                        // break the loop now
+                        break;
+                    }
+                }
+
+                // Lookup an assignment if there is one
+                $assignment = Assignment
+                    ::where('user_id', $user->id)
+                    ->where('task_id', $task->id)
+                    ->first();
+                // Add assignment when available
+                if ($assignment) {
+                    $task->own_assignment = $assignment->only('id', 'hours', 'state');
+                }
+
+                $task->can_create_bid = $user->can('createForTask', ['App\Bid', $task]);
+
+                $uniqueTasks->put($task->id, $task);
+            }
         });
+
+        // Now we paginate on the collection (note this is a custom marco registered in AppServiceProvider)
+        $paginatedTasks = $uniqueTasks->flatten()->paginate(request()->per_page);
 
         return $paginatedTasks;
     }

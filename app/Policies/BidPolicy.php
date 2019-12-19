@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Assignment;
 use App\Bid;
 use App\Conference;
 use App\State;
@@ -92,12 +93,14 @@ class BidPolicy
             $conference->bidding_enabled &&
             $conference->bidding_until && // must be set
             new Carbon($task->date) <= new Carbon($conference->bidding_until) &&
-            new Carbon($task->date) >= Carbon::today()
+            new Carbon($task->date) >= Carbon::today() &&
+            !$user->assignmentFor($task)
         ) {
             // Allow bidding if the user is SV for the task's conference and 'accepted',
             // the bidding is open
             // the task is not after bidding_until
             // the task is not in the past
+            // the user is not already assigned to the task
             return true;
         } else {
             return false;

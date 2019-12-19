@@ -130,7 +130,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:viewAny,App\Task")
             ->name('conference.tasks');
         Route::get('conference/{conference}/assignment', 'ConferenceController@assignments')
-            ->middleware("can:viewAny,App\Assignment")
+            ->middleware("can:viewAssignments,conference")
             ->name('conference.assignments');
         Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
             ->name('conference.enrollment');
@@ -149,6 +149,11 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');
+
+        // Determine if a user has s specific role
+        Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {
+            return ["result" => auth()->user()->hasPermission($role, $conference, $state)];
+        });
 
         // Determine if a user can perform a certain action
         Route::get('can/{ability}/{model}/{id?}/{onModel?}/{onId?}', function ($ability, $model, $id = null, $onModel = null, $onId = null) {

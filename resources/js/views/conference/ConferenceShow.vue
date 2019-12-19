@@ -84,7 +84,7 @@
                 <conference-show-tasks v-if="canViewUsers" :conference="conference"></conference-show-tasks>
                 <p v-else>You need to be enrolled to see tasks!</p>
               </b-tab-item>
-              <b-tab-item :visible="canUpdateAssignment" label="Assignments">
+              <b-tab-item v-if="canUpdateAssignment" label="Assignments">
                 <conference-show-assignments :conference="conference"></conference-show-assignments>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Conference">

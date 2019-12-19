@@ -260,9 +260,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.column-small {
-  width: 200px;
-}
-</style>

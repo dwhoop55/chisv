@@ -171,13 +171,16 @@ export default {
     },
     formatPreference(task) {
       switch (task.own_bid.preference) {
+        case 0:
+          return "X";
+          break;
         case 1:
         case 2:
         case 3:
           return task.own_bid.preference;
           break;
         default:
-          return "X";
+          return "You did not bid";
           break;
       }
     },
@@ -230,7 +233,10 @@ export default {
             message: `This task is assigned to you\
                       <br/><br/><small>Your bid: ${this.formatPreference(
                         this.task
-                      )}</small>`,
+                      )}<br/>\
+                      You will get ${this.hoursFromTime(
+                        this.timeFromDecimal(this.task.own_assignment.hours)
+                      )} hours</small>`,
             type: "is-primary",
             hasIcon: true,
             icon: "check",
@@ -244,7 +250,10 @@ export default {
             message: `You are currently working on this task. Please let the Day Captain known when you're done and leave\
                       <br/><br/><small>Your bid: ${this.formatPreference(
                         this.task
-                      )}</small>`,
+                      )}<br/>\
+                      You will get ${this.hoursFromTime(
+                        this.timeFromDecimal(this.task.own_assignment.hours)
+                      )} hours</small>`,
             type: "is-warning",
             hasIcon: true,
             icon: "clock",
@@ -257,7 +266,10 @@ export default {
             title: `You're awesome!`,
             message: `This task is done.<br/>Thank you!\
                       <br/><br/><small>Your bid:\
-                      ${this.formatPreference(this.task)}</small>`,
+                      ${this.formatPreference(this.task)}<br/>\
+                      Got got ${this.hoursFromTime(
+                        this.timeFromDecimal(this.task.own_assignment.hours)
+                      )} hours</small>`,
             type: "is-danger",
             hasIcon: true,
             icon: "heart",
@@ -271,7 +283,7 @@ export default {
 
   computed: {
     preference() {
-      return this.task && this.task.own_bid
+      return this.task && this.task.own_bid && this.task.own_bid.preference
         ? this.task.own_bid.preference
         : null;
     },

@@ -66,23 +66,39 @@
         v-if="canCreateTask"
       >Import task</b-button>
 
-      <b-dropdown
-        :value="activeColumns"
-        @input="$store.commit('TASKS_COLUMNS', $event)"
-        multiple
-        aria-role="list"
-      >
-        <button class="button is-primary" slot="trigger">
-          <span>Visible columns</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
+      <b-field>
+        <b-dropdown
+          :value="activeColumns"
+          @input="$store.commit('TASKS_COLUMNS', $event)"
+          multiple
+          aria-role="list"
+        >
+          <button class="button is-primary" slot="trigger">
+            <span>Visible columns</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
 
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="manage">Manage</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-        <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
-        <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
-      </b-dropdown>
+          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="manage">Manage</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
+        </b-dropdown>
+      </b-field>
+
+      <b-field class="is-vertical-center">
+        <b-checkbox
+          @input="onOnlyOwnTasksChange($event)"
+          :value="onlyOwnTasks"
+          :type="onlyOwnTasks ? 'is-danger' : 'is-primary'"
+        >Show only my assigned tasks</b-checkbox>
+      </b-field>
+
+      <b-field expanded></b-field>
+
+      <b-field position="is-right">
+        <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
+      </b-field>
     </b-field>
     <br />
 
@@ -120,9 +136,15 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="190" label="Your Bid">
+        <b-table-column width="190" label="Bid & Status">
           <template slot="header" slot-scope="{ column }">
-            <b-tooltip label="X=impossible, 1=low, 2=medium, 3=high" dashed>{{ column.label }}</b-tooltip>
+            {{ column.label }}
+            <b-icon
+              @click.native="showHint('bid')"
+              class="is-clickable"
+              size="is-small"
+              icon="help"
+            ></b-icon>
           </template>
           <task-bid-picker @error="getTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
@@ -188,6 +210,10 @@
               <b v-if="searchString.length > 0">{{ searchString }}</b>
               {{ day | moment('ll') }}
             </p>
+            <p class="has-text-danger" v-if="onlyOwnTasks">
+              Only showing tasks assigned to you.
+              <br />Uncheck above to see all tasks
+            </p>
           </div>
         </section>
       </template>
@@ -239,6 +265,7 @@ export default {
       sortDirection: this.$store.getters.tasksSortDirection,
       perPage: this.$store.getters.tasksPerPage,
       page: this.$store.getters.tasksPage,
+      onlyOwnTasks: this.$store.getters.tasksOnlyOwnTasks,
 
       isLoading: true,
       isLoadingCalendar: true,
@@ -248,6 +275,23 @@ export default {
   },
 
   methods: {
+    showHint(type) {
+      switch (type) {
+        case "bid":
+          this.$buefy.dialog.alert(
+            "This is where you can set your preference for a task. You can choose between\
+            <li><strong>X</strong> unavailable</li>\
+            <li><strong>1</strong> low preference</li>\
+            <li><strong>2</strong> medium preference</li>\
+            <li><strong>3</strong> high preference</li>\
+            <br/>\
+            Please note that you can also be assigned to a task\
+             on which you did not bid at all. So make sure to\
+             check this list whenever the auction was run!"
+          );
+          break;
+      }
+    },
     createTask(type) {
       if (type == "single") {
         this.$buefy.modal.open({
@@ -365,7 +409,8 @@ export default {
         `per_page=${this.perPage}`,
         `search_string=${this.searchString}`,
         `priorities=${this.selectedPriorities}`,
-        `day=${this.day.toMySqlDate()}`
+        `day=${this.day.toMySqlDate()}`,
+        `only_own_tasks=${this.onlyOwnTasks}`
       ].join("&");
 
       this.isLoading = true;
@@ -407,6 +452,11 @@ export default {
     },
     onDayChange() {
       this.onPageChange(1);
+    },
+    onOnlyOwnTasksChange(bool) {
+      this.$store.commit("TASKS_ONLY_OWN_TASKS", bool);
+      this.onlyOwnTasks = bool;
+      this.getTasks();
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("TASKS_SEARCH", this.searchString);
