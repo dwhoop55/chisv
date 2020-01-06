@@ -385,6 +385,25 @@ class ConferenceController extends Controller
                     return $bid->only('id', 'task_id', 'preference');
                 });
 
+                // Add assignments to the SVs so that Chair/Captain see assigned tasks on the SV view
+                $safe['assignments'] = $user->assignments->transform(function ($assignment) {
+                    $safe = $assignment->only('id', 'hours', 'created_at');
+                    $safe['state'] = $assignment->state->only('id', 'name', 'description');
+                    $safe['task'] = $assignment->task->only(
+                        'id',
+                        'name',
+                        'description',
+                        'location',
+                        'date',
+                        'start_at',
+                        'end_at',
+                        'priority',
+                        'slots',
+                        'hours'
+                    );
+                    return $safe;
+                });
+
                 // Now we add some statistics for the Chair/Captain
                 $safe['stats'] = [
                     "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),

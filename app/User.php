@@ -269,24 +269,30 @@ class User extends Authenticatable
 
     public function hoursFor(Conference $conference, State $state = null)
     {
-        $assignments = collect();
+        $validAssignments = collect();
         $hours = 0.0;
 
         // First we filter for the conference
-        $assignments = $this->assignments->filter(function ($assignment) use ($conference) {
-            if ($assignment->task->conference->id == $conference->id) {
-                return true;
-            } else {
-                return false;
-            }
-        });
+        $validAssignments = $this->assignments()
+            ->with(['task', 'task.conference'])
+            ->get()
+            ->each(function ($assignment) use ($conference) {
+                if (
+                    $assignment->task && $assignment->task->conference->id == $conference->id
+                ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
         // Now we need to filter for the state if there is one
         // and sum up all the hours
-        foreach ($assignments as $assignment) {
+        foreach ($validAssignments as $assignment) {
             if (($state && $assignment->state->id == $state->id) || (!$state)) {
                 // Either there is a state and it matches
-                // or there is no state at all
+                // or there is no specific state we look for
+                // (in the arguments of the function)
                 // Either way we sum up the hours
                 $hours += $assignment->hours;
             }

@@ -234,31 +234,109 @@
       </template>
 
       <template slot="detail" slot-scope="props">
-        <strong>{{ props.row.firstname }} {{ props.row.lastname }}</strong>
-
-        <br />
-        {{ props.row.city ? props.row.city + ", " : "" }}
-        {{ props.row.region }}, {{ props.row.country }}
-        <br />
-
-        <div v-if="props.row.degree">
-          Study Program:
-          {{ props.row.degree }}
+        <div class="notification field is-floating-label">
+          <label class="label">Person</label>
+          Location:
+          {{ props.row.city ? props.row.city + ", " : "" }}
+          {{ props.row.region }}, {{ props.row.country }}
+          <div v-if="props.row.degree">
+            Study Program:
+            {{ props.row.degree }}
+          </div>
         </div>
+
+        <b-field />
+
+        <div v-if="props.row.assignments">
+          <div class="notification field is-floating-label">
+            <label class="label">Assigned Tasks</label>
+            <sv-assignments-list v-model="props.row.assignments"></sv-assignments-list>
+          </div>
+        </div>
+
+        <b-field />
 
         <div v-if="props.row.permission.enrollment_form">
-          Enrollment form (Name: {{ props.row.permission.enrollment_form.name }}):
-          <enrollment-form-summary
-            class="section has-padding-t-8"
-            v-model="props.row.permission.enrollment_form"
-          ></enrollment-form-summary>
+          <div class="notification field is-floating-label">
+            <label
+              class="label"
+            >Enrollment form (Type: {{ props.row.permission.enrollment_form.name }} )</label>
+            <b-collapse :open="conference.state.name != 'running'" aria-id="contentIdForA11y1">
+              <!-- This will hide the enrollment form when the conference is running to make the tasks better visible -->
+              <a slot="trigger" slot-scope="props" aria-controls="contentIdForA11y1">
+                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+                {{ !props.open ? 'Show' : 'Hide' }}
+              </a>
+
+              <enrollment-form-summary
+                class="section has-padding-t-8"
+                v-model="props.row.permission.enrollment_form"
+              ></enrollment-form-summary>
+            </b-collapse>
+          </div>
         </div>
 
+        <b-field />
+
         <div v-if="props.row.stats">
-          <small>Bids below are displayed in [ X, 1, 2, 3 ] preference order</small>
-          <p>Bids placed: {{ props.row.stats.bids_placed }}</p>
-          <p>Bids successful: {{ props.row.stats.bids_successful }}</p>
-          <p>Bids unsuccessful: {{ props.row.stats.bids_unsuccessful }}</p>
+          <div class="notification field is-floating-label">
+            <label class="label">Statistics</label>
+            <small>
+              Bids below are displayed in
+              <small class="has-text-danger">X</small>
+              <small class="has-text-info">1</small>
+              <small class="has-text-warning">2</small>
+              <small class="has-text-success">3</small>
+              preference order
+            </small>
+            <div class="level">
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Hours done</p>
+                  <div class="subtitle">
+                    <small
+                      :class="{
+                'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_max,
+            }"
+                    >{{ props.row.stats.hours_done }}/{{ conference.volunteer_max }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Bids placed</p>
+                  <div class="subtitle">
+                    <small class="has-text-danger">{{ props.row.stats.bids_placed[0] }}</small>
+                    <small class="has-text-info">{{ props.row.stats.bids_placed[1] }}</small>
+                    <small class="has-text-warning">{{ props.row.stats.bids_placed[2] }}</small>
+                    <small class="has-text-success">{{ props.row.stats.bids_placed[3] }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Bids successful</p>
+                  <div class="subtitle">
+                    <small class="has-text-danger">{{ props.row.stats.bids_successful[0] }}</small>
+                    <small class="has-text-info">{{ props.row.stats.bids_successful[1] }}</small>
+                    <small class="has-text-warning">{{ props.row.stats.bids_successful[2] }}</small>
+                    <small class="has-text-success">{{ props.row.stats.bids_successful[3] }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Bids unsuccessful</p>
+                  <div class="subtitle">
+                    <small class="has-text-danger">{{ props.row.stats.bids_unsuccessful[0] }}</small>
+                    <small class="has-text-info">{{ props.row.stats.bids_unsuccessful[1] }}</small>
+                    <small class="has-text-warning">{{ props.row.stats.bids_unsuccessful[2] }}</small>
+                    <small class="has-text-success">{{ props.row.stats.bids_unsuccessful[3] }}</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </template>
 
