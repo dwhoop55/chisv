@@ -380,6 +380,11 @@ class ConferenceController extends Controller
                     $safe['permission']->waitlist_position = $permission->waitlist_position;
                 }
 
+                // Add bids for the conference
+                $safe['bids'] = $user->bidsFor($conference)->transform(function ($bid) {
+                    return $bid->only('id', 'task_id', 'preference');
+                });
+
                 // Now we add some statistics for the Chair/Captain
                 $safe['stats'] = [
                     "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),

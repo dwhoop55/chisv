@@ -35,6 +35,16 @@
             </div>
             <div class="level-item has-text-centered">
               <div>
+                <p class="heading">Bid</p>
+                <div class="subtitle">
+                  <small
+                    :class="preferenceType(props.option.bid_preference).replace('is-', 'has-text-')"
+                  >{{ props.option.bid_preference }}</small>
+                </div>
+              </div>
+            </div>
+            <div class="level-item has-text-centered">
+              <div>
                 <p class="heading">Bids placed</p>
                 <div class="subtitle">
                   <small class="has-text-danger">{{ props.option.stats.bids_placed[0] }}</small>
@@ -52,17 +62,6 @@
                   <small class="has-text-info">{{ props.option.stats.bids_successful[1] }}</small>
                   <small class="has-text-warning">{{ props.option.stats.bids_successful[2] }}</small>
                   <small class="has-text-success">{{ props.option.stats.bids_successful[3] }}</small>
-                </div>
-              </div>
-            </div>
-            <div class="level-item has-text-centered">
-              <div>
-                <p class="heading">Bids unsuccessful</p>
-                <div class="subtitle">
-                  <small class="has-text-danger">{{ props.option.stats.bids_unsuccessful[0] }}</small>
-                  <small class="has-text-info">{{ props.option.stats.bids_unsuccessful[1] }}</small>
-                  <small class="has-text-warning">{{ props.option.stats.bids_unsuccessful[2] }}</small>
-                  <small class="has-text-success">{{ props.option.stats.bids_unsuccessful[3] }}</small>
                 </div>
               </div>
             </div>
@@ -102,6 +101,15 @@ export default {
     };
   },
   methods: {
+    getPreference(bids) {
+      var preference = "none";
+      bids.forEach(bid => {
+        if (bid.task_id == this.task.id) {
+          preference = bid.preference == "0" ? "X" : bid.preference;
+        }
+      });
+      return preference;
+    },
     getAsyncData: debounce(function(name) {
       if (!name.length) {
         this.data = [];
@@ -115,8 +123,6 @@ export default {
         return assignment.user.id;
       });
 
-      console.log(existingSvs);
-
       const params = [
         `search_string=${name}`,
         `selected_states=12` // SV state
@@ -125,7 +131,19 @@ export default {
       api
         .getConferenceSvs(this.conference.key, `?${params}`)
         .then(data => {
+          // Only take SV which are not already assigned to the task
           this.data = data.data.data.filter(sv => !existingSvs.includes(sv.id));
+
+          // Fetch the preference from all bids
+          this.data = this.data.map(sv => {
+            sv.bid_preference = this.getPreference(sv.bids);
+            return sv;
+          });
+
+          // Sort by preference descending
+          this.data.sort((a, b) =>
+            a.bid_preference < b.bid_preference ? 1 : -1
+          );
         })
         .catch(error => {
           console.error(error);

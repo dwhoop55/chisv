@@ -185,6 +185,21 @@ Vue.mixin({
         goBack: function () {
             window.history.back();
         },
+        preferenceType(preference) {
+            if (!preference) return "is-light";
+            switch (preference) {
+                case 'X':
+                    return "is-danger";
+                case 1:
+                    return "is-info";
+                case 2:
+                    return "is-warning";
+                case 3:
+                    return "is-success";
+                default:
+                    return "is-dark";
+            }
+        },
         stateType: function (state) {
             if (!state || !state.name) return "is-light";
 
