@@ -12,6 +12,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
+    protected $with = ['avatar'];
     /**
      * The attributes that are not mass assignable.
      *

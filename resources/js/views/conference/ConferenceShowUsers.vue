@@ -99,9 +99,9 @@
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
           <template>
-            <div style="align-items:center;" class="is-flex">
+            <div class="is-vertical-center">
               <figure class="media-left">
-                <p class="image is-32x32">
+                <p class="image is-64x64">
                   <img :src="userAvatar(props.row)" />
                 </p>
               </figure>

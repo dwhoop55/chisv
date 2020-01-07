@@ -70,6 +70,15 @@ export default {
         form.append("name", conference.key + "-" + type);
         return this.createImage(form);
     },
+    createUserImage(user, type, image) {
+        let form = new FormData();
+        form.append('image', image);
+        form.append('type', type);
+        form.append('owner_type', "App\\User");
+        form.append('owner_id', user.id);
+        form.append("name", type + "-" + user.id);
+        return this.createImage(form);
+    },
     createPermission(vform) {
         return vform.post("permission");
     },

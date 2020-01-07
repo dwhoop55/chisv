@@ -72,4 +72,7 @@ export default {
     CONFERENCE_TAB(state, tab) {
         state.navigation.conferenceTab = tab;
     },
+    PROFILE_TAB(state, tab) {
+        state.navigation.profileTab = tab;
+    },
 }

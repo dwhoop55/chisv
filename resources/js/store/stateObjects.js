@@ -21,6 +21,7 @@ var svs = {
 
 var navigation = {
     conferenceTab: 0,
+    profileTab: 0,
 }
 
 export { tasks, assignments, svs, navigation }

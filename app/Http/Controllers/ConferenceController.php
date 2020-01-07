@@ -365,7 +365,6 @@ class ConferenceController extends Controller
             // Add statistics for chair/captain or if the user requesting
             // the data is the user which is currently processed
             if ($showMore || $user->id == auth()->user()->id) {
-                // Now we add some statistics for the Chair/Captain
                 $safe['stats'] = [
                     "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
                     "bids_placed" => [

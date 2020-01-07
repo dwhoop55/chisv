@@ -54,5 +54,8 @@ export default {
     },
     conferenceTab: state => {
         return state.navigation.conferenceTab;
+    },
+    profileTab: state => {
+        return state.navigation.profileTab;
     }
 }

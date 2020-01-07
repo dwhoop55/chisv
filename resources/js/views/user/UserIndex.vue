@@ -47,16 +47,6 @@
       @sort="onSort"
     >
       <template slot-scope="props">
-        <b-table-column width="100" label="Actions">
-          <div class="buttons">
-            <b-button
-              type="is-inverted"
-              @click="goTo(`/user/${props.row.id}/tasks`)"
-              icon-left="format-list-checks"
-            >tasks</b-button>
-          </div>
-        </b-table-column>
-
         <b-table-column field="firstname" label="Firstname" sortable>
           <a :href="`/user/${props.row.id}/edit`">{{ props.row.firstname }}</a>
         </b-table-column>

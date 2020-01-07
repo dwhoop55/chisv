@@ -1,6 +1,11 @@
 <template>
   <section>
-    <b-tabs expanded :animated="false" v-model="activeTab">
+    <b-tabs
+      :value="activeTab"
+      @input="$store.commit('PROFILE_TAB', $event)"
+      expanded
+      :animated="false"
+    >
       <b-tab-item icon="format-list-bulleted" label="Conferences">
         <div v-if="user">
           <b-button @click="showGrantModal=true" class="is-pulled-right" v-if="canGrant">Grant</b-button>
@@ -28,6 +33,10 @@
 
       <b-tab-item icon="account" label="Profile">
         <form @submit.prevent="save" @keydown="profileForm.onKeydown($event)">
+          <b-field label="Image">
+            <user-image-component v-model="user"></user-image-component>
+          </b-field>
+
           <b-field grouped>
             <b-field
               expanded
@@ -243,7 +252,7 @@ export default {
       }),
       user: null,
       isLoading: true,
-      activeTab: 0,
+      activeTab: this.$store.getters.profileTab,
       showGrantModal: false
     };
   },
