@@ -4,7 +4,7 @@
       <template slot-scope="props">
         <b-table-column field="state.name" label="State" sortable>
           <div v-if="props.row.state.name == 'assigned'">
-            <b-icon type="is-warning" icon="account-check" />
+            <b-icon type="is-warning" icon="account" />
             <span>&nbsp;Scheduled</span>
           </div>
 

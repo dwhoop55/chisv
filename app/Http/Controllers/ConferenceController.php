@@ -362,6 +362,33 @@ class ConferenceController extends Controller
             $safe['country'] = $user->country->name;
             $safe['region'] = $user->region->name;
 
+            // Add statistics for chair/captain or if the user requesting
+            // the data is the user which is currently processed
+            if ($showMore || $user->id == auth()->user()->id) {
+                // Now we add some statistics for the Chair/Captain
+                $safe['stats'] = [
+                    "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
+                    "bids_placed" => [
+                        $user->bidsFor($conference, State::byName('placed'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('placed'), 3)->count()
+                    ],
+                    "bids_successful" => [
+                        $user->bidsFor($conference, State::byName('successful'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('successful'), 3)->count()
+                    ],
+                    "bids_unsuccessful" => [
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('unsuccessful'), 3)->count()
+                    ],
+                ];
+            }
+
             if ($showMore) {
                 // Show more information
                 $conference = $permission->conference;
@@ -403,29 +430,6 @@ class ConferenceController extends Controller
                     );
                     return $safe;
                 });
-
-                // Now we add some statistics for the Chair/Captain
-                $safe['stats'] = [
-                    "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
-                    "bids_placed" => [
-                        $user->bidsFor($conference, State::byName('placed'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 3)->count()
-                    ],
-                    "bids_successful" => [
-                        $user->bidsFor($conference, State::byName('successful'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 3)->count()
-                    ],
-                    "bids_unsuccessful" => [
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 3)->count()
-                    ],
-                ];
             }
             return $safe;
         });

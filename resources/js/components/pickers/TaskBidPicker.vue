@@ -19,7 +19,7 @@
     </div>
 
     <div @click="showHint('assigned')" class="button is-small" v-if="assignmentIsStateAssigned">
-      <b-icon type="is-warning" icon="account-check" />
+      <b-icon type="is-warning" icon="account" />
       <span>&nbsp;Scheduled</span>
     </div>
 
