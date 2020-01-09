@@ -8,7 +8,7 @@ var tasks = {
 }
 
 var assignments = {
-    columns: ['start_at', 'end_at', 'hours', 'name', 'location', 'description', 'slots', 'assignments'],
+    columns: ['start_at', 'end_at', 'hours', 'name', 'location', 'description', 'slots', 'bids', 'assignments'],
     search: "",
     sort: { field: 'start_at', direction: 'asc' },
     page: { items: 10, index: 1 },

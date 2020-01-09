@@ -52,8 +52,17 @@
           <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="bids">Bids</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
         </b-dropdown>
+      </b-field>
+
+      <b-field v-if="canRunAuction">
+        <b-button
+          :disabled="isLoading"
+          @click="runAuction()"
+          type="is-primary"
+        >Run Auction for this day</b-button>
       </b-field>
 
       <b-field expanded></b-field>
@@ -136,8 +145,15 @@
           label="Slots"
         >
           <p
-            :class="{ 'has-text-danger has-text-weight-medium': props.row.assignments.length > props.row.slots }"
+            :class="{
+               'has-text-danger has-text-weight-bold': props.row.assignments.length == 0,
+               'has-text-warning has-text-weight-bold': props.row.assignments.length > props.row.slots,
+               'has-text-success': props.row.assignments.length == props.row.slots,
+            }"
           >{{ props.row.assignments.length }} / {{ props.row.slots }}</p>
+        </b-table-column>
+        <b-table-column :visible="activeColumns.includes('bids')" label="Bids">
+          <p>{{ props.row.bids.length }}</p>
         </b-table-column>
         <b-table-column
           class="is-marginless is-paddingless"
@@ -218,11 +234,52 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
+      canRunAuction: false,
+
       ignoreNextToggleClick: false
     };
   },
 
   methods: {
+    runAuction() {
+      this.isLoading = true;
+      api
+        .runAuction(this.conference.key, this.day.toMySqlDate())
+        .then(data => {
+          let jobId = data.data.result;
+          this.$buefy.modal.open({
+            parent: this,
+            props: { id: jobId },
+            component: JobModalVue,
+            hasModalCard: true,
+            onCancel: () => {
+              this.getTasks();
+            }
+          });
+        })
+        .catch(error => {
+          var message = error.response.data.message
+            ? error.response.data.message
+            : error.message;
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: message,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.getTasks();
+        });
+    },
+    getCan: async function() {
+      this.canRunAuction = await auth.can(
+        "runAuction",
+        "Conference",
+        this.conference.id
+      );
+    },
     updateHoursForUser(userId, hours) {
       // Yes this is inefficient O(n^2)
       this.isLoading = true;
@@ -320,6 +377,7 @@ export default {
   created() {
     this.getTasks();
     this.getTaskDays();
+    this.getCan();
   },
 
   computed: {

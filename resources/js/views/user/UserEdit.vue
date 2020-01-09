@@ -33,6 +33,13 @@
 
       <b-tab-item icon="account" label="Profile">
         <form @submit.prevent="save" @keydown="profileForm.onKeydown($event)">
+          <b-button
+            class="is-pulled-right"
+            type="is-danger"
+            outlined
+            @click="removeUiPreferences()"
+          >Reset UI preferences</b-button>
+
           <b-field label="Image">
             <user-image-component v-model="user"></user-image-component>
           </b-field>
@@ -262,6 +269,15 @@ export default {
   },
 
   methods: {
+    removeUiPreferences() {
+      localStorage.removeItem("vuex");
+      this.$buefy.notification.open({
+        duration: 5000,
+        message: `Preferences reset`,
+        type: "is-success",
+        hasIcon: true
+      });
+    },
     deleteUser() {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,

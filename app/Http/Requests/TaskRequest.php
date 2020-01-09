@@ -20,7 +20,7 @@ class TaskRequest extends FormRequest
             'date' => 'required|date',
             'start_at' => 'required|regex:/^\d{2}:\d{2}:\d{2}$/i',
             'end_at' => 'required|regex:/^\d{2}:\d{2}:\d{2}$/i',
-            'hours' => 'required|numeric|min:0|max:24',
+            'hours' => 'required|numeric|min:0|max:23.99',
             'priority' => 'required|numeric|min:1|max:3',
             'slots' => 'required|numeric|min:1',
         ];

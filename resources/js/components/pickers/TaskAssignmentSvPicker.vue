@@ -39,7 +39,7 @@
                 <div class="subtitle">
                   <small
                     :class="preferenceType(props.option.bid_preference).replace('is-', 'has-text-')"
-                  >{{ props.option.bid_preference }}</small>
+                  >{{ props.option.bid_preference != undefined ? props.option.bid_preference : "no bid" }}</small>
                 </div>
               </div>
             </div>
@@ -82,6 +82,7 @@
         <small class="has-text-success">3</small>
         preference order | SVs bound to this task are not shown
       </small>
+      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
     </template>
   </b-autocomplete>
 </template>
@@ -101,14 +102,10 @@ export default {
     };
   },
   methods: {
-    getPreference(bids) {
-      var preference = "none";
-      bids.forEach(bid => {
-        if (bid.task_id == this.task.id) {
-          preference = bid.preference == "0" ? "X" : bid.preference;
-        }
-      });
-      return preference;
+    getPreferenceForCurrentTask(bids) {
+      // Will find the bid for the current selected task
+      var bid = bids.find(bid => bid.task_id == this.task.id);
+      return bid ? parseInt(bid.preference) : null;
     },
     getAsyncData: debounce(function(name) {
       if (!name.length) {
@@ -136,14 +133,27 @@ export default {
 
           // Fetch the preference from all bids
           this.data = this.data.map(sv => {
-            sv.bid_preference = this.getPreference(sv.bids);
+            sv.bid_preference = this.getPreferenceForCurrentTask(sv.bids);
             return sv;
           });
 
           // Sort by preference descending
-          this.data.sort((a, b) =>
-            a.bid_preference < b.bid_preference ? 1 : -1
-          );
+          this.data.sort((a, b) => {
+            var x, y;
+            if (a.bid_preference == undefined) {
+              x = -1;
+            } else {
+              x = a.bid_preference;
+            }
+
+            if (b.bid_preference == undefined) {
+              y = -1;
+            } else {
+              y = b.bid_preference;
+            }
+
+            return x > y ? -1 : 1;
+          });
         })
         .catch(error => {
           console.error(error);
@@ -151,7 +161,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    }, 500)
+    }, 100)
   }
 };
 </script>

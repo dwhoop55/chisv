@@ -110,6 +110,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference,user")
             ->name('conference.unenroll');
+        Route::post('conference/{conference}/auction/{day}', 'ConferenceController@runAuction')
+            ->name('conference.runAuction')
+            ->middleware("can:runAuction,conference");
         Route::post('conference/{conference}/lottery', 'ConferenceController@runLottery')
             ->name('conference.runLottery')
             ->middleware("can:runLottery,conference");

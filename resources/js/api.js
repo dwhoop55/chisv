@@ -143,6 +143,9 @@ export default {
         return axios.delete(`task/${id}`);
     },
 
+    runAuction(conference, day) {
+        return axios.post(`conference/${conference}/auction/${day}`);
+    },
     runLottery(conference) {
         return axios.post(`conference/${conference}/lottery`);
     },

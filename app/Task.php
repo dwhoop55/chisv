@@ -9,7 +9,7 @@ class Task extends Model
 {
     protected $guarded = [];
     protected $dates = ['date'];
-    protected $hidden = ['bids', 'users', 'hide', 'updated_at', 'created_at'];
+    protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];
 
     public function conference()
     {

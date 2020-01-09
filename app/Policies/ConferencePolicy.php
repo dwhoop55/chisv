@@ -108,6 +108,19 @@ class ConferencePolicy
         return false;
     }
 
+    public function runAuction(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function runLottery(User $user, Conference $conference)
     {
         if ($user->isAdmin()) {

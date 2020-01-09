@@ -225,7 +225,7 @@
             <div class="is-relative">
               <p
                 v-if="props.row.permission &&
-                 props.row.permission.enrollemnt_from &&
+                 props.row.permission.enrollment_form &&
                   props.row.permission.enrollment_form.total_weight != undefined"
               >{{ props.row.permission.enrollment_form.total_weight }}</p>
             </div>
@@ -298,7 +298,7 @@
                       :class="{
                 'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_max,
             }"
-                    >{{ props.row.stats.hours_done }}/{{ conference.volunteer_max }}</small>
+                    >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_max }}</small>
                   </div>
                 </div>
               </div>

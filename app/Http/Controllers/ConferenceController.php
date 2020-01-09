@@ -57,6 +57,21 @@ class ConferenceController extends Controller
     }
 
     /**
+     * Run the auction for the conference
+     * @return \Illuminate\Http\Response
+     */
+    public function runAuction(Conference $conference, Carbon $date)
+    {
+        $job = new Job([
+            'handler' => 'App\Jobs\Auction',
+            'name' => "Auction for " . $conference->key . " " . $date->toDateString(),
+            'payload' => $conference,
+        ]);
+        $job->saveAndDispatch();
+        return ["result" => $job->id, "message" => "Auction for $conference->name on " . $date->toDateString() . " has been queued as a new job"];
+    }
+
+    /**
      * Run the lottery for the conference
      * @return \Illuminate\Http\Response
      */
@@ -74,7 +89,6 @@ class ConferenceController extends Controller
         $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Lottery for $conference->name has been queued as a new job"];
     }
-
 
     /**
      * Show all tasks for a conference including
@@ -131,15 +145,24 @@ class ConferenceController extends Controller
         $tasksWithUsers->each(function ($task) use ($uniqueTasks) {
             // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
+                // Attach assignments and only keep important fields
                 $task->assignments = $task->assignments->transform(function ($assignment) {
                     $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
-                    $cleanAssignment['state'] = $cleanAssignment['state']->only('name', 'id');
+                    $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
                     $user = $assignment->user->only('id', 'firstname', 'lastname');
                     $hours = $assignment->user->hoursFor($assignment->task->conference, State::byName('done', "App\Assignment"));
                     $user['hours_done'] = $hours;
                     $cleanAssignment['user'] = $user;
                     return $cleanAssignment;
                 });
+
+                // Attach bids and only keep important fields
+                $task->bids = $task->bids->transform(function ($bid) {
+                    $cleanBid = $bid->only(['id', 'preference', 'user_id']);
+                    $cleanBid['state'] = $bid->state->only(['id', 'name']);
+                    return $cleanBid;
+                });
+
                 $uniqueTasks->put($task->id, $task);
             }
         });

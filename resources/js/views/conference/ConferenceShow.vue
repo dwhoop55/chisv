@@ -150,7 +150,7 @@ export default {
           this.getCan();
         })
         .catch(error => {
-          this.$buefy.notification(error.message);
+          this.$buefy.notification.open(error.message);
         })
         .finally(() => {
           this.loading = false;
