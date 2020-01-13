@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
@@ -37,6 +38,61 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAvailable(Carbon $startDateTime, Carbon $endDateTime)
+    {
+        $day = $startDateTime->copy()->startOfDay();
+        $start = $startDateTime->format('H:i:s');
+        $end = $endDateTime->format('H:i:s');
+
+        // There are many ways to do this. To offload as much computation
+        // to the database we will fetch all tasks for the timespan,
+        // then check is the user is assigned to them. We cannot to the
+        // same while fetching assignments with $user->assignments, since
+        // this will give us all assignents the user every was assgined to
+        // and we will still have to query the task every time since assignment
+        // has no time, only the task. So let's limit this from the beginning
+        // and just fetch all tasks. That should be less in any case
+
+        // SQL query looks like  WHERE date=? AND ( [1] OR [2] OR [3] )
+        $tasks = Task
+            ::with('assignments')
+            // date=?
+            ->where('date', $day)
+            ->where(function ($query) use ($start, $end) {
+                // [1]
+                $query->where(function ($query) use ($start, $end) {
+                    $query->where('start_at', '>=', $start);
+                    $query->where('start_at', '<=', $end);
+                });
+                // [2]
+                $query->orWhere(function ($query) use ($start, $end) {
+                    $query->where('end_at', '>=', $start);
+                    $query->where('end_at', '<=', $end);
+                });
+                // [3]
+                $query->orWhere(function ($query) use ($start, $end) {
+                    $query->where('start_at', '<=', $start);
+                    $query->where('end_at', '>=', $end);
+                });
+            })
+            ->get();
+
+        // Now we check for availablity
+        $tasks = $tasks->filter(function ($task) {
+            // Filter out the assignment if there is any for the user
+            $task->assignments = $task->assignments->filter(function ($assignment) {
+                return $assignment->user_id == $this->id;
+            });
+            // When the assignments collection is not empty that means
+            // that there is an assignment for the user for this task
+            return $task->assignments->isNotEmpty();
+        });
+
+        // When the tasks collection is not empty that means there is at least one
+        // task with an assignment for the user
+        return $tasks->isEmpty();
+    }
 
     public function assignmentFor(Task $task)
     {
