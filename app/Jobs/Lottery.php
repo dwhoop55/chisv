@@ -1,11 +1,21 @@
 <?php
 
 /**
- * This is an AdvancedJob job
- * This means we have to implement execute()
- * where we can return results which are persisted
- * into the jobs table. We can also throw an exception
- * in execute() and the job will be marked accordingly
+ * This is the lottery
+ * it will change the enrollment state
+ * to 'accepted' or 'waitlisted' for users.
+ * First a lottery position is given out randomly
+ * for every SV which is in the state 'enrolled'. 
+ * 
+ * We then continue to mark SVs 'accepted' as long as there
+ * are free SV positions for the conference. 
+ * After the max number of SVs are accepted
+ * the lottery will continue to set the state
+ * to 'waitlisted' for all SVs which are still
+ * in the state 'enrolled'. This will put them
+ * at the end of the waitlist (if there are SVs on)
+ * 
+ * SVs in state 'dropped' are not processed at all 
  */
 
 namespace App\Jobs;
