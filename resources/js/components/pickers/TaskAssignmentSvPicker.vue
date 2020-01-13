@@ -39,7 +39,7 @@
                 <div class="subtitle">
                   <small
                     :class="preferenceType(props.option.bid_preference).replace('is-', 'has-text-')"
-                  >{{ props.option.bid_preference != undefined ? props.option.bid_preference : "no bid" }}</small>
+                  >{{ props.option.bid_preference != undefined ? (props.option.bid_preference==0? 'X' : props.option.bid_preference) : "no bid" }}</small>
                 </div>
               </div>
             </div>

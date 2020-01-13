@@ -186,7 +186,7 @@ Vue.mixin({
             window.history.back();
         },
         preferenceType(preference) {
-            if (!preference) return "is-dark";
+            if (preference == undefined) return "is-dark";
             switch (preference) {
                 case 0:
                     return "is-danger";
