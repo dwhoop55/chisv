@@ -60,6 +60,7 @@ class Job extends Model
         $startAt = $startAt ?? Carbon::now();
         $this->start_at = $startAt;
         $delay = $startAt->diffInSeconds(Carbon::now());
+        $this->payload = json_encode($this->payload);
         $this->save();
 
         $params = new JobParameters($this->id, json_decode($this->payload));
@@ -96,18 +97,18 @@ class Job extends Model
 
     public function markAsFailed($result = null)
     {
-        $this->setState(State::byName('failed'));
+        $this->setState(State::byName('failed'))->setEndedNow();
         if ($result) {
-            $this->setResult($result)->setEndedNow();
+            $this->setResult($result);
         }
         return $this;
     }
 
     public function markAsSuccessful($result = null)
     {
-        $this->setState(State::byName('successful'));
+        $this->setState(State::byName('successful'))->setEndedNow();
         if ($result) {
-            $this->setResult($result)->setEndedNow();
+            $this->setResult($result);
         }
         return $this;
     }

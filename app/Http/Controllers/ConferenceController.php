@@ -50,7 +50,7 @@ class ConferenceController extends Controller
         $job = new Job([
             'handler' => 'App\Jobs\ResetToEnrolled',
             'name' => "Reset SVs to enrolled for " . $conference->key,
-            'payload' => $conference,
+            'payload' => ["conference_id" => $conference->id]
         ]);
         $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Resetting SVs to 'enrolled' at $conference->name has been queued as a new job"];
@@ -65,7 +65,7 @@ class ConferenceController extends Controller
         $job = new Job([
             'handler' => 'App\Jobs\Auction',
             'name' => "Auction for " . $conference->key . " " . $date->toDateString(),
-            'payload' => $conference,
+            'payload' => ["conference_id" => $conference->id, "date" => $date]
         ]);
         $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Auction for $conference->name on " . $date->toDateString() . " has been queued as a new job"];
@@ -84,7 +84,7 @@ class ConferenceController extends Controller
         $job = new Job([
             'handler' => 'App\Jobs\Lottery',
             'name' => "Lottery for " . $conference->key,
-            'payload' => $conference,
+            'payload' => ["conference_id" => $conference->id]
         ]);
         $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Lottery for $conference->name has been queued as a new job"];

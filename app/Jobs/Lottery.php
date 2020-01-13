@@ -37,7 +37,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
     public function __construct(JobParameters $params)
     {
         parent::__construct($params);
-        $this->conference = Conference::find($params->payload->id);
+        $this->conference = Conference::find($params->payload->conference_id);
     }
 
     /**
