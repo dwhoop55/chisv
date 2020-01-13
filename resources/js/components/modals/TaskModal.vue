@@ -208,6 +208,9 @@ export default {
     },
     validateStartEnd() {
       if (this.form.start_at > this.form.end_at) {
+        // TODO: Add some minutes to the end time
+        // so that they are not equal anymore
+        // also change above > to => then
         this.form.end_at = this.form.start_at;
         this.$buefy.toast.open({
           duration: 5000,
