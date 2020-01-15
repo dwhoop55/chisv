@@ -7,6 +7,7 @@ use App\Services\EnrollmentFormService;
 use Illuminate\Support\ServiceProvider;
 use App\Services\Pixabay;
 use App\Task;
+use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
@@ -38,6 +39,21 @@ class AppServiceProvider extends ServiceProvider
         $this->app['request']->server->set('HTTPS', $this->app->environment() != 'local');
 
         Task::observe(TaskObserver::class);
+
+        /**
+         * Paginate a standard Laravel Collection.
+         *
+         * @param Carbon|string $date A Carbon object or string which will be used for the date
+         * @param Carbon|string $time A Carbon object or string which will be used for the time
+         * @return Carbon
+         */
+        Carbon::macro('createFromDateAndTime', function ($date, $time) {
+            if (gettype($date) == "string") {
+                return Carbon::create($date)->setTimeFrom($time);
+            } else {
+                return $date->setTimeFrom($time);
+            }
+        });
 
         /**
          * Paginate a standard Laravel Collection.

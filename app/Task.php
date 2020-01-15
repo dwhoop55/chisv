@@ -11,6 +11,15 @@ class Task extends Model
     protected $dates = ['date'];
     protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];
 
+    /**
+     * @return int Returns the number of free slots but at least 0
+     */
+    public function freeSlots()
+    {
+        $freeSlots = $this->slots - $this->assignments->count();
+        return $freeSlots < 0 ? 0 : $freeSlots;
+    }
+
     public function conference()
     {
         return $this->belongsTo('App\Conference');

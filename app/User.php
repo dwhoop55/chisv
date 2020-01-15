@@ -107,6 +107,17 @@ class User extends Authenticatable
         return $this->hasMany('App\Bid');
     }
 
+    /**
+     * 
+     * @param Task $task Task the bid requested is for
+     * @return Bid|null The requested bid or null
+     * 
+     */
+    public function bidFor(Task $task)
+    {
+        return Bid::where(['task_id' => $task->id, 'user_id' => $this->id])->first();
+    }
+
     public function bidsFor(Conference $conference, State $state = null, $preference = null)
     {
         $bids = $this->bids->filter(function ($bid) use ($conference, $state, $preference) {
