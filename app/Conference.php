@@ -80,4 +80,9 @@ class Conference extends Model
     {
         return $this->hasMany('App\Task');
     }
+
+    public function assignments()
+    {
+        return $this->hasManyThrough('App\Assignment', 'App\Task', 'conference_id', 'task_id', 'id', 'id');
+    }
 }

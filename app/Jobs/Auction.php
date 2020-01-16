@@ -56,8 +56,10 @@
 
 namespace App\Jobs;
 
+use App\Assignment;
 use App\Conference;
 use App\JobParameters;
+use App\State;
 use App\Task;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -107,15 +109,12 @@ class Auction extends AdvancedJob implements ExecutableJob
     {
         $createdAssignments = collect();
 
-        // Get the number of free slots so that we can loop through them
-        $freeSlots = $task->slots - $task->assignments->count();
-
         // Even when we get a list which only contains tasks
         // which have free slots, since this code might run a longer time
         // we have to ensure to check for free slots before we process
         // a task. A chair/captain might have changed assignments in the
         // UI while this code runs.
-        if ($freeSlots > 0) {
+        if ($task->freeSlots() > 0) {
             // Free slots available
 
             // Get a list of users with the bid for this task
@@ -156,7 +155,7 @@ class Auction extends AdvancedJob implements ExecutableJob
                 if (
                     $user->hasValidBid && // (1)
                     $user->isAvailable && // (2)
-                    (($phase == 1 && !$user->isOverHours) || ($phase == 2 && !$user->isOverHours)) // (3)
+                    (($phase == 1 && !$user->isOverHours) || ($phase == 2 && $user->isOverHours)) // (3)
                 ) {
                     return $user;
                 } else {
@@ -174,19 +173,63 @@ class Auction extends AdvancedJob implements ExecutableJob
         // We now have a list of svs which fit our filter requirements
         // We now have to sort them based on preference and hours_done
 
-        //TODO: sort
+        // //TODO: sort also by hours_done
+        // $svs->sort(function ($a, $b) {
+        //     $a->bid->preference > $b->bid->preference;
+        // });
 
         // $svs is now a list with filtered and sorted SVs which bid
         // for the task, are available, match the hours_done and
         // are sorted to that the top most SV fits the task best
 
-        // Now we look at every free slot and ssign SVs as long as
-        // there are free slots and SVs in the list
-        while ($freeSlots > 0 && $svs->isNotEmpty()) {
-            // TODO: assign svs and pop/shift em from the list
+        // Now we look at every SV in the list and assign to a
+        // task if there are free slots available for the task
+        // Eventually we mark the bid as either successful or
+        // unsuccessful
+        while ($svs->isNotEmpty()) {
+            // Get the first SV in the list
+            $sv = $svs->shift();
+
+            // Check if there are still slots available
+            // Assign if possible, otherwise mark bid as
+            // unsuccessful
+            $task->refresh(); // Very important, or laravel will use cached
+            if ($task->freeSlots() > 0) {
+                // Create new Assignment and persists it to the database
+                // hours are set to the hours of the task
+                $assignment = $task->assign($sv);
+
+                // Add the new Assignment to the Assignment collection
+                $createdAssignments->push($assignment);
+
+                // Mark the bid as won
+                $sv->bid->state()->associate(State::byName('successful', 'App\Bid'))->save();
+            } else {
+                // There are no more free slots available
+                // Mark the bid as unsuccessful
+                $sv->bid->state()->associate(State::byName('unsuccessful', 'App\Bid'))->save();
+            }
         }
 
         return $createdAssignments;
+    }
+
+    /** 
+     * Get tasks which have free slots
+     * @return Collection<Task> A collection of Task objects
+     */
+    public function getTasks()
+    {
+        $tasks = $this->conference->tasks()
+            ->whereDate('date', $this->date)
+            ->orderBy('priority', 'desc')
+            ->get();
+
+        $tasks = $tasks->filter(function ($task) {
+            return ($task->freeSlots() > 0);
+        });
+
+        return $tasks;
     }
 
     /**
@@ -196,20 +239,18 @@ class Auction extends AdvancedJob implements ExecutableJob
      */
     public function execute()
     {
-        $assignments = collect();
-
         $this->setProgress(0);
 
-        $tasks = $this->conference->tasks
-            ->whereDate('date', $this->date)
-            ->orderBy('priority', 'desc')
-            ->get();
+        $assignments = collect();
 
-        $tasks->each(function ($task) use ($assignments) {
-            $assignments->merge($this->processTask($task));
-        });
+        // Run this twice, phase 1 and phase 2
+        for ($phase = 1; $phase <= 2; $phase++) {
+            $tasks = $this->getTasks();
+            $tasks->each(function ($task) use ($phase, &$assignments) {
+                $assignments = $assignments->merge($this->processTask($task, $phase));
+            });
+        }
 
-
-        return;
+        return ["created" => $assignments->count()];
     }
 }

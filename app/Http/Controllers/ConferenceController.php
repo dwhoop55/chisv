@@ -40,6 +40,28 @@ class ConferenceController extends Controller
     {
         return $conference;
     }
+    /**
+     * Delete all assignments of a signle day
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAllAssignments(Conference $conference, $date)
+    {
+        if (!$date) {
+            abort(400, "You need to specify a day in YYYY-MM-DD format!");
+        } else if (!Carbon::create($date)) {
+            abort(500, "Could not create date object");
+        }
+
+        $date = Carbon::create($date);
+        $job = new Job([
+            'handler' => 'App\Jobs\DeleteAllAssignments',
+            'name' => "Delete all assignments for " . $conference->key . " " . $date->toDateString(),
+            'payload' => ["conference_id" => $conference->id, "date" => $date]
+        ]);
+        $job->saveAndDispatch();
+        return ["result" => $job->id, "message" => "Delete all assignments for $conference->name on " . $date->toDateString() . " has been queued as a new job"];
+    }
 
     /**
      * Reset all SVs to 'enrolled' state
@@ -60,8 +82,15 @@ class ConferenceController extends Controller
      * Run the auction for the conference
      * @return \Illuminate\Http\Response
      */
-    public function runAuction(Conference $conference, Carbon $date)
+    public function runAuction(Conference $conference, $date)
     {
+        if (!$date) {
+            abort(400, "You need to specify a day in YYYY-MM-DD format!");
+        } else if (!Carbon::create($date)) {
+            abort(500, "Could not create date object");
+        }
+
+        $date = Carbon::create($date);
         $job = new Job([
             'handler' => 'App\Jobs\Auction',
             'name' => "Auction for " . $conference->key . " " . $date->toDateString(),
@@ -145,18 +174,29 @@ class ConferenceController extends Controller
         $tasksWithUsers->each(function ($task) use ($uniqueTasks) {
             // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
-                // Attach assignments and only keep important fields
+                // Attach assignments - this is on a per-sv level
                 $task->assignments = $task->assignments->transform(function ($assignment) {
                     $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
+
+                    // Add the bid to the assignment if there is any
+                    if ($assignment->bid()) {
+                        $cleanAssignment['bid'] = $assignment->bid()->only(['id', 'preference', 'state']);
+                        $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
+                    }
+
+                    // Add the state which the assignment is in
                     $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
+
+                    // Now we add the user with some of statistics
                     $user = $assignment->user->only('id', 'firstname', 'lastname');
                     $hours = $assignment->user->hoursFor($assignment->task->conference, State::byName('done', "App\Assignment"));
                     $user['hours_done'] = $hours;
                     $cleanAssignment['user'] = $user;
+
                     return $cleanAssignment;
                 });
 
-                // Attach bids and only keep important fields
+                // Attach all bids for this task and only keep important fields
                 $task->bids = $task->bids->transform(function ($bid) {
                     $cleanBid = $bid->only(['id', 'preference', 'user_id']);
                     $cleanBid['state'] = $bid->state->only(['id', 'name']);

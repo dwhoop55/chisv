@@ -65,6 +65,14 @@
         >Run Auction for this day</b-button>
       </b-field>
 
+      <b-field v-if="canRunAuction">
+        <b-button
+          :disabled="isLoading"
+          @click="deleteAllAssignments()"
+          type="is-danger"
+        >Delete all Assignments for this day</b-button>
+      </b-field>
+
       <b-field expanded></b-field>
 
       <b-field position="is-right">
@@ -242,6 +250,48 @@ export default {
   },
 
   methods: {
+    deleteAllAssignments() {
+      this.$buefy.dialog.confirm({
+        title: "Caution!",
+        message:
+          "Are you sure you want to <b>delete all assignments of every single SV for this day</b> This action cannot be undone.",
+        confirmText: "Yes, delete all assignments of every SV",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+          this.isLoading = true;
+          api
+            .updateConferenceDeleteAllAssignments(
+              this.conference.key,
+              this.day.toMySqlDate()
+            )
+            .then(data => {
+              let jobId = data.data.result;
+              this.$buefy.modal.open({
+                parent: this,
+                props: { id: jobId },
+                component: JobModalVue,
+                hasModalCard: true,
+                onCancel: () => {
+                  this.getTasks();
+                }
+              });
+            })
+            .catch(error => {
+              this.$buefy.notification.open({
+                duration: 5000,
+                message: error.message,
+                type: "is-danger",
+                hasIcon: true
+              });
+            })
+            .finally(() => {
+              this.isLoading = false;
+              this.getTasks();
+            });
+        } // onConfirm
+      });
+    },
     runAuction() {
       this.isLoading = true;
       api

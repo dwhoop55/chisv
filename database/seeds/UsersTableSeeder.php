@@ -81,15 +81,22 @@ class UsersTableSeeder extends Seeder
         $form = $enrollmentFormService->removeWeights($enrollmentFormService->getFilledFake());
         $form->save();
         $form->updateTotalWeight();
-        // $state = State::where('id', '>', '10')->where('id', '<', '20')->inRandomOrder()->first();
-        $state = State::byName('enrolled');
+        $state = State::byName('accepted');
         $role = Role::byName('sv');
         $conference = Conference::inRandomOrder()->first();
         User::find(3)->grant($role, $conference, $state, $form);
 
+        $enrollmentFormService = new EnrollmentFormService;
+        $form = $enrollmentFormService->removeWeights($enrollmentFormService->getFilledFake());
+        $form->save();
+        $form->updateTotalWeight();
+        $state = State::byName('accepted');
+        $role = Role::byName('sv');
+        $conference = Conference::inRandomOrder()->first();
+        User::find(1)->grant($role, $conference, $state, $form);
+
         factory(App\User::class, 3)->create()->each(function ($user) {
-            // $state = State::where('id', '>', '10')->where('id', '<', '20')->inRandomOrder()->first();
-            $state = State::byName('enrolled');
+            $state = State::byName('accepted');
 
             $conference = Conference::inRandomOrder()->first();
             $language = Language::inRandomOrder()->first();
