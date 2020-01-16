@@ -125,11 +125,17 @@ export default {
             .then(data => {
               for (let index = 0; index < this.assignments.length; index++) {
                 let currentAssignment = this.assignments[index];
+                // Only remove hours when its the correct assignment
                 if (currentAssignment.id == assignment.id) {
-                  this.$emit("updateHours", {
-                    userId: currentAssignment.user.id,
-                    hours: -currentAssignment.hours
-                  });
+                  // Only trigger the updateHours when the task was 'done'
+                  // otherwise we would also subtract hours which are in state
+                  // assigned or checked-in
+                  if (currentAssignment.state.id == 43) {
+                    this.$emit("updateHours", {
+                      userId: currentAssignment.user.id,
+                      hours: -currentAssignment.hours
+                    });
+                  }
                   this.assignments.splice(index, 1);
                 }
               }
