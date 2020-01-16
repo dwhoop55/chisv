@@ -10,11 +10,22 @@
     <div v-for="assignment in assignments" :key="assignment.id">
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
-          <div class="column column-small">
-            {{ assignment.user.firstname }} {{ assignment.user.lastname }} (did {{ decimalFormat(assignment.user.hours_done) }})
-            <a
-              @click.prevent="remove(assignment)"
-            >(remove)</a>
+          <div
+            @mouseenter="hoverUserId=assignment.user.id"
+            @mouseleave="hoverUserId=null"
+            class="column column-small"
+          >
+            {{ assignment.user.firstname }} {{ assignment.user.lastname }}
+            <div>
+              <a @click.prevent="remove(assignment)">remove</a>
+              <span class="is-size-7" v-show="hoverUserId==assignment.user.id">
+                did {{ decimalFormat(assignment.user.hours_done) }}
+                <span
+                  v-if="assignment.bid"
+                  v-html="bidInfo(assignment.bid)"
+                ></span>
+              </span>
+            </div>
           </div>
           <div class="column has-text-right is-narrow column-small">
             <b-button
@@ -49,11 +60,22 @@ export default {
 
   data() {
     return {
-      isLoading: true
+      isLoading: true,
+      hoverUserId: null
     };
   },
 
   methods: {
+    bidInfo(bid) {
+      if (bid) {
+        return (
+          "-  bid " +
+          (bid.state.id == 32 ? "won" : "failed") +
+          " with " +
+          (bid.preference == 0 ? "X" : bid.preference)
+        );
+      }
+    },
     cycleState(assignment) {
       let nextStateId = this.nextCycleState(assignment.state);
 
