@@ -10,22 +10,13 @@
     <div v-for="assignment in assignments" :key="assignment.id">
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
-          <div
-            @mouseenter="hoverUserId=assignment.user.id"
-            @mouseleave="hoverUserId=null"
-            class="column column-small"
-          >
-            {{ assignment.user.firstname }} {{ assignment.user.lastname }}
-            <div>
-              <a @click.prevent="remove(assignment)">remove</a>
-              <span class="is-size-7" v-show="hoverUserId==assignment.user.id">
-                did {{ decimalFormat(assignment.user.hours_done) }}
-                <span
-                  v-if="assignment.bid"
-                  v-html="bidInfo(assignment.bid)"
-                ></span>
-              </span>
-            </div>
+          <div class="column column-small">
+            <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
+              <a
+                @click.prevent="userClicked(assignment.user)"
+              >{{ assignment.user.firstname }} {{ assignment.user.lastname }}</a>
+            </b-tooltip>
+            <a @click.prevent="remove(assignment)">&nbsp;remove</a>
           </div>
           <div class="column has-text-right is-narrow column-small">
             <b-button
@@ -66,15 +57,31 @@ export default {
   },
 
   methods: {
-    bidInfo(bid) {
+    userClicked(user) {
+      console.log("Do something here, maybe go to user SV profile..");
+    },
+    userDetail(assignment) {
+      var detail =
+        "did " + this.decimalFormat(assignment.user.hours_done) + "\n";
+      let bid = assignment.bid;
+
       if (bid) {
-        return (
-          "-  bid " +
-          (bid.state.id == 32 ? "won" : "failed") +
-          " with " +
-          (bid.preference == 0 ? "X" : bid.preference)
-        );
+        detail += ", bid ";
+        switch (bid.state.id) {
+          case 31:
+            detail += "placed";
+            break;
+          case 32:
+            detail += "won";
+            break;
+          case 33:
+            detail += "failed";
+            break;
+        }
+        detail +=
+          " with preference " + (bid.preference == 0 ? "X" : bid.preference);
       }
+      return detail;
     },
     cycleState(assignment) {
       let nextStateId = this.nextCycleState(assignment.state);
