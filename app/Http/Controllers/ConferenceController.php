@@ -273,7 +273,7 @@ class ConferenceController extends Controller
             // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
                 // Remove some fields when the user is not admin, chair or captain
-                if (!$user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference)) {
+                if (!$user->isAdmin() && !$user->isChair($conference) && !$user->isCaptain($conference)) {
                     unset($task->slots);
                     unset($task->priority);
                 }
