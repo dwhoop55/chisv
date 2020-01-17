@@ -337,34 +337,26 @@ class User extends Authenticatable
 
     public function hoursFor(Conference $conference, State $state = null)
     {
-        $validAssignments = collect();
         $hours = 0.0;
 
-        // First we filter for the conference
-        $validAssignments = $this->assignments()
-            ->with(['task', 'task.conference'])
-            ->get()
-            ->each(function ($assignment) use ($conference) {
-                if (
-                    $assignment->task && $assignment->task->conference->id == $conference->id
-                ) {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-        // Now we need to filter for the state if there is one
-        // and sum up all the hours
-        foreach ($validAssignments as $assignment) {
-            if (($state && $assignment->state->id == $state->id) || (!$state)) {
-                // Either there is a state and it matches
-                // or there is no specific state we look for
-                // (in the arguments of the function)
-                // Either way we sum up the hours
-                $hours += $assignment->hours;
-            }
+        if (!$state) {
+            $state = State::byName('done', 'App\Assignment');
         }
+
+        // First we filter for the conference
+        $assignments = $this->assignments()
+            // only for the specific conference
+            ->whereHas('task', function ($query) use ($conference) {
+                $query->where('conference_id', '=', $conference->id);
+            })
+            // only assignments which are in the requested state
+            ->where('state_id', $state->id)
+            ->get();
+
+        // Now we sum up all the hours
+        $assignments->each(function ($assignment) use (&$hours) {
+            $hours += $assignment->hours;
+        });
 
         return $hours;
     }
