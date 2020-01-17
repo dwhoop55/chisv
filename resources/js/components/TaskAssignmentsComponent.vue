@@ -66,7 +66,7 @@ export default {
       let bid = assignment.bid;
 
       if (bid) {
-        detail += ", bid ";
+        detail += "- bid ";
         switch (bid.state.id) {
           case 31:
             detail += "placed";

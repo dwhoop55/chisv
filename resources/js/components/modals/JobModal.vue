@@ -65,8 +65,8 @@ export default {
             (this.job.state.name == "planned" ||
               this.job.state.name == "processing")
           ) {
-            // Set a refresh in one second
-            setTimeout(this.getJob, 1000);
+            // Set a refresh in 500ms
+            setTimeout(this.getJob, 500);
           }
         })
         .catch(error => {
@@ -127,6 +127,19 @@ export default {
 
       if (this.job.state.name == "successful") {
         switch (this.job.handler) {
+          case "App\\Jobs\\DeleteAllAssignments":
+            return `${r.deleted} assignments have been deleted`;
+            break;
+          case "App\\Jobs\\Auction":
+            var $msg = `Created assignments: ${r.created_assignments}<br>
+                    Tasks which could not be filled: ${r.tasks_free_slots.length}<br>`;
+            r.tasks_free_slots.forEach(task => {
+              $msg += `<li><b>${task.name}</b> ${this.hoursFromTime(
+                task.start_at
+              )}–${this.hoursFromTime(task.end_at)}</li>`;
+            });
+            return $msg;
+            break;
           case "App\\Jobs\\Lottery":
             return `<ul>
                     <li><i>enrolled</i> SVs processed: ${r.processed}</li>
@@ -136,7 +149,7 @@ export default {
                   </ul>`;
             break;
           case "App\\Jobs\\ResetToEnrolled":
-            return `<p>${r.reset} SVs have been reset to state <i>enrolled</i>`;
+            return `${r.reset} SVs have been reset to state <i>enrolled</i>`;
             break;
 
           default:

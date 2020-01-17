@@ -52,6 +52,7 @@
           <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="priority">Priority</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="bids">Bids</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
         </b-dropdown>
@@ -160,6 +161,13 @@
             }"
           >{{ props.row.assignments.length }} / {{ props.row.slots }}</p>
         </b-table-column>
+        <b-table-column
+          :visible="activeColumns.includes('priority')"
+          field="tasks.priority"
+          width="10"
+          sortable
+          label="Priority"
+        >{{ props.row.priority }}</b-table-column>
         <b-table-column :visible="activeColumns.includes('bids')" label="Bids">
           <p>{{ props.row.bids.length }}</p>
         </b-table-column>

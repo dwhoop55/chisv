@@ -22,14 +22,11 @@
  *      descending. Each block of preferences within this list has the SVs in
  *      ascending hours_done order. Only have SVs in the list which have at least bid with
  *      preference 1 (>=).
- *          For every free slot in the task (while free slots and sv list not empty):
- *          Take (shift()) the first SV from the SV list:
- *          If SV is available at the tasks day/time then
- *           assign SV to the task (create Assignment)
- *          else
- *           skip current SV and take next from SV list
- *          TODO: Maybe add a small additional time around the task to prevent from
- *          the SV having to be at two distant tasks whithin a minute
+ *          For every SV in the list:
+ *          If task has free slots available
+ *              Assign the user to the task and mark the bid as 'successful'
+ *          Otherwise
+ *              Only mark the bid as unsuccessful
  * 
  * After that phase we know that all high priority tasks are more likely assigned then
  * low priority tasks. We know that SVs which have bid high on a task and are not yet
@@ -52,6 +49,17 @@
  * 
  * NOTE: We use the work SV and User as synonyms in here. An SV is actually nothing more than
  *       a App\User object. We use the term 'SV' for simplicity
+ * 
+ *       A preference block is a section in a sorted list (sorted by preference) where in this block
+ *       all SVs have the same preference.
+ *       E.g. consider the following list [id, preference]:
+ *          [A, 3]
+ *          [B, 3]
+ *          [C, 2]
+ *          [D, 1]
+ *          [E, 1]
+ *      Preference blocks are: [A,B,C], [C] and [D,E]
+ * 
 */
 
 namespace App\Jobs;
@@ -81,25 +89,6 @@ class Auction extends AdvancedJob implements ExecutableJob
         $this->date = new Carbon($params->payload->date);
     }
 
-    // * 1st Phase
-    // *  Loop through all Tasks sorted by priority descending
-    // *      For every task:
-    // *      Loop through a list of SVs which 
-    // have less hours_done (<) worked
-    // *      than the conference suggests.
-    //  This list has to be sorted by preference
-    // *      descending. Each block of preferences within this list has the SVs in
-    // *      ascending hours_done order. Only have SVs in the list which have at least bid with
-    // *      preference 1 (>=).
-    // *          For every free slot in the task (while free slots and sv list not empty):
-    // *          Take (shift()) the first SV from the SV list:
-    // *          If SV is available at the tasks day/time then
-    // *           assign SV to the task (create Assignment)
-    // *          else
-    // *           skip current SV and take next from SV list
-    // *          TODO: Maybe add a small additional time around the task to prevent from
-    // *          the SV having to be at two distant tasks whithin a minute
-
     /**
      *
      * @param Task $task The task we want to assign SVs to
@@ -108,6 +97,8 @@ class Auction extends AdvancedJob implements ExecutableJob
     public function processTask(Task $task, int $phase = 1)
     {
         $createdAssignments = collect();
+
+        // ======================== SV list creation ========================
 
         // Even when we get a list which only contains tasks
         // which have free slots, since this code might run a longer time
@@ -133,7 +124,7 @@ class Auction extends AdvancedJob implements ExecutableJob
                 // (1)
                 // A valid bid is any bid which a preference higher than
                 // 0. 0 Indicates an 'unavailable' bid
-                $user->hasValidBid = $user->bid->preference > 0;
+                $user->hasValidBid = $user->bid->preference >= 1;
 
                 // (2)
                 $user->isAvailable = $user->isAvailable(
@@ -170,13 +161,50 @@ class Auction extends AdvancedJob implements ExecutableJob
             });
         } // For each SV (map)
 
+        // Next is quite important to make the sorting of the preference blocks
+        // more random later on. The list of SVs we now have is sorted by user id
+        // from the database. When we sort by preference now we will end up with
+        // asceding user ids in each preference block. This would be neglectable
+        // since we will be sorting on the hours_done later on. BUT, at the
+        // start of the conference all SVs have very little done_hours or none
+        // at all. So this will not randomize the preference blocks at all.
+        // To overcome this we shuffle the entire SV list before sorting it.
+        // This way we can ensure that the preference blocks are randomized
+        // even if there are not hours_done to sort by in the beginning
+        $svs = $svs->shuffle();
+
+
         // We now have a list of svs which fit our filter requirements
         // We now have to sort them based on preference and hours_done
 
-        // //TODO: sort also by hours_done
-        // $svs->sort(function ($a, $b) {
-        //     $a->bid->preference > $b->bid->preference;
-        // });
+        // =========================== SORTING ===========================
+
+        // First we sort by bid preference descending
+        $svs = $svs->sort(function ($a, $b) {
+            return $a->bid->preference < $b->bid->preference;
+        });
+
+        // Now lets sort each block of preferences descending by hours_done
+        $sortedSvs = collect();
+        // For every preference group  (1-3)
+        for ($preference = 3; $preference >= 1; $preference--) {
+            // Get a list with only SVs with the preference
+            $svsByPreference = $svs->filter(function ($sv) use ($preference) {
+                return ($preference == $sv->bid->preference);
+            });
+
+            // Sort this list by hours_done descending
+            $svsByPreference = $svsByPreference->sort(function ($a, $b) {
+                return $a->hours_done > $b->hours_done;
+            });
+
+            // Add the preference block to our new list
+            $sortedSvs = $sortedSvs->merge($svsByPreference);
+        }
+        // Assign back to the original list
+        $svs = $sortedSvs;
+
+        // ============================ ASSIGNMENT ===========================
 
         // $svs is now a list with filtered and sorted SVs which bid
         // for the task, are available, match the hours_done and
@@ -193,7 +221,7 @@ class Auction extends AdvancedJob implements ExecutableJob
             // Check if there are still slots available
             // Assign if possible, otherwise mark bid as
             // unsuccessful
-            $task->refresh(); // Very important, or laravel will use cached
+            $task->refresh(); // Very important, or laravel will use cached freeSlots()
             if ($task->freeSlots() > 0) {
                 // Create new Assignment and persists it to the database
                 // hours are set to the hours of the task
@@ -211,7 +239,10 @@ class Auction extends AdvancedJob implements ExecutableJob
             }
         }
 
-        return $createdAssignments;
+        // Provide some additional feedback for the chair for every task
+        $task->hasFreeSlots = ($task->freeSlots() > 0 ?  true : false);
+
+        return ["task" => $task, "assignments" => $createdAssignments];
     }
 
     /** 
@@ -242,15 +273,36 @@ class Auction extends AdvancedJob implements ExecutableJob
         $this->setProgress(0);
 
         $assignments = collect();
+        $tasksWithFreeSlots = collect();
 
         // Run this twice, phase 1 and phase 2
         for ($phase = 1; $phase <= 2; $phase++) {
+            // Get all the tasks which have to be filled
             $tasks = $this->getTasks();
-            $tasks->each(function ($task) use ($phase, &$assignments) {
-                $assignments = $assignments->merge($this->processTask($task, $phase));
+
+            $total = $tasks->count();
+            $completed = 0;
+
+            // Now for every task assign SVs
+            $tasks->each(function ($task) use ($phase, &$assignments, $tasksWithFreeSlots, &$completed, $total) {
+                $result = $this->processTask($task, $phase);
+                $assignments = $assignments->merge($result["assignments"]);
+
+                // When the task has free slots and were're in phase 2
+                // we mark it that it could not be filled
+                if ($task->hasFreeSlots && $phase == 2) {
+                    $tasksWithFreeSlots->push($task->only('id', 'name', 'start_at', 'end_at'));
+                }
+
+                // Show progress in UI
+                $this->setProgress(50 / $total * $completed + (($phase - 1) * 50));
+                $completed++;
             });
         }
 
-        return ["created" => $assignments->count()];
+        return [
+            "created_assignments" => $assignments->count(),
+            "tasks_free_slots" => $tasksWithFreeSlots
+        ];
     }
 }
