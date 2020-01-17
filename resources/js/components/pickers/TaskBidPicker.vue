@@ -216,7 +216,11 @@ export default {
         case "unsuccessful":
           this.$buefy.dialog.alert({
             title: `Your bid did not win`,
-            message: `This task was not assigned to you - So a different SV will take care of this\
+            message: `This task was not assigned to you<br>
+            One of the reasons might be:\
+            <li>Conflict with other task you're assigned to</li>\
+            <li>Other SVs bid higher</li>\
+            <li>You bid high but other SVs also bidding high have less total hours</li>\
             <br/><br/><small>Your bid: ${this.formatPreference(
               this.task
             )}</small>`,
