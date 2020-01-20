@@ -381,9 +381,9 @@ class ConferenceController extends Controller
             // We have to join users to make it (1) searchable (2) sortable
             ->join('users', 'permissions.user_id', '=', 'users.id')
             // We have to join enrollment_forms to make it sortable
-            ->join('enrollment_forms', 'permissions.enrollment_form_id', '=', 'enrollment_forms.id')
+            ->leftJoin('enrollment_forms', 'permissions.enrollment_form_id', '=', 'enrollment_forms.id')
             // We have to join universities to make it searchable
-            ->join('universities', 'users.university_id', '=', 'universities.id')
+            ->leftJoin('universities', 'users.university_id', '=', 'universities.id')
             // Stay bond to this $conference and 'sv' state
             ->where('conference_id', $conference->id)
             ->where("role_id", Role::byName('sv')->id)
@@ -464,7 +464,7 @@ class ConferenceController extends Controller
                 $safe['permission']->id = $permission->id;
                 $safe['permission']->lottery_position = $permission->lottery_position;
                 $safe['permission']->created_at = $permission->created_at;
-                $safe['permission']->enrollment_form = $permission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']);
+                $safe['permission']->enrollment_form = $permission->enrollmentForm ? $permission->enrollmentForm->only(['name', 'id', 'parent_id', 'body', 'total_weight']) : null;
                 $safe['permission']->conference = new Conference();
                 $safe['permission']->conference->id = $conference->id;
                 $safe['permission']->role = new Role();

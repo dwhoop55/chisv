@@ -1,5 +1,8 @@
 
 export default {
+    INIT(state) {
+        return
+    },
     TASKS_COLUMNS(state, columns) {
         state.tasks.columns = columns;
     },
@@ -78,4 +81,7 @@ export default {
     PROFILE_TAB(state, tab) {
         state.navigation.profileTab = tab;
     },
+    LAST_CONFERENCE(state, key) {
+        state.navigation.lastConference = key;
+    }
 }

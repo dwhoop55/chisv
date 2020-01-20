@@ -148,6 +148,7 @@ export default {
         .then(data => {
           this.conference = data.data;
           this.getCan();
+          this.$store.commit("LAST_CONFERENCE", this.conference.key);
         })
         .catch(error => {
           this.$buefy.notification.open(error.message);

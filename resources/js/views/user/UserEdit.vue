@@ -41,7 +41,7 @@
           >Reset UI preferences</b-button>
 
           <b-field label="Image">
-            <user-image-component v-model="user"></user-image-component>
+            <user-image-component v-if="user" v-model="user"></user-image-component>
           </b-field>
 
           <b-field grouped>
@@ -277,6 +277,8 @@ export default {
         type: "is-success",
         hasIcon: true
       });
+      this.$store.commit("INIT");
+      this.$store.commit("PROFILE_TAB", this.activeTab);
     },
     deleteUser() {
       this.$buefy.dialog.confirm({
@@ -351,7 +353,7 @@ export default {
         .catch(error => {
           if (error.response.status == 403) {
             // Unauthorized
-            this.goTo("/user");
+            this.goTo("/");
           }
           this.$buefy.notification.open({
             duration: 5000,

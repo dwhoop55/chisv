@@ -55,10 +55,14 @@ export default {
     svsSearch: state => {
         return state.svs.search;
     },
+
     conferenceTab: state => {
         return state.navigation.conferenceTab;
     },
     profileTab: state => {
         return state.navigation.profileTab;
+    },
+    lastConference: state => {
+        return state.navigation.lastConference;
     }
 }

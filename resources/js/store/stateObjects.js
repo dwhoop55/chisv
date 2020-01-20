@@ -23,6 +23,7 @@ var svs = {
 var navigation = {
     conferenceTab: 0,
     profileTab: 0,
+    lastConference: null,
 }
 
 export { tasks, assignments, svs, navigation }

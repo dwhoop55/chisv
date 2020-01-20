@@ -53,8 +53,8 @@
                         Users
                     </a>
                     @endcan
-                    @if (Auth::user()->isAdmin() || Auth::user()->isChair())
 
+                    @if (Auth::user()->isAdmin() || Auth::user()->isChair())
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link">
                             System
@@ -71,6 +71,8 @@
                         </div>
                     </div>
                     @endif
+                    <a class="navbar-item" :href="'/conference/' + $store.getters.lastConference"
+                        v-html="$store.getters.lastConference"></a>
                 </div>
 
                 <div class="navbar-end">
