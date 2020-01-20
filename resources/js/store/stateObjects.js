@@ -12,6 +12,7 @@ var assignments = {
     search: "",
     sort: { field: 'start_at', direction: 'asc' },
     page: { items: 10, index: 1 },
+    hideUnfit: true,
     day: new Date(),
 }
 

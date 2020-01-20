@@ -21,6 +21,11 @@
           >{{ props.option.firstname }} {{ props.option.lastname }}</strong>
           <small>{{ props.option.university }}</small>
           <div class="level">
+            <div v-if="props.option.conflict" class="level-item has-text-centered">
+              <div>
+                <p class="has-text-danger has-text-weight-bold">Time conflict</p>
+              </div>
+            </div>
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Hours done</p>
@@ -122,20 +127,30 @@ export default {
 
       const params = [
         `search_string=${name}`,
-        `selected_states=12` // SV state
+        `selected_states=12`, // SV state
+        `no_conflict_task=${this.task.id}` // request additional information for conflict with this task
       ].join("&");
 
       api
         .getConferenceSvs(this.conference.key, `?${params}`)
         .then(data => {
           // Only take SV which are not already assigned to the task
-          this.data = data.data.data.filter(sv => !existingSvs.includes(sv.id));
+          this.data = data.data.data.filter(sv => {
+            return !existingSvs.includes(sv.id);
+          });
 
           // Fetch the preference from all bids
           this.data = this.data.map(sv => {
             sv.bid_preference = this.getPreferenceForCurrentTask(sv.bids);
             return sv;
           });
+
+          // Remove unfitting SVs if desired
+          if (this.$store.getters.assignmentsHideUnfit) {
+            this.data = data.data.data.filter(
+              sv => !sv.conflict && sv.bid_preference > 0
+            );
+          }
 
           // Sort by preference descending
           this.data.sort((a, b) => {

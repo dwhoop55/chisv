@@ -62,6 +62,9 @@ export default {
     ASSIGNMENTS_PAGE(state, page) {
         state.assignments.page.index = page;
     },
+    ASSIGNMENTS_HIDE_UNFIT(state, bool) {
+        state.assignments.hideUnfit = bool;
+    },
 
 
     SVS_SEARCH(state, search) {

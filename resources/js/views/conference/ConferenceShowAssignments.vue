@@ -74,6 +74,13 @@
         >Delete all Assignments for this day</b-button>
       </b-field>
 
+      <b-field class="is-vertical-center">
+        <b-checkbox
+          @input="onHideUnfitChange($event)"
+          :value="hideUnfit"
+        >Hide unsuitably in SV dropdown</b-checkbox>
+      </b-field>
+
       <b-field expanded></b-field>
 
       <b-field position="is-right">
@@ -247,6 +254,7 @@ export default {
       sortDirection: this.$store.getters.assignmentsSortDirection,
       perPage: this.$store.getters.assignmentsPerPage,
       page: this.$store.getters.assignmentsPage,
+      hideUnfit: this.$store.getters.assignmentsHideUnfit,
 
       isLoading: true,
       isLoadingCalendar: true,
@@ -420,6 +428,10 @@ export default {
     onDayChange(day) {
       this.$store.commit("ASSIGNMENTS_DAY", day);
       this.onPageChange(1);
+    },
+    onHideUnfitChange(bool) {
+      this.$store.commit("ASSIGNMENTS_HIDE_UNFIT", bool);
+      this.hideUnfit = bool;
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("ASSIGNMENTS_SEARCH", this.searchString);

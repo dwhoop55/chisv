@@ -373,6 +373,7 @@ class ConferenceController extends Controller
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';
         $perPage = request()->per_page ?? '999999';
+        $noConflictTask = Task::find(request()->no_conflict_task);
 
         // Do the actual query
         $query = Permission
@@ -410,11 +411,11 @@ class ConferenceController extends Controller
         // Load the paginated results from the database
         // Only retreive 'permissions.*' or we would have collision
         // due to the joins we did earlier
-        $paginatedPermissions = $query->paginate($perPage, ['permissions.*']);
+        $paginated = $query->paginate($perPage, ['permissions.*']);
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $paginatedPermissions->getCollection()->transform(function ($permission) use ($showMore, $conference) {
+        $paginated->getCollection()->transform(function ($permission) use ($showMore, $conference, $noConflictTask) {
             $safe = null;
             $user = $permission->user;
             $safe = $user->only('firstname', 'lastname', 'id');
@@ -495,11 +496,16 @@ class ConferenceController extends Controller
                     );
                     return $safe;
                 });
+
+                // Add information about possible conflicts with this task if requested
+                if ($noConflictTask) {
+                    $safe['conflict'] = ($user->tasksAtTime($noConflictTask)->count() > 0 ? true : false);
+                }
             }
             return $safe;
         });
 
-        return $paginatedPermissions;
+        return $paginated;
     }
 
     /**
