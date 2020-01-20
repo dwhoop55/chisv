@@ -78,7 +78,7 @@
         <b-checkbox
           @input="onHideUnfitChange($event)"
           :value="hideUnfit"
-        >Hide unsuitably in SV dropdown</b-checkbox>
+        >Hide unsuited SVs in dropdown</b-checkbox>
       </b-field>
 
       <b-field expanded></b-field>
