@@ -175,7 +175,7 @@ class ConferenceController extends Controller
             // Only do the following once per task (unique in uniqueTasks)
             if (!$uniqueTasks->has($task->id)) {
                 // Attach assignments - this is on a per-sv level
-                $task->assignments = $task->assignments->transform(function ($assignment) {
+                $task->assignments = $task->assignments->transform(function ($assignment) use ($task) {
                     $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
 
                     // Add the bid to the assignment if there is any
@@ -192,6 +192,9 @@ class ConferenceController extends Controller
                     $hours = $assignment->user->hoursFor($assignment->task->conference, State::byName('done', "App\Assignment"));
                     $user['hours_done'] = $hours;
                     $cleanAssignment['user'] = $user;
+
+                    // Check for multiple assignments at time period
+                    $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
 
                     return $cleanAssignment;
                 });

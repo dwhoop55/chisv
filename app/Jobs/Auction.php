@@ -127,10 +127,7 @@ class Auction extends AdvancedJob implements ExecutableJob
                 $user->hasValidBid = $user->bid->preference >= 1;
 
                 // (2)
-                $user->isAvailable = $user->isAvailable(
-                    Carbon::createFromDateAndTime($task->date, $task->start_at),
-                    Carbon::createFromDateAndTime($task->date, $task->end_at)
-                );
+                $user->isAvailable = ($user->tasksAtTime($task)->count() == 0);
 
                 // (3)
                 // Fetch the hours the SV has worked for this conference

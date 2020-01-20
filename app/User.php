@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Laravel\Passport\HasApiTokens;
@@ -39,8 +40,24 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function isAvailable(Carbon $startDateTime, Carbon $endDateTime)
+    /**
+     * Gets the number of assignments at a given time
+     * 
+     * @param Task|Carbon $a First argument can be a Task or Carbon object
+     * @param Carbon|null $b Second argument has to be null when first is Task or Carbon when first is Carbon 
+     */
+    public function tasksAtTime($a, $b = null)
     {
+        if ($a instanceof Task && !$b) {
+            $startDateTime = Carbon::createFromDateAndTime($a->date, $a->start_at);
+            $endDateTime = Carbon::createFromDateAndTime($a->date, $a->end_at);
+        } else if ($a instanceof Carbon && $b instanceof Carbon) {
+            $startDateTime = $a;
+            $endDateTime = $b;
+        } else {
+            throw new Exception("Method call of isAvailable not possible with these arguments");
+        }
+
         $day = $startDateTime->copy()->startOfDay();
         $start = $startDateTime->format('H:i:s');
         $end = $endDateTime->format('H:i:s');
@@ -89,9 +106,10 @@ class User extends Authenticatable
             return $task->assignments->isNotEmpty();
         });
 
-        // When the tasks collection is not empty that means there is at least one
-        // task with an assignment for the user
-        return $tasks->isEmpty();
+        // Return all active tasks at this time period
+        return $tasks->map(function ($task) {
+            return $task->only(['id', 'name', 'start_at', 'end_at']);
+        })->values();
     }
 
     public function assignmentFor(Task $task)

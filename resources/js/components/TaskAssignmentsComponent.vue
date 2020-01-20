@@ -11,6 +11,12 @@
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
           <div class="column column-small">
+            <a
+              v-if="assignment.tasks_at_time && assignment.tasks_at_time.length > 1"
+              @click.prevent="showTasksAtTime(assignment.tasks_at_time)"
+            >
+              <b-icon type="is-danger" icon="alert"></b-icon>
+            </a>
             <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
               <a
                 @click.prevent="userClicked(assignment.user)"
@@ -57,6 +63,23 @@ export default {
   },
 
   methods: {
+    showTasksAtTime(tasks) {
+      var msg = tasks.length + " tasks overlapping:<br/>";
+      tasks.forEach(task => {
+        msg +=
+          "<li>" +
+          task.name +
+          " " +
+          this.hoursFromTime(task.start_at) +
+          " – " +
+          this.hoursFromTime(task.end_at) +
+          "</li>";
+      });
+      this.$buefy.dialog.alert({
+        title: "Overlapping tasks",
+        message: msg
+      });
+    },
     userClicked(user) {
       console.log("Do something here, maybe go to user SV profile..");
     },
@@ -152,22 +175,26 @@ export default {
           api
             .deleteAssignment(assignment.id)
             .then(data => {
-              for (let index = 0; index < this.assignments.length; index++) {
-                let currentAssignment = this.assignments[index];
-                // Only remove hours when its the correct assignment
-                if (currentAssignment.id == assignment.id) {
-                  // Only trigger the updateHours when the task was 'done'
-                  // otherwise we would also subtract hours which are in state
-                  // assigned or checked-in
-                  if (currentAssignment.state.id == 43) {
-                    this.$emit("updateHours", {
-                      userId: currentAssignment.user.id,
-                      hours: -currentAssignment.hours
-                    });
-                  }
-                  this.assignments.splice(index, 1);
-                }
-              }
+              // Reload data from server
+              this.$emit("reload");
+
+              // Do all in client side
+              // for (let index = 0; index < this.assignments.length; index++) {
+              //   let currentAssignment = this.assignments[index];
+              //   // Only remove hours when its the correct assignment
+              //   if (currentAssignment.id == assignment.id) {
+              //     // Only trigger the updateHours when the task was 'done'
+              //     // otherwise we would also subtract hours which are in state
+              //     // assigned or checked-in
+              //     if (currentAssignment.state.id == 43) {
+              //       this.$emit("updateHours", {
+              //         userId: currentAssignment.user.id,
+              //         hours: -currentAssignment.hours
+              //       });
+              //     }
+              //     this.assignments.splice(index, 1);
+              //   }
+              // }
             })
             .catch(error => {
               this.$buefy.notification.open({

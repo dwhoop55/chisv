@@ -149,7 +149,7 @@
         <b-table-column
           :visible="activeColumns.includes('slots')"
           field="tasks.slots"
-          width="10"
+          width="80"
           sortable
           label="Slots"
         >
@@ -168,7 +168,7 @@
           sortable
           label="Priority"
         >{{ props.row.priority }}</b-table-column>
-        <b-table-column :visible="activeColumns.includes('bids')" label="Bids">
+        <b-table-column :visible="activeColumns.includes('bids')" width="10" label="Bids">
           <p>{{ props.row.bids.length }}</p>
         </b-table-column>
         <b-table-column
