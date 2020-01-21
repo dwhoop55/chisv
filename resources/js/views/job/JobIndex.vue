@@ -20,7 +20,11 @@
       <template slot-scope="props">
         <b-table-column sortable field="id" label="ID">{{ props.row.id }}</b-table-column>
         <b-table-column sortable field="name" label="Name">{{ props.row.name }}</b-table-column>
-        <b-table-column sortable field="handler" label="Action">{{ props.row.handler }}</b-table-column>
+        <b-table-column
+          sortable
+          field="handler"
+          label="Handler"
+        >{{ props.row.handler.replace("App\\Jobs\\", '') }}</b-table-column>
         <b-table-column sortable field="state.id" label="State">
           <state-tag :state="props.row.state" />
         </b-table-column>
