@@ -27,11 +27,12 @@ class DatabaseSeeder extends Seeder
 
             EnrollmentFormsTableSeeder::class,
 
+            TaskTableSeeder::class,
+
             UsersTableSeeder::class,
             LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
-            TaskTableSeeder::class,
             BidsTableSeeder::class
         ]);
     }

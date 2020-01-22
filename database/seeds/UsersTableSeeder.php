@@ -10,6 +10,7 @@ use App\Services\EnrollmentFormService;
 use App\User;
 use Illuminate\Support\Facades\DB;
 
+
 class UsersTableSeeder extends Seeder
 {
     /**
@@ -95,22 +96,21 @@ class UsersTableSeeder extends Seeder
         $conference = Conference::inRandomOrder()->first();
         User::find(1)->grant($role, $conference, $state, $form);
 
-        factory(App\User::class, 3)->create()->each(function ($user) {
+        $faker = app('Faker\Generator');
+        $enrollmentFormService = new EnrollmentFormService;
+        factory(App\User::class, 100)->create()->each(function ($user) use ($faker, $role, $enrollmentFormService) {
             $state = State::byName('accepted');
 
             $conference = Conference::inRandomOrder()->first();
-            $language = Language::inRandomOrder()->first();
-            $language2 = Language::where('id', '!=', $language->id)->inRandomOrder()->first();
+            $language = $faker->numberBetween(1, 70);
+            $language2 = $faker->numberBetween(71, 135);
 
-            $role = Role::byName('sv');
-
-            $enrollmentFormService = new EnrollmentFormService;
             $form = $enrollmentFormService->getFilledFake();
             $form->save();
             $form->updateTotalWeight();
             $user->grant($role, $conference, $state, $form);
 
-            $user->languages()->attach([$language->id, $language2->id]);
+            $user->languages()->attach([$language, $language2]);
         });
     }
 }
