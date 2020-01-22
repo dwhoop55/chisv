@@ -1,10 +1,12 @@
 <template>
   <b-autocomplete
+    @focus="getAsyncData()"
     :data="data"
     keep-first
+    :open-on-focus="true"
     placeholder="Add SV.."
     :loading="isLoading"
-    @typing="getAsyncData"
+    @typing="getAsyncData($event)"
     @select="option => $emit('input', option)"
   >
     >
@@ -21,11 +23,6 @@
           >{{ props.option.firstname }} {{ props.option.lastname }}</strong>
           <small>{{ props.option.university }}</small>
           <div class="level">
-            <div v-if="props.option.conflict" class="level-item has-text-centered">
-              <div>
-                <p class="has-text-danger has-text-weight-bold">Time conflict</p>
-              </div>
-            </div>
             <div class="level-item has-text-centered">
               <div>
                 <p class="heading">Hours done</p>
@@ -43,12 +40,14 @@
                 <p class="heading">Bid</p>
                 <div class="subtitle">
                   <small
-                    :class="preferenceType(props.option.bid_preference).replace('is-', 'has-text-')"
-                  >{{ props.option.bid_preference != undefined ? (props.option.bid_preference==0? 'X' : props.option.bid_preference) : "no bid" }}</small>
+                    v-if="props.option.bid"
+                    :class="preferenceType(props.option.bid.preference).replace('is-', 'has-text-')"
+                  >{{ props.option.bid.preference == 0 ? 'X' : props.option.bid.preference }}</small>
+                  <small v-else>no bid</small>
                 </div>
               </div>
             </div>
-            <div class="level-item has-text-centered">
+            <div v-if="props.option.stats.bids_placed" class="level-item has-text-centered">
               <div>
                 <p class="heading">Bids placed</p>
                 <div class="subtitle">
@@ -59,7 +58,7 @@
                 </div>
               </div>
             </div>
-            <div class="level-item has-text-centered">
+            <div v-if="props.option.stats.bids_successful" class="level-item has-text-centered">
               <div>
                 <p class="heading">Bids successful</p>
                 <div class="subtitle">
@@ -85,7 +84,7 @@
         <small class="has-text-info">1</small>
         <small class="has-text-warning">2</small>
         <small class="has-text-success">3</small>
-        preference order | SVs bound to this task are not shown
+        preference order | SVs already assigned or unavailable are not shown
       </small>
       <b-loading :is-full-page="false" :active="isLoading"></b-loading>
     </template>
@@ -103,68 +102,39 @@ export default {
     return {
       data: [],
       selected: null,
-      isLoading: false
+      isLoading: false,
+      search: ""
     };
   },
   methods: {
-    getPreferenceForCurrentTask(bids) {
-      // Will find the bid for the current selected task
-      var bid = bids.find(bid => bid.task_id == this.task.id);
-      return bid ? parseInt(bid.preference) : null;
-    },
-    getAsyncData: debounce(function(name) {
-      if (!name.length) {
-        this.data = [];
-        return;
-      }
+    getAsyncData: debounce(function(search) {
       this.isLoading = true;
-
-      // Prepare an array with already assigned SVs
-      // to later hide them in the list
-      let existingSvs = this.task.assignments.map(assignment => {
-        return assignment.user.id;
-      });
-
-      const params = [
-        `search_string=${name}`,
-        `selected_states=12`, // SV state
-        `no_conflict_task=${this.task.id}` // request additional information for conflict with this task
-      ].join("&");
+      if (search) {
+        this.search = search;
+      }
+      const params = [`search_string=${this.search}`].join("&");
 
       api
-        .getConferenceSvs(this.conference.key, `?${params}`)
+        .getConferenceSvsForTaskAssignment(
+          this.conference.key,
+          this.task.id,
+          `?${params}`
+        )
         .then(data => {
-          // Only take SV which are not already assigned to the task
-          this.data = data.data.data.filter(sv => {
-            return !existingSvs.includes(sv.id);
-          });
-
-          // Fetch the preference from all bids
-          this.data = this.data.map(sv => {
-            sv.bid_preference = this.getPreferenceForCurrentTask(sv.bids);
-            return sv;
-          });
-
-          // Remove unfitting SVs if desired
-          if (this.$store.getters.assignmentsHideUnfit) {
-            this.data = data.data.data.filter(
-              sv => !sv.conflict && sv.bid_preference > 0
-            );
-          }
-
+          this.data = data.data;
           // Sort by preference descending
           this.data.sort((a, b) => {
             var x, y;
-            if (a.bid_preference == undefined) {
+            if (!a.bid) {
               x = -1;
             } else {
-              x = a.bid_preference;
+              x = a.bid.preference;
             }
 
-            if (b.bid_preference == undefined) {
+            if (!b.bid) {
               y = -1;
             } else {
-              y = b.bid_preference;
+              y = b.bid.preference;
             }
 
             return x > y ? -1 : 1;
@@ -180,3 +150,9 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.dropdown-content {
+  max-height: 400px !important;
+}
+</style>

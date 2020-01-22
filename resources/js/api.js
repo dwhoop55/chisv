@@ -8,6 +8,9 @@ export default {
     getConferenceSvs(key, params) {
         return axios.get(`conference/${key}/sv${params}`)
     },
+    getConferenceSvsForTaskAssignment(key, taskId, params) {
+        return axios.get(`conference/${key}/sv_for_task_assignment/${taskId}${params}`)
+    },
     getConferenceAcceptedCount(key) {
         return axios.get(`conference/${key}/sv/count`)
     },

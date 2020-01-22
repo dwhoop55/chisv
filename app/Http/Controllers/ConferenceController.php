@@ -349,6 +349,81 @@ class ConferenceController extends Controller
         return $days;
     }
 
+    /**
+     * Show all users which are suited to be assigned for a specific
+     * task
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function svsForTaskAssignment(Conference $conference, Task $task)
+    {
+        $search = request()->search_string;
+
+        $svs = $conference
+            ->users(Role::byName('sv'))
+            ->where(function ($query) use ($search) {
+                $query->where('firstname', 'LIKE', '%' . $search . '%');
+                $query->orWhere('lastname', 'LIKE', '%' . $search . '%');
+            })
+            ->with('bids')
+            ->get();
+
+        // Now we need to sort through all bids and only keep then once which
+        // match the given task
+        // Since wee loop through all users anyway we use this chance to also
+        // minimize the data model
+        // We will return null so that we can later sanitize the collection
+        $svs->transform(function ($sv) use ($task, $conference) {
+            $bid = null;
+
+            // We reverse it since newer bids are at the end of the list
+            // This will help us to break from the loop earlier
+            $bids = $sv->bids->reverse();
+            foreach ($bids as $eBid) {
+                if ($eBid->task->id == $task->id) {
+                    $bid = $eBid->only('id', 'preference');
+                    break;
+                }
+            }
+
+            // Mark as null to later remove
+            if (
+                ($bid && $bid['preference'] == 0) // unavailable
+                || $sv->tasksAtTime($task)->isNotEmpty() // conflict at this time
+            ) {
+                return null;
+            }
+
+            $cleanUser['id'] = $sv->id;
+            $cleanUser['firstname'] = $sv->firstname;
+            $cleanUser['lastname'] = $sv->lastname;
+
+            $cleanUser['bid'] = $bid;
+
+            $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, State::byName('done', 'App\Assignment'));
+            $cleanUser['stats']['bids_placed'] = [
+                $sv->bidsFor($conference, State::byName('placed'), 0)->count(),
+                $sv->bidsFor($conference, State::byName('placed'), 1)->count(),
+                $sv->bidsFor($conference, State::byName('placed'), 2)->count(),
+                $sv->bidsFor($conference, State::byName('placed'), 3)->count()
+            ];
+            $cleanUser['stats']['bids_successful'] = [
+                $sv->bidsFor($conference, State::byName('successful'), 0)->count(),
+                $sv->bidsFor($conference, State::byName('successful'), 1)->count(),
+                $sv->bidsFor($conference, State::byName('successful'), 2)->count(),
+                $sv->bidsFor($conference, State::byName('successful'), 3)->count()
+            ];
+
+            return $cleanUser;
+        });
+
+        // Remove the svs which we marked null earlier
+        $svs = $svs->reject(function ($sv) {
+            return !$sv;
+        });
+
+        return $svs->values();
+    }
 
     /**
      * Show all users of a conference.
@@ -372,8 +447,7 @@ class ConferenceController extends Controller
         $selectedStates = collect(explode(',', request()->selected_states));
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';
-        $perPage = request()->per_page ?? '999999';
-        $noConflictTask = Task::find(request()->no_conflict_task);
+        $perPage = request()->per_page ?? '10';
 
         // Do the actual query
         $query = Permission
@@ -415,7 +489,7 @@ class ConferenceController extends Controller
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $paginated->getCollection()->transform(function ($permission) use ($showMore, $conference, $noConflictTask) {
+        $paginated->getCollection()->transform(function ($permission) use ($showMore, $conference) {
             $safe = null;
             $user = $permission->user;
             $safe = $user->only('firstname', 'lastname', 'id');
@@ -474,9 +548,9 @@ class ConferenceController extends Controller
                 }
 
                 // Add bids for the conference
-                $safe['bids'] = $user->bidsFor($conference)->transform(function ($bid) {
-                    return $bid->only('id', 'task_id', 'preference');
-                });
+                // $safe['bids'] = $user->bidsFor($conference)->transform(function ($bid) {
+                //     return $bid->only('id', 'task_id', 'preference');
+                // });
 
                 // Add assignments to the SVs so that Chair/Captain see assigned tasks on the SV view
                 $safe['assignments'] = $user->assignments->transform(function ($assignment) {
@@ -496,11 +570,6 @@ class ConferenceController extends Controller
                     );
                     return $safe;
                 });
-
-                // Add information about possible conflicts with this task if requested
-                if ($noConflictTask) {
-                    $safe['conflict'] = ($user->tasksAtTime($noConflictTask)->count() > 0 ? true : false);
-                }
             }
             return $safe;
         });

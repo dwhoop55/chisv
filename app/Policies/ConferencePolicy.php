@@ -32,6 +32,23 @@ class ConferencePolicy
         return false;
     }
 
+    /** 
+     * Determine whether the user can list
+     * SVs which are suited for a task
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return boolean
+     */
+    public function viewUsersForTaskAssignment(User $user, Conference $conference)
+    {
+        if ($user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Determine whether the user can change/update 
      * a state of an enrolled user

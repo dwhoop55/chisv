@@ -48,9 +48,6 @@ export default {
     assignmentsPage: state => {
         return parseInt(state.assignments.page.index);
     },
-    assignmentsHideUnfit: state => {
-        return state.assignments.hideUnfit;
-    },
 
     svsSearch: state => {
         return state.svs.search;

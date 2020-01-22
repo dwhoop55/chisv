@@ -143,6 +143,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/sv', 'ConferenceController@svs')
             ->middleware("can:viewUsers,conference")
             ->name('conference.svs');
+        Route::get('conference/{conference}/sv_for_task_assignment/{task}', 'ConferenceController@svsForTaskAssignment')
+            ->middleware("can:viewUsersForTaskAssignment,conference")
+            ->name('conference.svs');
         Route::get('conference/{conference}/sv/count', function (Conference $conference) {
             return [
                 "result" => $conference
