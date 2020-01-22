@@ -97,7 +97,7 @@
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="getTasks();getTaskDays()" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
     </b-field>
     <br />
