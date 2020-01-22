@@ -402,16 +402,16 @@ class ConferenceController extends Controller
 
             $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, State::byName('done', 'App\Assignment'));
             $cleanUser['stats']['bids_placed'] = [
-                $sv->bidsFor($conference, State::byName('placed'), 0)->count(),
-                $sv->bidsFor($conference, State::byName('placed'), 1)->count(),
-                $sv->bidsFor($conference, State::byName('placed'), 2)->count(),
-                $sv->bidsFor($conference, State::byName('placed'), 3)->count()
+                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 0)->count(),
+                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 1)->count(),
+                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 2)->count(),
+                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 3)->count()
             ];
             $cleanUser['stats']['bids_successful'] = [
-                $sv->bidsFor($conference, State::byName('successful'), 0)->count(),
-                $sv->bidsFor($conference, State::byName('successful'), 1)->count(),
-                $sv->bidsFor($conference, State::byName('successful'), 2)->count(),
-                $sv->bidsFor($conference, State::byName('successful'), 3)->count()
+                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 0)->count(),
+                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 1)->count(),
+                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 2)->count(),
+                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 3)->count()
             ];
 
             return $cleanUser;
@@ -509,16 +509,16 @@ class ConferenceController extends Controller
                 $safe['stats'] = [
                     "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
                     "bids_placed" => [
-                        $user->bidsFor($conference, State::byName('placed'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('placed'), 3)->count()
+                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 3)->count()
                     ],
                     "bids_successful" => [
-                        $user->bidsFor($conference, State::byName('successful'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('successful'), 3)->count()
+                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 0)->count(),
+                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 1)->count(),
+                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 2)->count(),
+                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 3)->count()
                     ],
                     "bids_unsuccessful" => [
                         $user->bidsFor($conference, State::byName('unsuccessful'), 0)->count(),
