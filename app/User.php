@@ -140,7 +140,7 @@ class User extends Authenticatable
     {
         $bids = $this->bids->filter(function ($bid) use ($conference, $state, $preference) {
             if ($state) {
-                if ($preference) {
+                if ($preference !== null) {
                     return $bid->task->conference->id == $conference->id
                         && $bid->state->id == $state->id
                         && $bid->preference == $preference;
@@ -148,7 +148,7 @@ class User extends Authenticatable
                     return $bid->task->conference->id == $conference->id && $bid->state->id == $state->id;
                 }
             } else {
-                if ($preference) {
+                if ($preference !== null) {
                     return $bid->task->conference->id == $conference->id
                         && $bid->preference == $preference;
                 } else {
