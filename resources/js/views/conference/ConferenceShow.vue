@@ -66,7 +66,8 @@
             <b-tabs
               :value="activeTab"
               :animated="false"
-              position="is-centered"
+              position="is-left"
+              type="is-boxed"
               @input="$store.commit('CONFERENCE_TAB', $event)"
             >
               <b-tab-item label="Overview">

@@ -357,6 +357,9 @@ class ConferenceController extends Controller
      */
     public function svsForTaskAssignment(Conference $conference, Task $task)
     {
+        $statePlaced = State::byName('placed', 'App\Bid');
+        $stateSuccessful = State::byName('successfull', 'App\Bid');
+        $stateDone = State::byName('done', 'App\Assignment');
         $search = request()->search_string;
 
         $svs = $conference
@@ -373,7 +376,7 @@ class ConferenceController extends Controller
         // Since wee loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
-        $svs->transform(function ($sv) use ($task, $conference) {
+        $svs->transform(function ($sv) use ($task, $conference, &$statePlaced, &$stateSuccessful, &$stateDone) {
             $bid = null;
 
             // We reverse it since newer bids are at the end of the list
@@ -400,18 +403,18 @@ class ConferenceController extends Controller
 
             $cleanUser['bid'] = $bid;
 
-            $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, State::byName('done', 'App\Assignment'));
+            $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, $stateDone);
             $cleanUser['stats']['bids_placed'] = [
-                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 0)->count(),
-                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 1)->count(),
-                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 2)->count(),
-                $sv->bidsFor($conference, State::byName('placed', 'App\Bid'), 3)->count()
+                $sv->bidsFor($conference, $statePlaced, 0)->count(),
+                $sv->bidsFor($conference, $statePlaced, 1)->count(),
+                $sv->bidsFor($conference, $statePlaced, 2)->count(),
+                $sv->bidsFor($conference, $statePlaced, 3)->count()
             ];
             $cleanUser['stats']['bids_successful'] = [
-                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 0)->count(),
-                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 1)->count(),
-                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 2)->count(),
-                $sv->bidsFor($conference, State::byName('successful', 'App\Bid'), 3)->count()
+                $sv->bidsFor($conference, $stateSuccessful, 0)->count(),
+                $sv->bidsFor($conference, $stateSuccessful, 1)->count(),
+                $sv->bidsFor($conference, $stateSuccessful, 2)->count(),
+                $sv->bidsFor($conference, $stateSuccessful, 3)->count()
             ];
 
             return $cleanUser;
