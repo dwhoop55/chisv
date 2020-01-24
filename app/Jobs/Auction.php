@@ -31,7 +31,7 @@
  * After that phase we know that all high priority tasks are more likely assigned then
  * low priority tasks. We know that SVs which have bid high on a task and are not yet
  * at the suggested hours are likely to have that task assigned. We also know that
- * are aming at an equal distribution of hours, since we sorted the SVs in their preference
+ * we are aiming at an equal distribution of hours, since we sorted the SVs in their preference
  * by the hours they worked ascending.
  * 
  * However, there might be tasks still not assigned, even when SVs have bid for them. These SVs
