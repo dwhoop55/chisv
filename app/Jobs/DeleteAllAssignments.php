@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Conference;
 use App\JobParameters;
+use App\State;
 use Carbon\Carbon;
 
 class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
@@ -32,6 +33,7 @@ class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
     public function execute()
     {
         $this->setProgress(0);
+        $statePlaced = State::byName('placed', 'App\Bid');
 
         $assignments = $this
             ->conference
@@ -43,7 +45,13 @@ class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
         $count = $assignments->count();
         $completed = 0;
 
-        $assignments->each(function ($assignment) use ($count, &$completed) {
+        $assignments->each(function ($assignment) use ($count, &$completed, &$statePlaced) {
+            if ($assignment->bid()) {
+                $assignment->bid()
+                    ->state()
+                    ->associate($statePlaced)
+                    ->save();
+            }
             $assignment->delete();
             $completed++;
             $this->setProgress(100 / $count * $completed);
