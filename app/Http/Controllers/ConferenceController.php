@@ -360,61 +360,77 @@ class ConferenceController extends Controller
         $statePlaced = State::byName('placed', 'App\Bid');
         $stateSuccessful = State::byName('successfull', 'App\Bid');
         $stateDone = State::byName('done', 'App\Assignment');
+        $roleSv = Role::byName('sv');
         $search = request()->search_string;
 
-        $svs = $conference
-            ->users(Role::byName('sv'))
-            ->where(function ($query) use ($search) {
+        $query = $conference
+            ->users($roleSv)
+            ->with(['bids', 'assignments', 'assignments.task']);
+
+        if ($search != "") {
+            $query = $query->where(function ($query) use ($search) {
                 $query->where('firstname', 'LIKE', '%' . $search . '%');
                 $query->orWhere('lastname', 'LIKE', '%' . $search . '%');
-            })
-            ->with('bids')
-            ->get();
+            });
+        }
+
+        $svs = $query->get();
 
         // Now we need to sort through all bids and only keep then once which
         // match the given task
-        // Since wee loop through all users anyway we use this chance to also
+        // Since we loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
+        // dd(json_encode($svs));
         $svs->transform(function ($sv) use ($task, $conference, &$statePlaced, &$stateSuccessful, &$stateDone) {
-            $bid = null;
 
+            $bid = null;
             // We reverse it since newer bids are at the end of the list
             // This will help us to break from the loop earlier
+            // We have this in the datamodel already, no need to touch the database
             $bids = $sv->bids->reverse();
             foreach ($bids as $eBid) {
-                if ($eBid->task->id == $task->id) {
+                if ($eBid->task_id == $task->id) {
                     $bid = $eBid->only('id', 'preference');
                     break;
                 }
             }
 
-            // Mark as null to later remove
+            $assignedTasks = $sv->assignments->map(function ($assignment) {
+                return $assignment->task;
+            });
+
+            // Check preference and task conflicting
+            // with other already assigned tasks
+            // mark as null to later remove
             if (
                 ($bid && $bid['preference'] == 0) // unavailable
-                || $sv->tasksAtTime($task)->isNotEmpty() // conflict at this time
+                || $task->isConflicting($assignedTasks) // conflict at this time
             ) {
                 return null;
             }
 
+
             $cleanUser['id'] = $sv->id;
             $cleanUser['firstname'] = $sv->firstname;
             $cleanUser['lastname'] = $sv->lastname;
-
             $cleanUser['bid'] = $bid;
+            // $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, $stateDone);
 
-            $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, $stateDone);
+            // Sum up all hours already done
+            $hoursDone = 0;
+            $sv->assignments->each(function ($assignment) use (&$hoursDone, &$stateDone) {
+                if ($assignment->state_id == $stateDone->id) {
+                    $hoursDone += $assignment->hours;
+                }
+            });
+            $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
+
             $cleanUser['stats']['bids_placed'] = [
-                $sv->bidsFor($conference, $statePlaced, 0)->count(),
-                $sv->bidsFor($conference, $statePlaced, 1)->count(),
-                $sv->bidsFor($conference, $statePlaced, 2)->count(),
-                $sv->bidsFor($conference, $statePlaced, 3)->count()
-            ];
-            $cleanUser['stats']['bids_successful'] = [
-                $sv->bidsFor($conference, $stateSuccessful, 0)->count(),
-                $sv->bidsFor($conference, $stateSuccessful, 1)->count(),
-                $sv->bidsFor($conference, $stateSuccessful, 2)->count(),
-                $sv->bidsFor($conference, $stateSuccessful, 3)->count()
+                $bids->where('preference', 0)->count(),
+                $bids->where('preference', 1)->count(),
+                $bids->where('preference', 2)->count(),
+                $bids->where('preference', 3)->count(),
             ];
 
             return $cleanUser;
@@ -423,6 +439,15 @@ class ConferenceController extends Controller
         // Remove the svs which we marked null earlier
         $svs = $svs->reject(function ($sv) {
             return !$sv;
+        });
+
+        // Now lets sort by preference desc
+        // and hours ascending
+        $svs = $svs->sortBy(function ($sv) {
+            return [
+                -$sv['bid']['preference'],
+                $sv['stats']['hours_done'],
+            ];
         });
 
         return $svs->values();
