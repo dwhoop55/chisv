@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Conference extends Model
 {
 
-    protected $with = ['timezone', 'state', 'artwork', 'icon'];
+    protected $with = [];
 
     // We guard there properties, such that they don't get assigned
     // when we mass-update the conference with an request

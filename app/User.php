@@ -14,7 +14,7 @@ class User extends Authenticatable
 {
     use HasApiTokens, Notifiable;
 
-    protected $with = ['avatar'];
+    protected $with = [];
     /**
      * The attributes that are not mass assignable.
      *
@@ -64,7 +64,7 @@ class User extends Authenticatable
 
         // There are many ways to do this. To offload as much computation
         // to the database we will fetch all tasks for the timespan,
-        // then check is the user is assigned to them. We cannot to the
+        // then check is the user is assigned to them. We cannot do the
         // same while fetching assignments with $user->assignments, since
         // this will give us all assignents the user every was assgined to
         // and we will still have to query the task every time since assignment
@@ -376,7 +376,7 @@ class User extends Authenticatable
             $hours += $assignment->hours;
         });
 
-        return $hours;
+        return round($hours, 2);
     }
 
     public function toTimezone($date)
