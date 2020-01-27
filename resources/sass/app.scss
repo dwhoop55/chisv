@@ -193,3 +193,11 @@ h3 {
 .has-padding-8 {
   padding: 0.5rem;
 }
+
+.b-table {
+  .table {
+    td.is-vertical-center-column {
+      vertical-align: middle;
+    }
+  }
+}

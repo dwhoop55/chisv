@@ -119,10 +119,21 @@
             </div>
           </template>
         </b-table-column>
-        <b-table-column field="lastname" label="Lastname" sortable>
+        <b-table-column
+          class="is-vertical-center-column"
+          field="lastname"
+          label="Lastname"
+          sortable
+        >
           <template>{{ props.row.lastname }}</template>
         </b-table-column>
-        <b-table-column width="400" field="universities.name" label="University" sortable>
+        <b-table-column
+          class="is-vertical-center-column"
+          width="400"
+          field="universities.name"
+          label="University"
+          sortable
+        >
           <template>
             <p
               v-if="props.row.university"
@@ -131,7 +142,14 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column :visible="canRunLottery" width="130" field="email" label="E-Mail" sortable>
+        <b-table-column
+          class="is-vertical-center-column"
+          :visible="canRunLottery"
+          width="130"
+          field="email"
+          label="E-Mail"
+          sortable
+        >
           <template>
             <a
               @click="ignoreNextToggleClick=true"
@@ -140,6 +158,7 @@
           </template>
         </b-table-column>
         <b-table-column
+          class="is-vertical-center-column"
           :visible="canUpdateEnrollment"
           width="130"
           field="stats.hours_done"
@@ -147,7 +166,7 @@
         >
           <template>{{ (props.row.stats) ? props.row.stats.hours_done : null }}</template>
         </b-table-column>
-        <b-table-column width="130" label="SV State">
+        <b-table-column class="is-vertical-center-column" width="130" label="SV State">
           <template>
             <b-dropdown
               ref="stateDropdown"
@@ -179,6 +198,7 @@
           </template>
         </b-table-column>
         <b-table-column
+          class="is-vertical-center-column"
           v-if="props.row.permission.created_at"
           width="150"
           field="created_at"
@@ -194,6 +214,7 @@
           </template>
         </b-table-column>
         <b-table-column
+          class="is-vertical-center-column"
           field="lottery_position"
           v-if="canUpdateEnrollment"
           width="150"
@@ -215,6 +236,7 @@
           </template>
         </b-table-column>
         <b-table-column
+          class="is-vertical-center-column"
           field="enrollment_forms.total_weight"
           :visible="canUpdateEnrollment"
           width="150"
