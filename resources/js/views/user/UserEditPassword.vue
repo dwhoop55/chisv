@@ -1,0 +1,51 @@
+<template>
+  <form @submit.prevent="save" @keydown="form.onKeydown($event)">
+    <button :disabled="form.busy" type="submit" class="button is-success is-pulled-right">Apply</button>
+  </form>
+</template>
+
+<script>
+import Form from "vform";
+import api from "@/api.js";
+
+export default {
+  props: ["user"],
+  model: {
+    prop: "user"
+  },
+  data() {
+    return {
+      form: new Form({
+        id: null,
+        password: "",
+        password_confirmation: ""
+      })
+    };
+  },
+
+  methods: {
+    save() {
+      api
+        .updateUser(this.user.id, this.form)
+        .then(data => {
+          this.user = data.data.result;
+          this.$buefy.toast.open({
+            message: "Changes saved!",
+            type: "is-success"
+          });
+        })
+        .catch(error => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: `Could not save user: ${error.message}`,
+            type: "is-danger",
+            hasIcon: true
+          });
+        })
+        .finally(() => {
+          this.$emit("input", this.user);
+        });
+    }
+  }
+};
+</script>

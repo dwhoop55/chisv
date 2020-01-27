@@ -45,7 +45,6 @@ export default {
       axios
         .get(`search/language/${text}`)
         .then(data => {
-          console.log(data);
           this.filteredTags = [];
           data.data.data.forEach(entry => this.filteredTags.push(entry));
         })

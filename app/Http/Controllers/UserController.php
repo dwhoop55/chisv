@@ -142,7 +142,8 @@ class UserController extends Controller
         if (isset($request->location["city"])) $data['city_id'] = $request->location["city"]["id"];
         if (isset($request->university["id"])) $data['university_id'] = $request->university["id"];
 
-        $result = $user->update($data);
+        $user->update($data);
+        $user->refresh();
 
         // Update languages
         if (isset($request->languages)) {
@@ -164,7 +165,7 @@ class UserController extends Controller
             }
         }
 
-        return ["success" => $result, "message" => "User updated"];
+        return ["result" => $user, "message" => "User updated"];
     }
 
     /**
