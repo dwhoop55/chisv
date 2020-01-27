@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Assignment;
 use App\Http\Requests\AssignmentRequest;
+use App\State;
 use App\Task;
 use Illuminate\Http\Request;
 
@@ -32,6 +33,13 @@ class AssignmentController extends Controller
         $assignment = new Assignment($data);
         $assignment->save();
         $assignment->refresh();
+
+        // Mark bid as successful
+        $bid = $assignment->bid();
+        if ($bid) {
+            $bid->state()->associate(State::byName('successful', 'App\Bid'))->save();
+        }
+
         return ["result" => true, "message" => "Assignment created"];
     }
 
@@ -74,6 +82,12 @@ class AssignmentController extends Controller
      */
     public function destroy(Assignment $assignment)
     {
+        // Mark bid as placed again
+        $bid = $assignment->bid();
+        if ($bid) {
+            $bid->state()->associate(State::byName('placed', 'App\Bid'))->save();
+        }
+
         $assignment->delete();
         return ["result" => true, "message" => "Assignment removed"];
     }
