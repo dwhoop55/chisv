@@ -450,7 +450,10 @@ class ConferenceController extends Controller
             ];
         });
 
-        return $svs->values();
+        $count = $svs->count();
+        $limit = 20;
+        $subset = $svs->forPage(1, $limit)->values();
+        return ["total_matches" => $count, "returned_matches" => $limit, "svs" => $subset];
     }
 
     /**

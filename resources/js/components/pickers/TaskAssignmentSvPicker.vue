@@ -79,7 +79,7 @@
     </template>
     <template slot="header">
       <small>
-        {{ data.length }} matches |
+        Showing first {{ data.length }}/{{ total_matches }} SV{{ (data.length == 1) ? '' : "s" }} |
         Bids below are displayed in
         <small
           class="has-text-danger"
@@ -105,7 +105,8 @@ export default {
     return {
       data: [],
       selected: null,
-      isLoading: false
+      isLoading: false,
+      total_matches: 0
     };
   },
   methods: {
@@ -121,7 +122,8 @@ export default {
           `?${params}`
         )
         .then(data => {
-          this.data = data.data;
+          this.data = data.data.svs;
+          this.total_matches = data.data.total_matches;
           // Sort by preference descending
           this.data.sort((a, b) => {
             var x, y;
