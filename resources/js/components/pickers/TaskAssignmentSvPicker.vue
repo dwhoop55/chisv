@@ -79,8 +79,11 @@
     </template>
     <template slot="header">
       <small>
+        {{ data.length }} matches |
         Bids below are displayed in
-        <small class="has-text-danger">X</small>
+        <small
+          class="has-text-danger"
+        >X</small>
         <small class="has-text-info">1</small>
         <small class="has-text-warning">2</small>
         <small class="has-text-success">3</small>
@@ -102,17 +105,14 @@ export default {
     return {
       data: [],
       selected: null,
-      isLoading: false,
-      search: ""
+      isLoading: false
     };
   },
   methods: {
     getAsyncData: debounce(function(search) {
       this.isLoading = true;
-      if (search) {
-        this.search = search;
-      }
-      const params = [`search_string=${this.search}`].join("&");
+      var searchString = search || search == "" ? search : "";
+      const params = [`search_string=${searchString}`].join("&");
 
       api
         .getConferenceSvsForTaskAssignment(
