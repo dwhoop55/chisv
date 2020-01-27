@@ -1,4 +1,3 @@
-// v-model safe
 <template>
   <div>
     <b-taginput
@@ -22,8 +21,18 @@ export default {
   props: ["value"],
   data() {
     return {
-      filteredTags: [],
-      fetching: false
+      filteredTags: [
+        {
+          id: 3,
+          user: {
+            first_name: "Tina",
+            last_name: "Gilbert"
+          },
+          date: "2016/04/26 06:26:28",
+          gender: "Female"
+        }
+      ],
+      isLoading: false
     };
   },
   methods: {
@@ -32,19 +41,20 @@ export default {
         this.filteredTags = [];
         return;
       }
-      this.fetching = true;
+      this.isLoading = true;
       axios
         .get(`search/language/${text}`)
-        .then(({ data }) => {
+        .then(data => {
+          console.log(data);
           this.filteredTags = [];
-          data.data.forEach(entry => this.filteredTags.push(entry));
+          data.data.data.forEach(entry => this.filteredTags.push(entry));
         })
         .catch(error => {
           this.rows = [];
           throw error;
         })
         .finally(() => {
-          this.fetching = false;
+          this.isLoading = false;
         });
     }, 10)
   }
