@@ -116,7 +116,14 @@
           :type="{ 'is-danger': form.errors.has('priority') }"
           :message="form.errors.get('priority')"
         >
-          <b-numberinput min="1" max="3" v-model="form.priority"></b-numberinput>
+          <b-rate
+            v-model="form.priority"
+            :max="3"
+            :spaced="true"
+            size="is-large"
+            :show-text="true"
+            :texts="['low', 'medium', 'high']"
+          ></b-rate>
         </b-field>
       </b-field>
     </section>
