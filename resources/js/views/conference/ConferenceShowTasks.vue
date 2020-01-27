@@ -353,7 +353,6 @@ export default {
       });
     },
     deleteTask(task) {
-      console.log(task);
       this.isLoading = true;
       api
         .deleteTask(task.id)

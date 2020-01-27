@@ -96,6 +96,18 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $task->delete();
+        // Remove all bids if there are any
+        $bids = $task->assignments;
+        if ($bids->isNotEmpty()) {
+            $bids->map(function ($bid) {
+                $bid->delete();
+            });
+        }
+
+        if ($task->delete()) {
+            return ["result" => true, "message" => "Task removed"];
+        } else {
+            return ["result" => false, "message" => "Task could not be removed"];
+        }
     }
 }
