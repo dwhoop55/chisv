@@ -38,18 +38,28 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'image' => 'required|image|between:0,5000',
-            'name' => 'required|string',
-            'type' => 'required|string|in:artwork,icon,avatar',
-            'owner_id' => 'required|integer',
-            'owner_type' => 'required|string|in:App\User,App\Conference',
-        ]);
+        $imageValidationString = "required|image|mimes:jpeg,png,jpg,gif|between:0,5000";
+        if ($request->owner_type == "App\User") {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
+        } else if ($request->owner_type == "App\Conference") {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=4096,max_height=4096";
+        } else {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
+        }
+
+        $data = $request
+            ->validate([
+                'image' => $imageValidationString,
+                'name' => 'required|string',
+                'type' => 'required|string|in:artwork,icon,avatar',
+                'owner_id' => 'required|integer',
+                'owner_type' => 'required|string|in:App\User,App\Conference',
+            ]);
+
 
         // First get the owner and save the image to disk
         $disk_path = $request->file('image')->store('public/images');
         $web_path = $this->getWebPath($disk_path);
-
 
         // Now we create a new Image and try to save it to the database
         $name = $data['name'];
@@ -89,8 +99,17 @@ class ImageController extends Controller
         // We could also overwrite the stored image with new data
         // but this would open the hell of cached image files later
         // in production. 
+
+        $imageValidationString = "required|image|mimes:jpeg,png,jpg,gif|between:0,5000";
+        if ($request->owner_type == "App\User") {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
+        } else if ($request->owner_type == "App\Conference") {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=4096,max_height=4096";
+        } else {
+            $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
+        }
         $data = $request->validate([
-            'image' => 'required|image|between:0,5000',
+            'image' => $imageValidationString,
         ]);
 
         // Delete the old image from disk

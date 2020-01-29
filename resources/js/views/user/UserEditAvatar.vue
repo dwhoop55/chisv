@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="display: grid;">
     <b-upload
       @input="updateImage($event)"
       accept="image/*"
@@ -8,15 +8,20 @@
       drag-drop
     >
       <div class="has-margin-4 has-text-centered">
-        <figure class="has-margin-4 image is-128x128">
+        <figure class="image is-128x128">
           <img :src="userAvatar(user)" />
         </figure>
-        <p>Drop new image..</p>
+        <small>
+          Drop new face..
+          <br />png, jpg, gif
+          <br />max 128x128
+        </small>
       </div>
     </b-upload>
     <b-button
       @click="deleteImage(user.avatar.id)"
       outlined
+      size="is-small"
       type="is-danger"
       v-if="user.avatar && user.avatar.id"
     >Reset to default</b-button>

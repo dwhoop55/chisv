@@ -38,7 +38,7 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
-        return $conference;
+        return $conference->loadMissing(['icon', 'artwork']);
     }
     /**
      * Delete all assignments of a signle day
@@ -415,7 +415,6 @@ class ConferenceController extends Controller
             $cleanUser['firstname'] = $sv->firstname;
             $cleanUser['lastname'] = $sv->lastname;
             $cleanUser['bid'] = $bid;
-            // $cleanUser['stats']['hours_done'] = $sv->hoursFor($conference, $stateDone);
 
             // Sum up all hours already done
             $hoursDone = 0;
@@ -427,10 +426,10 @@ class ConferenceController extends Controller
             $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
 
             $cleanUser['stats']['bids_placed'] = [
-                $bids->where('preference', 0)->count(),
-                $bids->where('preference', 1)->count(),
-                $bids->where('preference', 2)->count(),
-                $bids->where('preference', 3)->count(),
+                $bids->where('conference_id', $conference->id)->where('preference', 0)->count(),
+                $bids->where('conference_id', $conference->id)->where('preference', 1)->count(),
+                $bids->where('conference_id', $conference->id)->where('preference', 2)->count(),
+                $bids->where('conference_id', $conference->id)->where('preference', 3)->count(),
             ];
 
             return $cleanUser;
@@ -456,6 +455,19 @@ class ConferenceController extends Controller
         return ["total_matches" => $count, "returned_matches" => $limit, "svs" => $subset];
     }
 
+    public function svsCount(Conference $conference)
+    {
+        $svRole = Role::byName('sv');
+        $acceptedState = State::byName('accepted');
+        return [
+            "result" => $conference
+                ->permissions($svRole)
+                ->where('state_id', $acceptedState->id)
+                ->count(),
+            "message" => null
+        ];
+    }
+
     /**
      * Show all users of a conference.
      * This code is super time critical. For around
@@ -479,10 +491,29 @@ class ConferenceController extends Controller
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';
         $perPage = request()->per_page ?? '10';
+        $roleSv = Role::byName('sv');
+        $stateWaitlisted = State::byName('waitlisted');
+        $stateSuccessful = State::byName('successful', 'App\Bid');
+        $stateDone = State::byName('done', 'App\Assignment');
 
         // Do the actual query
         $query = Permission
-            ::with('user')
+            ::with([
+                'user',
+                'user.assignments',
+                'user.assignments.state',
+                'user.assignments.task',
+                'user.bids',
+                'user.bids.task',
+                'user.university',
+                'user.avatar',
+                'user.country',
+                'user.region',
+                'user.city',
+                'user.degree',
+                'state',
+                'enrollmentForm'
+            ])
             // We have to join users to make it (1) searchable (2) sortable
             ->join('users', 'permissions.user_id', '=', 'users.id')
             // We have to join enrollment_forms to make it sortable
@@ -491,7 +522,7 @@ class ConferenceController extends Controller
             ->leftJoin('universities', 'users.university_id', '=', 'universities.id')
             // Stay bond to this $conference and 'sv' state
             ->where('conference_id', $conference->id)
-            ->where("role_id", Role::byName('sv')->id)
+            ->where("role_id", $roleSv->id)
             ->orderBy($sortBy, $sortOrder);
 
         // Only add queries when we are searching for something
@@ -499,18 +530,14 @@ class ConferenceController extends Controller
             $query->where(function ($query) use ($searchString) {
                 $query->orWhere('users.firstname', 'LIKE', '%' . $searchString . '%');
                 $query->orWhere('users.lastname', 'LIKE', '%' . $searchString . '%');
-                $query->orWhere('universities.name', 'LIKE', '%' . $searchString . '%');
+                // $query->orWhere('universities.name', 'LIKE', '%' . $searchString . '%');
                 $query->orWhere('users.email', 'LIKE', '%' . $searchString . '%');
             });
         }
 
         // Only add state filter when in the request
         if (request()->selected_states) {
-            $query->where(function ($query) use ($selectedStates) {
-                foreach ($selectedStates as $state) {
-                    $query->orWhere('state_id', $state);
-                }
-            });
+            $query->whereIn("state_id", $selectedStates);
         }
 
         // Load the paginated results from the database
@@ -520,7 +547,8 @@ class ConferenceController extends Controller
 
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools
-        $paginated->getCollection()->transform(function ($permission) use ($showMore, $conference) {
+
+        $paginated->getCollection()->transform(function ($permission) use (&$showMore, &$conference, &$stateDone, &$stateSuccessful, &$stateWaitlisted) {
             $safe = null;
             $user = $permission->user;
             $safe = $user->only('firstname', 'lastname', 'id');
@@ -537,26 +565,30 @@ class ConferenceController extends Controller
             // Add statistics for chair/captain or if the user requesting
             // the data is the user which is currently processed
             if ($showMore || $user->id == auth()->user()->id) {
+                $bids = $user->bids->filter(function ($bid) use (&$conference) {
+                    return $bid->task->conference_id = $conference->id;
+                });
+                // Sum up all hours already done
+                $hoursDone = 0;
+                $user->assignments->each(function ($assignment) use (&$hoursDone, &$stateDone) {
+                    if ($assignment->state_id == $stateDone->id) {
+                        $hoursDone += $assignment->hours;
+                    }
+                });
                 $safe['stats'] = [
-                    "hours_done" => $user->hoursFor($conference, State::byName('done', 'App\Assignment')),
+                    "hours_done" => $hoursDone,
                     "bids_placed" => [
-                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('placed', 'App\Bid'), 3)->count()
+                        $bids->where('preference', 0)->count(),
+                        $bids->where('preference', 1)->count(),
+                        $bids->where('preference', 2)->count(),
+                        $bids->where('preference', 3)->count()
                     ],
                     "bids_successful" => [
-                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('successful', 'App\Bid'), 3)->count()
-                    ],
-                    "bids_unsuccessful" => [
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 0)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 1)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 2)->count(),
-                        $user->bidsFor($conference, State::byName('unsuccessful'), 3)->count()
-                    ],
+                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 0)->count(),
+                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 1)->count(),
+                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 2)->count(),
+                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 3)->count(),
+                    ]
                 ];
             }
 
@@ -574,14 +606,12 @@ class ConferenceController extends Controller
                 $safe['permission']->conference->id = $conference->id;
                 $safe['permission']->role = new Role();
                 $safe['permission']->role->id = $permission->role->id;
-                if ($permission->state == State::byName('waitlisted')) {
-                    $safe['permission']->waitlist_position = $permission->waitlist_position;
-                }
 
-                // Add bids for the conference
-                // $safe['bids'] = $user->bidsFor($conference)->transform(function ($bid) {
-                //     return $bid->only('id', 'task_id', 'preference');
-                // });
+                // This is the only function which slows down a call to @sv
+                // when n='num of svs' grow
+                if ($permission->state == $stateWaitlisted) {
+                    $safe['permission']->waitlist_position = $permission->updateWaitlistPosition();
+                }
 
                 // Add assignments to the SVs so that Chair/Captain see assigned tasks on the SV view
                 $safe['assignments'] = $user->assignments->transform(function ($assignment) {
@@ -643,6 +673,7 @@ class ConferenceController extends Controller
             // Return the filled enrollmentForm
             $form = $permission->enrollmentForm;
             $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
+            $permission->updateWaitlistPosition();
             return ["permission" => $permission];
         } else {
             // Return a new and empty form

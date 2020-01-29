@@ -32,43 +32,12 @@
         </div>
       </b-tab-item>
 
-      <b-tab-item icon="account" label="Profile">
-        <user-edit-profile v-if="user" v-model="user"></user-edit-profile>
+      <b-tab-item v-if="user" icon="account" label="Profile">
+        <user-edit-profile v-model="user"></user-edit-profile>
       </b-tab-item>
 
-      <b-tab-item icon="key" label="Password">
-        <user-edit-password v-if="user" v-model="user"></user-edit-password>
-        <!-- <form @submit.prevent="save" @keydown="passwordForm.onKeydown($event)">
-          <b-field label="Password">
-            <b-input
-              type="password"
-              v-model="passwordForm.password"
-              password-reveal
-              placeholder="Your password"
-              required
-            ></b-input>
-          </b-field>
-
-          <b-field
-            label="Confirm Password"
-            :type="{ 'is-danger': passwordForm.errors.has('password') }"
-            :message="passwordForm.errors.get('password')"
-          >
-            <b-input
-              type="password"
-              v-model="passwordForm.password_confirmation"
-              password-reveal
-              placeholder="Confirm your password"
-              required
-            ></b-input>
-          </b-field>
-
-          <button
-            :disabled="passwordForm.busy"
-            type="submit"
-            class="button is-success is-pulled-right"
-          >Set new password</button>
-        </form>-->
+      <b-tab-item v-if="user" icon="key" label="Password">
+        <user-edit-password v-model="user"></user-edit-password>
       </b-tab-item>
 
       <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">

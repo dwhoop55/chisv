@@ -94,7 +94,7 @@ class UserController extends Controller
     {
         $user = User::where('id', $user->id)
             ->with([
-                'degree',
+                'avatar',
                 'languages',
                 'permissions' => function ($query) {
                     $query->orderBy('created_at', 'DESC');
@@ -139,11 +139,23 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
 
-        if (isset($request->location["city"])) $data['city_id'] = $request->location["city"]["id"];
-        if (isset($request->university["id"])) $data['university_id'] = $request->university["id"];
+        // Prepare city
+        if (isset($request->location["city"])) {
+            $data['city_id'] = $request->location["city"]["id"];
+        }
+
+        // Prepare university
+        if (isset($request->university["id"])) {
+            $data['university_id'] = $request->university["id"];
+            $data['university_fallback'] = null;
+        } else if (isset($request->university["name"])) {
+            $data['university_fallback'] = $request->university["name"];
+            $data['university_id'] = null;
+        }
 
         $user->update($data);
-        $user->refresh();
+        $user->fresh(['avatar']);
+        // $user = User::find($user->id)->with(['avatar'])->first();
 
         // Update languages
         if (isset($request->languages)) {
