@@ -23,7 +23,7 @@ class UserPolicy
         // Note, this only is for if the user can access
         // the index page. Which user is displayed is
         // up to the view method below
-        return $user->isAdmin() || $user->isChair() || $user->isCaptain();
+        return $user->isAdmin();
     }
 
     /**

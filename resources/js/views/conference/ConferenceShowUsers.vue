@@ -350,10 +350,18 @@
                 <div>
                   <p class="heading">Bids unsuccessful</p>
                   <div class="subtitle">
-                    <small class="has-text-danger">{{ props.row.stats.bids_unsuccessful[0] }}</small>
-                    <small class="has-text-info">{{ props.row.stats.bids_unsuccessful[1] }}</small>
-                    <small class="has-text-warning">{{ props.row.stats.bids_unsuccessful[2] }}</small>
-                    <small class="has-text-success">{{ props.row.stats.bids_unsuccessful[3] }}</small>
+                    <small
+                      class="has-text-danger"
+                    >{{ props.row.stats.bids_placed[0] - props.row.stats.bids_successful[0] }}</small>
+                    <small
+                      class="has-text-info"
+                    >{{ props.row.stats.bids_placed[1] - props.row.stats.bids_successful[1] }}</small>
+                    <small
+                      class="has-text-warning"
+                    >{{ props.row.stats.bids_placed[2] - props.row.stats.bids_successful[2] }}</small>
+                    <small
+                      class="has-text-success"
+                    >{{ props.row.stats.bids_placed[3] - props.row.stats.bids_successful[3] }}</small>
                   </div>
                 </div>
               </div>

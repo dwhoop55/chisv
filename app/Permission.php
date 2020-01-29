@@ -19,16 +19,6 @@ class Permission extends Model
     protected $hidden = ['role_id', 'user_id', 'conference_id', 'state_id', 'enrollment_form_id'];
     protected $guarded = [];
 
-    // Add a computed property to the model
-    public function toArray()
-    {
-        $array = parent::toArray();
-        if ($this->state == State::byName('waitlisted')) {
-            $array['waitlist_position'] = $this->getWaitlistPositionAttribute();
-        }
-        return $array;
-    }
-
     public function role()
     {
         return $this->belongsTo('App\Role');
@@ -61,7 +51,7 @@ class Permission extends Model
      * permission
      * @return Collection
      */
-    public function getWaitlistPositionAttribute()
+    public function updateWaitlistPosition()
     {
         if (!$this->lottery_position) return;
 
@@ -80,6 +70,7 @@ class Permission extends Model
 
         $pos = $pre + 1;
 
-        return collect(['pre' => $pre, 'post' => $post, 'position' => $pos]);
+        $this['waitlist_position'] = collect(['pre' => $pre, 'post' => $post, 'position' => $pos]);
+        return $this['waitlist_position'];
     }
 }

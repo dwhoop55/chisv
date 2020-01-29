@@ -138,7 +138,7 @@ class User extends Authenticatable
 
     public function bidsFor(Conference $conference, State $state = null, $preference = null)
     {
-        $bids = $this->bids->filter(function ($bid) use ($conference, $state, $preference) {
+        $bids = $this->bids()->with('task', 'task.conference', 'state')->get()->filter(function ($bid) use ($conference, $state, $preference) {
             if ($state) {
                 if ($preference !== null) {
                     return $bid->task->conference->id == $conference->id

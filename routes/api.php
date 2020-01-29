@@ -146,15 +146,8 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/sv_for_task_assignment/{task}', 'ConferenceController@svsForTaskAssignment')
             ->middleware("can:viewUsersForTaskAssignment,conference")
             ->name('conference.svs');
-        Route::get('conference/{conference}/sv/count', function (Conference $conference) {
-            return [
-                "result" => $conference
-                    ->permissions(Role::byName('sv'))
-                    ->where('state_id', State::byName('accepted')->id)
-                    ->count(),
-                "message" => null
-            ];
-        })->name('conference.svCount');
+        Route::get('conference/{conference}/sv/count', 'ConferenceController@svsCount')
+            ->name('conference.svCount');
         Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');
