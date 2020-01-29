@@ -645,7 +645,7 @@ class ConferenceController extends Controller
      */
     public function index()
     {
-        $conferences = Conference::orderBy('start_date', 'desc')->get()->filter(function ($conference) {
+        $conferences = Conference::with('icon', 'artwork')->orderBy('start_date', 'desc')->get()->filter(function ($conference) {
             return auth()->user()->can('view', $conference);
         });
 

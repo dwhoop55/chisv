@@ -101,9 +101,9 @@ class ImageController extends Controller
         // in production. 
 
         $imageValidationString = "required|image|mimes:jpeg,png,jpg,gif|between:0,5000";
-        if ($request->owner_type == "App\User") {
+        if ($image->owner_type == "App\User") {
             $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
-        } else if ($request->owner_type == "App\Conference") {
+        } else if ($image->owner_type == "App\Conference") {
             $imageValidationString = "$imageValidationString|dimensions:max_width=4096,max_height=4096";
         } else {
             $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
