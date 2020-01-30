@@ -235,8 +235,9 @@
             <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
-            <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
-            <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
+            <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
+            <b-dropdown-item value="150" aria-role="listitem">150 per page</b-dropdown-item>
+            <b-dropdown-item value="500" aria-role="listitem">500 per page</b-dropdown-item>
           </b-dropdown>
         </div>
       </template>

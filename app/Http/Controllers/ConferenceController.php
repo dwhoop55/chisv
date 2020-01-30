@@ -576,7 +576,7 @@ class ConferenceController extends Controller
                     }
                 });
                 $safe['stats'] = [
-                    "hours_done" => $hoursDone,
+                    "hours_done" => round($hoursDone, 2),
                     "bids_placed" => [
                         $bids->where('preference', 0)->count(),
                         $bids->where('preference', 1)->count(),

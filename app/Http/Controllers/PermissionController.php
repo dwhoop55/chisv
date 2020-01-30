@@ -91,6 +91,7 @@ class PermissionController extends Controller
 
         $oldPermission->update($updatedPermission->only('conference_id', 'state_id', 'role_id', 'lottery_position'));
         $updatedPermission = Permission::find($request->get('id'));
+        $updatedPermission->updateWaitlistPosition();
 
         return ["result" => $updatedPermission, "message" => "Permission updated!"];
     }

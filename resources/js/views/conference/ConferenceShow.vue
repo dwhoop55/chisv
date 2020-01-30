@@ -79,11 +79,11 @@
               </b-tab-item>
               <b-tab-item label="SVs">
                 <conference-show-users v-if="canViewUsers" :conference="conference"></conference-show-users>
-                <p v-else>You need to be enrolled to see other SVs!</p>
+                <p v-else>You need to be accepted to see other SVs!</p>
               </b-tab-item>
               <b-tab-item label="Tasks">
                 <conference-show-tasks v-if="canViewUsers" :conference="conference"></conference-show-tasks>
-                <p v-else>You need to be enrolled to see tasks!</p>
+                <p v-else>You need to be accepted to see tasks!</p>
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Assignments">
                 <conference-show-assignments :conference="conference"></conference-show-assignments>

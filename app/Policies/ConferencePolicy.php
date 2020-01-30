@@ -25,7 +25,7 @@ class ConferencePolicy
         }
 
         // Only allow users associated with a conference
-        if ($user->isChair($conference) || $user->isCaptain($conference) || $user->isSv($conference)) {
+        if ($user->isChair($conference) || $user->isCaptain($conference) || $user->isSv($conference, State::byName('accepted'))) {
             return true;
         }
 
