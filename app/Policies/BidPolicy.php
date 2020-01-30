@@ -64,13 +64,14 @@ class BidPolicy
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function createForTask(User $user, Task $task)
+    public function createForTask(User $user, Task $task, $skip)
     {
         if ($task->users->contains($user)) {
             // We only allow one bid per user per task
             return false;
         }
-        return $this->canBidTask($user, $task);
+
+        return $this->canBidTask($user, $task, $skip);
     }
 
     /**
@@ -80,21 +81,22 @@ class BidPolicy
      * @param  \App\Bid  $bid
      * @return mixed
      */
-    public function update(User $user, Bid $bid)
+    public function update(User $user, Bid $bid, $skip = null)
     {
-        return $this->canBidTask($user, $bid->task);
+        return $this->canBidTask($user, $bid->task, $skip);
     }
 
-    public function canBidTask(User $user, Task $task)
+    public function canBidTask(User $user, Task $task, $skip = null)
     {
+        $skip = $skip ?? collect();
         $conference = $task->conference;
         if (
-            $user->isSv($conference, State::byName('accepted')) &&
+            ($skip->contains("stateCheck") || $user->isSv($conference, State::byName('accepted'))) &&
             $conference->bidding_enabled &&
             $conference->bidding_until && // must be set
             new Carbon($task->date) <= new Carbon($conference->bidding_until) &&
             new Carbon($task->date) >= Carbon::today() &&
-            !$user->assignmentFor($task)
+            ($skip->contains("assignmentsCheck") || !$user->assignmentFor($task))
         ) {
             // Allow bidding if the user is SV for the task's conference and 'accepted',
             // the bidding is open

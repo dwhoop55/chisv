@@ -235,17 +235,32 @@ class ConferenceController extends Controller
         $priorities = collect(explode(',', request()->priorities));
         $user = auth()->user();
         $onlyOwnTasks = request()->only_own_tasks;
+        $userIsAccepted = $user->isSv($conference, State::byName('accepted'));
 
-        $query = Task::
+        $query = Task
+            ::with([
+                'assignments',
+                'assignments.state',
+                'bids',
+                'bids.state',
+                // We need this 'users' and 'conference' for the $user->can(createForTask, $task)
+                // so we eager load it and safe a few hundres queries
+                'users',
+                'conference'
+            ])
             // Left join assignments to filter for 'onlyOwnTasks'
-            leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
+            // leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
+            // Filter for the desired priorities
+            ->whereIn('tasks.priority', $priorities)
             // Stay bond to this $conference
             ->where('tasks.conference_id', $conference->id)
             ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
 
         if ($onlyOwnTasks == "true") {
-            $query->where('assignments.user_id', $user->id);
+            $query->whereHas('assignments', function ($query) use (&$user) {
+                $query->where('user_id', $user->id);
+            });
         }
 
         // Only add queries when we are searching for something
@@ -256,73 +271,47 @@ class ConferenceController extends Controller
             });
         }
 
-        $query->where(function ($query) use ($priorities) {
-            foreach ($priorities as $priority) {
-                $query->orWhere('priority', $priority);
+
+        $tasks = $query->paginate(request()->per_page);
+
+        $tasks->transform(function ($task) use (&$showMore, &$user, &$userIsAccepted) {
+            $safe = null;
+
+            $safe = $task->only('id', 'name', 'location', 'description', 'start_at', 'end_at', 'hours');
+
+            if ($showMore) {
+                $safe["slots"] = $task->slots;
+                $safe["priority"] = $task->priority;
             }
+
+            // With the last collection we can skip some checks. This will dramatically
+            // speed up the code, since we can the tests in this scope here in constant time
+            // but tests in the policy class require a database call
+            $skip = collect(['stateCheck', 'assignmentsCheck']);
+            $safe['can_create_bid'] = $userIsAccepted && !$task->assignments && $user->can('createForTask', ['App\Bid', $task, $skip]);
+
+            // Find the bid for the current user
+            $bid = $task->bids->where('user_id', $user->id)->first();
+            if ($bid) {
+                $safe['own_bid'] = [
+                    'id' => $bid->id,
+                    'preference' => $bid->preference,
+                    'state' => $bid->state,
+                    'can_update' => $user->can('update', $bid)
+                ];
+            }
+
+            // Find an assignment if there is one
+            $assignment = $task->assignments->where('user_id', $user->id)->first();
+            if ($assignment) {
+                $safe['own_assignment'] = $assignment->only('id', 'hours', 'state');
+            }
+
+
+            return $safe;
         });
 
-        // The following section with uniqueTasks and sorting is
-        // a copy of the method 'assignments' from above
-        // Take a look at the comment there
-
-        // Load all results from the database
-        // Only retreive 'tasks.*' or we would have collision
-        // due to the joins we did earlier
-        $tasks = $query->get(['tasks.*']);
-
-        $uniqueTasks = collect();
-        $tasks->each(function ($task) use ($uniqueTasks, $user, $conference) {
-            // Only do the following once per task (unique in uniqueTasks)
-            if (!$uniqueTasks->has($task->id)) {
-                // Remove some fields when the user is not admin, chair or captain
-                if (!$user->isAdmin() && !$user->isChair($conference) && !$user->isCaptain($conference)) {
-                    unset($task->slots);
-                    unset($task->priority);
-                }
-
-                // Provide some dummy bid so that the frontend can fill it out
-                $task->own_bid = new Bid([
-                    'user_id' => $user->id,
-                    'task_id' => $task->id,
-                ]);
-
-                // Add bid and assignment information
-                foreach ($task->bids as $bid) {
-                    if ($bid->user_id == $user->id) {
-                        // We found the bid of the auth()->user()
-                        $cleanBid = collect($bid->only(['id', 'preference', 'state']));
-                        $task->own_bid = $cleanBid;
-                        $task->own_bid->put('can_update', $user->can('update', $bid));
-
-                        // We found the one bid from the user
-                        // due to the database scheme there can only
-                        // be one bid per user per task, so we can
-                        // break the loop now
-                        break;
-                    }
-                }
-
-                // Lookup an assignment if there is one
-                $assignment = Assignment
-                    ::where('user_id', $user->id)
-                    ->where('task_id', $task->id)
-                    ->first();
-                // Add assignment when available
-                if ($assignment) {
-                    $task->own_assignment = $assignment->only('id', 'hours', 'state');
-                }
-
-                $task->can_create_bid = $user->can('createForTask', ['App\Bid', $task]);
-
-                $uniqueTasks->put($task->id, $task);
-            }
-        });
-
-        // Now we paginate on the collection (note this is a custom marco registered in AppServiceProvider)
-        $paginatedTasks = $uniqueTasks->flatten()->paginate(request()->per_page);
-
-        return $paginatedTasks;
+        return $tasks;
     }
 
     /**

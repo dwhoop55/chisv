@@ -14,6 +14,7 @@ class Task extends Model
     protected $guarded = [];
     protected $dates = ['date'];
     protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];
+    protected $casts = ['hours' => 'float', 'slots' => 'int', 'priority' => 'int'];
 
     /**
      * Assigns a User to a Task by creating a new Assignment

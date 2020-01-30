@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Bid extends Model
 {
-    protected $with = ['state'];
+    // protected $with = ['state'];
     protected $guarded = [];
     protected $casts = [
         'preference' => 'integer',
