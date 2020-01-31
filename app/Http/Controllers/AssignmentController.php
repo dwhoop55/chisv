@@ -70,7 +70,7 @@ class AssignmentController extends Controller
         }
 
         $assignment->update($data);
-        $assignment->refresh();
+        $assignment = $assignment->fresh(['state']);
         return ["result" => $assignment, "message" => "Assignment updated"];
     }
 

@@ -500,14 +500,12 @@ export default {
         });
       }
 
-      for (var day in this.taskDays) {
-        if (this.taskDays.hasOwnProperty(day)) {
-          days.push({
-            date: new Date(day),
-            type: "is-warning"
-          });
-        }
-      }
+      this.taskDays.forEach(day => {
+        days.push({
+          date: new Date(day),
+          type: "is-warning"
+        });
+      });
 
       return days;
     }

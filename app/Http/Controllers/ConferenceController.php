@@ -282,30 +282,38 @@ class ConferenceController extends Controller
             if ($showMore) {
                 $safe["slots"] = $task->slots;
                 $safe["priority"] = $task->priority;
-            }
-
-            // With the last collection we can skip some checks. This will dramatically
-            // speed up the code, since we can the tests in this scope here in constant time
-            // but tests in the policy class require a database call
-            $skip = collect(['stateCheck', 'assignmentsCheck']);
-            $safe['can_create_bid'] = $userIsAccepted && !$task->assignments && $user->can('createForTask', ['App\Bid', $task, $skip]);
-
-            // Find the bid for the current user
-            $bid = $task->bids->where('user_id', $user->id)->first();
-            if ($bid) {
-                $safe['own_bid'] = [
-                    'id' => $bid->id,
-                    'preference' => $bid->preference,
-                    'state' => $bid->state,
-                    'can_update' => $user->can('update', $bid)
-                ];
+                $safe["date"] = $task->date->toDateTimeString();
+                $safe["conference_id"] = $task->conference->id;
             }
 
             // Find an assignment if there is one
             $assignment = $task->assignments->where('user_id', $user->id)->first();
             if ($assignment) {
                 $safe['own_assignment'] = $assignment->only('id', 'hours', 'state');
+            } else {
+                $safe['own_assignment'] = null;
             }
+
+            // With the last $skip argument we can skip some checks. This will dramatically
+            // speed up the code, since we can do the tests in this scope here with data from memory
+            // but tests in the policy class would require a database call
+            $skip = collect(['stateCheck', 'assignmentsCheck']);
+            $safe['can_create_bid'] = ($userIsAccepted && !$assignment && $user->can('createForTask', ['App\Bid', $task, $skip]));
+
+            // Find the bid for the current user
+            $skip = collect(['stateCheck', 'assignmentsCheck']);
+            $bid = $task->bids->where('user_id', $user->id)->first();
+            if ($bid) {
+                $safe['own_bid'] = [
+                    'id' => $bid->id,
+                    'preference' => $bid->preference,
+                    'state' => $bid->state->only(['id', 'name', 'description']),
+                    'can_update' => ($userIsAccepted && !$assignment && $user->can('update', $bid, $skip))
+                ];
+            } else {
+                $safe['own_bid'] = null;
+            }
+
 
 
             return $safe;
@@ -322,20 +330,14 @@ class ConferenceController extends Controller
      */
     public function taskDays(Conference $conference)
     {
-        $tasks = $conference->tasks->sortBy('date');
-
-        $days = collect();
-
-        foreach ($tasks as $task) {
-            $day = $task->date->toDateString();
-            if ($days->has($day)) {
-                $days[$day] = $days[$day] + 1;
-            } else {
-                $days->put($day, 1);
-            }
-        }
-
-        return $days;
+        $tasks = $conference
+            ->tasks()
+            ->groupBy('date')
+            ->get('date')
+            ->transform(function ($task) {
+                return $task->date->toDateString();
+            });
+        return $tasks;
     }
 
     /**
@@ -579,6 +581,25 @@ class ConferenceController extends Controller
                         $bids->where('state_id', $stateSuccessful->id)->where('preference', 3)->count(),
                     ]
                 ];
+
+                // Add assignments to the SVs so that Chair/Captain and SV see assigned tasks on the SV view
+                $safe['assignments'] = $user->assignments->transform(function ($assignment) {
+                    $safe = $assignment->only('id', 'hours', 'created_at');
+                    $safe['state'] = $assignment->state->only('id', 'name', 'description');
+                    $safe['task'] = $assignment->task->only(
+                        'id',
+                        'name',
+                        'description',
+                        'location',
+                        'date',
+                        'start_at',
+                        'end_at',
+                        'priority',
+                        'slots',
+                        'hours'
+                    );
+                    return $safe;
+                });
             }
 
             if ($showMore) {
@@ -601,25 +622,6 @@ class ConferenceController extends Controller
                 if ($permission->state == $stateWaitlisted) {
                     $safe['permission']->waitlist_position = $permission->updateWaitlistPosition();
                 }
-
-                // Add assignments to the SVs so that Chair/Captain see assigned tasks on the SV view
-                $safe['assignments'] = $user->assignments->transform(function ($assignment) {
-                    $safe = $assignment->only('id', 'hours', 'created_at');
-                    $safe['state'] = $assignment->state->only('id', 'name', 'description');
-                    $safe['task'] = $assignment->task->only(
-                        'id',
-                        'name',
-                        'description',
-                        'location',
-                        'date',
-                        'start_at',
-                        'end_at',
-                        'priority',
-                        'slots',
-                        'hours'
-                    );
-                    return $safe;
-                });
             }
             return $safe;
         });

@@ -56,7 +56,11 @@ class BidController extends Controller
         ]);
 
         $bid->save();
-        return response($bid, 200);
+        $userCanUpdate = auth()->user()->can('update', $bid);
+        $bid = $bid->fresh('state')->only('id', 'preference', 'state');
+        $bid['can_update'] = $userCanUpdate;
+        $bid['state'] = $bid['state']->only(['id', 'name', 'description']);
+        return ["result" => $bid, "message" => "Bid created"];
     }
 
     /**
@@ -82,11 +86,15 @@ class BidController extends Controller
         $data = $request->only('id', 'preference');
 
         // Check if the user can update this bid
-        abort_unless(auth()->user()->can('update', $bid), 403, 'You are not authorized to update this bid');
+        $userCanUpdate = auth()->user()->can('update', $bid);
+        abort_unless($userCanUpdate, 403, 'You are not authorized to update this bid');
 
         $bid->update(['preference' => $data['preference']]);
+        $bid = $bid->fresh('state')->only('id', 'preference', 'state');
+        $bid['can_update'] = $userCanUpdate;
+        $bid['state'] = $bid['state']->only(['id', 'name', 'description']);
 
-        return response('Preference saved', 200);
+        return ["result" => $bid, "message" => "Bid updated"];
     }
 
     /**

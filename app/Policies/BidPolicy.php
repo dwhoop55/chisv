@@ -64,7 +64,7 @@ class BidPolicy
      * @param  \App\Task  $task
      * @return mixed
      */
-    public function createForTask(User $user, Task $task, $skip)
+    public function createForTask(User $user, Task $task, $skip = null)
     {
         if ($task->users->contains($user)) {
             // We only allow one bid per user per task
@@ -83,6 +83,13 @@ class BidPolicy
      */
     public function update(User $user, Bid $bid, $skip = null)
     {
+        if ($bid->state->name != "placed") {
+            // If a bid is not in state 'placed'
+            // we don't allow changing anything
+            // about the bid
+            return false;
+        }
+
         return $this->canBidTask($user, $bid->task, $skip);
     }
 
