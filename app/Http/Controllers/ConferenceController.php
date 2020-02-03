@@ -18,6 +18,7 @@ use App\Services\EnrollmentFormService;
 use App\Task;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class ConferenceController extends Controller
 {
@@ -301,14 +302,14 @@ class ConferenceController extends Controller
             $safe['can_create_bid'] = ($userIsAccepted && !$assignment && $user->can('createForTask', ['App\Bid', $task, $skip]));
 
             // Find the bid for the current user
-            $skip = collect(['stateCheck', 'assignmentsCheck']);
             $bid = $task->bids->where('user_id', $user->id)->first();
             if ($bid) {
+                $bid->task = $task; // $task has conference
                 $safe['own_bid'] = [
                     'id' => $bid->id,
                     'preference' => $bid->preference,
                     'state' => $bid->state->only(['id', 'name', 'description']),
-                    'can_update' => ($userIsAccepted && !$assignment && $user->can('update', $bid, $skip))
+                    'can_update' => ($userIsAccepted && !$assignment && $user->can('update', [$bid, $skip]))
                 ];
             } else {
                 $safe['own_bid'] = null;

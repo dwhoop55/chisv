@@ -284,11 +284,7 @@ export default {
             <li><strong>X</strong> unavailable</li>\
             <li><strong>1</strong> low preference</li>\
             <li><strong>2</strong> medium preference</li>\
-            <li><strong>3</strong> high preference</li>\
-            <br/>\
-            Please note that you can also be assigned to a task\
-             on which you did not bid at all. So make sure to\
-             check this list whenever the auction was run!"
+            <li><strong>3</strong> high preference</li>"
           );
           break;
       }

@@ -1,5 +1,6 @@
 <template>
   <div class="is-flex">
+    <!-- WE HAVE AN ASSIGNMENT -->
     <div v-if="hasAssignment">
       <div @click="showHint('assigned')" class="button is-small" v-if="isAssigned">
         <b-icon type="is-warning" icon="account" />
@@ -17,6 +18,7 @@
       </div>
     </div>
 
+    <!-- WE HAVE A BID -->
     <div v-else-if="hasBid">
       <div v-if="task.own_bid.can_update">
         <!-- Can update existing bid -->
@@ -30,22 +32,14 @@
         <!-- Cannot update existing bid -->
         <div v-if="isSuccessful">
           <!-- Bid won but not assigned -->
-          <div
-            @click="showHint('successful-not-assigned')"
-            class="button is-small"
-            v-if="false && bidIsPresent && bidIsStateSuccessful && !assignmentIsPresent"
-          >
+          <div @click="showHint('successful-not-assigned')" class="button is-small">
             <b-icon type="is-light" icon="account-question" />
-            <span>&nbsp;Bid won, not assigned</span>
+            <span>&nbsp;Not assigned</span>
           </div>
         </div>
         <div v-else-if="isUnsuccessful">
           <!-- Bid lost, not assigned -->
-          <div
-            @click="showHint('unsuccessful')"
-            class="button is-small"
-            v-if="bidIsPresent && bidIsStateUnsuccessful && !assignmentIsPresent"
-          >
+          <div @click="showHint('unsuccessful')" class="button is-small">
             <b-icon type="is-light" icon="account-off" />
             <span>&nbsp;Bid negative</span>
           </div>
@@ -63,11 +57,13 @@
       </div>
     </div>
 
+    <!-- WE HAVE NO BID AND NO ASSIGNMENT BUT CAN CREATE -->
     <div v-else-if="task.can_create_bid">
       <!-- Has no bid yet but can create one -->
       <task-bid-picker-radio @input="setPreference($event)" :value="1" :size="size" />
     </div>
 
+    <!-- NO BID, NO ASSIGNMENT, NOT ABLE TO CREATE -->
     <div v-else>
       <task-bid-picker-radio
         @click.native="showHint('disabled')"

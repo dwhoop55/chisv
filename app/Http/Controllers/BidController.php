@@ -56,9 +56,17 @@ class BidController extends Controller
         ]);
 
         $bid->save();
-        $userCanUpdate = auth()->user()->can('update', $bid);
         $bid = $bid->fresh('state')->only('id', 'preference', 'state');
-        $bid['can_update'] = $userCanUpdate;
+        // A newly created bid is always updateable
+        // Furthermore we reach this code here only when the gate from
+        // above 'createForTask' allow. It uses the same code to check
+        // authorization - 'update' only checks for assignments
+        // It's true that an assignment could already be create at this
+        // point - but that's unlikely. This could only happen when the
+        // SV loads the list of tasks and is then assigned a task by a
+        // chair. SV clicking on a preference then would create a bid
+        // for an already existing assignment. 
+        $bid['can_update'] = true;
         $bid['state'] = $bid['state']->only(['id', 'name', 'description']);
         return ["result" => $bid, "message" => "Bid created"];
     }

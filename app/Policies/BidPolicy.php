@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * This policy class uses harcoded strings and ids for checking states
+ * It's not pretty, but there is no other way to limit database calls
+ * So that the task list always loads fast
+ */
+
 namespace App\Policies;
 
 use App\Assignment;
@@ -10,6 +16,7 @@ use App\Task;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class BidPolicy
 {
@@ -89,7 +96,6 @@ class BidPolicy
             // about the bid
             return false;
         }
-
         return $this->canBidTask($user, $bid->task, $skip);
     }
 

@@ -35,7 +35,7 @@ class Bid extends Model
     {
         return Assignment
             ::where('user_id', $this->user_id)
-            ->where('task_id', $this->itask_id)
+            ->where('task_id', $this->task_id)
             ->first();
     }
 }
