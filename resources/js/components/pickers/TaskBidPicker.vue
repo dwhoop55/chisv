@@ -20,11 +20,13 @@
 
     <!-- WE HAVE A BID -->
     <div v-else-if="hasBid">
-      <div v-if="task.own_bid.can_update">
+      <div class="is-relative" v-if="task.own_bid.can_update">
         <!-- Can update existing bid -->
+        <b-loading :is-full-page="false" :active="isLoading"></b-loading>
         <task-bid-picker-radio
           @input="setPreference($event)"
           :value="task.own_bid.preference"
+          :disabled="isLoading"
           :size="size"
         />
       </div>
@@ -58,23 +60,28 @@
     </div>
 
     <!-- WE HAVE NO BID AND NO ASSIGNMENT BUT CAN CREATE -->
-    <div v-else-if="task.can_create_bid">
+    <div class="is-relative" v-else-if="task.can_create_bid">
       <!-- Has no bid yet but can create one -->
-      <task-bid-picker-radio @input="setPreference($event)" :value="1" :size="size" />
+      <b-loading :is-full-page="false" :active="isLoading" />
+      <task-bid-picker-radio
+        @input="setPreference($event)"
+        :value="1"
+        :size="size"
+        :disabled="isLoading"
+      />
     </div>
 
     <!-- NO BID, NO ASSIGNMENT, NOT ABLE TO CREATE -->
     <div v-else>
       <task-bid-picker-radio
         @click.native="showHint('disabled')"
-        :value="task.own_bid.preference"
+        :value="null"
         :disabled="true"
         :size="size"
       />
     </div>
 
     <div>
-      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
       <transition name="slide-top-fade">
         <b-icon class="has-margin-l-7" v-if="showSuccessIcon" type="is-success" icon="check-bold"></b-icon>
       </transition>
