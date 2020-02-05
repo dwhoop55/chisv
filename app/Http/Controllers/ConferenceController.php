@@ -128,93 +128,180 @@ class ConferenceController extends Controller
      */
     public function assignments(Conference $conference)
     {
+        /**
+         * We will fetch all tasks, bids, and assignments as one $tasks
+         * collection. However, we will return an dict in the form
+         * { users: <users identified by id>,
+         *   tasks: <tasks with assignments and bids - no users, only id>
+         *   total: <number of all tasks (without pagination)>
+         * }
+         * There will be many users on multiple tasks. To more efficiently
+         * transfer this data to the client we will only send the reference
+         * user.id in the assignments and one dict with all the users.
+         * The UI will then have to represent a consistent look where a
+         * user is assigned to multiple tasks
+         */
         $search = request()->search_string;
         $day = request()->day;
         $user = auth()->user();
-
-        abort_unless(
-            $user->can('viewAssignments', $conference),
-            403,
-            'You have no permission to see any assignments for this conference!'
-        );
+        $doneState = State::byName('done', "App\Assignment");
 
         $query = Task
-            ::with('assignments')
-            // join assignments to then join users
-            ->leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
-            ->leftJoin('users', 'assignments.user_id', '=', 'users.id')
+            ::with([
+                'assignments',
+                'assignments.state:id,name',
+                'assignments.user:id',
+
+                // We use these assignment->task list to lookup time conflicts
+                'assignments.user.assignments' => function ($query) use ($conference) {
+                    $query->whereHas('task',  function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+                'assignments.user.assignments.task' => function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                },
+
+                'bids:id,task_id,state_id,user_id,preference',
+                'bids.state:id,name',
+
+                // We need all the assignments in state done which are from a task of this conference
+                // We use them to calculate the hours_done on a per user basis
+                'usersWithAssignment.assignments' => function ($query) use ($doneState, $conference) {
+                    $query->where('state_id', $doneState->id);
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+            ])
             // Stay bond to this $conference
             ->where('tasks.conference_id', $conference->id)
-            // Only the given day
             ->whereDate('tasks.date', $day)
-            // Order and sort the results as expected
             ->orderBy(request()->sort_by, request()->sort_order);
 
-        // Only add queries when we are searching for something
         if (strlen($search) > 0) {
             $query->where(function ($query) use ($search) {
-                $query->orWhere('tasks.name', 'LIKE', '%' . $search . '%');
-                $query->orWhere('tasks.location', 'LIKE', '%' . $search . '%');
-                $query->orWhere('users.firstname', 'LIKE', '%' . $search . '%');
-                $query->orWhere('users.lastname', 'LIKE', '%' . $search . '%');
+                // We can search the user
+                $query->whereHas('usersWithAssignment', function ($query) use ($search) {
+                    $query->where('firstname', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('lastname', 'LIKE', '%' . $search . '%');
+                });
+                // We can search the task attributes
+                $query->orWhere('name', 'LIKE', '%' . $search . '%');
+                $query->orWhere('location', 'LIKE', '%' . $search . '%');
             });
         }
 
-        $tasksWithUsers = $query->get([
-            'tasks.*'
+        $paginator = $query->paginate(request()->per_page, [
+            'id', 'name', 'start_at', 'date',
+            'end_at', 'hours', 'location',
+            'description', 'slots', 'priority'
         ]);
 
-        // Now we have a collection which can have multiple items with the same task
-        // That is because we used left join and every assignment->user match results
-        // in a new item in the collection. We will now have to go through all these
-        // items and push them to a cleaner collection - but only once for every
-        // occurence. Based on the resulting collection we then load the assignments
-        // and users back in again. This way the task and the user is searchable
-        // from the frontend but send back over to the frontend efficiently
-        $uniqueTasks = collect();
-        $tasksWithUsers->each(function ($task) use ($uniqueTasks) {
-            // Only do the following once per task (unique in uniqueTasks)
-            if (!$uniqueTasks->has($task->id)) {
-                // Attach assignments - this is on a per-sv level
-                $task->assignments = $task->assignments->transform(function ($assignment) use ($task) {
-                    $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
 
-                    // Add the bid to the assignment if there is any
-                    if ($assignment->bid()) {
-                        $cleanAssignment['bid'] = $assignment->bid()->only(['id', 'preference', 'state']);
-                        $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
-                    }
+        // First we create the users collection which holds every user of the requested
+        // page and also the hours_done for the conference
+        $users = collect();
+        collect($paginator->items())->each(function ($task) use (&$users) {
+            $task->usersWithAssignment->each(function ($user) use (&$users) {
+                if (!isset($users[$user->id])) {
+                    $nUser = $user->only(["firstname", "lastname"]);
+                    $nUser['hours_done'] = round($user->assignments->sum('hours'), 2);
+                    $users->put($user->id, $nUser);
+                }
+            });
+        });
+        // return json_encode($users);
 
-                    // Add the state which the assignment is in
-                    $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
+        // Now we build the tasks collection, which holds tasks, assignments, bids
+        // and a reference to the user
+        $tasks = collect($paginator->items())->map(function ($task) {
+            $nTask = $task->only([
+                'id', 'name', 'start_at',
+                'end_at', 'hours', 'location',
+                'description', 'slots', 'priority'
+            ]);
+            $nTask['assignments'] = $task->assignments->map(function ($assignment) use (&$task) {
+                $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
 
-                    // Now we add the user with some of statistics
-                    $user = $assignment->user->only('id', 'firstname', 'lastname');
-                    $hours = $assignment->user->hoursFor($assignment->task->conference, State::byName('done', "App\Assignment"));
-                    $user['hours_done'] = $hours;
-                    $cleanAssignment['user'] = $user;
+                // Append a SVs bid if there is one
+                $bid = $task->bids->where('user_id', $assignment->user->id)->first();
+                $nAssignment['bid'] = $bid ? $bid->only('id', 'preference', 'state') : null;
 
-                    // Check for multiple assignments at time period
-                    $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
+                // Provide the reference to the $users collection
+                $nAssignment['user'] = $assignment->user->only(['id']);
 
-                    return $cleanAssignment;
+                // Test for conflicts with other assignments
+                // Create a list of all tasks which the user with
+                // the current assignment has for this day and conference
+                $allTasks = $assignment->user->assignments->map(function ($assignment) {
+                    return $assignment->task;
                 });
 
-                // Attach all bids for this task and only keep important fields
-                $task->bids = $task->bids->transform(function ($bid) {
-                    $cleanBid = $bid->only(['id', 'preference', 'user_id']);
-                    $cleanBid['state'] = $bid->state->only(['id', 'name']);
-                    return $cleanBid;
-                });
+                // Now remove the task this current assignment is bound to (which would
+                // otherwise always conflict with itself)
+                $otherTasks = $allTasks->where('id', "!=", $task->id);
 
-                $uniqueTasks->put($task->id, $task);
-            }
+                $nAssignment['is_conflicting'] = $task->isConflicting($otherTasks);
+
+                return $nAssignment;
+            });
+            return $nTask;
         });
 
-        // Now we paginate on the collection (note this is a custom marco registered in AppServiceProvider)
-        $paginatedTasks = $uniqueTasks->flatten()->paginate(request()->per_page);
+        return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total()];
 
-        return $paginatedTasks;
+        $paginator->transform(function ($task) use (&$doneState, &$tasks) {
+            $safe = $task->only([
+                'id', 'name', 'start_at',
+                'end_at', 'hours', 'location',
+                'description', 'slots', 'priority'
+            ]);
+            // Attach assignments - this is on a per-sv level
+            $safe['assignments'] = $task->assignments->transform(function ($assignment) use (&$task, &$doneState, &$tasks) {
+                $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
+
+                // // Add the bid to the assignment if there is any
+                $bid = $task->bids->where('user_id', $assignment->user->id)->first();
+                if ($bid) {
+                    $cleanAssignment['bid'] = $bid->only(['id', 'preference', 'state']);
+                    $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
+                }
+
+                // Add the state which the assignment is in
+                $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
+
+                // Now we add the user with some of statistics
+                $user = $assignment->user->only('id', 'firstname', 'lastname');
+                // !!! This is time intensive !!!
+                // $hours = $assignment->user->hoursFor($assignment->task->conference, $doneState);
+                // $user['hours_done'] = $hours;
+                $cleanAssignment['user'] = $user;
+
+                // !!! This is time intensive !!!
+                // Check for multiple assignments at time period
+                $otherTasks = $tasks->where('id', '!=', $task->id)->values()->map(function ($t) {
+                    return $t->id;
+                });
+
+                // $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
+
+                return $cleanAssignment;
+            });
+
+            $safe['total_bids'] = $task->bids->count();
+
+            // // Attach all bids for this task and only keep important fields
+            // $safe['bids'] = $task->bids->transform(function ($bid) {
+            //     $cleanBid = $bid->only(['id', 'preference', 'user_id']);
+            //     $cleanBid['state'] = $bid->state->only(['id', 'name']);
+            //     return $cleanBid;
+            // });
+
+            return $safe;
+        });
+
+        return $pagination;
     }
 
     /**
@@ -246,11 +333,9 @@ class ConferenceController extends Controller
                 'bids.state',
                 // We need this 'users' and 'conference' for the $user->can(createForTask, $task)
                 // so we eager load it and safe a few hundres queries
-                'users',
+                'usersWithBid',
                 'conference'
             ])
-            // Left join assignments to filter for 'onlyOwnTasks'
-            // leftJoin('assignments', 'assignments.task_id', '=', 'tasks.id')
             // Filter for the desired priorities
             ->whereIn('tasks.priority', $priorities)
             // Stay bond to this $conference
@@ -277,7 +362,6 @@ class ConferenceController extends Controller
 
         $tasks->transform(function ($task) use (&$showMore, &$user, &$userIsAccepted) {
             $safe = null;
-
             $safe = $task->only('id', 'name', 'location', 'description', 'start_at', 'end_at', 'hours');
 
             if ($showMore) {

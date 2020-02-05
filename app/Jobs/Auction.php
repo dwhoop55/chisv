@@ -109,7 +109,7 @@ class Auction extends AdvancedJob implements ExecutableJob
             // Free slots available
 
             // Get a list of users with the bid for this task
-            $svs = $task->users->map(function ($user) use ($task, $phase) {
+            $svs = $task->usersWithBid->map(function ($user) use ($task, $phase) {
                 // This will go through all SVs which have bid for the task
                 // We have to check for
                 // (1) Preference of the bid

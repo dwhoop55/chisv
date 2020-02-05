@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use PDO;
 
 class Task extends Model
@@ -52,6 +53,17 @@ class Task extends Model
     {
         $found = false;
         foreach ($tasks as $currentTask) {
+            // First ensure that all the values are not null
+            if (
+                !$this->date ||
+                !$this->start_at ||
+                !$this->end_at ||
+                !$currentTask->date ||
+                !$currentTask->start_at ||
+                !$currentTask->end_at
+            ) {
+                throw new Exception("Task has date/time attributes null!", 1);
+            }
             // First we test the day
             if ($this->date == $currentTask->date) {
                 $thisTaskStart = Carbon::create($this->start_at);
@@ -100,9 +112,14 @@ class Task extends Model
         return $this->belongsTo('App\Conference');
     }
 
-    public function users()
+    public function usersWithBid()
     {
         return $this->hasManyThrough('App\User', 'App\Bid', 'task_id', 'id', 'id', 'user_id');
+    }
+
+    public function usersWithAssignment()
+    {
+        return $this->hasManyThrough('App\User', 'App\Assignment', 'task_id', 'id', 'id', 'user_id');
     }
 
     public function bids()

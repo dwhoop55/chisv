@@ -73,7 +73,7 @@ class BidPolicy
      */
     public function createForTask(User $user, Task $task, $skip = null)
     {
-        if ($task->users->contains($user)) {
+        if ($task->usersWithBid->contains($user)) {
             // We only allow one bid per user per task
             return false;
         }
