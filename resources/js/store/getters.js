@@ -52,6 +52,12 @@ export default {
     svsSearch: state => {
         return state.svs.search;
     },
+    svsPerPage: state => {
+        return parseInt(state.svs.page.items);
+    },
+    svsPage: state => {
+        return parseInt(state.svs.page.index);
+    },
 
     conferenceTab: state => {
         return state.navigation.conferenceTab;

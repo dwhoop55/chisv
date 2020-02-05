@@ -20,7 +20,7 @@
 
       <b-input
         width="600"
-        @input="debounceGetTasks()"
+        @input="onSearch($event)"
         v-model="searchString"
         placeholder="Search.."
         type="search"
@@ -111,6 +111,7 @@
       backend-pagination
       :total="totalTasks"
       :per-page="perPage"
+      :current-page="page"
       :loading="isLoading"
       :hoverable="true"
       backend-sorting
@@ -433,6 +434,7 @@ export default {
     onPerPageChange(perPage) {
       this.$store.commit("TASKS_PER_PAGE", perPage);
       this.perPage = perPage;
+      this.onPageChange(1);
       this.getTasks();
     },
     onSort(field, direction) {
@@ -453,6 +455,10 @@ export default {
       this.$store.commit("TASKS_ONLY_OWN_TASKS", bool);
       this.onlyOwnTasks = bool;
       this.getTasks();
+    },
+    onSearch(search) {
+      this.onPageChange(1);
+      this.debounceGetTasks(search);
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("TASKS_SEARCH", this.searchString);

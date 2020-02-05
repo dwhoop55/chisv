@@ -20,7 +20,7 @@
       <b-field>
         <b-input
           width="600"
-          @input="debounceGetTasks()"
+          @input="onSearch($event)"
           v-model="searchString"
           placeholder="Search.."
           type="search"
@@ -91,6 +91,7 @@
       backend-pagination
       :total="totalTasks"
       :per-page="perPage"
+      :current-page="page"
       :loading="isLoading"
       :hoverable="true"
       backend-sorting
@@ -169,7 +170,7 @@
           label="Priority"
         >{{ props.row.priority }}</b-table-column>
         <b-table-column :visible="activeColumns.includes('bids')" width="10" label="Bids">
-          <p>{{ props.row.bids.length }}</p>
+          <p>{{ props.row.total_bids }}</p>
         </b-table-column>
         <b-table-column
           class="is-marginless is-paddingless"
@@ -407,6 +408,7 @@ export default {
     },
     onPerPageChange(perPage) {
       this.$store.commit("ASSIGNMENTS_PER_PAGE", perPage);
+      this.onPageChange(1);
       this.perPage = perPage;
       this.getTasks();
     },
@@ -420,6 +422,10 @@ export default {
     onDayChange(day) {
       this.$store.commit("ASSIGNMENTS_DAY", day);
       this.onPageChange(1);
+    },
+    onSearch(search) {
+      this.onPageChange(1);
+      this.debounceGetTasks(search);
     },
     debounceGetTasks: debounce(function() {
       this.$store.commit("ASSIGNMENTS_SEARCH", this.searchString);

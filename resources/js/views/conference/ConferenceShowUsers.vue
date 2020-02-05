@@ -3,7 +3,7 @@
     <b-field grouped group-multiline>
       <b-input
         expanded
-        @input="debounceGetUsers()"
+        @input="onSearch($event)"
         v-model="searchString"
         placeholder="Search anything..."
         type="search"
@@ -84,7 +84,9 @@
       backend-pagination
       :total="totalUsers"
       :per-page="perPage"
+      :current-page="page"
       @page-change="onPageChange"
+      @per-page-change="onPerPageChange"
       :loading="isLoading"
       :hoverable="true"
       backend-sorting
@@ -396,7 +398,7 @@
       </template>
       <template slot="footer">
         <div class="has-text-right">
-          <b-dropdown @change="perPage=$event;getUsers()" :value="perPage" aria-role="list">
+          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
@@ -436,8 +438,8 @@ export default {
       selectedStates: [],
       sortField: "lastname",
       sortOrder: "asc",
-      perPage: 10,
-      page: 1,
+      perPage: this.$store.getters.svsPerPage,
+      page: this.$store.getters.svsPage,
       enrollmentFormTemplate: null,
 
       // This will ensure that the details won't open
@@ -649,7 +651,14 @@ export default {
         });
     },
     onPageChange(page) {
+      this.$store.commit("SVS_PAGE", page);
       this.page = page;
+      this.getUsers();
+    },
+    onPerPageChange(perPage) {
+      this.$store.commit("SVS_PER_PAGE", perPage);
+      this.onPageChange(1);
+      this.perPage = perPage;
       this.getUsers();
     },
     onSort(field, order) {
@@ -684,6 +693,10 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    onSearch(search) {
+      this.onPageChange(1);
+      this.debounceGetUsers(search);
     },
     debounceGetUsers: debounce(function() {
       this.getUsers();

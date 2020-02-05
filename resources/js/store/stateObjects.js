@@ -17,6 +17,7 @@ var assignments = {
 
 var svs = {
     search: "",
+    page: { items: 10, index: 1 },
 }
 
 var navigation = {

@@ -70,7 +70,12 @@ export default {
     SVS_SEARCH(state, search) {
         state.svs.search = search;
     },
-
+    SVS_PER_PAGE(state, perPage) {
+        state.svs.page.items = perPage;
+    },
+    SVS_PAGE(state, page) {
+        state.svs.page.index = page;
+    },
 
     CONFERENCE_TAB(state, tab) {
         state.navigation.conferenceTab = tab;
