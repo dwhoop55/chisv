@@ -7,20 +7,17 @@
         :task="this.task"
       ></task-assignment-sv-picker>
     </div>
-    <div v-for="assignment in assignments" :key="assignment.id">
+    <div v-for="assignment in task.assignments" :key="assignment.id">
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
           <div class="column column-small">
-            <a
-              v-if="assignment.tasks_at_time && assignment.tasks_at_time.length > 1"
-              @click.prevent="showTasksAtTime(assignment.tasks_at_time)"
-            >
+            <a v-if="assignment.is_conflicting">
               <b-icon type="is-danger" icon="alert"></b-icon>
             </a>
             <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
               <a
-                @click.prevent="userClicked(assignment.user)"
-              >{{ assignment.user.firstname }} {{ assignment.user.lastname }}</a>
+                @click.prevent="userClicked(users[assignment.user.id])"
+              >{{ users[assignment.user.id].firstname }} {{ users[assignment.user.id].lastname }}</a>
             </b-tooltip>
             <a @click.prevent="remove(assignment)">&nbsp;remove</a>
           </div>
@@ -49,11 +46,7 @@
 import api from "@/api.js";
 
 export default {
-  props: ["assignments", "conference", "task"],
-  model: {
-    prop: "assignments",
-    event: "input"
-  },
+  props: ["task", "conference", "users"],
 
   data() {
     return {
@@ -63,29 +56,17 @@ export default {
   },
 
   methods: {
-    showTasksAtTime(tasks) {
-      var msg = tasks.length + " tasks overlapping:<br/>";
-      tasks.forEach(task => {
-        msg +=
-          "<li>" +
-          task.name +
-          " " +
-          this.hoursFromTime(task.start_at) +
-          " – " +
-          this.hoursFromTime(task.end_at) +
-          "</li>";
-      });
-      this.$buefy.dialog.alert({
-        title: "Overlapping tasks",
-        message: msg
-      });
-    },
     userClicked(user) {
-      console.log("Do something here, maybe go to user SV profile..");
+      // this.$store.commit("CONFERENCE_TAB", 1);
+      // this.$store.commit("SVS_SEARCH", user.firstname);
+      // this.$store.commit("SVS_PER_PAGE", 10);
+      // this.$store.commit("SVS_PAGE", 1);
     },
     userDetail(assignment) {
       var detail =
-        "did " + this.decimalFormat(assignment.user.hours_done) + "\n";
+        "did " +
+        this.decimalFormat(this.users[assignment.user.id].hours_done) +
+        "\n";
       let bid = assignment.bid;
 
       if (bid) {
@@ -127,11 +108,6 @@ export default {
           this.isLoading = false;
           // Now we add/remove the hours in the frontend model to the user
           // so that is stays consistent
-          // Without it would only show the correct hours on page reload
-          // Since the user can be also assigned to other tasks but this one
-          // we need to throw an event to be handled by the parent component
-          // which has access to all the tasks. It will then take care
-          // that every user model gets updated
           if (nextStateId == 43) {
             // done, add hours from the asignment
             this.$emit("updateHours", {

@@ -502,7 +502,7 @@ export default {
         });
       }
 
-      this.taskDays.forEach(day => {
+      Object.keys(this.taskDays).forEach(function(day) {
         days.push({
           date: new Date(day),
           type: "is-warning"

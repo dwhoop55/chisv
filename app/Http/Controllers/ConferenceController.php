@@ -16,8 +16,9 @@ use App\Job;
 use App\Permission;
 use App\Services\EnrollmentFormService;
 use App\Task;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon as Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ConferenceController extends Controller
@@ -211,7 +212,6 @@ class ConferenceController extends Controller
                 }
             });
         });
-        // return json_encode($users);
 
         // Now we build the tasks collection, which holds tasks, assignments, bids
         // and a reference to the user
@@ -221,6 +221,7 @@ class ConferenceController extends Controller
                 'end_at', 'hours', 'location',
                 'description', 'slots', 'priority'
             ]);
+            $nTask['total_bids'] = $task->bids->count();
             $nTask['assignments'] = $task->assignments->map(function ($assignment) use (&$task) {
                 $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
 
@@ -249,59 +250,61 @@ class ConferenceController extends Controller
             return $nTask;
         });
 
-        return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total()];
+        $taskDays = $this->taskDays($conference);
 
-        $paginator->transform(function ($task) use (&$doneState, &$tasks) {
-            $safe = $task->only([
-                'id', 'name', 'start_at',
-                'end_at', 'hours', 'location',
-                'description', 'slots', 'priority'
-            ]);
-            // Attach assignments - this is on a per-sv level
-            $safe['assignments'] = $task->assignments->transform(function ($assignment) use (&$task, &$doneState, &$tasks) {
-                $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
+        return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total(), "task_days" => $taskDays];
 
-                // // Add the bid to the assignment if there is any
-                $bid = $task->bids->where('user_id', $assignment->user->id)->first();
-                if ($bid) {
-                    $cleanAssignment['bid'] = $bid->only(['id', 'preference', 'state']);
-                    $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
-                }
+        // $paginator->transform(function ($task) use (&$doneState, &$tasks) {
+        //     $safe = $task->only([
+        //         'id', 'name', 'start_at',
+        //         'end_at', 'hours', 'location',
+        //         'description', 'slots', 'priority'
+        //     ]);
+        //     // Attach assignments - this is on a per-sv level
+        //     $safe['assignments'] = $task->assignments->transform(function ($assignment) use (&$task, &$doneState, &$tasks) {
+        //         $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
 
-                // Add the state which the assignment is in
-                $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
+        //         // // Add the bid to the assignment if there is any
+        //         $bid = $task->bids->where('user_id', $assignment->user->id)->first();
+        //         if ($bid) {
+        //             $cleanAssignment['bid'] = $bid->only(['id', 'preference', 'state']);
+        //             $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
+        //         }
 
-                // Now we add the user with some of statistics
-                $user = $assignment->user->only('id', 'firstname', 'lastname');
-                // !!! This is time intensive !!!
-                // $hours = $assignment->user->hoursFor($assignment->task->conference, $doneState);
-                // $user['hours_done'] = $hours;
-                $cleanAssignment['user'] = $user;
+        //         // Add the state which the assignment is in
+        //         $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
 
-                // !!! This is time intensive !!!
-                // Check for multiple assignments at time period
-                $otherTasks = $tasks->where('id', '!=', $task->id)->values()->map(function ($t) {
-                    return $t->id;
-                });
+        //         // Now we add the user with some of statistics
+        //         $user = $assignment->user->only('id', 'firstname', 'lastname');
+        //         // !!! This is time intensive !!!
+        //         // $hours = $assignment->user->hoursFor($assignment->task->conference, $doneState);
+        //         // $user['hours_done'] = $hours;
+        //         $cleanAssignment['user'] = $user;
 
-                // $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
+        //         // !!! This is time intensive !!!
+        //         // Check for multiple assignments at time period
+        //         $otherTasks = $tasks->where('id', '!=', $task->id)->values()->map(function ($t) {
+        //             return $t->id;
+        //         });
 
-                return $cleanAssignment;
-            });
+        //         // $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
 
-            $safe['total_bids'] = $task->bids->count();
+        //         return $cleanAssignment;
+        //     });
 
-            // // Attach all bids for this task and only keep important fields
-            // $safe['bids'] = $task->bids->transform(function ($bid) {
-            //     $cleanBid = $bid->only(['id', 'preference', 'user_id']);
-            //     $cleanBid['state'] = $bid->state->only(['id', 'name']);
-            //     return $cleanBid;
-            // });
+        //     $safe['total_bids'] = $task->bids->count();
 
-            return $safe;
-        });
+        //     // // Attach all bids for this task and only keep important fields
+        //     // $safe['bids'] = $task->bids->transform(function ($bid) {
+        //     //     $cleanBid = $bid->only(['id', 'preference', 'user_id']);
+        //     //     $cleanBid['state'] = $bid->state->only(['id', 'name']);
+        //     //     return $cleanBid;
+        //     // });
 
-        return $pagination;
+        //     return $safe;
+        // });
+
+        // return $pagination;
     }
 
     /**
@@ -415,13 +418,16 @@ class ConferenceController extends Controller
      */
     public function taskDays(Conference $conference)
     {
-        $tasks = $conference
-            ->tasks()
+        $rawTasks = DB::table('tasks')
+            ->select('date', DB::raw('count(*) as total'))
             ->groupBy('date')
-            ->get('date')
-            ->transform(function ($task) {
-                return $task->date->toDateString();
-            });
+            ->get();
+
+        $tasks = collect();
+        $rawTasks->each(function ($task) use (&$tasks) {
+            $tasks->put(Carbon::create($task->date)->toDateString(), $task->total);
+        });
+
         return $tasks;
     }
 
@@ -433,8 +439,6 @@ class ConferenceController extends Controller
      */
     public function svsForTaskAssignment(Conference $conference, Task $task)
     {
-        $statePlaced = State::byName('placed', 'App\Bid');
-        $stateSuccessful = State::byName('successfull', 'App\Bid');
         $stateDone = State::byName('done', 'App\Assignment');
         $roleSv = Role::byName('sv');
         $search = request()->search_string;
@@ -457,8 +461,7 @@ class ConferenceController extends Controller
         // Since we loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
-        // dd(json_encode($svs));
-        $svs->transform(function ($sv) use ($task, $conference, &$statePlaced, &$stateSuccessful, &$stateDone) {
+        $svs->transform(function ($sv) use ($task, $conference, &$stateDone) {
 
             $bid = null;
             // We reverse it since newer bids are at the end of the list
@@ -493,12 +496,7 @@ class ConferenceController extends Controller
             $cleanUser['bid'] = $bid;
 
             // Sum up all hours already done
-            $hoursDone = 0;
-            $sv->assignments->each(function ($assignment) use (&$hoursDone, &$stateDone) {
-                if ($assignment->state_id == $stateDone->id) {
-                    $hoursDone += $assignment->hours;
-                }
-            });
+            $hoursDone = $sv->assignments->where("state_id", $stateDone->id)->sum("hours");
             $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
 
             $cleanUser['stats']['bids_placed'] = [

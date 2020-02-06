@@ -2,7 +2,7 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        :loading="isLoadingCalendar"
+        :loading="isLoading"
         @input="onDayChange(day)"
         v-model="day"
         :events="calendarEvents"
@@ -77,7 +77,7 @@
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="getTasks();getTaskDays()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
     </b-field>
     <br />
@@ -178,12 +178,11 @@
           label="Assignments"
         >
           <task-assignments-component
-            v-model="props.row.assignments"
-            :conference="conference"
             :task="props.row"
+            :conference="conference"
+            :users="users"
             @reload="getTasks()"
-            @updateHours="updateHoursForUser($event.userId, $event.hours)"
-            @removeAssignment="removeAssignment($event)"
+            @updateHours="users[$event.userId].hours_done += $event.hours"
           ></task-assignments-component>
         </b-table-column>
       </template>
@@ -240,6 +239,7 @@ export default {
 
   data() {
     return {
+      users: [],
       tasks: [],
       taskDays: [],
       totalTasks: null,
@@ -251,7 +251,6 @@ export default {
       page: this.$store.getters.assignmentsPage,
 
       isLoading: true,
-      isLoadingCalendar: true,
 
       canRunAuction: false,
 
@@ -341,18 +340,6 @@ export default {
         this.conference.id
       );
     },
-    updateHoursForUser(userId, hours) {
-      // Yes this is inefficient O(n^2)
-      this.isLoading = true;
-      this.tasks.forEach(task => {
-        task.assignments.forEach(assignment => {
-          if (assignment.user.id == userId) {
-            assignment.user.hours_done += hours;
-          }
-        });
-      });
-      this.isLoading = false;
-    },
     showSearchHelp() {
       this.$buefy.dialog.alert(
         "You can search all task assignments of the current day for:\
@@ -361,20 +348,6 @@ export default {
             <li>SVs firstname</li>\
             <li>SVs lastname</li>"
       );
-    },
-    getTaskDays() {
-      this.isLoadingCalendar = true;
-      api
-        .getConferenceTaskDays(this.conference.key)
-        .then(data => {
-          this.taskDays = data.data;
-        })
-        .catch(error => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.isLoadingCalendar = false;
-        });
     },
     getTasks() {
       const params = [
@@ -390,11 +363,14 @@ export default {
       api
         .getConferenceAssignments(this.conference.key, `?${params}`)
         .then(({ data }) => {
-          this.tasks = data.data;
+          this.users = data.users;
+          this.tasks = data.tasks;
+          this.taskDays = data.task_days;
           this.totalTasks = data.total;
         })
         .catch(error => {
           this.tasks = [];
+          this.users = [];
           this.totalTasks = 0;
           throw error;
         })
@@ -442,7 +418,6 @@ export default {
 
   created() {
     this.getTasks();
-    this.getTaskDays();
     this.getCan();
   },
 
@@ -467,7 +442,7 @@ export default {
         });
       }
 
-      this.taskDays.forEach(day => {
+      Object.keys(this.taskDays).forEach(function(day) {
         days.push({
           date: new Date(day),
           type: "is-warning"

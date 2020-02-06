@@ -75,7 +75,7 @@
     <div v-else>
       <task-bid-picker-radio
         @click.native="showHint('disabled')"
-        :value="null"
+        :value="1"
         :disabled="true"
         :size="size"
       />
