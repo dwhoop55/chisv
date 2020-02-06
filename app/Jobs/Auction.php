@@ -67,10 +67,13 @@ namespace App\Jobs;
 use App\Assignment;
 use App\Conference;
 use App\JobParameters;
+use App\Role;
 use App\State;
 use App\Task;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 
 class Auction extends AdvancedJob implements ExecutableJob
 {
@@ -94,8 +97,15 @@ class Auction extends AdvancedJob implements ExecutableJob
      * @param Task $task The task we want to assign SVs to
      * @return Collection<Assignment> Created assignments for this task
      */
-    public function processTask(Task $task, int $phase = 1)
+    public function processTask(Task $task, int $phase = 1, Collection $svs, State $successfulBid, State $unsuccessfulBid)
     {
+
+
+
+        Log::debug($svs);
+        return ["task" => $task, "assignments" => collect()];
+
+
         $createdAssignments = collect();
 
         // ======================== SV list creation ========================
@@ -228,11 +238,11 @@ class Auction extends AdvancedJob implements ExecutableJob
                 $createdAssignments->push($assignment);
 
                 // Mark the bid as won
-                $sv->bid->state()->associate(State::byName('successful', 'App\Bid'))->save();
+                $sv->bid->state()->associate($successfulBid)->save();
             } else {
                 // There are no more free slots available
                 // Mark the bid as unsuccessful
-                $sv->bid->state()->associate(State::byName('unsuccessful', 'App\Bid'))->save();
+                $sv->bid->state()->associate($unsuccessfulBid)->save();
             }
         }
 
@@ -269,11 +279,36 @@ class Auction extends AdvancedJob implements ExecutableJob
     {
         $this->setProgress(0);
 
+        $svRole = Role::byName('sv');
+        $successfulBid = State::byName('successful', 'App\Bid');
+        $unsuccessfulBid = State::byName('unsuccessful', 'App\Bid');
+        $conference = $this->conference;
+
         $assignments = collect();
         $tasksWithFreeSlots = collect();
 
+        // Get a list of every SV and the bid (if any)
+        // for this day
+        $svs = User
+            // Get SVs for this conference
+            ::whereHas('permissions', function ($query) use (&$conference, &$svRole) {
+                $query->where("role_id", $svRole->id);
+                $query->where("conference_id", $conference->id);
+            })
+            // Get the bids if they are for tasks of this day's auction
+            ->with([
+                'bids' => function ($query) {
+                    $query->select('id', 'preference', 'task_id', 'user_id');
+                    $query->whereHas("task", function ($query) {
+                        $query->whereDate('date', $this->date);
+                    });
+                },
+                'bids.task:id',
+            ])
+            ->get('id');
+
         // Run this twice, phase 1 and phase 2
-        for ($phase = 1; $phase <= 2; $phase++) {
+        for ($phase = 1; $phase <= 1; $phase++) {
             // Get all the tasks which have to be filled
             $tasks = $this->getTasks();
 
@@ -281,8 +316,8 @@ class Auction extends AdvancedJob implements ExecutableJob
             $completed = 0;
 
             // Now for every task assign SVs
-            $tasks->each(function ($task) use ($phase, &$assignments, $tasksWithFreeSlots, &$completed, $total) {
-                $result = $this->processTask($task, $phase);
+            $tasks->each(function ($task) use (&$phase, &$assignments, &$tasksWithFreeSlots, &$completed, $total, &$svs, &$successfulBid, &$unsuccessfulBid) {
+                $result = $this->processTask($task, $phase, $svs, $successfulBid, $unsuccessfulBid);
                 $assignments = $assignments->merge($result["assignments"]);
 
                 // When the task has free slots and were're in phase 2
