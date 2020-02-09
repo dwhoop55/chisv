@@ -97,13 +97,117 @@ class Auction extends AdvancedJob implements ExecutableJob
      * @param Task $task The task we want to assign SVs to
      * @return Collection<Assignment> Created assignments for this task
      */
-    public function processTask(Task $task, int $phase = 1, Collection $svs, State $successfulBid, State $unsuccessfulBid)
+    public function processTask(Task $task, int $phase = 1)
     {
+        $createdAssignments = collect();
+
+        // Log::info("Processing auction, task " . $task->id);
+
+        // ======================== SV list creation ========================
+
+        // Even when we get a list which only contains tasks
+        // which have free slots, since this code might run a longer time
+        // we have to ensure to check for free slots before we process
+        // a task. A chair/captain might have changed assignments in the
+        // UI while this code runs.
+        if ($task->freeSlots() > 0 && $task->id == 2912) {
+            // Free slots available
+
+            // Get a list of every SV and the bid (if any)
+            // for this day
+            $svs = User
+                // Get SVs for this conference
+                ::whereHas('permissions', function ($query) {
+                    $query->where("role_id", $this->svRole->id);
+                    $query->where("conference_id", $this->conference->id);
+                })
+                // Get the bids if they are for this task
+                ->with([
+                    'bids' => function ($query) use (&$task) {
+                        // Laravel needs user_id for joining
+                        $query->select('id', 'preference', 'user_id');
+                        $query->where('task_id', $task->id);
+                    },
+                    // Get all assignments of
+                    // the user if these are from
+                    // the conference we run this
+                    // auction for
+                    // We calculate the hours_done from it
+                    'assignments' => function ($query) {
+                        // Laravel needs task and user ids for joining
+                        $query->select('id', 'state_id', 'hours', 'task_id', 'user_id');
+                        $query->whereHas('task',  function ($query) {
+                            $query->where('conference_id', $this->conference->id);
+                        });
+                    },
+                    'assignments.task:id,date,start_at,end_at'
+                ])
+                ->get('id');
+
+            // Let's transform the huge collection we now have
+            // to something we can more easily work with
+            $svs->transform(function ($sv) use (&$task) {
+                $new = ["id" => $sv->id];
+                // Grab the preference for the current task if there is one
+                // If there is none, we set it to 1 since SVs are being told
+                // if they don't bid it counts like a bid with preference 1
+                // Also, this is what the UI shows when there is no bid 
+                if ($sv->bids->isNotEmpty()) {
+                    $new['preference'] = $sv->bids->first()->preference;
+                } else {
+                    $new['preference'] = 1;
+                }
+
+                // Now we sum up the hours the SV has worked
+                // TODO: it might make sense to also count
+                // assignments which have just been created 
+                // by this auction in a different run. In
+                // that case we would count freshly assigned
+                // tasks as 'very likely' to be completed. This
+                // would distibute the hours even more.
+                // This enhancement is currently not active.
+                $new['hours_done'] = round($sv->assignments
+                    ->where("state_id", $this->doneState->id)
+                    ->sum('hours'), 2);
+
+                $assignedTasks = $sv->assignments->map(function ($assignment) {
+                    return $assignment->task;
+                });
+                Log::debug($assignedTasks);
+                $new['hasConflict'] = $task->isConflicting($assignedTasks);
+
+                return $new;
+            });
+
+            // Now we have to remove some SVs from the list
+            // which are unavailable, have worked too much,
+            // (depends on the phase we are in)
+            // or are in conflict with an other task
+            $svs = $svs->reject(function ($sv) use (&$phase) {
+                if ($phase == 1 && $sv['hours_done'] >= $this->conference->volunteer_hours) {
+                    Log::info('Rejecting due to hours_done');
+                    return true;
+                } else if ($sv['preference'] === 0) {
+                    Log::info('Rejecting due to preference');
+                    return true;
+                } else if ($sv['hasConflict'] === true) {
+                    Log::info('Rejecting due to hasConflict');
+                    return true;
+                } else {
+                    // SV matches criteria, do not reject
+                    return false;
+                }
+            })->values();
+
+            // We now have a list with possible SVs which are still unsorted
+            // We will now first shuffle the SVs to make the sorting more
+            // random in the preference groups
 
 
+            Log::info($svs);
+        }
 
-        Log::debug($svs);
-        return ["task" => $task, "assignments" => collect()];
+        return ["task" => $task, "assignments" => $createdAssignments];
 
 
         $createdAssignments = collect();
@@ -279,36 +383,16 @@ class Auction extends AdvancedJob implements ExecutableJob
     {
         $this->setProgress(0);
 
-        $svRole = Role::byName('sv');
-        $successfulBid = State::byName('successful', 'App\Bid');
-        $unsuccessfulBid = State::byName('unsuccessful', 'App\Bid');
-        $conference = $this->conference;
+        $this->svRole = Role::byName('sv');
+        $this->successfulState = State::byName('successful', 'App\Bid');
+        $this->unsuccessfulState = State::byName('unsuccessful', 'App\Bid');
+        $this->doneState = State::byName('done', 'App\Assignment');
 
         $assignments = collect();
         $tasksWithFreeSlots = collect();
 
-        // Get a list of every SV and the bid (if any)
-        // for this day
-        $svs = User
-            // Get SVs for this conference
-            ::whereHas('permissions', function ($query) use (&$conference, &$svRole) {
-                $query->where("role_id", $svRole->id);
-                $query->where("conference_id", $conference->id);
-            })
-            // Get the bids if they are for tasks of this day's auction
-            ->with([
-                'bids' => function ($query) {
-                    $query->select('id', 'preference', 'task_id', 'user_id');
-                    $query->whereHas("task", function ($query) {
-                        $query->whereDate('date', $this->date);
-                    });
-                },
-                'bids.task:id',
-            ])
-            ->get('id');
-
         // Run this twice, phase 1 and phase 2
-        for ($phase = 1; $phase <= 1; $phase++) {
+        for ($phase = 1; $phase <= 2; $phase++) {
             // Get all the tasks which have to be filled
             $tasks = $this->getTasks();
 
@@ -316,8 +400,8 @@ class Auction extends AdvancedJob implements ExecutableJob
             $completed = 0;
 
             // Now for every task assign SVs
-            $tasks->each(function ($task) use (&$phase, &$assignments, &$tasksWithFreeSlots, &$completed, $total, &$svs, &$successfulBid, &$unsuccessfulBid) {
-                $result = $this->processTask($task, $phase, $svs, $successfulBid, $unsuccessfulBid);
+            $tasks->each(function ($task) use (&$phase, &$assignments, &$tasksWithFreeSlots, &$completed, $total) {
+                $result = $this->processTask($task, $phase);
                 $assignments = $assignments->merge($result["assignments"]);
 
                 // When the task has free slots and were're in phase 2
