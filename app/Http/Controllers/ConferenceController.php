@@ -40,7 +40,7 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
-        return $conference->loadMissing(['icon', 'artwork']);
+        return $conference->loadMissing(['icon', 'artwork', 'state']);
     }
     /**
      * Delete all assignments of a signle day
@@ -895,7 +895,7 @@ class ConferenceController extends Controller
         );
 
         $result = $conference->update($data);
-        $conference->refresh();
+        $conference->refresh()->loadMissing(['icon', 'artwork', 'state']);
         return ["result" => $conference, "message" => "Conference updated"];
     }
 

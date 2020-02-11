@@ -38,7 +38,7 @@ class Task extends Model
         } catch (Exception $e) {
             throw $e;
         }
-        @$assignment->refresh();
+        $assignment->refresh();
         return $assignment;
     }
 
