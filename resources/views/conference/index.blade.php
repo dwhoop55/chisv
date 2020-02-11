@@ -2,6 +2,6 @@
 
 @section('content')
 
-<conference-index></conference-index>
+<conferences></conferences>
 
 @endsection

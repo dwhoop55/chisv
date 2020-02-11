@@ -64,32 +64,38 @@
             </nav>
 
             <b-tabs
-              :value="activeTab"
+              :value="$store.getters.conferenceTab"
               :animated="false"
               position="is-left"
               type="is-boxed"
               @input="$store.commit('CONFERENCE_TAB', $event)"
             >
               <b-tab-item label="Overview">
-                <conference-show-overview
+                <conference-overview
                   @input="getConference()"
                   v-if="conference"
                   v-model="conference"
-                ></conference-show-overview>
+                ></conference-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
-                <conference-show-users v-if="canViewUsers" :conference="conference"></conference-show-users>
+                <conference-users v-if="canViewUsers" :conference="conference"></conference-users>
                 <p v-else>You need to be accepted to see other SVs!</p>
               </b-tab-item>
               <b-tab-item label="Tasks">
-                <conference-show-tasks v-if="canViewUsers" :conference="conference"></conference-show-tasks>
+                <conference-tasks v-if="canViewUsers" :conference="conference"></conference-tasks>
                 <p v-else>You need to be accepted to see tasks!</p>
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Assignments">
-                <conference-show-assignments :conference="conference"></conference-show-assignments>
+                <conference-assignments
+                  v-if="$store.getters.conferenceTab==3"
+                  :conference="conference"
+                ></conference-assignments>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Conference">
-                <conference-edit v-model="conference"></conference-edit>
+                <conference-edit v-if="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
+              </b-tab-item>
+              <b-tab-item v-if="canUpdateAssignment" label="Reports">
+                <conference-reports v-if="$store.getters.conferenceTab==5" v-model="conference"></conference-reports>
               </b-tab-item>
             </b-tabs>
           </div>
@@ -115,7 +121,6 @@ export default {
       canUpdateEnrollment: false,
       canUpdateAssignment: false,
       canViewUsers: false,
-      activeTab: this.$store.getters.conferenceTab,
       conference: null
     };
   },
