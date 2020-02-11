@@ -9,8 +9,8 @@ use Faker\Generator as Faker;
 
 $factory->define(Task::class, function (Faker $faker) {
     $conference = Conference::inRandomOrder()->first();
-    $start = Carbon::create('now')->setTime(10, 0, 0)->addMinutes(random_int(0, 300)); // max 3pm
-    $end = Carbon::create('now')->setTime(15, 0, 0)->addMinutes(random_int(0, 180)); // max 6pm
+    $start = Carbon::create('now')->setTime(8, 0, 0)->addMinutes(random_int(0, 40) * 15); // between 8-17
+    $end = $start->copy()->addMinutes(15)->addMinutes(random_int(0, 8) * 15); // Up to 2 hours in 15 min intervals
     return [
         'conference_id' => $conference->id,
         'name' => $faker->jobTitle(),

@@ -65,8 +65,7 @@ export default {
             (this.job.state.name == "planned" ||
               this.job.state.name == "processing")
           ) {
-            // Set a refresh in 500ms
-            setTimeout(this.getJob, 500);
+            setTimeout(this.getJob, 1000);
           }
         })
         .catch(error => {
