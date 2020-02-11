@@ -45,7 +45,7 @@
                       v-if="props.option.bid"
                       :class="preferenceType(props.option.bid.preference).replace('is-', 'has-text-')"
                     >{{ props.option.bid.preference == 0 ? 'X' : props.option.bid.preference }}</small>
-                    <small v-else>no bid</small>
+                    <small class="has-text-info" v-else>1*</small>
                   </div>
                 </div>
               </div>
@@ -70,15 +70,16 @@
       </template>
       <template slot="header">
         <small>
-          Showing first {{ data.length }}/{{ total_matches }} SV{{ (data.length == 1) ? '' : "s" }} |
-          Bids below are displayed in
+          Showing first {{ data.length }}/{{ total_matches }} SV{{ (data.length == 1) ? '' : "s" }}
+          | Bids below are displayed in
           <small
             class="has-text-danger"
           >X</small>
           <small class="has-text-info">1</small>
           <small class="has-text-warning">2</small>
           <small class="has-text-success">3</small>
-          preference order | SVs already assigned or unavailable are not shown
+          preference order
+          <br />SVs already assigned or unavailable are not shown | * indicates default bid
         </small>
         <b-loading :is-full-page="false" :active="isLoading"></b-loading>
       </template>

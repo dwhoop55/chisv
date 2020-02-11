@@ -100,6 +100,7 @@ class Auction extends AdvancedJob implements ExecutableJob
     public function processTask(Task $task, int $phase = 1)
     {
         $createdAssignments = collect();
+        $startTime = Carbon::create('now');
 
         // Log::info("Processing auction, task " . $task->id);
 
@@ -110,7 +111,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         // we have to ensure to check for free slots before we process
         // a task. A chair/captain might have changed assignments in the
         // UI while this code runs.
-        if ($task->freeSlots() > 0 && $task->id == 2912) {
+        if ($task->freeSlots() > 0 && $task->id) {
             // Free slots available
 
             // Get a list of every SV and the bid (if any)
@@ -144,16 +145,19 @@ class Auction extends AdvancedJob implements ExecutableJob
                 ])
                 ->get('id');
 
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [2]);
+
             // Let's transform the huge collection we now have
             // to something we can more easily work with
-            $svs->transform(function ($sv) use (&$task) {
-                $new = ["id" => $sv->id];
+            $svs->transform(function ($sv) use (&$task, &$startTime) {
+                $new = ["user" => $sv];
                 // Grab the preference for the current task if there is one
                 // If there is none, we set it to 1 since SVs are being told
                 // if they don't bid it counts like a bid with preference 1
                 // Also, this is what the UI shows when there is no bid 
                 if ($sv->bids->isNotEmpty()) {
                     $new['preference'] = $sv->bids->first()->preference;
+                    $new['bid'] = $sv->bids->first();
                 } else {
                     $new['preference'] = 1;
                 }
@@ -170,14 +174,19 @@ class Auction extends AdvancedJob implements ExecutableJob
                     ->where("state_id", $this->doneState->id)
                     ->sum('hours'), 2);
 
-                $assignedTasks = $sv->assignments->map(function ($assignment) {
-                    return $assignment->task;
-                });
-                Log::debug($assignedTasks);
+                $assignedTasks = $sv->assignments
+                    ->filter(function ($assignment) use (&$task) {
+                        return ($assignment->task->date == $task->date);
+                    })
+                    ->map(function ($assignment) {
+                        return $assignment->task;
+                    });
+
                 $new['hasConflict'] = $task->isConflicting($assignedTasks);
 
                 return $new;
             });
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [3]);
 
             // Now we have to remove some SVs from the list
             // which are unavailable, have worked too much,
@@ -185,173 +194,103 @@ class Auction extends AdvancedJob implements ExecutableJob
             // or are in conflict with an other task
             $svs = $svs->reject(function ($sv) use (&$phase) {
                 if ($phase == 1 && $sv['hours_done'] >= $this->conference->volunteer_hours) {
-                    Log::info('Rejecting due to hours_done');
                     return true;
                 } else if ($sv['preference'] === 0) {
-                    Log::info('Rejecting due to preference');
                     return true;
                 } else if ($sv['hasConflict'] === true) {
-                    Log::info('Rejecting due to hasConflict');
                     return true;
                 } else {
                     // SV matches criteria, do not reject
                     return false;
                 }
             })->values();
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [4]);
 
             // We now have a list with possible SVs which are still unsorted
             // We will now first shuffle the SVs to make the sorting more
-            // random in the preference groups
+            // random in the preference groups when SVs have the same
+            // hours_done (more likely at the beginning of the conference)
+            // when they all have 0. Without this shuffling we would
+            // assign SVs based on user id, lower first. So whoever signed
+            // up first would get the task. That is not desired, so we
+            // shuffle first.
+
+            $svs = $svs->shuffle();
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [5]);
 
 
-            Log::info($svs);
-        }
+            // We now have a list of svs which fit our filter requirements
+            // We now have to sort them based on preference and hours_done
 
-        return ["task" => $task, "assignments" => $createdAssignments];
+            // =========================== SORTING ===========================
 
-
-        $createdAssignments = collect();
-
-        // ======================== SV list creation ========================
-
-        // Even when we get a list which only contains tasks
-        // which have free slots, since this code might run a longer time
-        // we have to ensure to check for free slots before we process
-        // a task. A chair/captain might have changed assignments in the
-        // UI while this code runs.
-        if ($task->freeSlots() > 0) {
-            // Free slots available
-
-            // Get a list of users with the bid for this task
-            $svs = $task->usersWithBid->map(function ($user) use ($task, $phase) {
-                // This will go through all SVs which have bid for the task
-                // We have to check for
-                // (1) Preference of the bid
-                // (2) Availability regarding other assignments
-                // (3) hours_done the SVs worked and act based on the phase we're in
-
-                // We can be sure that $bid exists since we are
-                // looping over a list of SVs which we got by having
-                // a user-bid-task relation, so there has to be a bid
-                $user->bid = $user->bidFor($task);
-
-                // (1)
-                // A valid bid is any bid which a preference higher than
-                // 0. 0 Indicates an 'unavailable' bid
-                $user->hasValidBid = $user->bid->preference >= 1;
-
-                // (2)
-                $user->isAvailable = ($user->tasksAtTime($task)->count() == 0);
-
-                // (3)
-                // Fetch the hours the SV has worked for this conference
-                $user->hours_done = $user->hoursFor($task->conference);
-                $user->isOverHours = ($user->hours_done >= $task->conference->volunteer_hours);
-
-
-                // When the SV has a valid bid (1) and is available (2) for
-                // the task and based on the phase is/not over the suggest hours
-                // then we leave him/her/x in the list
-                // Thus returning the user in this transform method
-                // Otherwise we return null to later remove these items
-                if (
-                    $user->hasValidBid && // (1)
-                    $user->isAvailable && // (2)
-                    (($phase == 1 && !$user->isOverHours) || ($phase == 2 && $user->isOverHours)) // (3)
-                ) {
-                    return $user;
-                } else {
-                    return null;
-                }
+            // First we sort by bid preference descending
+            $svs = $svs->sort(function ($a, $b) {
+                return $a['preference'] < $b['preference'];
             });
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [6]);
 
-            // We marked some items for removal by setting them null
-            // earlier. Now we get rid of these items.
-            $svs = $svs->reject(function ($user) {
-                return ($user == null);
-            });
-        } // For each SV (map)
+            // Now lets sort each block of preferences descending by hours_done
+            $sortedSvs = collect();
+            // For every preference group  (1-3)
+            for ($preference = 3; $preference >= 1; $preference--) {
+                // Get a list with only SVs with the preference
+                $svsByPreference = $svs->filter(function ($sv) use ($preference) {
+                    return ($preference == $sv['preference']);
+                });
 
-        // Next is quite important to make the sorting of the preference blocks
-        // more random later on. The list of SVs we now have is sorted by user id
-        // from the database. When we sort by preference now we will end up with
-        // asceding user ids in each preference block. This would be neglectable
-        // since we will be sorting on the hours_done later on. BUT, at the
-        // start of the conference all SVs have very little done_hours or none
-        // at all. So this will not randomize the preference blocks at all.
-        // To overcome this we shuffle the entire SV list before sorting it.
-        // This way we can ensure that the preference blocks are randomized
-        // even if there are not hours_done to sort by in the beginning
-        $svs = $svs->shuffle();
+                // Sort this list by hours_done descending
+                $svsByPreference = $svsByPreference->sort(function ($a, $b) {
+                    return $a['hours_done'] > $b['hours_done'];
+                });
 
-
-        // We now have a list of svs which fit our filter requirements
-        // We now have to sort them based on preference and hours_done
-
-        // =========================== SORTING ===========================
-
-        // First we sort by bid preference descending
-        $svs = $svs->sort(function ($a, $b) {
-            return $a->bid->preference < $b->bid->preference;
-        });
-
-        // Now lets sort each block of preferences descending by hours_done
-        $sortedSvs = collect();
-        // For every preference group  (1-3)
-        for ($preference = 3; $preference >= 1; $preference--) {
-            // Get a list with only SVs with the preference
-            $svsByPreference = $svs->filter(function ($sv) use ($preference) {
-                return ($preference == $sv->bid->preference);
-            });
-
-            // Sort this list by hours_done descending
-            $svsByPreference = $svsByPreference->sort(function ($a, $b) {
-                return $a->hours_done > $b->hours_done;
-            });
-
-            // Add the preference block to our new list
-            $sortedSvs = $sortedSvs->merge($svsByPreference);
-        }
-        // Assign back to the original list
-        $svs = $sortedSvs;
-
-        // ============================ ASSIGNMENT ===========================
-
-        // $svs is now a list with filtered and sorted SVs which bid
-        // for the task, are available, match the hours_done and
-        // are sorted to that the top most SV fits the task best
-
-        // Now we look at every SV in the list and assign to a
-        // task if there are free slots available for the task
-        // Eventually we mark the bid as either successful or
-        // unsuccessful
-        while ($svs->isNotEmpty()) {
-            // Get the first SV in the list
-            $sv = $svs->shift();
-
-            // Check if there are still slots available
-            // Assign if possible, otherwise mark bid as
-            // unsuccessful
-            $task->refresh(); // Very important, or laravel will use cached freeSlots()
-            if ($task->freeSlots() > 0) {
-                // Create new Assignment and persists it to the database
-                // hours are set to the hours of the task
-                $assignment = $task->assign($sv);
-
-                // Add the new Assignment to the Assignment collection
-                $createdAssignments->push($assignment);
-
-                // Mark the bid as won
-                $sv->bid->state()->associate($successfulBid)->save();
-            } else {
-                // There are no more free slots available
-                // Mark the bid as unsuccessful
-                $sv->bid->state()->associate($unsuccessfulBid)->save();
+                // Add the preference block to our new list
+                $sortedSvs = $sortedSvs->merge($svsByPreference);
             }
-        }
+            // Assign back to the original list
+            $svs = $sortedSvs;
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [7]);
 
-        // Provide some additional feedback for the chair for every task
-        $task->hasFreeSlots = ($task->freeSlots() > 0 ?  true : false);
+            // ============================ ASSIGNMENT ===========================
+
+            // $svs is now a list with filtered and sorted SVs which bid
+            // for the task, are available, match the hours_done and
+            // are sorted to that the top most SV fits the task best
+
+            // Now we look at every SV in the list and assign to a
+            // task if there are free slots available for the task
+            // Eventually we mark the bid as either successful or
+            // unsuccessful
+            while ($svs->isNotEmpty()) {
+                // Get the first SV in the list
+                $sv = $svs->shift();
+
+                // Check if there are still slots available
+                // Assign if possible, otherwise mark bid as
+                // unsuccessful
+                $task->refresh(); // Very important, or laravel will use cached freeSlots()
+                if ($task->freeSlots() > 0) {
+                    // Create new Assignment and persists it to the database
+                    // hours are set to the hours of the task
+                    $assignment = $task->assign($sv['user']);
+
+                    // Add the new Assignment to the Assignment collection
+                    $createdAssignments->push($assignment->only('id'));
+
+                    //If the user had bid we now mark it won
+                    if (isset($sv['bid'])) {
+                        $sv['bid']->state()->associate($this->successfulState)->save();
+                    }
+                } else {
+                    // There are no more free slots available
+                    // Mark the bid as unsuccessful if there is one
+                    if (isset($sv['bid'])) {
+                        $sv['bid']->state()->associate($this->unsuccessfulState)->save();
+                    }
+                }
+            }
+            // Log::info(Carbon::create('now')->diffInMilliseconds($startTime), [8]);
+        } // if has free slots
 
         return ["task" => $task, "assignments" => $createdAssignments];
     }
@@ -388,7 +327,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         $this->unsuccessfulState = State::byName('unsuccessful', 'App\Bid');
         $this->doneState = State::byName('done', 'App\Assignment');
 
-        $assignments = collect();
+        $createdAssignments = 0;
         $tasksWithFreeSlots = collect();
 
         // Run this twice, phase 1 and phase 2
@@ -400,13 +339,13 @@ class Auction extends AdvancedJob implements ExecutableJob
             $completed = 0;
 
             // Now for every task assign SVs
-            $tasks->each(function ($task) use (&$phase, &$assignments, &$tasksWithFreeSlots, &$completed, $total) {
+            $tasks->each(function ($task) use (&$phase, &$createdAssignments, &$tasksWithFreeSlots, &$completed, $total) {
                 $result = $this->processTask($task, $phase);
-                $assignments = $assignments->merge($result["assignments"]);
+                $createdAssignments += $result["assignments"]->count();
 
                 // When the task has free slots and were're in phase 2
                 // we mark it that it could not be filled
-                if ($task->hasFreeSlots && $phase == 2) {
+                if ($task->freeSlots() > 0 && $phase == 2) {
                     $tasksWithFreeSlots->push($task->only('id', 'name', 'start_at', 'end_at'));
                 }
 
@@ -417,7 +356,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         }
 
         return [
-            "created_assignments" => $assignments->count(),
+            "created_assignments" => $createdAssignments,
             "tasks_free_slots" => $tasksWithFreeSlots
         ];
     }

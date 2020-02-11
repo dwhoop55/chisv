@@ -11,9 +11,16 @@
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
           <div class="column column-small">
-            <a v-if="assignment.is_conflicting">
-              <b-icon type="is-danger" icon="alert"></b-icon>
-            </a>
+            <b-tooltip type="is-danger" label="Task overlaps with other task" position="is-right">
+              <a v-if="assignment.is_conflicting">
+                <b-icon type="is-danger" icon="calendar-clock"></b-icon>
+              </a>
+            </b-tooltip>
+
+            <span v-if="users[assignment.user.id].hours_done > conference.volunteer_hours">
+              <b-icon type="is-danger" icon="clock-alert-outline"></b-icon>
+              <span class="has-text-danger">{{ users[assignment.user.id].hours_done.toFixed(1) }}h</span>
+            </span>
             <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
               <a
                 @click.prevent="userClicked(users[assignment.user.id])"
@@ -84,6 +91,8 @@ export default {
         }
         detail +=
           " with preference " + (bid.preference == 0 ? "X" : bid.preference);
+      } else {
+        detail += "- default bid 1";
       }
       return detail;
     },
@@ -153,24 +162,6 @@ export default {
             .then(data => {
               // Reload data from server
               this.$emit("reload");
-
-              // Do all in client side
-              // for (let index = 0; index < this.assignments.length; index++) {
-              //   let currentAssignment = this.assignments[index];
-              //   // Only remove hours when its the correct assignment
-              //   if (currentAssignment.id == assignment.id) {
-              //     // Only trigger the updateHours when the task was 'done'
-              //     // otherwise we would also subtract hours which are in state
-              //     // assigned or checked-in
-              //     if (currentAssignment.state.id == 43) {
-              //       this.$emit("updateHours", {
-              //         userId: currentAssignment.user.id,
-              //         hours: -currentAssignment.hours
-              //       });
-              //     }
-              //     this.assignments.splice(index, 1);
-              //   }
-              // }
             })
             .catch(error => {
               this.$buefy.notification.open({
