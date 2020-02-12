@@ -11,6 +11,29 @@ class ConferencePolicy
 {
     use HandlesAuthorization;
 
+
+    /**
+     * Determine whether the user can view the reports.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function viewReports(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            // An admin can always see all reports
+            return true;
+        }
+
+        if (
+            ($user->isChair($conference) || $user->isCaptain($conference))
+        ) {
+            // Chairs and captains can see reports
+            return true;
+        }
+    }
+
     /**
      * Determine whether the user can see SVs
      * 

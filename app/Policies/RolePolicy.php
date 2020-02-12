@@ -39,7 +39,7 @@ class RolePolicy
             ($user->isChair() || $user->isCaptain())
             && $role != Role::byName('admin')
         ) {
-            // An chairs and captains can see all
+            // Chairs and captains can see all
             // except the admin role
             return true;
         }

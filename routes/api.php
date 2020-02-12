@@ -151,6 +151,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');
+        Route::get('conference/{conference}/report/{name}', 'ReportController@show')
+            ->middleware("can:viewReports,conference")
+            ->name('conference.reports');
 
         // Determine if a user has s specific role
         Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {

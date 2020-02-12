@@ -50,6 +50,9 @@ export default {
     getJob(id) {
         return axios.get(`job/${id}`);
     },
+    getReport(conferenceKey, name) {
+        return axios.get(`conference/${conferenceKey}/report/${name}`);
+    },
 
     createAssignment(svId, taskId) {
         return axios.post(`assignment`, { user_id: svId, task_id: taskId });
