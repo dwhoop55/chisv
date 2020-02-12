@@ -1,26 +1,32 @@
 <template>
   <div>
     <b-field grouped group-multiline>
-      <b-select v-model="selected" @input="load($event)" placeholder="Select a report" required>
+      <b-select v-model="selected" @input="load($event)" placeholder="Select a report">
         <option value="shirt">T-Shirt</option>
         <option value="sv_hours">SV hours</option>
       </b-select>
 
-      <b-field class="is-vertical-center">
+      <b-field v-if="data" class="is-vertical-center">
         <b-button :disabled="!data || !columns" type="is-primary" icon-left="database-export">
-          <download-csv :data="data">Export Unsorted Data model</download-csv>
+          <download-csv
+            :name="conference.key + '-' + selected + '-report.csv'"
+            :data="data"
+          >Export All</download-csv>
         </b-button>
       </b-field>
 
-      <b-field class="is-vertical-center">
+      <b-field v-if="tableData" class="is-vertical-center">
         <b-button :disabled="!data || !columns" type="is-primary" icon-left="database-export">
-          <download-csv :data="$refs.table.visibleData">Export Table below with pagination</download-csv>
+          <download-csv
+            :name="conference.key + '-' + selected + '-report.csv'"
+            :data="tableData"
+          >Export Table below with pagination</download-csv>
         </b-button>
       </b-field>
 
-      <b-field class="is-vertical-center">
+      <!-- <b-field class="is-vertical-center">
         <b-switch @input="$store.commit('REPORT_PAGINATED', $event)" v-model="isPaginated">Paginated</b-switch>
-      </b-field>
+      </b-field>-->
 
       <b-field expanded></b-field>
 
@@ -34,7 +40,7 @@
       </b-field>
     </b-field>
 
-    <p>Last updated {{ updated | moment("from") }}</p>
+    <p v-if="updated">Last updated {{ updated | moment("from") }}</p>
 
     <b-table
       v-if="data && columns"
@@ -69,6 +75,21 @@ export default {
     };
   },
 
+  computed: {
+    tableData() {
+      if (
+        this.data &&
+        this.$refs &&
+        this.$refs.table &&
+        this.$refs.table.visibleData
+      ) {
+        return this.$refs.table.visibleData;
+      } else {
+        return null;
+      }
+    }
+  },
+
   methods: {
     load(name) {
       this.isLoading = true;
@@ -93,16 +114,17 @@ export default {
             type: "is-danger",
             hasIcon: true
           });
+          this.data = null;
+          this.columns = null;
+          this.updated = null;
+          this.$store.commit("REPORT_DATA", null);
+          this.$store.commit("REPORT_COLUMNS", null);
+          this.$store.commit("REPORT_UPDATED", null);
+          this.$store.commit("REPORT_SELECTED", this.selected);
         })
         .finally(() => {
           this.isLoading = false;
         });
-    }
-  },
-
-  csvExport() {
-    if (!data || !columns) {
-      return;
     }
   }
 };

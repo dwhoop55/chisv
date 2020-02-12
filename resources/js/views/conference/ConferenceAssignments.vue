@@ -75,7 +75,7 @@
       </b-field>
 
       <b-field expanded></b-field>
-      {{ $refs }}
+
       <b-field position="is-right">
         <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
