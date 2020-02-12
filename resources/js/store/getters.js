@@ -58,6 +58,21 @@ export default {
     svsPage: state => {
         return parseInt(state.svs.page.index);
     },
+    reportData: state => {
+        return state.report.data;
+    },
+    reportColumns: state => {
+        return state.report.columns;
+    },
+    reportUpdated: state => {
+        return state.report.updated;
+    },
+    reportSelected: state => {
+        return state.report.selected;
+    },
+    reportPaginated: state => {
+        return state.report.paginated;
+    },
 
     conferenceTab: state => {
         return state.navigation.conferenceTab;

@@ -14,10 +14,12 @@ import VueMoment from 'vue-moment'
 import VueDOMPurifyHTML from 'vue-dompurify-html'
 import moment from "moment-timezone";
 import vuexStore from './store';
+import JsonCSV from 'vue-json-csv';
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
+Vue.component('downloadCsv', JsonCSV)
 
 Vue.use(Buefy, { defaultNoticeQueue: false });
 Vue.use(VueMoment);

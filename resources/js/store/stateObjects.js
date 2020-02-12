@@ -20,10 +20,18 @@ var svs = {
     page: { items: 10, index: 1 },
 }
 
+var report = {
+    data: null,
+    columns: null,
+    updated: null,
+    selected: null,
+    paginated: null,
+}
+
 var navigation = {
     conferenceTab: 0,
     profileTab: 0,
     lastConference: null,
 }
 
-export { tasks, assignments, svs, navigation }
+export { tasks, assignments, svs, report, navigation }

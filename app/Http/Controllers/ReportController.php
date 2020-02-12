@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Conference;
 use App\Role;
 use App\Shirt;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -30,7 +32,11 @@ class ReportController extends Controller
 
     public function shirtReport($conference)
     {
-        $columns = collect();
+        $columns = collect([
+            $this->buildColumn('cut', 'Cut'),
+            $this->buildColumn('size', 'Size'),
+            $this->buildColumn('count', 'Count', true),
+        ]);
         $data = Shirt::all()->push(new Shirt(["id" => null, "cut" => "unknown", "size" => "unknown"]));
         $shirts = $conference
             // We get all the users for this conference
@@ -45,7 +51,24 @@ class ReportController extends Controller
             });
 
         // Now we count the shirts
+        $data->transform(function ($shirt) use ($shirts) {
+            $count = $shirts->where('id', $shirt->id)->count();
+            $shirt->count = $count;
+            return $shirt;
+        });
 
-        return ["columns" => $columns, "data" => $data];
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now')];
+    }
+
+    public function buildColumn(String $key, String $label, bool $numeric = false, String $width = null, bool $sortable = true, bool $searchable = true)
+    {
+        return [
+            'field' => $key,
+            'label' => $label,
+            'width' => $width,
+            'numeric' => $numeric,
+            'sortable' => $sortable,
+            'searchable' => $searchable
+        ];
     }
 }

@@ -77,6 +77,23 @@ export default {
         state.svs.page.index = page;
     },
 
+    REPORT_DATA(state, data) {
+        state.report.data = data;
+    },
+    REPORT_COLUMNS(state, columns) {
+        state.report.columns = columns;
+    },
+    REPORT_UPDATED(state, date) {
+        state.report.updated = date;
+    },
+    REPORT_SELECTED(state, selected) {
+        state.report.selected = selected;
+    },
+    REPORT_PAGINATED(state, bool) {
+        state.report.paginated = bool;
+    },
+
+
     CONFERENCE_TAB(state, tab) {
         state.navigation.conferenceTab = tab;
     },

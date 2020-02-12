@@ -4,7 +4,7 @@ import createPersistedState from 'vuex-persistedstate';
 
 import mutations from './mutations'; // Setters
 import getters from './getters'; // Getters
-import { tasks, assignments, svs, navigation } from './stateObjects'; // Statemodels
+import { tasks, assignments, svs, report, navigation } from './stateObjects'; // Statemodels
 
 Vue.use(Vuex)
 
@@ -13,6 +13,7 @@ const store = new Vuex.Store({
         tasks: tasks,
         assignments: assignments,
         svs: svs,
+        report: report,
         navigation: navigation
     },
     plugins: [createPersistedState()],
