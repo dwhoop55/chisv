@@ -25,7 +25,7 @@ var report = {
     columns: null,
     updated: null,
     selected: null,
-    paginated: null,
+    page: { items: 10, index: 1, paginated: false },
 }
 
 var navigation = {

@@ -90,7 +90,13 @@ export default {
         state.report.selected = selected;
     },
     REPORT_PAGINATED(state, bool) {
-        state.report.paginated = bool;
+        state.report.page.paginated = bool;
+    },
+    REPORT_PER_PAGE(state, perPage) {
+        state.report.page.items = perPage;
+    },
+    REPORT_PAGE(state, page) {
+        state.report.page.index = page;
     },
 
 

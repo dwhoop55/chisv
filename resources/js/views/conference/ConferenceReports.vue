@@ -7,26 +7,16 @@
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">
-        <b-button :disabled="!data || !columns" type="is-primary" icon-left="database-export">
-          <download-csv
-            :name="conference.key + '-' + selected + '-report.csv'"
-            :data="data"
-          >Export All</download-csv>
-        </b-button>
-      </b-field>
+        <b-dropdown @input="exportData($event)" aria-role="list">
+          <button class="button is-primary" slot="trigger">
+            <span>Export</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
 
-      <b-field v-if="tableData" class="is-vertical-center">
-        <b-button :disabled="!data || !columns" type="is-primary" icon-left="database-export">
-          <download-csv
-            :name="conference.key + '-' + selected + '-report.csv'"
-            :data="tableData"
-          >Export Table below with pagination</download-csv>
-        </b-button>
+          <b-dropdown-item value="model" aria-role="listitem">Unsorted datamodel behind table</b-dropdown-item>
+          <b-dropdown-item value="table" aria-role="listitem">Visible sorted table content</b-dropdown-item>
+        </b-dropdown>
       </b-field>
-
-      <!-- <b-field class="is-vertical-center">
-        <b-switch @input="$store.commit('REPORT_PAGINATED', $event)" v-model="isPaginated">Paginated</b-switch>
-      </b-field>-->
 
       <b-field expanded></b-field>
 
@@ -40,6 +30,12 @@
       </b-field>
     </b-field>
 
+    <b-field v-if="data && columns" grouped>
+      <b-field class="is-vertical-center">
+        <b-switch @input="$store.commit('REPORT_PAGINATED', $event)" v-model="isPaginated">Paginated</b-switch>
+      </b-field>
+    </b-field>
+
     <p v-if="updated">Last updated {{ updated | moment("from") }}</p>
 
     <b-table
@@ -50,9 +46,29 @@
       :data="data"
       :columns="columns"
       :paginated="isPaginated"
-      :per-page="10"
+      :per-page="perPage"
+      :current-page="page"
+      @page-change="onPageChange"
+      @per-page-change="onPerPageChange"
       ref="table"
-    ></b-table>
+    >
+      <template slot="footer">
+        <div v-if="isPaginated" class="has-text-right">
+          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+            <button class="button is-small" slot="trigger">
+              <span>{{ perPage }} per page</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+
+            <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
+            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
+            <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
+            <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
+            <b-dropdown-item value="40" aria-role="listitem">40 per page</b-dropdown-item>
+          </b-dropdown>
+        </div>
+      </template>
+    </b-table>
     <b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
   </div>
 </template>
@@ -60,6 +76,7 @@
 <script>
 import api from "@/api.js";
 import moment from "moment-timezone";
+import ExportModalVue from "@/components/modals/ExportModal.vue";
 
 export default {
   props: ["conference"],
@@ -71,6 +88,8 @@ export default {
       updated: this.$store.getters.reportUpdated,
       selected: this.$store.getters.reportSelected,
       isPaginated: this.$store.getters.reportPaginated,
+      perPage: this.$store.getters.reportPerPage,
+      page: this.$store.getters.reportPage,
       isLoading: false
     };
   },
@@ -91,6 +110,24 @@ export default {
   },
 
   methods: {
+    exportData(type) {
+      var data = null;
+      switch (type) {
+        case "table":
+          data = this.tableData;
+          break;
+        default:
+          data = this.data;
+          break;
+      }
+      this.$buefy.modal.open({
+        parent: this,
+        component: ExportModalVue,
+        hasModalCard: true,
+        props: { data: data, suggestedName: this.selected },
+        trapFocus: true
+      });
+    },
     load(name) {
       this.isLoading = true;
       api
@@ -125,6 +162,15 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    onPageChange(page) {
+      this.$store.commit("REPORT_PAGE", page);
+      this.page = page;
+    },
+    onPerPageChange(perPage) {
+      this.$store.commit("REPORT_PER_PAGE", perPage);
+      this.onPageChange(1);
+      this.perPage = perPage;
     }
   }
 };
