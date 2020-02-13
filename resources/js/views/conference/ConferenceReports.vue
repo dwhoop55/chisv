@@ -2,8 +2,9 @@
   <div>
     <b-field grouped group-multiline>
       <b-select v-model="selected" @input="load($event)" placeholder="Select a report">
-        <option value="shirt">T-Shirt</option>
-        <option value="sv">SV</option>
+        <option value="shirts">T-Shirts</option>
+        <option value="svs">SVs</option>
+        <option value="tasks">Tasks</option>
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">
@@ -36,12 +37,12 @@
       </b-field>
     </b-field>
 
-    <p v-if="updated">Last updated {{ updated | moment("from") }}</p>
+    <span v-if="data">{{ data.length }} records &nbsp; | &nbsp;</span>
+    <span v-if="updated">Last updated {{ updated | moment("from") }}</span>
 
     <b-table
       v-if="data && columns"
       :bordered="true"
-      :hoverable="true"
       :narrowed="true"
       :data="data"
       :columns="columns"
@@ -50,6 +51,8 @@
       :current-page="page"
       @page-change="onPageChange"
       @per-page-change="onPerPageChange"
+      default-sort-direction="desc"
+      :mobile-cards="false"
       ref="table"
     >
       <template slot="footer">

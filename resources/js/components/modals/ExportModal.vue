@@ -34,6 +34,7 @@
     <section class="modal-card-foot">
       <b-button @click="$parent.close()">Cancel</b-button>
       <download-csv
+        @export-finished="$parent.close()"
         :data="data"
         :name="filename"
         :delimiter="delimiter"

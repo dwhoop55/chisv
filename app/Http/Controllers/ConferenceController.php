@@ -420,6 +420,7 @@ class ConferenceController extends Controller
     {
         $rawTasks = DB::table('tasks')
             ->select('date', DB::raw('count(*) as total'))
+            ->where('conference_id', $conference->id)
             ->groupBy('date')
             ->get();
 
@@ -577,7 +578,15 @@ class ConferenceController extends Controller
                 'user.assignments',
                 'user.assignments.state',
                 'user.assignments.task',
-                'user.bids',
+                // 'user.bids',
+                'user.bids' => function ($query) use ($conference) {
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+                'user.bids.task' => function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                },
                 'user.bids.task',
                 'user.university',
                 'user.avatar',
