@@ -3,7 +3,7 @@
     <b-field grouped group-multiline>
       <b-select v-model="selected" @input="load($event)" placeholder="Select a report">
         <option value="shirt">T-Shirt</option>
-        <option value="sv_hours">SV hours</option>
+        <option value="sv">SV</option>
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">

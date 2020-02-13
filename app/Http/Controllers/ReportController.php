@@ -23,11 +23,18 @@ class ReportController extends Controller
             case 'shirt':
                 return $this->shirtReport($conference);
                 break;
+            case 'sv':
+                return $this->svReport($conference);
+                break;
 
             default:
                 abort(404, "No report for $name at " . $conference->key);
                 break;
         }
+    }
+
+    public function svReport($conference)
+    {
     }
 
     public function shirtReport($conference)
