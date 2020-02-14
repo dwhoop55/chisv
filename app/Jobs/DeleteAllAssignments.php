@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Bid;
 use App\Conference;
 use App\JobParameters;
 use App\State;
@@ -33,29 +34,34 @@ class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
     public function execute()
     {
         $this->setProgress(0);
-        $statePlaced = State::byName('placed', 'App\Bid');
 
         $assignments = $this
             ->conference
             ->assignments()
-            ->with('task')
+            ->with([
+                'task',
+                'task.bids',
+            ])
             ->whereDate('tasks.date', $this->date)
             ->get();
 
         $count = $assignments->count();
         $completed = 0;
 
-        $assignments->each(function ($assignment) use ($count, &$completed, &$statePlaced) {
-            if ($assignment->bid()) {
-                $assignment->bid()
-                    ->state()
-                    ->associate($statePlaced)
-                    ->save();
-            }
+        $assignments->each->$assignments->each(function ($assignment) use ($count, &$completed) {
             $assignment->delete();
             $completed++;
             $this->setProgress(100 / $count * $completed);
         });
+
+        // Reset all bids
+        Bid
+            ::whereHas('task', function ($query) {
+                $query->whereDate('date', $this->date);
+                $query->where("conference_id", $this->conference->id);
+            })
+            ->where('state_id', "!=", State::byName('placed')->id)
+            ->update(['state_id' => State::byName('placed', 'App\Bid')->id]);
 
         return ['deleted' => $count];
     }

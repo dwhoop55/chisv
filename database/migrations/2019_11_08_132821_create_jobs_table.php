@@ -20,6 +20,7 @@ class CreateJobsTable extends Migration
             $table->json('result')->nullable();
             $table->json('payload')->nullable();
             $table->integer('progress')->nullable();
+            $table->string('status_message')->nullable();
             $table->unsignedInteger('state_id')->nullable(false)->default(21);
             $table->timestamp('ended_at')->nullable();
             $table->timestamp('start_at')->nullable();

@@ -43,7 +43,7 @@
           <!-- Bid lost, not assigned -->
           <div @click="showHint('unsuccessful')" class="button is-small">
             <b-icon type="is-light" icon="account-off" />
-            <span>&nbsp;Bid negative</span>
+            <span>&nbsp;Not assigned</span>
           </div>
         </div>
         <div v-else>
