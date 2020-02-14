@@ -47,7 +47,7 @@ class ReportController extends Controller
             $this->buildColumn('task_count', '# Tasks'),
             $this->buildColumn('task_hours', 'Task hours', true),
             $this->buildColumn('assignment_count', '# Assignments', true),
-            $this->buildColumn('assignment_hours', 'Assignment hurs', true),
+            $this->buildColumn('assignment_hours', 'Assignment hours', true),
             $this->buildColumn('assignment_hours_done', 'Assignment hours done', true),
             $this->buildColumn('assignment_hours_not_done', 'Assignment hours not done', true),
         ]);
@@ -100,6 +100,7 @@ class ReportController extends Controller
         $columns = collect([
             $this->buildColumn('firstname', 'Firstname'),
             $this->buildColumn('lastname', 'Lastname'),
+            $this->buildColumn('university', 'University'),
             $this->buildColumn('hours_done', 'Hours Done', true),
             $this->buildColumn('assignments_count', 'Number of assignments', true),
             $this->buildColumn('bids_zero', '# Bid 0', true),
@@ -148,6 +149,7 @@ class ReportController extends Controller
                 return [
                     'firstname' => $sv->firstname,
                     'lastname' => $sv->lastname,
+                    'university' => $sv->university ? $sv->university->name : $sv->university_fallback,
                     'hours_done' => $hoursDone,
                     'assignments_count' => $assignmentsCount,
                     'bids_zero' => $bidsZero,
@@ -192,7 +194,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now')];
     }
 
-    public function buildColumn(String $key, String $label, bool $numeric = false, String $width = null, bool $sortable = true, bool $searchable = true)
+    public function buildColumn(String $key, String $label, bool $numeric = false, bool $searchable = true, bool $sortable = true, String $width = null)
     {
         return [
             'field' => $key,
@@ -200,7 +202,7 @@ class ReportController extends Controller
             'width' => $width,
             'numeric' => $numeric,
             'sortable' => $sortable,
-            'searchable' => $searchable
+            'searchable' => $numeric ? false : $searchable,
         ];
     }
 }

@@ -587,7 +587,6 @@ class ConferenceController extends Controller
                 'user.bids.task' => function ($query) use ($conference) {
                     $query->where('conference_id', $conference->id);
                 },
-                'user.bids.task',
                 'user.university',
                 'user.avatar',
                 'user.country',
