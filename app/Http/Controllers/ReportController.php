@@ -115,7 +115,6 @@ class ReportController extends Controller
             ->users(Role::byName('sv'))
             ->with([
                 'assignments' => function ($query) use ($doneState, $conference) {
-                    $query->where('state_id', $doneState->id);
                     $query->whereHas('task', function ($query) use ($conference) {
                         $query->where('conference_id', $conference->id);
                     });
@@ -128,7 +127,7 @@ class ReportController extends Controller
             ])
             ->get()
             ->map(function ($sv) use ($doneState) {
-                $hoursDone = round($sv->assignments->sum('hours'), 2);
+                $hoursDone = round($sv->assignments->where('state_id', $doneState->id)->sum('hours'), 2);
                 $assignmentsCount = $sv->assignments->count();
 
                 $bidsZero = $sv->bids->where('preference', 0)->count();
