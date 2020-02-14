@@ -4,12 +4,14 @@ namespace App\Jobs;
 
 use App\Job;
 use App\JobParameters;
+use Error;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 
 class AdvancedJob implements ShouldQueue
 {
@@ -47,7 +49,9 @@ class AdvancedJob implements ShouldQueue
             $result = $this->execute();
             $job->markAsSuccessful($result)->save();
         } catch (Exception $e) {
-            $job->markAsFailed($e->getMessage())->save();
+            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
+        } catch (Error $e) {
+            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
         }
     }
 
