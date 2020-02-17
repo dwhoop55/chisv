@@ -137,16 +137,10 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="190" label="Bid & Status">
-          <template slot="header" slot-scope="{ column }">
-            {{ column.label }}
-            <b-icon
-              @click.native="showHint('bid')"
-              class="is-clickable"
-              size="is-small"
-              icon="help"
-            ></b-icon>
-          </template>
+        <b-table-column
+          :width="conference.bidding_enabled ? 315 : 0"
+          :label="conference.bidding_enabled ? 'Preference' : 'Status'"
+        >
           <task-bid-picker @error="getTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
         <b-table-column
