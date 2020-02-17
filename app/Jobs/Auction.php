@@ -13,7 +13,12 @@
  * 
  * On the other hand we respect the SVs bid preference.
  * 
- * The auction algorithm will run in two phases.
+ * Before we run the auction we need to make sure that every SV
+ * has one bid for every task. We will create a low preference bid
+ * if an SV has no bid for a task. We do this before we run any actual
+ * auction algorithm.
+ * 
+ * The actual auction algorithm will run in two phases.
  * 1st Phase
  *  Loop through all Tasks sorted by priority descending
  *      For every task:
