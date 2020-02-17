@@ -179,7 +179,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         // Now we have to remove some SVs from the list
         // which are unavailable, have worked too much,
         // (depends on the phase we are in)
-        // or are in conflict with an other task
+        // or are in conflict with another task
         $svs = $svs->reject(function ($sv) use (&$phase) {
             if ($phase == 1 && $sv['hours_done'] >= $this->conference->volunteer_hours) {
                 $reject = true;
@@ -189,7 +189,7 @@ class Auction extends AdvancedJob implements ExecutableJob
                 $reject = true;
                 // we mark the bid (if there is one) as unsuccessfull
                 if (isset($sv['bid'])) {
-                    $sv['bid']->state_id == $this->successfulState->id;
+                    $sv['bid']->state_id = $this->conflictState->id;
                     $sv['bid']->save();
                 }
             } else {
@@ -252,9 +252,6 @@ class Auction extends AdvancedJob implements ExecutableJob
         // and a collection of SVs which have bid but did not get a slot,
         // since all slots are gone
         $svsToAssignToTask = $svs->take($task->freeSlots());
-        // Log::info("SVs to assign to task $task->id" . ": " . $svsToAssignToTask->count(), [$svsToAssignToTask]);
-        // $svsToMarkBidLost = $svs->slice($task->freeSlots() + 1)->where('bid', '!=', null);
-        // Log::info("SVs to mark bid lost for task $task->id" . ": " . $svsToMarkBidLost->count(), [$svsToMarkBidLost]);
 
         // First lets assign all the SVs which made it
         $svsToAssignToTask->each(function ($sv) use ($task, &$createdAssignments) {
@@ -305,15 +302,70 @@ class Auction extends AdvancedJob implements ExecutableJob
      */
     public function execute()
     {
-        $this->setProgress(0);
-
         $this->svRole = Role::byName('sv');
         $this->successfulState = State::byName('successful', 'App\Bid');
         $this->unsuccessfulState = State::byName('unsuccessful', 'App\Bid');
+        $this->conflictState = State::byName('conflict', 'App\Bid');
         $this->doneState = State::byName('done', 'App\Assignment');
 
         $createdAssignments = 0;
         $tasksWithFreeSlots = collect();
+
+        $this->setStatusMessage("Preparing bids..");
+        // First we prepare the bids so that every SV has one bid for every task
+        $svs = User
+            // Get SVs for this conference
+            ::whereHas('permissions', function ($query) {
+                $query->where("role_id", $this->svRole->id);
+                $query->where("conference_id", $this->conference->id);
+            })
+            ->with([
+                'bids' => function ($query) use (&$task) {
+                    $query->select('id', 'user_id', 'task_id');
+                    $query->whereHas('task',  function ($query) {
+                        $query->select('id');
+                        $query->where('conference_id', $this->conference->id);
+                        $query->whereDate('date', $this->date);
+                    });
+                },
+                'bids.task:id'
+            ])
+            ->get(['id', 'firstname', 'lastname']);
+
+        $tasks = Task
+            ::whereDate('date', $this->date)
+            ->get('id');
+
+        $svsCount = $svs->count();
+        $svsChecked = 0;
+        // Now we check every SV if there are bids missing
+        $svs->each(function ($sv) use ($tasks, $svsCount, &$svsChecked) {
+            $this->setStatusMessage("(" . ++$svsChecked . "/$svsCount) Checking bids of $sv->firstname $sv->lastname");
+
+            $tasksSvHasBidsFor = $sv->bids->map->task_id;
+            // Check all the tasks if there is a bids for the task_id in the SV's bids
+            $tasksWhichNeedBid = $tasks->reject(function ($task) use ($tasksSvHasBidsFor) {
+                // When the SV has a bid for a task, the task's id is in tasksSvHasBidsFor
+                // If the current tested task's id is in that collection
+                // we can remove it from the list which need new bids to be created
+                return $tasksSvHasBidsFor->contains($task->id);
+            })->values();
+
+            $this->setStatusMessage("($svsChecked/$svsCount) Creating " . $tasksWhichNeedBid->count() . " bids  for $sv->firstname $sv->lastname");
+
+            // Create all the missing bids with the default lowest preference
+            $tasksWhichNeedBid->each(function ($task) use ($sv) {
+                $bid = new Bid([
+                    'user_id' => $sv->id,
+                    'task_id' => $task->id,
+                    'preference' => 1
+                ]);
+                $bid->save();
+            });
+        });
+
+        // Now every SV has one bid for every task
+
 
         // Run this twice, phase 1 and phase 2
         for ($phase = 1; $phase <= 2; $phase++) {

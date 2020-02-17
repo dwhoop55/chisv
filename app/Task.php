@@ -46,7 +46,7 @@ class Task extends Model
      * Check if this task is conflicting with a collection of other
      * Tasks
      * 
-     * @param Collection<Task> $tasks A Collection if Task models to test
+     * @param Collection<Task> $tasks A Collection of Task objects to test
      * @return boolean true if a conflict is found, false if not
      */
     public function isConflicting(Collection $tasks)

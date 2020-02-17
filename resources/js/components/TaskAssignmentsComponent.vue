@@ -90,8 +90,9 @@ export default {
             break;
         }
         detail += " with preference " + this.preferenceToString(bid.preference);
-      } else {
-        detail += "- default " + this.preferenceToString(1) + " preference";
+      }
+      if (!bid.user_created) {
+        detail += "*";
       }
       return detail;
     },

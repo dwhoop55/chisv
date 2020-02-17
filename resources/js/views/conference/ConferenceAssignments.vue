@@ -53,7 +53,6 @@
           <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="priority">Priority</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="bids">Bids</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
         </b-dropdown>
       </b-field>
@@ -169,9 +168,6 @@
           sortable
           label="Priority"
         >{{ props.row.priority }}</b-table-column>
-        <b-table-column :visible="activeColumns.includes('bids')" width="10" label="Bids">
-          <p>{{ props.row.total_bids }}</p>
-        </b-table-column>
         <b-table-column
           class="is-marginless is-paddingless"
           :visible="activeColumns.includes('assignments')"

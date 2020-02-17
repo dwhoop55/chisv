@@ -52,7 +52,8 @@ class BidController extends Controller
         $bid = new Bid([
             'user_id' => $user->id,
             'task_id' => $task->id,
-            'preference' => $request['preference']
+            'preference' => $request['preference'],
+            'user_created' => true,
         ]);
 
         $bid->save();
@@ -97,7 +98,7 @@ class BidController extends Controller
         $userCanUpdate = auth()->user()->can('update', $bid);
         abort_unless($userCanUpdate, 403, 'You are not authorized to update this bid');
 
-        $bid->update(['preference' => $data['preference']]);
+        $bid->update(['preference' => $data['preference'], 'user_created' => true]);
         $bid = $bid->fresh('state')->only('id', 'preference', 'state');
         $bid['can_update'] = $userCanUpdate;
         $bid['state'] = $bid['state']->only(['id', 'name', 'description']);

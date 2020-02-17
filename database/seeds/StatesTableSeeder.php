@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StatesTableSeeder extends Seeder
 {
@@ -30,12 +31,10 @@ class StatesTableSeeder extends Seeder
             ["id" => 24, "for" => "App\Job", "name" => "failed", "description" => "The job stopped and failed"],
 
             // Id 31 has to be always 'placed' (used in the migration for field default)!
-            ["id" => 31, "for" => "App\Bid", "name" => "placed", "description" => "The bid was user placed and waiting for the auction to take place"],
+            ["id" => 31, "for" => "App\Bid", "name" => "placed", "description" => "The bid is waiting for the auction"],
             ["id" => 32, "for" => "App\Bid", "name" => "successful", "description" => "The bid won the auction"],
             ["id" => 33, "for" => "App\Bid", "name" => "unsuccessful", "description" => "The bid did not win the auction"],
-            // Id 34 has always to be 'created' (used in UI e.g. TaskAssignmentSvPicker)
-            ["id" => 34, "for" => "App\Bid", "name" => "created", "description" => "The bid was created during the auction due to no bid"],
-            ["id" => 35, "for" => "App\Bid", "name" => "conflict", "description" => "The bid is invalid due to a task time conflict"],
+            ["id" => 34, "for" => "App\Bid", "name" => "conflict", "description" => "The bid is invalid due to a task time conflict"],
 
             // Id 41 has to be always 'assigned' (used in the migration for field default)!
             ["id" => 41, "for" => "App\Assignment", "name" => "assigned", "description" => "The task is assigned to the SV but the SV has not started working on the task yet"],
