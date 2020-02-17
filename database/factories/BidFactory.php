@@ -11,7 +11,8 @@ $factory->define(Bid::class, function (Faker $faker) {
     $bid = [
         'user_id' => User::inRandomOrder()->first()->id,
         'task_id' => Task::inRandomOrder()->first()->id,
-        'preference' => $faker->numberBetween($faker->boolean(20) ? 0 : 1, 3)
+        'preference' => $faker->numberBetween($faker->boolean(20) ? 0 : 1, 3),
+        'user_created' => true,
     ];
     return $bid;
 });
