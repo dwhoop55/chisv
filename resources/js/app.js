@@ -187,6 +187,21 @@ Vue.mixin({
         goBack: function () {
             window.history.back();
         },
+        preferenceToString(preference) {
+            if (preference == undefined) return "Unknown";
+            switch (preference) {
+                case 0:
+                    return "Unavailable";
+                case 1:
+                    return "Low";
+                case 2:
+                    return "Medium";
+                case 3:
+                    return "High";
+                default:
+                    return "Unknown";
+            }
+        },
         preferenceType(preference) {
             if (!preference || preference == undefined) return "is-dark";
             switch (preference) {
