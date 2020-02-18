@@ -166,7 +166,14 @@
           field="stats.hours_done"
           label="Hours done"
         >
-          <template>{{ (props.row.stats) ? props.row.stats.hours_done : null }}</template>
+          <template>
+            <span
+              v-if="props.row.stats"
+              :class="{
+                'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_hours,
+            }"
+            >{{ props.row.stats.hours_done.toString().substr(0,5) }}</span>
+          </template>
         </b-table-column>
         <b-table-column class="is-vertical-center-column" width="130" label="SV State">
           <template>
@@ -320,9 +327,9 @@
                   <div class="subtitle">
                     <small
                       :class="{
-                'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_max,
+                'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_hours,
             }"
-                    >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_max }}</small>
+                    >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_hours }}</small>
                   </div>
                 </div>
               </div>

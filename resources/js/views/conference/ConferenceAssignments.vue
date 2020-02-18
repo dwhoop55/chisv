@@ -40,7 +40,7 @@
           multiple
           aria-role="list"
         >
-          <button class="button is-primary" slot="trigger">
+          <button :disabled="isLoading" class="button is-primary" slot="trigger">
             <span>Visible columns</span>
             <b-icon icon="menu-down"></b-icon>
           </button>
@@ -62,7 +62,7 @@
           :disabled="isLoading"
           @click="runAuction()"
           type="is-primary"
-        >Run Auction for this day</b-button>
+        >Fill free Tasks of this day (Auction)</b-button>
       </b-field>
 
       <b-field v-if="canRunAuction">
@@ -70,13 +70,18 @@
           :disabled="isLoading"
           @click="deleteAllAssignments()"
           type="is-danger"
-        >Delete all Assignments for this day</b-button>
+        >Delete all Assignments of this day</b-button>
       </b-field>
 
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="getTasks()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button
+          :disabled="isLoading"
+          @click="getTasks()"
+          type="is-primary"
+          icon-left="refresh"
+        >Reload</b-button>
       </b-field>
     </b-field>
     <br />
@@ -172,6 +177,7 @@
           class="is-marginless is-paddingless"
           :visible="activeColumns.includes('assignments')"
           label="Assignments"
+          width="500"
         >
           <task-assignments-component
             :task="props.row"

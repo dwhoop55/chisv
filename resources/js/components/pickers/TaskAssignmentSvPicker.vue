@@ -20,7 +20,7 @@
           <div class="media-content">
             <strong
               :class="{
-                'has-text-danger': props.option.stats.hours_done >= conference.volunteer_max,
+                'has-text-danger': props.option.stats.hours_done >= conference.volunteer_hours,
             }"
             >{{ props.option.firstname }} {{ props.option.lastname }}</strong>
             <small>{{ props.option.university }}</small>
@@ -31,9 +31,9 @@
                   <div class="subtitle">
                     <small
                       :class="{
-                'has-text-danger has-text-weight-bold': props.option.stats.hours_done >= conference.volunteer_max,
+                'has-text-danger has-text-weight-bold': props.option.stats.hours_done >= conference.volunteer_hours,
             }"
-                    >{{ props.option.stats.hours_done }}/{{ conference.volunteer_max }}</small>
+                    >{{ props.option.stats.hours_done }}/{{ conference.volunteer_hours }}</small>
                   </div>
                 </div>
               </div>

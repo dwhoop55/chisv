@@ -146,7 +146,7 @@ class Auction extends AdvancedJob implements ExecutableJob
 
         // Let's transform the huge collection we now have
         // to something we can more easily work with
-        $svs->transform(function ($sv) use (&$task, &$assignmentsOfPreviousRun) {
+        $svs->transform(function ($sv) use (&$task, $phase) {
             $new = ["id" => $sv->id];
             // Grab the preference for the current task if there is one
             // If there is none, we set it to 1 since SVs are being told
@@ -159,17 +159,24 @@ class Auction extends AdvancedJob implements ExecutableJob
                 $new['preference'] = 1;
             }
 
-            // Now we sum up the hours the SV has worked
-            // TODO: it might make sense to also count
-            // assignments which have just been created 
-            // by this auction in a different run. In
-            // that case we would count freshly assigned
-            // tasks as 'very likely' to be completed. This
-            // would distibute the hours even more.
-            // This enhancement is currently not active.
+            // Now we sum up the hours the SV has worked already
             $new['hours_done'] = round($sv->assignments
                 ->where("state_id", $this->doneState->id)
                 ->sum('hours'), 2);
+            // Next we need to add the hours the SV will be doing
+            // at the auction's date. This way we only assign
+            // up to the suggested working hours limit
+            // NOTE: This will not account for assignments which are on
+            // another day in state other than done
+            $new['hours_done'] += round($sv->assignments->filter(function ($assignment) {
+                return $assignment->task->date == $this->date;
+            })->sum('hours'), 2);
+
+
+
+            if ($sv['id'] == 235) {
+                dump($phase . ' hours ' . $new['hours_done'] . " <= " . $this->conference->volunteer_hours);
+            }
 
             // Get all the tasks which are today
             // (and of this conference -> see DB call above)
@@ -401,9 +408,9 @@ class Auction extends AdvancedJob implements ExecutableJob
             ) {
 
                 $result = $this->processTask($task, $phase);
-
                 $assignmentsToCreate = $result['assignmentsToCreate'];
                 $bidsToUpdate = $result['bidsToUpdate'];
+
                 DB::table('assignments')->insert($assignmentsToCreate->toArray());
                 $bidsToUpdate->each(function ($bid) {
                     Bid
@@ -416,25 +423,22 @@ class Auction extends AdvancedJob implements ExecutableJob
 
                 // When the task has free slots and were're in phase 2
                 // we mark it that it could not be filled
-                if ($task->freeSlots() > 0 && $phase == 2) {
+                if ($task->fresh()->freeSlots() > 0 && $phase == 2) {
                     $tasksWithFreeSlots->push($task->only('id', 'name', 'start_at', 'end_at'));
                 }
 
                 // Show progress in UI
                 $progress = 50 / $total * ++$completed + (($phase - 1) * 50);
                 $this->setStatusMessage(
-                    ("[Saving..] task $completed/$total"
-                        . "\nnew auction assignments=" . $createdAssignments
-                        . "\nnew task assignments=" . $assignmentsToCreate->count()
-                        . "\nbids won=" . $bidsToUpdate->where('state_id', $this->successfulState->id)->count()
-                        . "\nbids conflicting=" . $bidsToUpdate->where('state_id', $this->conflictState->id)->count()),
+                    ("Task $completed/$total (phase $phase/2)"
+                        . "\nNew assignments by auction = " . $createdAssignments
+                        . "\nNew assignments for this task = " . $assignmentsToCreate->count() . "/$task->slots (slots)"
+                        . "\nBids won = " . $bidsToUpdate->where('state_id', $this->successfulState->id)->count()
+                        . "\nBids conflicting = " . $bidsToUpdate->where('state_id', $this->conflictState->id)->count()),
                     $progress
                 );
-                unset($task);
-                unset($result);
             }); // For each task
             // End of phase
-            unset($tasks);
         } // For phase 1,2
 
         // After all assignments we mark those bids as lost where they are still
