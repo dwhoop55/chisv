@@ -2,7 +2,6 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        :date-formatter="dateFormatter"
         :loading="isLoadingCalendar"
         @input="onDayChange()"
         v-model="day"
@@ -464,9 +463,6 @@ export default {
       this.$store.commit("TASKS_SEARCH", this.searchString);
       this.getTasks();
     }, 250),
-    dateFormatter(date) {
-      return `Tasks for ${date.toLocaleDateString()}`;
-    },
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
