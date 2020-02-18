@@ -14,6 +14,7 @@ class Bid extends Model
         'user_id' => 'integer',
         'task_id' => 'integer',
         'assignment_id' => 'integer',
+        'user_created' => 'boolean',
     ];
 
     public function task()

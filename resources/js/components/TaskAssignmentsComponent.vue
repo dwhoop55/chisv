@@ -89,10 +89,10 @@ export default {
             detail += "failed";
             break;
         }
-        detail +=
-          " with preference " + (bid.preference == 0 ? "X" : bid.preference);
-      } else {
-        detail += "- default bid 1";
+        detail += " with preference " + this.preferenceToString(bid.preference);
+      }
+      if (!bid.user_created) {
+        detail += "*";
       }
       return detail;
     },

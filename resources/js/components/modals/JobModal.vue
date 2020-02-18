@@ -21,6 +21,7 @@
         <state-tag :state="job.state" size="is-normal" />
       </p>
       <p>Id: {{ job.id }}</p>
+      <p v-if="job.status_message">Last status: {{ job.status_message }}</p>
       <p>Start at: {{ job.start_at | moment('lll') }}</p>
       <p v-if="job.ended_at">Ended at: {{ job.ended_at | moment('lll') }}</p>
       <p v-else>Job did not end running</p>

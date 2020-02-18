@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class TaskTableSeeder extends Seeder
 {
@@ -67,7 +68,6 @@ class TaskTableSeeder extends Seeder
         ];
         DB::table('tasks')->insert($tasks);
 
-        // factory(App\Task::class, 300)->create()->each(function ($user) {
-        // });
+        factory(App\Task::class, 500)->create();
     }
 }

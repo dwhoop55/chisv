@@ -53,7 +53,7 @@ export default {
         });
     },
     editConference: function(key) {
-      this.$store.commit("CONFERENCE_TAB", 3);
+      this.$store.commit("CONFERENCE_TAB", 4);
       this.goTo(`/conference/${key}`);
     }
   }

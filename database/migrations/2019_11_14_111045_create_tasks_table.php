@@ -25,7 +25,6 @@ class CreateTasksTable extends Migration
             $table->unsignedInteger('priority')->index()->default(0);
             $table->unsignedInteger('slots');
             $table->double('hours')->nullable();
-            $table->unsignedInteger('hide')->index()->default(0);
 
             $table->timestamps();
         });

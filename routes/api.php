@@ -221,7 +221,7 @@ Route::group(['prefix' => 'v1'], function () {
         ]);
         Route::resource('job', 'JobController', [
             'only' => ['index', 'show']
-        ]);
+        ])->middleware("throttle:500");
         Route::resource('task', 'TaskController', [
             'only' => ['store', 'update', 'destroy']
         ]);

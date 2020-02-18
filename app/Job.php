@@ -89,6 +89,13 @@ class Job extends Model
         return $this;
     }
 
+    public function setStatusMessage($message)
+    {
+        $this->status_message = $message;
+        $this->save();
+        return $this;
+    }
+
     public function markAsProcessing()
     {
         $this->setState(State::byName('processing'));

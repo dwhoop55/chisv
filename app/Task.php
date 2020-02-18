@@ -17,36 +17,36 @@ class Task extends Model
     protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];
     protected $casts = ['hours' => 'float', 'slots' => 'int', 'priority' => 'int'];
 
-    /**
-     * Assigns a User to a Task by creating a new Assignment
-     * 
-     * @param User The User which should be assigned
-     * @return Assignment|null The created Assignment or null when already assigned
-     */
-    public function assign(User $sv)
-    {
-        $assignment = new Assignment([
-            'user_id' => $sv->id,
-            'task_id' => $this->id,
-            'hours' => $this->hours
-        ]);
+    // /**
+    //  * Assigns a User to a Task by creating a new Assignment
+    //  * 
+    //  * @param User The User which should be assigned
+    //  * @return Assignment|null The created Assignment or null when already assigned
+    //  */
+    // public function assign(User $sv)
+    // {
+    //     $assignment = new Assignment([
+    //         'user_id' => $sv->id,
+    //         'task_id' => $this->id,
+    //         'hours' => $this->hours
+    //     ]);
 
-        try {
-            $assignment->save();
-        } catch (QueryException $e) {
-            return null;
-        } catch (Exception $e) {
-            throw $e;
-        }
-        $assignment->refresh();
-        return $assignment;
-    }
+    //     try {
+    //         $assignment->save();
+    //     } catch (QueryException $e) {
+    //         return null;
+    //     } catch (Exception $e) {
+    //         throw $e;
+    //     }
+    //     $assignment->refresh();
+    //     return $assignment;
+    // }
 
     /** 
      * Check if this task is conflicting with a collection of other
      * Tasks
      * 
-     * @param Collection<Task> $tasks A Collection if Task models to test
+     * @param Collection<Task> $tasks A Collection of Task objects to test
      * @return boolean true if a conflict is found, false if not
      */
     public function isConflicting(Collection $tasks)

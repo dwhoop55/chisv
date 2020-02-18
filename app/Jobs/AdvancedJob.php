@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Job;
 use App\JobParameters;
+use Error;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -47,7 +48,9 @@ class AdvancedJob implements ShouldQueue
             $result = $this->execute();
             $job->markAsSuccessful($result)->save();
         } catch (Exception $e) {
-            $job->markAsFailed($e->getMessage())->save();
+            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
+        } catch (Error $e) {
+            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
         }
     }
 
@@ -56,12 +59,25 @@ class AdvancedJob implements ShouldQueue
      * This is optional and only really recommended for
      * tasks that run more than a few seconds.
      * 
-     * @param $percent The progress in percent (0-100)
+     * @param int $percent The progress in percent (0-100)
      * @return void
      */
-    public function setProgress($percent)
+    public function setProgress(int $percent)
     {
         $job = Job::find($this->job_id)->setProgress($percent);
+    }
+
+    /**
+     * Set the jobs status message for longer running tasks
+     * This is optional and only really recommended for
+     * tasks that run more than a few seconds.
+     * 
+     * @param String $message The status message
+     * @return void
+     */
+    public function setStatusMessage(String $message)
+    {
+        $job = Job::find($this->job_id)->setStatusMessage($message);
     }
 }
 

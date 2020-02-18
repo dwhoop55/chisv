@@ -43,7 +43,14 @@
           <!-- Bid lost, not assigned -->
           <div @click="showHint('unsuccessful')" class="button is-small">
             <b-icon type="is-light" icon="account-off" />
-            <span>&nbsp;Bid negative</span>
+            <span>&nbsp;Not assigned</span>
+          </div>
+        </div>
+        <div v-else-if="isConflict">
+          <!-- Bid conflicting, not assigned -->
+          <div @click="showHint('conflict')" class="button is-small">
+            <b-icon type="is-light" icon="timeline-alert-outline" />
+            <span>&nbsp;Time conflict</span>
           </div>
         </div>
         <div v-else>
@@ -73,12 +80,10 @@
 
     <!-- NO BID, NO ASSIGNMENT, NOT ABLE TO CREATE -->
     <div v-else>
-      <task-bid-picker-radio
-        @click.native="showHint('disabled')"
-        :value="1"
-        :disabled="true"
-        :size="size"
-      />
+      <a @click.prevent="showHint('disabled')">
+        <b-icon icon="cancel" :size="size" />
+        <span>Not bidable</span>
+      </a>
     </div>
 
     <div>
@@ -90,86 +95,6 @@
       </transition>
     </div>
   </div>
-
-  <!-- <div
-      @click="showHint('successful-not-assigned')"
-      class="button is-small"
-      v-if="false && bidIsPresent && bidIsStateSuccessful && !assignmentIsPresent"
-    >
-      <b-icon type="is-light" icon="account-question" />
-      <span>&nbsp;Bid won, not assigned</span>
-    </div>
-
-    <div
-      @click="showHint('unsuccessful')"
-      class="button is-small"
-      v-if="bidIsPresent && bidIsStateUnsuccessful && !assignmentIsPresent"
-    >
-      <b-icon type="is-light" icon="account-off" />
-      <span>&nbsp;Bid negative</span>
-    </div>
-
-    <div @click="showHint('assigned')" class="button is-small" v-if="assignmentIsStateAssigned">
-      <b-icon type="is-warning" icon="account" />
-      <span>&nbsp;Scheduled</span>
-    </div>
-
-    <div @click="showHint('checked-in')" class="button is-small" v-if="assignmentIsStateCheckedIn">
-      <b-icon type="is-warning" icon="account-clock" />
-      <span>&nbsp;Checked-in</span>
-    </div>
-
-    <div @click="showHint('done')" class="button is-small" v-if="assignmentIsStateDone">
-      <b-icon type="is-success" icon="account-heart" />
-      <span>&nbsp;Done</span>
-    </div>
-
-    <b-field
-      v-if="(bidIsStatePlaced || !bidIsPresent) && !assignmentIsPresent"
-      @click.native="showHint('disabled')"
-      class="is-relative"
-    >
-      <b-radio-button
-        @input="setPreference($event)"
-        :value="task.own_bid.preference"
-        :disabled="disabled"
-        :size="size"
-        type="is-danger"
-        :native-value="parseInt(0)"
-      >X</b-radio-button>
-      <b-radio-button
-        @input="setPreference($event)"
-        :value="task.own_bid.preference"
-        :disabled="disabled"
-        :size="size"
-        type="is-info"
-        :native-value="parseInt(1)"
-      >1</b-radio-button>
-      <b-radio-button
-        @input="setPreference($event)"
-        :value="task.own_bid.preference"
-        :disabled="disabled"
-        :size="size"
-        type="is-warning"
-        :native-value="parseInt(2)"
-      >2</b-radio-button>
-      <b-radio-button
-        @input="setPreference($event)"
-        :value="task.own_bid.preference"
-        :disabled="disabled"
-        :size="size"
-        type="is-success"
-        :native-value="parseInt(3)"
-      >3</b-radio-button>
-      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
-      <transition name="slide-top-fade">
-        <b-icon class="has-margin-l-7" v-if="showSuccessIcon" type="is-success" icon="check-bold"></b-icon>
-      </transition>
-      <transition name="slide-top-fade">
-        <b-icon class="has-margin-l-7" v-if="showErrorIcon" type="is-danger" icon="alert"></b-icon>
-      </transition>
-    </b-field>
-  </div>-->
 </template>
 
 <script>
@@ -266,35 +191,23 @@ export default {
     },
     formatPreference() {
       if (this.task.own_bid && this.task.own_bid.preference) {
-        switch (this.task.own_bid.preference) {
-          case 0:
-            return "X (unavailable)";
-            break;
-          case 1:
-            return "1 (low)";
-            break;
-          case 2:
-            return "2 (medium)";
-            break;
-          case 3:
-            return "3 (high)";
-            break;
-        }
+        return this.preferenceToString(this.task.own_bid.preference);
       } else {
-        return "none (low)";
+        return "none";
       }
     },
     showHint(type) {
       switch (type) {
         case "disabled":
           if (this.disabled) {
-            this.$buefy.dialog.alert(
-              "You cannot bid or change your bid at the moment. One of the reasons might be:\
+            this.$buefy.dialog.alert({
+              message:
+                "You cannot bid or change your bid at the moment. One of the reasons might be:\
             <li>Bidding is not open for this day</li>\
             <li>The task is in the past</li>\
             <li>You are not an SV with the state <i>accepted</i></li>\
             <li>You are already assigned to this task</li>"
-            );
+            });
           }
           break;
         case "successful-not-assigned":
@@ -317,13 +230,25 @@ export default {
             title: `Your bid did not win`,
             message: `This task was not assigned to you<br>
             One of the reasons might be:\
-            <li>Conflict with other task you're assigned to</li>\
             <li>Other SVs bid higher</li>\
             <li>You bid high but other SVs also bidding high have less total hours</li>\
             <br/><br/><small>Your submitted preference: ${this.formatPreference()}</small>`,
             type: "is-dark",
             hasIcon: true,
             icon: "ice-cream",
+            ariaRole: "alertdialog",
+            ariaModal: true
+          });
+          break;
+        case "conflict":
+          this.$buefy.dialog.alert({
+            title: `Time conflict`,
+            message: `This task was not assigned to you because it is conflicting\
+            with another's task time slot. 
+            <br/><br/><small>Your submitted preference: ${this.formatPreference()}</small>`,
+            type: "is-dark",
+            hasIcon: true,
+            icon: "timeline-alert-outline",
             ariaRole: "alertdialog",
             ariaModal: true
           });
@@ -420,6 +345,13 @@ export default {
         this.task.own_bid &&
         this.task.own_bid.state &&
         this.task.own_bid.state.name == "unsuccessful"
+      );
+    },
+    isConflict() {
+      return (
+        this.task.own_bid &&
+        this.task.own_bid.state &&
+        this.task.own_bid.state.name == "conflict"
       );
     },
     isAssigned() {

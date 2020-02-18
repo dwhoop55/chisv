@@ -71,7 +71,13 @@ export default {
         return state.report.selected;
     },
     reportPaginated: state => {
-        return state.report.paginated;
+        return state.report.page.paginated;
+    },
+    reportPerPage: state => {
+        return parseInt(state.report.page.items);
+    },
+    reportPage: state => {
+        return parseInt(state.report.page.index);
     },
 
     conferenceTab: state => {

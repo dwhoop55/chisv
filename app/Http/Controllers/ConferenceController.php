@@ -163,7 +163,7 @@ class ConferenceController extends Controller
                     $query->where('conference_id', $conference->id);
                 },
 
-                'bids:id,task_id,state_id,user_id,preference',
+                'bids:id,task_id,state_id,user_id,preference,user_created',
                 'bids.state:id,name',
 
                 // We need all the assignments in state done which are from a task of this conference
@@ -221,13 +221,13 @@ class ConferenceController extends Controller
                 'end_at', 'hours', 'location',
                 'description', 'slots', 'priority'
             ]);
-            $nTask['total_bids'] = $task->bids->count();
+            // $nTask['total_bids'] = $task->bids->count();
             $nTask['assignments'] = $task->assignments->map(function ($assignment) use (&$task) {
                 $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
 
                 // Append a SVs bid if there is one
                 $bid = $task->bids->where('user_id', $assignment->user->id)->first();
-                $nAssignment['bid'] = $bid ? $bid->only('id', 'preference', 'state') : null;
+                $nAssignment['bid'] = $bid ? $bid->only('id', 'preference', 'state', 'user_created') : null;
 
                 // Provide the reference to the $users collection
                 $nAssignment['user'] = $assignment->user->only(['id']);
@@ -395,6 +395,7 @@ class ConferenceController extends Controller
                 $safe['own_bid'] = [
                     'id' => $bid->id,
                     'preference' => $bid->preference,
+                    'user_created' => $bid->user_created,
                     'state' => $bid->state->only(['id', 'name', 'description']),
                     'can_update' => ($userIsAccepted && !$assignment && $user->can('update', [$bid, $skip]))
                 ];
@@ -420,6 +421,7 @@ class ConferenceController extends Controller
     {
         $rawTasks = DB::table('tasks')
             ->select('date', DB::raw('count(*) as total'))
+            ->where('conference_id', $conference->id)
             ->groupBy('date')
             ->get();
 
@@ -470,7 +472,7 @@ class ConferenceController extends Controller
             $bids = $sv->bids->reverse();
             foreach ($bids as $eBid) {
                 if ($eBid->task_id == $task->id) {
-                    $bid = $eBid->only('id', 'preference');
+                    $bid = $eBid->only('id', 'preference', 'user_created');
                     break;
                 }
             }
@@ -577,8 +579,15 @@ class ConferenceController extends Controller
                 'user.assignments',
                 'user.assignments.state',
                 'user.assignments.task',
-                'user.bids',
-                'user.bids.task',
+                // 'user.bids',
+                'user.bids' => function ($query) use ($conference) {
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+                'user.bids.task' => function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                },
                 'user.university',
                 'user.avatar',
                 'user.country',
