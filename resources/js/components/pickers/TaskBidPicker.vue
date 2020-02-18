@@ -81,8 +81,8 @@
     <!-- NO BID, NO ASSIGNMENT, NOT ABLE TO CREATE -->
     <div v-else>
       <a @click.prevent="showHint('disabled')">
-        <b-icon icon="cancel" :size="size" />
-        <span>Not bidable</span>
+        <b-icon type="is-grey" icon="cancel" :size="size" />
+        <span class="has-text-grey">Not bidable</span>
       </a>
     </div>
 
