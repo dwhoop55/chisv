@@ -33,7 +33,16 @@ class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
      */
     public function execute()
     {
-        $this->setProgress(0);
+
+        $count = $this
+            ->conference
+            ->assignments()
+            ->with([
+                'task',
+                'task.bids',
+            ])
+            ->whereDate('tasks.date', $this->date)
+            ->delete();
 
         $assignments = $this
             ->conference
@@ -43,16 +52,7 @@ class DeleteAllAssignments extends AdvancedJob implements ExecutableJob
                 'task.bids',
             ])
             ->whereDate('tasks.date', $this->date)
-            ->get();
-
-        $count = $assignments->count();
-        $completed = 0;
-
-        $assignments->each->$assignments->each(function ($assignment) use ($count, &$completed) {
-            $assignment->delete();
-            $completed++;
-            $this->setProgress(100 / $count * $completed);
-        });
+            ->delete();
 
         // Reset all bids
         Bid

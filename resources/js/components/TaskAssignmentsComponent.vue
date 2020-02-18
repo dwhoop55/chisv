@@ -90,8 +90,10 @@ export default {
             break;
         }
         detail += " with preference " + this.preferenceToString(bid.preference);
+      } else {
+        detail += "- no bid by user ";
       }
-      if (!bid.user_created) {
+      if (bid && !bid.user_created) {
         detail += "*";
       }
       return detail;

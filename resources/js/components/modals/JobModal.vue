@@ -21,12 +21,15 @@
         <state-tag :state="job.state" size="is-normal" />
       </p>
       <p>Id: {{ job.id }}</p>
-      <p v-if="job.status_message">Last status: {{ job.status_message }}</p>
+      <p v-if="job.status_message">
+        Last status:
+        <span class="has-text-weight-bold" v-html="jobStatusMessage"></span>
+      </p>
+      <p v-if="job.status_message">&nbsp;</p>
       <p>Start at: {{ job.start_at | moment('lll') }}</p>
       <p v-if="job.ended_at">Ended at: {{ job.ended_at | moment('lll') }}</p>
-      <p v-else>Job did not end running</p>
-      <br />
-      <p>
+      <p v-if="formattedJobResult">
+        <br />
         <strong>Result</strong>
         <br />
         <span v-html="formattedJobResult"></span>
@@ -95,6 +98,12 @@ export default {
   },
 
   computed: {
+    jobStatusMessage() {
+      return this.job.status_message.replace(
+        new RegExp("\r?\n", "g"),
+        "<br />"
+      );
+    },
     valueForProgress() {
       switch (this.job.state.name) {
         case "planned":

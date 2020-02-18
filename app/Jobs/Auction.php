@@ -80,6 +80,7 @@ use App\Task;
 use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class Auction extends AdvancedJob implements ExecutableJob
@@ -102,11 +103,12 @@ class Auction extends AdvancedJob implements ExecutableJob
     /**
      *
      * @param Task $task The task we want to assign SVs to
-     * @return Collection<Assignment> Created assignments for this task
+     * @return Collection Assignments and bids to create/mark for this task
      */
     public function processTask(Task $task, int $phase = 1)
     {
-        $createdAssignments = 0;
+        $assignmentsToCreate = collect();
+        $bidsToUpdate = collect();
 
         // ======================== SV list creation ========================
         // Get a list of every SV and the bid (if any)
@@ -129,6 +131,7 @@ class Auction extends AdvancedJob implements ExecutableJob
                 // the conference we run this
                 // auction for
                 // We calculate the hours_done from it
+                // so we cannot limit it to the auction's date
                 'assignments' => function ($query) {
                     // Laravel needs task and user ids for joining
                     $query->select('id', 'state_id', 'hours', 'task_id', 'user_id');
@@ -143,15 +146,15 @@ class Auction extends AdvancedJob implements ExecutableJob
 
         // Let's transform the huge collection we now have
         // to something we can more easily work with
-        $svs->transform(function ($sv) use (&$task, &$startTime) {
-            $new = ["user" => $sv];
+        $svs->transform(function ($sv) use (&$task, &$assignmentsOfPreviousRun) {
+            $new = ["id" => $sv->id];
             // Grab the preference for the current task if there is one
             // If there is none, we set it to 1 since SVs are being told
             // if they don't bid it counts like a bid with preference 1
             // Also, this is what the UI shows when there is no bid 
             if ($sv->bids->isNotEmpty()) {
                 $new['preference'] = $sv->bids->first()->preference;
-                $new['bid'] = $sv->bids->first();
+                $new['bid_id'] = $sv->bids->first()->id;
             } else {
                 $new['preference'] = 1;
             }
@@ -168,6 +171,8 @@ class Auction extends AdvancedJob implements ExecutableJob
                 ->where("state_id", $this->doneState->id)
                 ->sum('hours'), 2);
 
+            // Get all the tasks which are today
+            // (and of this conference -> see DB call above)
             $assignedTasks = $sv->assignments
                 ->filter(function ($assignment) use (&$task) {
                     return ($assignment->task->date == $task->date);
@@ -185,7 +190,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         // which are unavailable, have worked too much,
         // (depends on the phase we are in)
         // or are in conflict with another task
-        $svs = $svs->reject(function ($sv) use (&$phase) {
+        $svs = $svs->reject(function ($sv) use (&$phase, &$bidsToUpdate) {
             if ($phase == 1 && $sv['hours_done'] >= $this->conference->volunteer_hours) {
                 $reject = true;
             } else if ($sv['preference'] === 0) {
@@ -193,9 +198,8 @@ class Auction extends AdvancedJob implements ExecutableJob
             } else if ($sv['hasConflict'] === true) {
                 $reject = true;
                 // we mark the bid (if there is one) as unsuccessfull
-                if (isset($sv['bid'])) {
-                    $sv['bid']->state_id = $this->conflictState->id;
-                    $sv['bid']->save();
+                if (isset($sv['bid_id'])) {
+                    $bidsToUpdate->push(['id' => $sv['bid_id'], 'state_id' => $this->conflictState->id]);
                 }
             } else {
                 // SV matches criteria, do not reject
@@ -258,28 +262,23 @@ class Auction extends AdvancedJob implements ExecutableJob
         // since all slots are gone
         $svsToAssignToTask = $svs->take($task->freeSlots());
 
-        // First lets assign all the SVs which made it
-        $svsToAssignToTask->each(function ($sv) use ($task, &$createdAssignments) {
-            // Create new Assignment and persists it to the database
-            // hours are set to the hours of the task
-            $assignment = new Assignment([
-                'user_id' => $sv['user']['id'],
+        // Build an array holding the assignments which
+        // need to be created for this task
+        // Build an array holding the bids which need
+        // to be marked as won
+        $svsToAssignToTask->each(function ($sv) use ($task, &$assignmentsToCreate, &$bidsToUpdate) {
+            $assignmentsToCreate->push([
+                'user_id' => $sv['id'],
                 'task_id' => $task->id,
-                'hours' => $task->hours
+                'hours' => $task->hours,
             ]);
-            if ($assignment->save()) {
-                $createdAssignments++;
-            } else {
-                Log::critical('Assignment could not be saved', [$assignment]);
-            }
 
-            //If the user had bid we now mark it won
-            if (isset($sv['bid'])) {
-                Bid::where('id', $sv['bid']['id'])->update(['state_id' => $this->successfulState->id]);
+            if (isset($sv['bid_id'])) {
+                $bidsToUpdate->push(['id' => $sv['bid_id'], 'state_id' => $this->successfulState->id]);
             }
         });
 
-        return ["task" => $task, "assignments" => $createdAssignments];
+        return ['assignmentsToCreate' => $assignmentsToCreate, 'bidsToUpdate' => $bidsToUpdate];
     }
 
     /** 
@@ -291,7 +290,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         $tasks = $this->conference->tasks()
             ->whereDate('date', $this->date)
             ->orderBy('priority', 'desc')
-            ->get();
+            ->get(['id', 'slots', 'name', 'hours', 'date', 'start_at', 'end_at']);
 
         $tasks = $tasks->filter(function ($task) {
             return ($task->freeSlots() > 0);
@@ -316,76 +315,104 @@ class Auction extends AdvancedJob implements ExecutableJob
         $createdAssignments = 0;
         $tasksWithFreeSlots = collect();
 
-        $this->setStatusMessage("Preparing bids..");
-        // First we prepare the bids so that every SV has one bid for every task
-        $svs = User
-            // Get SVs for this conference
-            ::whereHas('permissions', function ($query) {
-                $query->where("role_id", $this->svRole->id);
-                $query->where("conference_id", $this->conference->id);
-            })
-            ->with([
-                'bids' => function ($query) use (&$task) {
-                    $query->select('id', 'user_id', 'task_id');
-                    $query->whereHas('task',  function ($query) {
-                        $query->select('id');
-                        $query->where('conference_id', $this->conference->id);
-                        $query->whereDate('date', $this->date);
-                    });
-                },
-                'bids.task:id'
-            ])
-            ->get(['id', 'firstname', 'lastname']);
+        // // ============================ BID PREPARATION ===========================
+        // // First we prepare the bids so that every SV has one bid for every task
+        // $this->setStatusMessage("Preparing bids..");
+        // $svs = User
+        //     // Only SVs for this conference
+        //     ::whereHas('permissions', function ($query) {
+        //         $query->where("role_id", $this->svRole->id);
+        //         $query->where("conference_id", $this->conference->id);
+        //     })
+        //     // With bids for this conference (task) and date 
+        //     ->with([
+        //         'bids' => function ($query) use (&$task) {
+        //             $query->select('id', 'user_id', 'task_id');
+        //             $query->whereHas('task',  function ($query) {
+        //                 $query->select('id');
+        //                 $query->where('conference_id', $this->conference->id);
+        //                 $query->whereDate('date', $this->date);
+        //             });
+        //         },
+        //         'bids.task:id'
+        //     ])
+        //     ->get(['id']);
 
-        $tasks = Task
-            ::whereDate('date', $this->date)
-            ->get('id');
+        // // Now get a list of all tasks of this date and conference
+        // $tasks = Task
+        //     ::whereDate('date', $this->date)
+        //     ->where('conference_id', $this->conference->id)
+        //     ->get('id');
 
-        $svsCount = $svs->count();
-        $svsChecked = 0;
-        // Now we check every SV if there are bids missing
-        $svs->each(function ($sv) use ($tasks, $svsCount, &$svsChecked) {
-            $this->setStatusMessage("(" . ++$svsChecked . "/$svsCount) Checking bids of $sv->firstname $sv->lastname");
+        // // Setup some counters for status messages
+        // $svsCount = $svs->count();
+        // $svsChecked = 0;
 
-            $tasksSvHasBidsFor = $sv->bids->map->task_id;
-            // Check all the tasks if there is a bids for the task_id in the SV's bids
-            $tasksWhichNeedBid = $tasks->reject(function ($task) use ($tasksSvHasBidsFor) {
-                // When the SV has a bid for a task, the task's id is in tasksSvHasBidsFor
-                // If the current tested task's id is in that collection
-                // we can remove it from the list which need new bids to be created
-                return $tasksSvHasBidsFor->contains($task->id);
-            })->values();
+        // // Now we check every SV if there are bids missing
+        // $svs->each(function ($sv) use (&$tasks, &$svsCount, &$svsChecked) {
+        //     // Get a collection of all tasks a user had bid for
+        //     $tasksSvHasBidsFor = $sv->bids->map->task_id;
+        //     // Now remove all the tasks which the user has bid for already
+        //     $tasksWhichNeedBid = $tasks->reject(function (&$task) use (&$tasksSvHasBidsFor) {
+        //         // When the SV has a bid for a task, the task's id is in tasksSvHasBidsFor
+        //         // If the current tested task's id is in that collection
+        //         // we can remove it from the list which need new bids to be created
+        //         return $tasksSvHasBidsFor->contains($task->id);
+        //     })->values();
 
-            $this->setStatusMessage("($svsChecked/$svsCount) Creating " . $tasksWhichNeedBid->count() . " bids  for $sv->firstname $sv->lastname");
+        //     // If there are tasks which have no bid yet we procceed..
+        //     if ($tasksWhichNeedBid->isNotEmpty()) {
+        //         $this->setStatusMessage("[Saving] Creating " . $tasksWhichNeedBid->count() . " bids for sv id=$sv->id \ncompleted=" . $svsChecked . "/$svsCount");
 
-            // Create all the missing bids with the default lowest preference
-            $tasksWhichNeedBid->each(function ($task) use ($sv) {
-                $bid = new Bid([
-                    'user_id' => $sv->id,
-                    'task_id' => $task->id,
-                    'preference' => 1
-                ]);
-                $bid->save();
-            });
-        });
+        //         // Create an array for mass database insert
+        //         $bidsToCreate = $tasksWhichNeedBid->map(function ($task) use ($sv) {
+        //             return [
+        //                 'user_id' => $sv->id,
+        //                 'task_id' => $task->id,
+        //                 'preference' => 1
+        //             ];
+        //         });
+        //         // Create all the missing bids at once
+        //         DB::table('bids')->insert($bidsToCreate->toArray());
+        //     }
+        // });
+        // unset($svs);
+        // // Now every SV has one bid for every task
 
-        // Now every SV has one bid for every task
-
-
+        // ============================ PHASES START ===========================
         // Run this twice, phase 1 and phase 2
         for ($phase = 1; $phase <= 2; $phase++) {
             // Get all the tasks which have to be filled
-            $this->setStatusMessage("In phase $phase..");
             $tasks = $this->getTasks();
-
+            // Setup counters and collections
+            // holding the results of all calculations
+            // We use them to later create/mark the
+            // actual assignments/bids
             $total = $tasks->count();
             $completed = 0;
 
-            // Now for every task assign SVs
-            $tasks->each(function ($task) use (&$phase, &$createdAssignments, &$tasksWithFreeSlots, &$completed, $total) {
-                $this->setStatusMessage("In phase $phase, processing task $task->id ($task->name)");
+            // Now for every task calculate the assignments/bids
+            $tasks->each(function ($task) use (
+                &$phase,
+                &$tasksWithFreeSlots,
+                &$completed,
+                &$total,
+                &$createdAssignments
+            ) {
+
                 $result = $this->processTask($task, $phase);
-                $createdAssignments += $result["assignments"];
+
+                $assignmentsToCreate = $result['assignmentsToCreate'];
+                $bidsToUpdate = $result['bidsToUpdate'];
+                DB::table('assignments')->insert($assignmentsToCreate->toArray());
+                $bidsToUpdate->each(function ($bid) {
+                    Bid
+                        ::where('id', $bid['id'])
+                        ->update(['state_id' => $bid['state_id']]);
+                });
+
+                // Update the counter for all toal created assignments
+                $createdAssignments += $assignmentsToCreate->count();
 
                 // When the task has free slots and were're in phase 2
                 // we mark it that it could not be filled
@@ -394,14 +421,25 @@ class Auction extends AdvancedJob implements ExecutableJob
                 }
 
                 // Show progress in UI
-                $this->setProgress(50 / $total * $completed + (($phase - 1) * 50));
-                $completed++;
-            });
-        }
+                $progress = 50 / $total * ++$completed + (($phase - 1) * 50);
+                $this->setStatusMessage(
+                    ("[Saving..] task $completed/$total"
+                        . "\nnew auction assignments=" . $createdAssignments
+                        . "\nnew task assignments=" . $assignmentsToCreate->count()
+                        . "\nbids won=" . $bidsToUpdate->where('state_id', $this->successfulState->id)->count()
+                        . "\nbids conflicting=" . $bidsToUpdate->where('state_id', $this->conflictState->id)->count()),
+                    $progress
+                );
+                unset($task);
+                unset($result);
+            }); // For each task
+            // End of phase
+            unset($tasks);
+        } // For phase 1,2
 
-        // After all assignments we mark those bids as lost where they are not
-        // won and of the tasks of today
-        $bids = Bid
+        // After all assignments we mark those bids as lost where they are still
+        // in state 'placed' and same day as this auction
+        Bid
             ::whereHas('task', function ($query) {
                 $query->whereDate('date', $this->date);
                 $query->where("conference_id", $this->conference->id);
