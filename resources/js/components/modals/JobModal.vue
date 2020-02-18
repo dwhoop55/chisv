@@ -107,7 +107,7 @@ export default {
           return 100;
           break;
         case "failed":
-          return 100;
+          return this.getProgressForProcessingState();
           break;
         default:
           return undefined;

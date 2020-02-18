@@ -64,7 +64,7 @@ class AdvancedJob implements ShouldQueue
      */
     public function setProgress(int $percent)
     {
-        $job = Job::find($this->job_id)->setProgress($percent);
+        Job::find($this->job_id)->setProgress($percent);
     }
 
     /**
@@ -75,9 +75,20 @@ class AdvancedJob implements ShouldQueue
      * @param String $message The status message
      * @return void
      */
-    public function setStatusMessage(String $message)
+    public function setStatusMessage(String $message, int $percent = null)
     {
-        $job = Job::find($this->job_id)->setStatusMessage($message);
+        Job::find($this->job_id)->setStatusMessage($message, $percent);
+    }
+
+    /**
+     * The job failed to process (laravel callback)
+     *
+     * @param  Exception  $exception
+     * @return void
+     */
+    public function failed(Exception $e)
+    {
+        Job::find($this->job_id)->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
     }
 }
 

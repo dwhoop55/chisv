@@ -43,6 +43,10 @@ class Job extends Model
 
     protected $with = ['state'];
     protected $guarded = [];
+    protected $casts = [
+        'progress' => 'int',
+        'state_id' => 'int',
+    ];
 
     public function setState(State $state)
     {
@@ -89,9 +93,17 @@ class Job extends Model
         return $this;
     }
 
-    public function setStatusMessage($message)
+    public function setStatusMessage($message, $percent = null)
     {
         $this->status_message = $message;
+        if ($percent !== null) {
+            if ($percent > 100) {
+                $percent = 100;
+            } else if ($percent < 0) {
+                $percent = 0;
+            }
+            $this->progress = $percent;
+        }
         $this->save();
         return $this;
     }
