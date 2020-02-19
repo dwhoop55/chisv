@@ -44,7 +44,7 @@
         </b-tooltip>
       </p>
       <b-button
-        v-if="!loading && permission"
+        v-if="!loading && permission && form"
         type="is-primary"
         class="has-margin-t-7"
         outlined
@@ -164,14 +164,13 @@ export default {
         .then(data => {
           this.errored = null;
           this.permission = null;
-          this.$emit("input", "unenrolled");
+          this.$emit("update", "unenrolled");
         })
         .catch(error => {
           this.errored = error.message;
         })
         .finally(() => {
           this.getCan();
-          this.getState();
           this.loading = false;
         });
     },
@@ -183,7 +182,7 @@ export default {
         .then(data => {
           this.permission = data.data.result;
           this.errored = null;
-          this.$emit("input", "enrolled");
+          this.$emit("update", "enrolled");
         })
         .catch(error => {
           if (error.response.status != 422) {
@@ -209,11 +208,20 @@ export default {
         .then(data => {
           let response = data.data;
           if (response.permission) {
+            // User is enrolled
             this.permission = response.permission;
-            this.form = this.parseEnrollmentForm(
-              response.permission.enrollment_form
-            );
+            // If there is an enrollment form, load it
+            if (response.permission.enrollment_form) {
+              this.form = this.parseEnrollmentForm(
+                response.permission.enrollment_form
+              );
+            } else {
+              // There is no enrollment form
+              this.form = null;
+            }
           } else if (response.enrollment_form) {
+            // User is not enrolled (missing permission)
+            // so we got the enrollment form template
             this.form = this.parseEnrollmentForm(response.enrollment_form);
           }
         })

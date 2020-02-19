@@ -15,7 +15,8 @@ class EnrollmentForm extends Model
      */
     protected $casts = [
         'total_weight' => 'integer',
-        'parent_id' => 'integer'
+        'parent_id' => 'integer',
+        'is_template' => 'integer'
     ];
 
     /**

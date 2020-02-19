@@ -53,10 +53,12 @@
                 <div>
                   <p class="heading">Bids placed</p>
                   <div class="subtitle">
-                    <small class="has-text-danger">{{ props.option.stats.bids_placed[0] }}</small>
-                    <small class="has-text-info">{{ props.option.stats.bids_placed[1] }}</small>
-                    <small class="has-text-warning">{{ props.option.stats.bids_placed[2] }}</small>
-                    <small class="has-text-success">{{ props.option.stats.bids_placed[3] }}</small>
+                    <small
+                      class="has-text-danger"
+                    >{{ props.option.stats.bids_placed['unavailable'] }}</small>
+                    <!-- <small class="has-text-info">{{ props.option.stats.bids_placed[1] }}</small> -->
+                    <small class="has-text-warning">{{ props.option.stats.bids_placed['medium'] }}</small>
+                    <small class="has-text-success">{{ props.option.stats.bids_placed['high'] }}</small>
                   </div>
                 </div>
               </div>
@@ -71,13 +73,11 @@
       <template slot="header">
         <small>
           Showing first {{ data.length }}/{{ total_matches }} SV{{ (data.length == 1) ? '' : "s" }}
-          | Bids below are displayed in
-          <small
-            class="has-text-danger"
-          >X</small>
-          <small class="has-text-info">1</small>
-          <small class="has-text-warning">2</small>
-          <small class="has-text-success">3</small>
+          <br />Bids below are displayed in
+          <small class="has-text-danger">Unavailable</small>
+          <small class="has-text-info">Low</small>
+          <small class="has-text-warning">Medium</small>
+          <small class="has-text-success">High</small>
           preference order
           <br />SVs already assigned or unavailable are not shown | * = SV did not create bid
         </small>

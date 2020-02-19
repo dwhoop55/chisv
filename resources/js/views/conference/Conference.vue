@@ -71,11 +71,7 @@
               @input="$store.commit('CONFERENCE_TAB', $event)"
             >
               <b-tab-item label="Overview">
-                <conference-overview
-                  @input="getConference()"
-                  v-if="conference"
-                  v-model="conference"
-                ></conference-overview>
+                <conference-overview @update="getCan()" v-if="conference" v-model="conference"></conference-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
                 <conference-users v-if="canViewUsers" :conference="conference"></conference-users>

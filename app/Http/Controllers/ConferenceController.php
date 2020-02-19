@@ -442,12 +442,29 @@ class ConferenceController extends Controller
     public function svsForTaskAssignment(Conference $conference, Task $task)
     {
         $stateDone = State::byName('done', 'App\Assignment');
+        $stateAssigned = State::byName('assigned', 'App\Assignment');
         $roleSv = Role::byName('sv');
         $search = request()->search_string;
 
         $query = $conference
             ->users($roleSv)
-            ->with(['bids', 'assignments', 'assignments.task']);
+            ->with([
+                // Get only bids which are for this conference
+                'bids' => function ($query) use ($conference) {
+                    $query->select(['id', 'preference', 'user_id', 'task_id', 'user_created']);
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+                // Get only assignments which are for this conference
+                'assignments' => function ($query) use ($conference) {
+                    $query->select(['id', 'hours', 'user_id', 'task_id', 'state_id']);
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
+                'assignments.task:id,date,start_at,end_at'
+            ]);
 
         if ($search != "") {
             $query = $query->where(function ($query) use ($search) {
@@ -456,27 +473,21 @@ class ConferenceController extends Controller
             });
         }
 
-        $svs = $query->get();
+        $svs = $query->get(['users.id', 'firstname', 'lastname']);
 
         // Now we need to sort through all bids and only keep then once which
         // match the given task
         // Since we loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
-        $svs->transform(function ($sv) use ($task, $conference, &$stateDone) {
-
-            $bid = null;
-            // We reverse it since newer bids are at the end of the list
-            // This will help us to break from the loop earlier
-            // We have this in the datamodel already, no need to touch the database
-            $bids = $sv->bids->reverse();
-            foreach ($bids as $eBid) {
-                if ($eBid->task_id == $task->id) {
-                    $bid = $eBid->only('id', 'preference', 'user_created');
-                    break;
-                }
+        $svs->transform(function ($sv) use ($task, $conference, $stateDone, $stateAssigned) {
+            // Get the bid for this current task
+            $bid = $sv->bids->where('task_id', $task->id)->first();
+            if ($bid) {
+                $bid = $bid->only('id', 'preference', 'user_created');
+            } else {
+                $bid = null;
             }
-
             $assignedTasks = $sv->assignments->map(function ($assignment) {
                 return $assignment->task;
             });
@@ -491,7 +502,6 @@ class ConferenceController extends Controller
                 return null;
             }
 
-
             $cleanUser['id'] = $sv->id;
             $cleanUser['firstname'] = $sv->firstname;
             $cleanUser['lastname'] = $sv->lastname;
@@ -499,13 +509,23 @@ class ConferenceController extends Controller
 
             // Sum up all hours already done
             $hoursDone = $sv->assignments->where("state_id", $stateDone->id)->sum("hours");
+            // // Sum up all the hours the SV will likely do today
+            // $hoursAssignedToday = $sv
+            //     ->assignments
+            //     ->filter(function ($assignment) use ($task, $stateAssigned) {
+            //         return $assignment->task->date == $task->date
+            //             && $assignment->state_id == $stateAssigned->id;
+            //     })
+            //     ->sum("hours");
+
             $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
+            // $cleanUser['stats']['hours_assigned_today'] = round($hoursAssignedToday, 2);
 
             $cleanUser['stats']['bids_placed'] = [
-                $bids->where('conference_id', $conference->id)->where('preference', 0)->count(),
-                $bids->where('conference_id', $conference->id)->where('preference', 1)->count(),
-                $bids->where('conference_id', $conference->id)->where('preference', 2)->count(),
-                $bids->where('conference_id', $conference->id)->where('preference', 3)->count(),
+                'unavailable' => $sv->bids->where('preference', 0)->count(),
+                // Task::count() - $sv->bids->count(),
+                'medium' => $sv->bids->where('preference', 2)->count(),
+                'high' => $sv->bids->where('preference', 3)->count(),
             ];
 
             return $cleanUser;
@@ -576,11 +596,15 @@ class ConferenceController extends Controller
         $query = Permission
             ::with([
                 'user',
-                'user.assignments',
+                'user.assignments' => function ($query) use ($conference) {
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                },
                 'user.assignments.state',
                 'user.assignments.task',
-                // 'user.bids',
                 'user.bids' => function ($query) use ($conference) {
+                    $query->select(['id', 'preference', 'user_id', 'task_id', 'state_id']);
                     $query->whereHas('task', function ($query) use ($conference) {
                         $query->where('conference_id', $conference->id);
                     });
@@ -628,10 +652,11 @@ class ConferenceController extends Controller
         // due to the joins we did earlier
         $paginated = $query->paginate($perPage, ['permissions.*']);
 
-        // We need to design our returned user objects in a special way
-        // since also SVs can sniff these from the dev tools
+        $tasksCount = Task::where('conference_id', $conference->id)->count();
 
-        $paginated->getCollection()->transform(function ($permission) use (&$showMore, &$conference, &$stateDone, &$stateSuccessful, &$stateWaitlisted) {
+        // We need to design our returned user objects in a special way
+        // since also SVs can sniff these from the dev tools        
+        $paginated->getCollection()->transform(function ($permission) use (&$showMore, &$conference, $tasksCount, &$stateDone, &$stateSuccessful, &$stateWaitlisted) {
             $safe = null;
             $user = $permission->user;
             $safe = $user->only('firstname', 'lastname', 'id');
@@ -651,26 +676,30 @@ class ConferenceController extends Controller
                 $bids = $user->bids->filter(function ($bid) use (&$conference) {
                     return $bid->task->conference_id = $conference->id;
                 });
-                // Sum up all hours already done
-                $hoursDone = 0;
-                $user->assignments->each(function ($assignment) use (&$hoursDone, &$stateDone) {
-                    if ($assignment->state_id == $stateDone->id) {
-                        $hoursDone += $assignment->hours;
-                    }
-                });
+
+
+                // (1) We need this variables later, scroll down
+                $tasksUserBid = $user->bids->map->task->map->id;
+                $tasksUserIsAssignedOn = $user->assignments->map->task->map->id;
+                $tasksUserDidNotBid = $tasksUserIsAssignedOn->diff($tasksUserBid)->count();
+
+                $hoursDone = $user->assignments->where('state_id', $stateDone->id)->sum('hours');
                 $safe['stats'] = [
                     "hours_done" => round($hoursDone, 2),
                     "bids_placed" => [
-                        $bids->where('preference', 0)->count(),
-                        $bids->where('preference', 1)->count(),
-                        $bids->where('preference', 2)->count(),
-                        $bids->where('preference', 3)->count()
+                        'unavailable' => $bids->where('preference', 0)->count(),
+                        // The number of low bids is the number of all tasks
+                        // minus the number of bids with preference 1
+                        'low' => $tasksCount - $bids->where('preference', '!=', 1)->count(),
+                        'medium' => $bids->where('preference', 2)->count(),
+                        'high' => $bids->where('preference', 3)->count()
                     ],
                     "bids_successful" => [
-                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 0)->count(),
-                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 1)->count(),
-                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 2)->count(),
-                        $bids->where('state_id', $stateSuccessful->id)->where('preference', 3)->count(),
+                        // (1) We need this here
+                        'low' => $tasksUserDidNotBid
+                            + $bids->where('state_id', $stateSuccessful->id)->where('preference', 1)->count(),
+                        'medium' => $bids->where('state_id', $stateSuccessful->id)->where('preference', 2)->count(),
+                        'high' => $bids->where('state_id', $stateSuccessful->id)->where('preference', 3)->count()
                     ]
                 ];
 
@@ -752,14 +781,18 @@ class ConferenceController extends Controller
 
         // In any case, make sure that we remove the weights before
         // sending the form back to the user
-        if ($permission && $permission->enrollmentForm) {
-            // Return the filled enrollmentForm
-            $form = $permission->enrollmentForm;
-            $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
+        if ($permission) {
+            if ($permission->enrollmentForm) {
+                // The user is associated SV and has an enrollment form
+                $form = $permission->enrollmentForm;
+                $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
+            } else {
+                // The user is associated SV but has no enrollment form
+            }
             $permission->updateWaitlistPosition();
             return ["permission" => $permission];
         } else {
-            // Return a new and empty form
+            // User is not associated as SV. Return the template form
             $form = $conference->templateEnrollmentForm;
             $form = $enrollmentFormService->removeWeights($form)->only('is_template', 'body', 'id');
             return ["enrollment_form" => $form];

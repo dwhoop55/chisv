@@ -154,8 +154,6 @@ class UserController extends Controller
         }
 
         $user->update($data);
-        $user->fresh(['avatar']);
-        // $user = User::find($user->id)->with(['avatar'])->first();
 
         // Update languages
         if (isset($request->languages)) {
@@ -177,7 +175,7 @@ class UserController extends Controller
             }
         }
 
-        return ["result" => $user, "message" => "User updated"];
+        return ["result" => $user->loadMissing(['avatar', 'permissions']), "message" => "User updated"];
     }
 
     /**

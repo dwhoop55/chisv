@@ -66,8 +66,12 @@ class PermissionController extends Controller
      */
     public function update(PermissionRequest $request, Permission $permission)
     {
-        $oldPermission = Permission::find($request->get('id'));
+        $oldPermission = $permission;
         $updatedPermission = new Permission($request->all());
+        $waitlistedId = State::byName('waitlisted', 'App\User')->id;
+        $enrolledId = State::byName('enrolled', 'App\User')->id;
+        $acceptedId = State::byName('accepted', 'App\User')->id;
+        $droppedId = State::byName('dropped', 'App\User')->id;
         $user = auth()->user();
 
         // Last check: abort if the policy denies update of
@@ -76,21 +80,28 @@ class PermissionController extends Controller
 
         // Make sure to adjust lottery_position
         // -> Waitlist
-        if ($oldPermission->state != State::byName('waitlisted') && $updatedPermission->state == State::byName('waitlisted')) {
+        if ($oldPermission->state_id != $waitlistedId && $updatedPermission->state_id == $waitlistedId) {
+            // -> Waitlist
             // User was put onto the waitlist. Assign new (max) lottery_position
             // may return null
             $max = $updatedPermission->conference->permissions->max('lottery_position');
             // null + 1 = 1
             $updatedPermission->lottery_position = $max + 1;
-        } else if ($oldPermission->state != State::byName('enrolled') && $updatedPermission->state == State::byName('enrolled')) {
+        } else if (
+            ($oldPermission->state_id != $enrolledId && $updatedPermission->state_id == $enrolledId)
+            || ($oldPermission->state_id != $acceptedId && $updatedPermission->state_id == $acceptedId)
+            || ($oldPermission->state_id != $droppedId && $updatedPermission->state_id == $droppedId)
+        ) {
             // -> Enrolled
+            // -> Accepted
+            // -> Dropped
             $updatedPermission->lottery_position = null;
         } else {
             $updatedPermission->lottery_position = $oldPermission->lottery_position;
         }
 
         $oldPermission->update($updatedPermission->only('conference_id', 'state_id', 'role_id', 'lottery_position'));
-        $updatedPermission = Permission::find($request->get('id'));
+        $updatedPermission = $oldPermission->refresh();
         $updatedPermission->updateWaitlistPosition();
 
         return ["result" => $updatedPermission, "message" => "Permission updated!"];

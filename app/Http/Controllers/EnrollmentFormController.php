@@ -29,26 +29,26 @@ class EnrollmentFormController extends Controller
         return EnrollmentForm::where('is_template', true)->get();
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+    // /**
+    //  * Display a listing of the resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function index()
+    // {
+    //     //
+    // }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    // /**
+    //  * Store a newly created resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.
@@ -61,26 +61,26 @@ class EnrollmentFormController extends Controller
         return $enrollmentForm;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\EnrollmentForm  $enrollmentForm
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, EnrollmentForm $enrollmentForm)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  \App\EnrollmentForm  $enrollmentForm
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, EnrollmentForm $enrollmentForm)
+    // {
+    //     //
+    // }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\EnrollmentForm  $enrollmentForm
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(EnrollmentForm $enrollmentForm)
-    {
-        //
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  \App\EnrollmentForm  $enrollmentForm
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy(EnrollmentForm $enrollmentForm)
+    // {
+    //     //
+    // }
 }
