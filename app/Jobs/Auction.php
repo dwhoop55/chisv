@@ -160,6 +160,7 @@ class Auction extends AdvancedJob implements ExecutableJob
             }
 
             // Now we sum up the hours the SV has worked already
+            // so the assignments which are in the state 'done'
             $new['hours_done'] = round($sv->assignments
                 ->where("state_id", $this->doneState->id)
                 ->sum('hours'), 2);
@@ -168,18 +169,18 @@ class Auction extends AdvancedJob implements ExecutableJob
             // up to the suggested working hours limit
             // NOTE: This will not account for assignments which are on
             // another day in state other than done
+            // These would first have to be marked 'done' to get caught
+            // in the sum above
             $new['hours_done'] += round($sv->assignments->filter(function ($assignment) {
                 return $assignment->task->date == $this->date;
             })->sum('hours'), 2);
 
-
-
-            if ($sv['id'] == 235) {
-                dump($phase . ' hours ' . $new['hours_done'] . " <= " . $this->conference->volunteer_hours);
-            }
-
+            // Now we check for a task conflict
             // Get all the tasks which are today
             // (and of this conference -> see DB call above)
+            // NOTE: This does assume the SV is working at only one
+            // conference at a time. There is no conflict avoidance
+            // for tasks at the same time but different conferences!
             $assignedTasks = $sv->assignments
                 ->filter(function ($assignment) use (&$task) {
                     return ($assignment->task->date == $task->date);
@@ -429,12 +430,15 @@ class Auction extends AdvancedJob implements ExecutableJob
 
                 // Show progress in UI
                 $progress = 50 / $total * ++$completed + (($phase - 1) * 50);
+                $bidsWonCount = $bidsToUpdate->where('state_id', $this->successfulState->id)->count();
+                $bidsConflictCount = $bidsToUpdate->where('state_id', $this->conflictState->id)->count();
                 $this->setStatusMessage(
-                    ("Task $completed/$total (phase $phase/2)"
-                        . "\nNew assignments by auction = " . $createdAssignments
-                        . "\nNew assignments for this task = " . $assignmentsToCreate->count() . "/$task->slots (slots)"
-                        . "\nBids won = " . $bidsToUpdate->where('state_id', $this->successfulState->id)->count()
-                        . "\nBids conflicting = " . $bidsToUpdate->where('state_id', $this->conflictState->id)->count()),
+                    ("New assignments by auction = " . $createdAssignments
+                        . "\nThis task $completed/$total (phase $phase/2):"
+                        . "\n   New assignments = " . $assignmentsToCreate->count() . "/$task->slots (slots)"
+                        . "\n   New assignments with SV 'no bid' = " . ($assignmentsToCreate->count() - $bidsWonCount)
+                        . "\n   Bids won = " . $bidsWonCount
+                        . "\n   Bids conflicting = " . $bidsConflictCount),
                     $progress
                 );
             }); // For each task
