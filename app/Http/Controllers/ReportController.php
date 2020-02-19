@@ -27,8 +27,11 @@ class ReportController extends Controller
             case 'svs':
                 return $this->svsReport($conference);
                 break;
-            case 'tasks':
-                return $this->tasksReport($conference);
+            case 'task_overview':
+                return $this->taskOverviewReport($conference);
+                break;
+            case 'tasks_free_slots':
+                return $this->taskFreeSlotsReport($conference);
                 break;
 
             default:
@@ -37,7 +40,43 @@ class ReportController extends Controller
         }
     }
 
-    public function tasksReport($conference)
+    public function taskFreeSlotsReport($conference)
+    {
+        $columns = collect([
+            $this->buildColumn('day', 'Task day'),
+            $this->buildColumn('name', 'Task name'),
+            $this->buildColumn('start', 'Task start'),
+            $this->buildColumn('end', 'Task end'),
+            $this->buildColumn('hours', 'Task hours', true),
+            $this->buildColumn('slots', 'Task slots', true),
+            $this->buildColumn('free_slots', 'Task free slots', true),
+        ]);
+
+        $data = $conference
+            ->tasks()
+            ->with([
+                'assignments:id,task_id',
+            ])
+            ->get(['id', 'date', 'name', 'start_at', 'end_at', 'hours', 'slots']);
+
+        $data->transform(function ($task) {
+            return [
+                "day" => $task->date->toDateString(),
+                "name" => $task->name,
+                "start" => Carbon::create($task->start_at)->isoFormat('HH:mm'),
+                "end" => Carbon::create($task->end_at)->isoFormat('HH:mm'),
+                "hours" => $task->hours,
+                "slots" => $task->slots,
+                "free_slots" => $task->slots - $task->assignments->count()
+            ];
+        });
+
+        $data = $data->filter->free_slots;
+
+        return ["columns" => $columns, "data" => $data->values(), "updated" => Carbon::create('now'), "paginate" => true];
+    }
+
+    public function taskOverviewReport($conference)
     {
 
         $doneState = State::byName('done', 'App\Assignment');
@@ -46,7 +85,9 @@ class ReportController extends Controller
             $this->buildColumn('day', 'Day'),
             $this->buildColumn('task_count', '# Tasks'),
             $this->buildColumn('task_hours', 'Task hours', true),
-            $this->buildColumn('assignment_count', '# Assignments', true),
+            $this->buildColumn('task_slots', 'Slots', true),
+            $this->buildColumn('task_free_slots', 'Free Slots', true),
+            $this->buildColumn('assignment_count', 'Assignments', true),
             $this->buildColumn('assignment_hours', 'Assignment hours', true),
             $this->buildColumn('assignment_hours_done', 'Assignment hours done', true),
             $this->buildColumn('assignment_hours_not_done', 'Assignment hours not done', true),
@@ -83,6 +124,8 @@ class ReportController extends Controller
                 "day" => $day->first()->date->toDateString(),
                 "task_count" => $day->count(),
                 "task_hours" => $day->sum('hours'),
+                "task_slots" => $day->sum('slots'),
+                "task_free_slots" => $day->sum('slots') - $assignmentsCount,
                 "assignment_count" => $assignmentsCount,
                 "assignment_hours" => $assignmentsHours,
                 "assignment_hours_done" => $assignmentsHoursDone,
@@ -102,7 +145,7 @@ class ReportController extends Controller
             $this->buildColumn('lastname', 'Lastname'),
             $this->buildColumn('university', 'University'),
             $this->buildColumn('hours_done', 'Hours Done', true),
-            $this->buildColumn('assignments_count', 'Number of assignments', true),
+            $this->buildColumn('assignments_count', 'Assignments', true),
             $this->buildColumn('bids_zero', '# Bid 0', true),
             $this->buildColumn('bids_one', '# Bid 1 (incl. default bid)', true),
             $this->buildColumn('bids_two', '# Bid 2', true),
@@ -160,7 +203,7 @@ class ReportController extends Controller
                 ];
             });
 
-        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now')];
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
     }
 
     public function shirtsReport($conference)
@@ -190,7 +233,7 @@ class ReportController extends Controller
             return $shirt;
         });
 
-        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now')];
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => false];
     }
 
     public function buildColumn(String $key, String $label, bool $numeric = false, bool $searchable = true, bool $sortable = true, String $width = null)

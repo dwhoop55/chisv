@@ -2,7 +2,7 @@
   <section>
     <p>Showing up to 50 of the last jobs</p>
     <b-field grouped position="is-right">
-      <b-button icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
+      <b-button :disabled="isLoading" icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
     </b-field>
     <b-table
       style="cursor: pointer"
@@ -57,16 +57,24 @@ export default {
 
   created() {
     this.getJobs();
+    this.autoRefresh();
   },
 
   methods: {
+    autoRefresh() {
+      setTimeout(this.autoRefresh, 10000);
+      this.getJobs();
+    },
     showDetail(row) {
       let jobId = row.id;
       this.$buefy.modal.open({
         parent: this,
         props: { id: jobId },
         component: JobModalVue,
-        hasModalCard: true
+        hasModalCard: true,
+        onCancel: () => {
+          this.getJobs();
+        }
       });
     },
     getJobs() {

@@ -4,7 +4,8 @@
       <b-select v-model="selected" @input="load($event)" placeholder="Select a report">
         <option value="shirts">T-Shirts</option>
         <option value="svs">SVs</option>
-        <option value="tasks">Tasks</option>
+        <option value="task_overview">Task Overview</option>
+        <option value="tasks_free_slots">Tasks with free slots</option>
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">
@@ -136,16 +137,18 @@ export default {
       api
         .getReport(this.conference.key, name)
         .then(data => {
+          this.isPaginated = data.data.paginate;
           this.data = data.data.data;
           this.columns = data.data.columns;
           this.updated = data.data.updated;
+          this.$store.commit("REPORT_PAGINATED", data.data.paginate);
           this.$store.commit("REPORT_DATA", data.data.data);
           this.$store.commit("REPORT_COLUMNS", data.data.columns);
           this.$store.commit("REPORT_UPDATED", data.data.updated);
           this.$store.commit("REPORT_SELECTED", this.selected);
         })
         .catch(error => {
-          var message = error.response.data.message
+          var message = error.response.data
             ? error.response.data.message
             : error.message;
           this.$buefy.notification.open({
