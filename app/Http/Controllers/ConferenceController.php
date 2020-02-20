@@ -726,7 +726,7 @@ class ConferenceController extends Controller
                 $conference = $permission->conference;
                 $safe['email'] = $user->email;
                 $safe['degree'] = $user->degree->name;
-                $safe['city'] = $user->city->name;
+                $safe['city'] = $user->city ? $user->city->name : "";
                 $safe['permission']->id = $permission->id;
                 $safe['permission']->lottery_position = $permission->lottery_position;
                 $safe['permission']->created_at = $permission->created_at;

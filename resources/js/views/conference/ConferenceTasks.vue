@@ -230,8 +230,6 @@
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
             <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
-            <b-dropdown-item value="150" aria-role="listitem">150 per page</b-dropdown-item>
-            <b-dropdown-item value="500" aria-role="listitem">500 per page</b-dropdown-item>
           </b-dropdown>
         </div>
       </template>
@@ -427,7 +425,6 @@ export default {
     onPerPageChange(perPage) {
       this.$store.commit("TASKS_PER_PAGE", perPage);
       this.perPage = perPage;
-      this.onPageChange(1);
       this.getTasks();
     },
     onSort(field, direction) {

@@ -24,8 +24,11 @@ class ReportController extends Controller
             case 'shirts':
                 return $this->shirtsReport($conference);
                 break;
-            case 'svs':
-                return $this->svsReport($conference);
+            case 'sv_hours':
+                return $this->svHoursReport($conference);
+                break;
+            case 'sv_bids':
+                return $this->svBidsReport($conference);
                 break;
             case 'task_overview':
                 return $this->taskOverviewReport($conference);
@@ -98,7 +101,6 @@ class ReportController extends Controller
             ->tasks()
             ->with([
                 'assignments:id,hours,state_id,task_id',
-                'bids:id,task_id',
             ])
             ->get()
             ->map(function ($task) {
@@ -136,64 +138,77 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data->values(), "updated" => Carbon::create('now')];
     }
 
-    public function svsReport($conference)
+    public function svHoursReport($conference)
     {
         $doneState = State::byName('done', 'App\Assignment');
 
         $columns = collect([
             $this->buildColumn('firstname', 'Firstname'),
             $this->buildColumn('lastname', 'Lastname'),
-            $this->buildColumn('university', 'University'),
             $this->buildColumn('hours_done', 'Hours Done', true),
             $this->buildColumn('assignments_count', 'Assignments', true),
-            $this->buildColumn('bids_zero', '# Bid 0', true),
-            $this->buildColumn('bids_one', '# Bid 1 (incl. default bid)', true),
-            $this->buildColumn('bids_two', '# Bid 2', true),
-            $this->buildColumn('bids_three', '# Bid 3', true),
-            $this->buildColumn('bids_higher_two', '# Bids >= 2', true),
-            $this->buildColumn('bids_total', '# Bids', true),
         ]);
 
         $data = $conference
             ->users(Role::byName('sv'))
             ->with([
                 'assignments' => function ($query) use ($doneState, $conference) {
-                    $query->whereHas('task', function ($query) use ($conference) {
-                        $query->where('conference_id', $conference->id);
-                    });
-                },
-                'bids' => function ($query) use ($conference) {
+                    $query->select(['id', 'state_id', 'user_id', 'task_id', 'hours']);
                     $query->whereHas('task', function ($query) use ($conference) {
                         $query->where('conference_id', $conference->id);
                     });
                 }
             ])
-            ->get()
+            ->get(['users.id', 'firstname', 'lastname'])
             ->map(function ($sv) use ($doneState) {
                 $hoursDone = round($sv->assignments->where('state_id', $doneState->id)->sum('hours'), 2);
                 $assignmentsCount = $sv->assignments->count();
 
+                return [
+                    'firstname' => $sv->firstname,
+                    'lastname' => $sv->lastname,
+                    'hours_done' => $hoursDone,
+                    'assignments_count' => $assignmentsCount,
+                ];
+            });
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
+    }
+
+    public function svBidsReport($conference)
+    {
+        $columns = collect([
+            $this->buildColumn('firstname', 'Firstname'),
+            $this->buildColumn('lastname', 'Lastname'),
+            $this->buildColumn('bids_zero', '# Bids Unavailable', true),
+            $this->buildColumn('bids_one', '# Bids Low', true),
+            $this->buildColumn('bids_two', '# Bids Medium', true),
+            $this->buildColumn('bids_three', '# Bids High', true),
+            $this->buildColumn('bids_higher_two', '# Bids >= Medium', true),
+            $this->buildColumn('bids_total', '# Bids', true),
+        ]);
+
+        $data = $conference
+            ->users(Role::byName('sv'))
+            ->with([
+                'bids' => function ($query) use ($conference) {
+                    $query->select(['id', 'user_id', 'task_id', 'preference']);
+                    $query->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    });
+                }
+            ])
+            ->get(['users.id', 'firstname', 'lastname'])
+            ->map(function ($sv) {
                 $bidsZero = $sv->bids->where('preference', 0)->count();
-                $bidsOne = $sv->bids->where('preference', 1)->count();
-                // We need to add the assignments which come from the default bid of 1
-                $sv->assignments->each(function ($assignment) use (&$bidsOne, $sv) {
-                    $bid = $sv->bids->where('task_id', $assignment->task_id)->first();
-                    if (!$bid) {
-                        // If there is no bid the assignment was done by the default bid 1 or manually
-                        $bidsOne++;
-                    }
-                });
+                $bidsOne =  $sv->bids->where('preference', 1)->count();
                 $bidsTwo = $sv->bids->where('preference', 2)->count();
                 $bidsThree = $sv->bids->where('preference', 3)->count();
-                $bidsHigherTwo = $sv->bids->where('preference', '>=', 2)->count();
+                $bidsHigherTwo = $bidsTwo + $bidsThree;
 
 
                 return [
                     'firstname' => $sv->firstname,
                     'lastname' => $sv->lastname,
-                    'university' => $sv->university ? $sv->university->name : $sv->university_fallback,
-                    'hours_done' => $hoursDone,
-                    'assignments_count' => $assignmentsCount,
                     'bids_zero' => $bidsZero,
                     'bids_one' => $bidsOne,
                     'bids_two' => $bidsTwo,
@@ -202,7 +217,6 @@ class ReportController extends Controller
                     'bids_total' => $bidsZero + $bidsOne + $bidsTwo + $bidsThree,
                 ];
             });
-
         return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
     }
 

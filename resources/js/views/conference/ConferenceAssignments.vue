@@ -387,7 +387,6 @@ export default {
     },
     onPerPageChange(perPage) {
       this.$store.commit("ASSIGNMENTS_PER_PAGE", perPage);
-      this.onPageChange(1);
       this.perPage = perPage;
       this.getTasks();
     },

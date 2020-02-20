@@ -44,8 +44,8 @@
                     <small
                       v-if="props.option.bid"
                       :class="preferenceType(props.option.bid.preference).replace('is-', 'has-text-')"
-                    >{{ preferenceToString(props.option.bid.preference) }} {{ props.option.bid.user_created ? "" : "*" }}</small>
-                    <small class="has-text-info" v-else>{{ preferenceToString(1) }} *</small>
+                    >{{ preferenceToString(props.option.bid.preference) }}</small>
+                    <small v-else>no bid</small>
                   </div>
                 </div>
               </div>
@@ -56,7 +56,7 @@
                     <small
                       class="has-text-danger"
                     >{{ props.option.stats.bids_placed['unavailable'] }}</small>
-                    <!-- <small class="has-text-info">{{ props.option.stats.bids_placed[1] }}</small> -->
+                    <small class="has-text-info">{{ props.option.stats.bids_placed['low'] }}</small>
                     <small class="has-text-warning">{{ props.option.stats.bids_placed['medium'] }}</small>
                     <small class="has-text-success">{{ props.option.stats.bids_placed['high'] }}</small>
                   </div>
@@ -79,7 +79,7 @@
           <small class="has-text-warning">Medium</small>
           <small class="has-text-success">High</small>
           preference order
-          <br />SVs already assigned or unavailable are not shown | * = SV did not create bid
+          <br />SVs already assigned or unavailable are not shown
         </small>
         <b-loading :is-full-page="false" :active="isLoading"></b-loading>
       </template>

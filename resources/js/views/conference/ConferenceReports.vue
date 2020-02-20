@@ -1,15 +1,21 @@
 <template>
   <div>
     <b-field grouped group-multiline>
-      <b-select v-model="selected" @input="load($event)" placeholder="Select a report">
+      <b-select
+        :disabled="isLoading"
+        v-model="selected"
+        @input="fetch($event)"
+        placeholder="Select a report"
+      >
         <option value="shirts">T-Shirts</option>
-        <option value="svs">SVs</option>
+        <option value="sv_hours">SV Hours</option>
+        <option value="sv_bids">SV Bid</option>
         <option value="task_overview">Task Overview</option>
         <option value="tasks_free_slots">Tasks with free slots</option>
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">
-        <b-dropdown @input="exportData($event)" aria-role="list">
+        <b-dropdown :disabled="isLoading" @input="exportData($event)" aria-role="list">
           <button class="button is-primary" slot="trigger">
             <span>Export</span>
             <b-icon icon="menu-down"></b-icon>
@@ -20,12 +26,20 @@
         </b-dropdown>
       </b-field>
 
-      <b-field expanded></b-field>
+      <b-field v-if="isLoading" expanded>
+        <b-progress
+          v-if="isLoading"
+          type="is-primary"
+          size="is-large"
+          show-value
+        >This might take a long time</b-progress>
+      </b-field>
+      <b-field v-else expanded></b-field>
 
       <b-field position="is-right">
         <b-button
-          :disabled="!selected"
-          @click="load(selected)"
+          :disabled="!selected || isLoading"
+          @click="fetch(selected)"
           type="is-primary"
           icon-left="refresh"
         >Reload</b-button>
@@ -34,7 +48,11 @@
 
     <b-field v-if="data && columns" grouped>
       <b-field class="is-vertical-center">
-        <b-switch @input="$store.commit('REPORT_PAGINATED', $event)" v-model="isPaginated">Paginated</b-switch>
+        <b-switch
+          :disabled="isLoading"
+          @input="$store.commit('REPORT_PAGINATED', $event)"
+          v-model="isPaginated"
+        >Paginated</b-switch>
       </b-field>
     </b-field>
 
@@ -42,6 +60,7 @@
     <span v-if="updated">Last updated {{ updated | moment("from") }}</span>
 
     <b-table
+      :loading="isLoading"
       v-if="data && columns"
       :bordered="true"
       :narrowed="true"
@@ -73,7 +92,6 @@
         </div>
       </template>
     </b-table>
-    <b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
   </div>
 </template>
 
@@ -132,7 +150,7 @@ export default {
         trapFocus: true
       });
     },
-    load(name) {
+    fetch(name) {
       this.isLoading = true;
       api
         .getReport(this.conference.key, name)
@@ -142,10 +160,10 @@ export default {
           this.columns = data.data.columns;
           this.updated = data.data.updated;
           this.$store.commit("REPORT_PAGINATED", data.data.paginate);
+          this.$store.commit("REPORT_SELECTED", this.selected);
           this.$store.commit("REPORT_DATA", data.data.data);
           this.$store.commit("REPORT_COLUMNS", data.data.columns);
           this.$store.commit("REPORT_UPDATED", data.data.updated);
-          this.$store.commit("REPORT_SELECTED", this.selected);
         })
         .catch(error => {
           var message = error.response.data
@@ -157,13 +175,7 @@ export default {
             type: "is-danger",
             hasIcon: true
           });
-          this.data = null;
-          this.columns = null;
-          this.updated = null;
-          this.$store.commit("REPORT_DATA", null);
-          this.$store.commit("REPORT_COLUMNS", null);
-          this.$store.commit("REPORT_UPDATED", null);
-          this.$store.commit("REPORT_SELECTED", this.selected);
+          this.selected = this.$store.getters.reportSelected;
         })
         .finally(() => {
           this.isLoading = false;
