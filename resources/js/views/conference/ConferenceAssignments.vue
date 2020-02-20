@@ -177,7 +177,7 @@
           class="is-marginless is-paddingless"
           :visible="activeColumns.includes('assignments')"
           label="Assignments"
-          width="500"
+          width="700"
         >
           <task-assignments-component
             :task="props.row"
@@ -207,7 +207,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >{{ totalTasks > 0 ? totalTasks : 'No' }} {{ totalTasks == 1 ? 'task' : 'tasks' }} for {{ this.day | moment('ll') }}</small>
+        >Found {{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }}</small>
       </template>
 
       <template slot="footer">

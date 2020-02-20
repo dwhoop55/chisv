@@ -442,7 +442,6 @@ class ConferenceController extends Controller
     public function svsForTaskAssignment(Conference $conference, Task $task)
     {
         $stateDone = State::byName('done', 'App\Assignment');
-        $stateAssigned = State::byName('assigned', 'App\Assignment');
         $roleSv = Role::byName('sv');
         $search = request()->search_string;
 
@@ -480,7 +479,7 @@ class ConferenceController extends Controller
         // Since we loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
-        $svs->transform(function ($sv) use ($task, $conference, $stateDone, $stateAssigned) {
+        $svs->transform(function ($sv) use ($task, $stateDone) {
             // Get the bid for this current task
             $bid = $sv->bids->where('task_id', $task->id)->first();
             if ($bid) {
@@ -523,7 +522,7 @@ class ConferenceController extends Controller
 
             $cleanUser['stats']['bids_placed'] = [
                 'unavailable' => $sv->bids->where('preference', 0)->count(),
-                // Task::count() - $sv->bids->count(),
+                'low' => $sv->bids->where('preference', 1)->count(),
                 'medium' => $sv->bids->where('preference', 2)->count(),
                 'high' => $sv->bids->where('preference', 3)->count(),
             ];
@@ -590,6 +589,7 @@ class ConferenceController extends Controller
         $roleSv = Role::byName('sv');
         $stateWaitlisted = State::byName('waitlisted');
         $stateSuccessful = State::byName('successful', 'App\Bid');
+        $stateConflict = State::byName('conflict', 'App\Bid');
         $stateDone = State::byName('done', 'App\Assignment');
 
         // Do the actual query
@@ -652,11 +652,9 @@ class ConferenceController extends Controller
         // due to the joins we did earlier
         $paginated = $query->paginate($perPage, ['permissions.*']);
 
-        $tasksCount = Task::where('conference_id', $conference->id)->count();
-
         // We need to design our returned user objects in a special way
         // since also SVs can sniff these from the dev tools        
-        $paginated->getCollection()->transform(function ($permission) use (&$showMore, &$conference, $tasksCount, &$stateDone, &$stateSuccessful, &$stateWaitlisted) {
+        $paginated->getCollection()->transform(function ($permission) use ($showMore, $conference, $stateDone, $stateSuccessful, $stateWaitlisted, $stateConflict) {
             $safe = null;
             $user = $permission->user;
             $safe = $user->only('firstname', 'lastname', 'id');
@@ -678,28 +676,28 @@ class ConferenceController extends Controller
                 });
 
 
-                // (1) We need this variables later, scroll down
-                $tasksUserBid = $user->bids->map->task->map->id;
-                $tasksUserIsAssignedOn = $user->assignments->map->task->map->id;
-                $tasksUserDidNotBid = $tasksUserIsAssignedOn->diff($tasksUserBid)->count();
-
                 $hoursDone = $user->assignments->where('state_id', $stateDone->id)->sum('hours');
                 $safe['stats'] = [
+                    "assignments" => [
+                        "count" => $user->assignments->count(),
+                        "done" => $user->assignments->where('state_id', $stateDone->id)->count()
+                    ],
                     "hours_done" => round($hoursDone, 2),
                     "bids_placed" => [
                         'unavailable' => $bids->where('preference', 0)->count(),
-                        // The number of low bids is the number of all tasks
-                        // minus the number of bids with preference 1
-                        'low' => $tasksCount - $bids->where('preference', '!=', 1)->count(),
+                        'low' => $bids->where('preference', 1)->count(),
                         'medium' => $bids->where('preference', 2)->count(),
                         'high' => $bids->where('preference', 3)->count()
                     ],
                     "bids_successful" => [
-                        // (1) We need this here
-                        'low' => $tasksUserDidNotBid
-                            + $bids->where('state_id', $stateSuccessful->id)->where('preference', 1)->count(),
+                        'low' => $bids->where('state_id', $stateSuccessful->id)->where('preference', 1)->count(),
                         'medium' => $bids->where('state_id', $stateSuccessful->id)->where('preference', 2)->count(),
                         'high' => $bids->where('state_id', $stateSuccessful->id)->where('preference', 3)->count()
+                    ],
+                    "bids_conflict" => [
+                        'low' => $bids->where('state_id', $stateConflict->id)->where('preference', 1)->count(),
+                        'medium' => $bids->where('state_id', $stateConflict->id)->where('preference', 2)->count(),
+                        'high' => $bids->where('state_id', $stateConflict->id)->where('preference', 3)->count()
                     ]
                 ];
 

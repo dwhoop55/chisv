@@ -314,7 +314,9 @@
             <label class="label">Statistics</label>
             <small>
               Bids below are displayed in
-              <small class="has-text-danger">Unavailable</small>
+              <small
+                class="has-text-weight-light has-text-danger"
+              >Unavailable</small>
               <small class="has-text-info">Low</small>
               <small class="has-text-warning">Medium</small>
               <small class="has-text-success">High</small>
@@ -330,6 +332,14 @@
                 'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_hours,
             }"
                     >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_hours }}</small>
+                  </div>
+                </div>
+              </div>
+              <div class="level-item has-text-centered">
+                <div>
+                  <p class="heading">Assignments done / total</p>
+                  <div class="subtitle">
+                    <small>{{ props.row.stats.assignments['done'] }} / {{ props.row.stats.assignments['count'] }}</small>
                   </div>
                 </div>
               </div>
@@ -354,25 +364,16 @@
                   </div>
                 </div>
               </div>
-              <!-- <div class="level-item has-text-centered">
+              <div class="level-item has-text-centered">
                 <div>
-                  <p class="heading">Bids unsuccessful</p>
+                  <p class="heading">Bids conflicting</p>
                   <div class="subtitle">
-                    <small
-                      class="has-text-danger"
-                    >{{ props.row.stats.bids_placed[0] - props.row.stats.bids_successful[0] }}</small>
-                    <small
-                      class="has-text-info"
-                    >{{ props.row.stats.bids_placed[1] - props.row.stats.bids_successful[1] }}</small>
-                    <small
-                      class="has-text-warning"
-                    >{{ props.row.stats.bids_placed[2] - props.row.stats.bids_successful[2] }}</small>
-                    <small
-                      class="has-text-success"
-                    >{{ props.row.stats.bids_placed[3] - props.row.stats.bids_successful[3] }}</small>
+                    <small class="has-text-info">{{ props.row.stats.bids_conflict['low'] }}</small>
+                    <small class="has-text-warning">{{ props.row.stats.bids_conflict['medium'] }}</small>
+                    <small class="has-text-success">{{ props.row.stats.bids_conflict['high'] }}</small>
                   </div>
                 </div>
-              </div>-->
+              </div>
             </div>
           </div>
         </div>
@@ -400,7 +401,9 @@
       </template>
 
       <template slot="bottom-left">
-        <small class="has-text-weight-light">Total SVs: {{ totalUsers }}</small>
+        <small
+          class="has-text-weight-light"
+        >Found {{ totalUsers }} SV{{ totalUsers > 1 ? 's' : '' }}</small>
       </template>
       <template slot="footer">
         <div class="has-text-right">

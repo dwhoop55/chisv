@@ -1,7 +1,7 @@
 <template>
   <b-field>
     <b-radio-button
-      @input="$emit('input', $event)"
+      @click.native="click(0)"
       :value="value"
       :disabled="disabled"
       :size="size"
@@ -9,7 +9,7 @@
       :native-value="parseInt(0)"
     >{{ preferenceToString(0) }}</b-radio-button>
     <b-radio-button
-      @input="$emit('input', $event)"
+      @click.native="click(1)"
       :value="value"
       :disabled="disabled"
       :size="size"
@@ -17,7 +17,7 @@
       :native-value="parseInt(1)"
     >{{ preferenceToString(1) }}</b-radio-button>
     <b-radio-button
-      @input="$emit('input', $event)"
+      @click.native="click(2)"
       :value="value"
       :disabled="disabled"
       :size="size"
@@ -25,7 +25,7 @@
       :native-value="parseInt(2)"
     >{{ preferenceToString(2) }}</b-radio-button>
     <b-radio-button
-      @input="$emit('input', $event)"
+      @click.native="click(3)"
       :value="value"
       :disabled="disabled"
       :size="size"
@@ -37,6 +37,16 @@
 
 <script>
 export default {
-  props: ["value", "disabled", "size"]
+  props: ["value", "disabled", "size"],
+
+  methods: {
+    click(preference) {
+      if (this.value == preference) {
+        this.$emit("input", null);
+      } else {
+        this.$emit("input", preference);
+      }
+    }
+  }
 };
 </script>
