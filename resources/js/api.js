@@ -151,6 +151,9 @@ export default {
     deleteTask(id) {
         return axios.delete(`task/${id}`);
     },
+    deleteBid(id) {
+        return axios.delete(`bid/${id}`);
+    },
 
     runAuction(conference, day) {
         return axios.post(`conference/${conference}/auction/${day}`);

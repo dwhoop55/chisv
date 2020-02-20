@@ -131,30 +131,6 @@ class BidPolicy
      */
     public function delete(User $user, Bid $bid)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the bid.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Bid  $bid
-     * @return mixed
-     */
-    public function restore(User $user, Bid $bid)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the bid.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Bid  $bid
-     * @return mixed
-     */
-    public function forceDelete(User $user, Bid $bid)
-    {
-        //
+        return $this->canBidTask($user, $bid->task);
     }
 }

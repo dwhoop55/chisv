@@ -72,7 +72,7 @@
       <b-loading :is-full-page="false" :active="isLoading" />
       <task-bid-picker-radio
         @input="setPreference($event)"
-        :value="1"
+        :value="null"
         :size="size"
         :disabled="isLoading"
       />
@@ -121,22 +121,43 @@ export default {
       let bid = this.buildBid(preference);
 
       if (bid.id) {
-        // Existing bid, update only
-        api
-          .updateBid(this.buildBid(preference))
-          .then(data => {
-            this.showSuccess();
-            let task = this.task;
-            task.own_bid = data.data.result;
-            this.$emit("input", task);
-          })
-          .catch(error => {
-            this.showError();
-            this.$emit("error");
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
+        // Existing bid, update or delete
+        if (preference != undefined) {
+          // Update
+          api
+            .updateBid(this.buildBid(preference))
+            .then(data => {
+              this.showSuccess();
+              let task = this.task;
+              task.own_bid = data.data.result;
+              this.$emit("input", task);
+            })
+            .catch(error => {
+              this.showError();
+              this.$emit("error");
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
+        } else {
+          // Preference removed, delete bid
+          api
+            .deleteBid(bid.id)
+            .then(data => {
+              this.showSuccess();
+              let task = this.task;
+              task.own_bid = null;
+              task.can_create_bid = true;
+              this.$emit("input", task);
+            })
+            .catch(error => {
+              this.showError();
+              this.$emit("error");
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
+        }
       } else {
         // New bid, create new
         api

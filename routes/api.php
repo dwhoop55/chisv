@@ -226,7 +226,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['store', 'update', 'destroy']
         ]);
         Route::resource('bid', 'BidController', [
-            'only' => ['store', 'update']
+            'only' => ['store', 'update', 'destroy']
         ]);
         Route::resource('assignment', 'AssignmentController', [
             'only' => ['store', 'update', 'destroy']

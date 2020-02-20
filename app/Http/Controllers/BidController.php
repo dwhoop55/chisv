@@ -114,6 +114,10 @@ class BidController extends Controller
      */
     public function destroy(Bid $bid)
     {
-        //
+        if ($bid->delete()) {
+            return ["result" => true, "message" => "Bid removed"];
+        } else {
+            return ["result" => false, "message" => "Bid could not be removed"];
+        }
     }
 }
