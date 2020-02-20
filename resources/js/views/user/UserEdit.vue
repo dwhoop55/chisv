@@ -23,8 +23,7 @@
           </div>
 
           <div class="subtitle has-margin-t-3">
-            <p v-if="hasPastPermissions">Ended conferences</p>
-            <p v-else>No other permissions</p>
+            <p v-if="hasPastPermissions">Past conferences</p>
           </div>
           <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
             <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
