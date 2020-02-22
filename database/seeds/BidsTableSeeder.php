@@ -52,12 +52,15 @@ class BidsTableSeeder extends Seeder
             $users->each(function ($u) use ($tasks, &$massBids, $f) {
                 $massBids = collect();
                 $tasks->each(function ($t) use ($u, &$massBids, $f) {
-                    $b = [
-                        'user_id' => $u->id,
-                        'task_id' => $t->id,
-                        'preference' => $f->boolean(2) ? 0 : $f->numberBetween(1, 3),
-                    ];
-                    $massBids->push($b);
+                    // Only create a bid in 30% of the time
+                    if ($f->boolean(30)) {
+                        $b = [
+                            'user_id' => $u->id,
+                            'task_id' => $t->id,
+                            'preference' => $f->boolean(2) ? 0 : $f->numberBetween(1, 3),
+                        ];
+                        $massBids->push($b);
+                    }
                 });
                 echo "New bids: " . $massBids->count() . "\n";
                 DB::table('bids')->insert($massBids->toArray());
