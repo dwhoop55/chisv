@@ -16,13 +16,17 @@ class UserUpdateRequest extends FormRequest
     public function rules(Request $request)
     {
         $rules = [
+            'firstname' => ['required_without:password'],
             'firstname' => ['string', 'max:255'],
+            'lastname' => ['required_without:password'],
             'lastname' => ['string', 'max:255'],
+            'email' => ['required_without:password'],
             'email' => 'string|email|max:255|unique:users,email,' . $request->id,
 
-            'languages' => ['array', 'notIn:[]'],
+            'languages' => ['required_without:password', 'array', 'notIn:[]'],
             'languages.*.id' => ['required_with:languages', 'exists:languages,id'],
 
+            'location' => ['required_without:password'],
             'location.country.id' => ['required_with:location', 'exists:countries,id'],
             'location.region.id' => ['required_with:location', 'exists:regions,id'],
             'location.city.id' => ['required_with:location', 'exists:cities,id'],
@@ -67,11 +71,11 @@ class UserUpdateRequest extends FormRequest
     public function messages()
     {
         return [
-            // 'location.*' => 'Please choose the city closest to you',
-            // 'languages.*' => 'You need to at least choose one language',
-            // 'university.*' => 'Please pick your university. If it\'s not in the list, type its name',
-            // 'degree_id.*' => 'Choosing a degree program is required',
-            // 'shirt_id.*' => 'Choosing a shirt is required',
+            'location.*' => 'Please choose the city closest to you',
+            'languages.*' => 'You need to at least choose one language',
+            'university.*' => 'Please pick your university. If it\'s not in the list, type its name',
+            'degree_id.*' => 'Choosing a degree program is required',
+            'shirt_id.*' => 'Choosing a shirt is required',
         ];
     }
 }

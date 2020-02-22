@@ -9,35 +9,24 @@
       :attached="true"
       placeholder="Which language(s) do you speak?"
       @input="$emit('input', $event)"
-      @typing="getLanguage"
+      v-debounce:100ms="getLanguage"
+      :debounce-events="'typing'"
     ></b-taginput>
   </div>
 </template>
 
 <script>
-import debounce from "lodash/debounce";
-
 export default {
   props: ["value"],
   data() {
     return {
-      filteredTags: [
-        {
-          id: 3,
-          user: {
-            first_name: "Tina",
-            last_name: "Gilbert"
-          },
-          date: "2016/04/26 06:26:28",
-          gender: "Female"
-        }
-      ],
+      filteredTags: [],
       isLoading: false
     };
   },
   methods: {
-    getLanguage: debounce(function(text) {
-      if (!text.length) {
+    getLanguage(text) {
+      if (!text || !text.length) {
         this.filteredTags = [];
         return;
       }
@@ -55,7 +44,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    }, 10)
+    }
   }
 };
 </script>

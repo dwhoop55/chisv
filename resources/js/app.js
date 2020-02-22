@@ -15,6 +15,7 @@ import VueDOMPurifyHTML from 'vue-dompurify-html'
 import moment from "moment-timezone";
 import vuexStore from './store';
 import JsonCSV from 'vue-json-csv';
+import vueDebounce from 'vue-debounce';
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -24,6 +25,7 @@ Vue.component('downloadCsv', JsonCSV)
 Vue.use(Buefy, { defaultNoticeQueue: false });
 Vue.use(VueMoment);
 Vue.use(VueDOMPurifyHTML);
+Vue.use(vueDebounce, { defaultTime: '250ms', fireOnEmpty: true });
 
 /**
  * The following block of code may be used to automatically register your

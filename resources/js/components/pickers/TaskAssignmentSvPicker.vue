@@ -8,7 +8,8 @@
       placeholder="Add SV.."
       :loading="isLoading"
       :value="searchString"
-      @typing="getAsyncData($event)"
+      v-debounce:100ms="getAsyncData"
+      debounce-events="typing"
       @select="option => $emit('input', option)"
     >
       >
@@ -99,7 +100,6 @@
 </template>
 
 <script>
-import debounce from "lodash/debounce";
 import api from "@/api.js";
 
 export default {
@@ -115,7 +115,7 @@ export default {
     };
   },
   methods: {
-    getAsyncData: debounce(function(search) {
+    getAsyncData(search) {
       this.isLoading = true;
       this.searchString = search || search == "" ? search : "";
       const params = [`search_string=${this.searchString}`].join("&");
@@ -136,7 +136,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    }, 100)
+    }
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <b-field grouped group-multiline>
       <b-input
         expanded
-        @input="onSearch($event)"
+        v-debounce="onSearch"
         v-model="searchString"
         placeholder="Search anything..."
         type="search"
@@ -81,6 +81,7 @@
       :show-detail-icon="true"
       detailed
       paginated
+      pagination-position="both"
       backend-pagination
       :total="totalUsers"
       :per-page="perPage"
@@ -413,6 +414,7 @@
               <b-icon icon="menu-down"></b-icon>
             </button>
 
+            <b-dropdown-item value="2" aria-role="listitem">2 per page</b-dropdown-item>
             <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
@@ -430,7 +432,6 @@ import api from "@/api.js";
 import auth from "@/auth.js";
 import Form from "vform";
 import { filter } from "minimatch";
-import debounce from "lodash/debounce";
 import JobModalVue from "@/components/modals/JobModal.vue";
 
 export default {
@@ -704,13 +705,9 @@ export default {
         });
     },
     onSearch(search) {
-      this.onPageChange(1);
-      this.debounceGetUsers(search);
-    },
-    debounceGetUsers: debounce(function() {
       this.getUsers();
       this.$store.commit("SVS_SEARCH", this.searchString);
-    }, 250),
+    },
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
         this.ignoreNextToggleClick = false;

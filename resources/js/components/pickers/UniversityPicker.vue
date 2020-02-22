@@ -9,7 +9,8 @@
       :field="'name'"
       :loading="isFetching"
       :keep-first="true"
-      @typing="typing"
+      debounce-events="typing"
+      v-debounce="typing"
       @select="select"
       icon="magnify"
     >
@@ -63,7 +64,7 @@ export default {
       this.internal = event;
       this.$emit("input", event);
     },
-    getAsyncData: window.debounce(function(name) {
+    getAsyncData(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
         return;
@@ -86,7 +87,7 @@ export default {
         .finally(() => {
           this.isFetching = false;
         });
-    }, 250)
+    }
   }
 };
 </script>

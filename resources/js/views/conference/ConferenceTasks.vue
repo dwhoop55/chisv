@@ -19,7 +19,7 @@
 
       <b-input
         width="600"
-        @input="onSearch($event)"
+        v-debounce="onSearch"
         v-model="searchString"
         placeholder="Search.."
         type="search"
@@ -108,6 +108,7 @@
       :data="tasks"
       paginated
       backend-pagination
+      pagination-position="both"
       :total="totalTasks"
       :per-page="perPage"
       :current-page="page"
@@ -447,13 +448,9 @@ export default {
       this.getTasks();
     },
     onSearch(search) {
-      this.onPageChange(1);
-      this.debounceGetTasks(search);
-    },
-    debounceGetTasks: debounce(function() {
       this.$store.commit("TASKS_SEARCH", this.searchString);
       this.getTasks();
-    }, 250),
+    },
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,

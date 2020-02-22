@@ -7,18 +7,19 @@
       :data="rows"
       placeholder="e.g. Berlin"
       field="city.name"
-      :loading="isFetching"
+      :loading="isLoading"
       :keep-first="true"
-      @typing="typing"
+      v-debounce="typing"
+      debounce-events="typing"
       @select="$emit('input', $event)"
       icon="magnify"
     >
       <template slot="empty">
-        <div v-if="!isFetching" class="content has-text-grey has-text-centered">
+        <div v-if="!isLoading" class="content has-text-grey has-text-centered">
           <b-icon icon="emoticon-sad"></b-icon>
           <p>Nothing found, try a city close to you</p>
         </div>
-        <div v-if="isFetching" class="content has-text-grey has-text-centered">
+        <div v-if="isLoading" class="content has-text-grey has-text-centered">
           <b-icon icon="timer-sand"></b-icon>
           <p>Loading..</p>
         </div>
@@ -38,7 +39,7 @@ export default {
   data() {
     return {
       rows: [],
-      isFetching: false
+      isLoading: false
     };
   },
 
@@ -53,30 +54,29 @@ export default {
   },
 
   methods: {
-    typing: function(text) {
-      this.$emit("input", "");
-      this.getAsyncData(text);
+    typing(name) {
+      this.$emit("input");
+      this.load(name);
     },
-    getAsyncData: window.debounce(function(name) {
-      if (!name.length || name.length < 2) {
+    load(name) {
+      if (!name || !name.length || name.length < 2) {
         this.rows = [];
         return;
       }
-      this.isFetching = true;
+      this.isLoading = true;
       axios
         .get(`search/location/${name}`)
         .then(({ data }) => {
-          this.rows = [];
-          data.data.forEach(entry => this.rows.push(entry));
+          this.rows = data.data;
         })
         .catch(error => {
           this.rows = [];
           throw error;
         })
         .finally(() => {
-          this.isFetching = false;
+          this.isLoading = false;
         });
-    }, 250)
+    }
   }
 };
 </script>

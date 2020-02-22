@@ -22,7 +22,7 @@
 
       <b-input
         expanded
-        @input="debounceLoadAsyncData"
+        v-debounce="loadAsyncData"
         :placeholder="`search in ${total} users..`"
         v-model="searchString"
       ></b-input>
@@ -33,6 +33,7 @@
       :loading="loading"
       paginated
       narrowed
+      pagination-position="both"
       backend-pagination
       backend-sorting
       :total="total"
@@ -87,8 +88,6 @@
 
 
 <script>
-import debounce from "lodash/debounce";
-
 export default {
   data() {
     return {
@@ -105,9 +104,6 @@ export default {
     };
   },
   methods: {
-    debounceLoadAsyncData: debounce(function() {
-      this.loadAsyncData();
-    }, 250),
     loadAsyncData() {
       const params = [
         `sort_by=${this.sortField}`,
