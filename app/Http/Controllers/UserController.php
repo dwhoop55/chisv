@@ -49,7 +49,7 @@ class UserController extends Controller
 
         if ($universityFallback) {
             $query->where(function ($query) use ($universityFallback) {
-                $query->where('university_fallback', $universityFallback);
+                $query->where('university_fallback', 'LIKE', '%' . $universityFallback . '%');
                 $query->orWhereHas('university', function ($query) use ($universityFallback) {
                     $query = $query->where('name', 'LIKE', '%' . $universityFallback . '%');
                 });
