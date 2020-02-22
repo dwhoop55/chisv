@@ -442,17 +442,20 @@ class ConferenceController extends Controller
     public function svsForTaskAssignment(Conference $conference, Task $task)
     {
         $stateDone = State::byName('done', 'App\Assignment');
+        $stateAssigned = State::byName('assigned', 'App\Assignment');
+        $stateCheckedIn = State::byName('checked-in', 'App\Assignment');
         $roleSv = Role::byName('sv');
         $search = request()->search_string;
 
         $query = $conference
             ->users($roleSv)
             ->with([
-                // Get only bids which are for this conference
-                'bids' => function ($query) use ($conference) {
+                // Get the bid(s) of the user for this task
+                // There can only be one or no result
+                'bids' => function ($query) use ($task) {
                     $query->select(['id', 'preference', 'user_id', 'task_id', 'user_created']);
-                    $query->whereHas('task', function ($query) use ($conference) {
-                        $query->where('conference_id', $conference->id);
+                    $query->whereHas('task', function ($query) use ($task) {
+                        $query->where('task_id', $task->id);
                     });
                 },
                 // Get only assignments which are for this conference
@@ -479,9 +482,9 @@ class ConferenceController extends Controller
         // Since we loop through all users anyway we use this chance to also
         // minimize the data model
         // We will return null so that we can later sanitize the collection
-        $svs->transform(function ($sv) use ($task, $stateDone) {
+        $svs->transform(function ($sv) use ($task, $stateDone, $stateAssigned, $stateCheckedIn) {
             // Get the bid for this current task
-            $bid = $sv->bids->where('task_id', $task->id)->first();
+            $bid = $sv->bids->first();
             if ($bid) {
                 $bid = $bid->only('id', 'preference', 'user_created');
             } else {
@@ -509,23 +512,21 @@ class ConferenceController extends Controller
             // Sum up all hours already done
             $hoursDone = $sv->assignments->where("state_id", $stateDone->id)->sum("hours");
             // // Sum up all the hours the SV will likely do today
-            // $hoursAssignedToday = $sv
-            //     ->assignments
-            //     ->filter(function ($assignment) use ($task, $stateAssigned) {
-            //         return $assignment->task->date == $task->date
-            //             && $assignment->state_id == $stateAssigned->id;
-            //     })
-            //     ->sum("hours");
+            $hoursToday = $sv
+                ->assignments
+                ->filter(function ($assignment) use ($task, $stateAssigned, $stateCheckedIn) {
+                    return $assignment->task->date == $task->date
+                        && ($assignment->state_id == $stateAssigned->id
+                            || $assignment->state_id == $stateCheckedIn->id);
+                })
+                ->sum("hours");
 
             $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
-            // $cleanUser['stats']['hours_assigned_today'] = round($hoursAssignedToday, 2);
+            $cleanUser['stats']['hours_assigned_today'] = round($hoursToday, 2);
 
-            $cleanUser['stats']['bids_placed'] = [
-                'unavailable' => $sv->bids->where('preference', 0)->count(),
-                'low' => $sv->bids->where('preference', 1)->count(),
-                'medium' => $sv->bids->where('preference', 2)->count(),
-                'high' => $sv->bids->where('preference', 3)->count(),
-            ];
+
+            // We calculate this later when we have sorted and trimmed the collection
+            // $cleanUser['stats']['bids_placed'] = ...
 
             return $cleanUser;
         });
@@ -545,8 +546,37 @@ class ConferenceController extends Controller
         });
 
         $count = $svs->count();
-        $limit = 20;
-        $subset = $svs->forPage(1, $limit)->values();
+
+        // No we have a sorted collection of SVs to show
+        // We will now add some information about the bids which were placed
+        // during the whole conference. It's important to cut the
+        // collection to a smaller list of $limit to or the process
+        // will take way too long since we calculate this very time
+        // intensive data for every SVs which we would cut from the
+        // collection later anyways.
+        $limit = 10;
+        $subset = $svs->forPage(1, $limit)->values()
+            ->map(function ($sv) use ($conference) {
+
+                // Now we load the bids from the database for every of these SVs
+                $bids = Bid
+                    ::where('user_id', $sv['id'])
+                    ->whereHas('task', function ($query) use ($conference) {
+                        $query->where('conference_id', $conference->id);
+                    })
+                    ->get(['id', 'preference']);
+
+                $sv['stats']['bids_placed'] = [
+                    'unavailable' => $bids->where('preference', 0)->count(),
+                    'low' => $bids->where('preference', 1)->count(),
+                    'medium' => $bids->where('preference', 2)->count(),
+                    'high' => $bids->where('preference', 3)->count()
+                ];
+
+                return $sv;
+            });
+
+
         return ["total_matches" => $count, "returned_matches" => $limit, "svs" => $subset];
     }
 

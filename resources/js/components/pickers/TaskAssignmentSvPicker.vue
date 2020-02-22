@@ -27,13 +27,22 @@
             <div class="level">
               <div class="level-item has-text-centered">
                 <div>
-                  <p class="heading">Hours done</p>
+                  <p class="heading">Hours done (+today)</p>
                   <div class="subtitle">
                     <small
                       :class="{
                 'has-text-danger has-text-weight-bold': props.option.stats.hours_done >= conference.volunteer_hours,
             }"
-                    >{{ props.option.stats.hours_done }}/{{ conference.volunteer_hours }}</small>
+                    >
+                      <b-tooltip
+                        multiline
+                        label="Total hours all days (done)"
+                      >{{ props.option.stats.hours_done }}</b-tooltip>
+                      <b-tooltip
+                        multiline
+                        label="Hours the SV will do today (assigned/checked-in)"
+                      >(+{{ props.option.stats.hours_assigned_today }})</b-tooltip>
+                    </small>
                   </div>
                 </div>
               </div>
@@ -53,12 +62,20 @@
                 <div>
                   <p class="heading">Bids placed</p>
                   <div class="subtitle">
-                    <small
-                      class="has-text-danger"
-                    >{{ props.option.stats.bids_placed['unavailable'] }}</small>
-                    <small class="has-text-info">{{ props.option.stats.bids_placed['low'] }}</small>
-                    <small class="has-text-warning">{{ props.option.stats.bids_placed['medium'] }}</small>
-                    <small class="has-text-success">{{ props.option.stats.bids_placed['high'] }}</small>
+                    <b-tooltip type="is-danger" label="Unavailable">
+                      <small
+                        class="has-text-danger"
+                      >{{ props.option.stats.bids_placed['unavailable'] }}</small>
+                    </b-tooltip>
+                    <b-tooltip type="is-info" label="Low">
+                      <small class="has-text-info">{{ props.option.stats.bids_placed['low'] }}</small>
+                    </b-tooltip>
+                    <b-tooltip type="is-warning" label="Medium">
+                      <small class="has-text-warning">{{ props.option.stats.bids_placed['medium'] }}</small>
+                    </b-tooltip>
+                    <b-tooltip type="is-success" label="High">
+                      <small class="has-text-success">{{ props.option.stats.bids_placed['high'] }}</small>
+                    </b-tooltip>
                   </div>
                 </div>
               </div>
@@ -73,13 +90,7 @@
       <template slot="header">
         <small>
           Showing first {{ data.length }}/{{ total_matches }} SV{{ (data.length == 1) ? '' : "s" }}
-          <br />Bids below are displayed in
-          <small class="has-text-danger">Unavailable</small>
-          <small class="has-text-info">Low</small>
-          <small class="has-text-warning">Medium</small>
-          <small class="has-text-success">High</small>
-          preference order
-          <br />SVs already assigned or unavailable are not shown
+          | SVs already assigned or unavailable are not shown
         </small>
         <b-loading :is-full-page="false" :active="isLoading"></b-loading>
       </template>
