@@ -77,6 +77,32 @@ export default {
         state.svs.page.index = page;
     },
 
+    USER_INDEX_SEARCH(state, search) {
+        state.userIndex.search = search;
+    },
+    USER_INDEX_UNIVERSITY(state, university) {
+        state.userIndex.university = university;
+    },
+    USER_INDEX_PER_PAGE(state, perPage) {
+        state.userIndex.page.items = perPage;
+    },
+    USER_INDEX_PAGE(state, page) {
+        state.userIndex.page.index = page;
+    },
+    USER_INDEX_SORT_FIELD(state, field) {
+        if (field) {
+            state.userIndex.sort.field = field;
+        }
+    },
+    USER_INDEX_SORT_DIRECTION(state, direction) {
+        if (direction) {
+            state.userIndex.sort.direction = direction;
+        }
+    },
+    USER_INDEX_DATA(state, data) {
+        state.userIndex.data = data;
+    },
+
     REPORT_DATA(state, data) {
         state.report.data = data;
     },

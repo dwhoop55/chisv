@@ -2,7 +2,7 @@
 <template>
   <div>
     <b-autocomplete
-      required
+      :required="isRequired"
       :value="universityName"
       :data="rows"
       :placeholder="'e.g. RWTH'"
@@ -34,7 +34,7 @@
 
 <script>
 export default {
-  props: ["value"],
+  props: ["value", "required"],
 
   data() {
     return {
@@ -50,6 +50,13 @@ export default {
         return this.internal.name;
       } else if (this.value && this.value.name) {
         return this.value.name;
+      }
+    },
+    isRequired() {
+      if (this.required === false) {
+        return false;
+      } else {
+        return true;
       }
     }
   },

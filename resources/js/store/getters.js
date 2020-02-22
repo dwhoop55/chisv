@@ -58,6 +58,7 @@ export default {
     svsPage: state => {
         return parseInt(state.svs.page.index);
     },
+
     reportData: state => {
         return state.report.data;
     },
@@ -78,6 +79,28 @@ export default {
     },
     reportPage: state => {
         return parseInt(state.report.page.index);
+    },
+
+    userIndexSearch: state => {
+        return state.userIndex.search;
+    },
+    userIndexUniversity: state => {
+        return state.userIndex.university;
+    },
+    userIndexPerPage: state => {
+        return parseInt(state.userIndex.page.items);
+    },
+    userIndexPage: state => {
+        return parseInt(state.userIndex.page.index);
+    },
+    userIndexSortField: state => {
+        return state.userIndex.sort.field;
+    },
+    userIndexSortDirection: state => {
+        return state.userIndex.sort.direction;
+    },
+    userIndexData: state => {
+        return state.userIndex.data;
     },
 
     conferenceTab: state => {

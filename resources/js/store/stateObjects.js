@@ -34,4 +34,12 @@ var navigation = {
     lastConference: null,
 }
 
-export { tasks, assignments, svs, report, navigation }
+var userIndex = {
+    data: null,
+    search: "",
+    university: null,
+    sort: { field: 'firstname', direction: 'asc' },
+    page: { items: 25, index: 1 },
+}
+
+export { tasks, assignments, svs, report, userIndex, navigation }

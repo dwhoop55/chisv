@@ -1,50 +1,33 @@
 <template>
   <section>
-    <b-field grouped group-multiline>
-      <b-select @input="loadAsyncData" v-model="perPage">
-        <option value="5">5 per page</option>
-        <option value="10">10 per page</option>
-        <option value="15">15 per page</option>
-        <option value="25">25 per page</option>
-        <option value="50">50 per page</option>
-        <option value="75">75 per page</option>
-        <option value="100">100 per page</option>
-        <option value="9999999">All</option>
-      </b-select>
-
-      <!-- This will have the backend to be able to sort for foreign key'ed objected -->
-      <!-- <b-select v-model="roleName">
-        <option value="chair">Show only Chairs</option>
-        <option value="captain">Show only Captains</option>
-        <option value="sv">Show only SVs</option>
-        <option value="all">Show all roles</option>
-      </b-select>-->
-
+    <b-field expanded>
       <b-input
-        expanded
-        v-debounce="loadAsyncData"
-        :placeholder="`search in ${total} users..`"
-        v-model="searchString"
+        :placeholder="`E.g. firstname, lastname, email`"
+        :value="search"
+        @input="onSearch($event)"
       ></b-input>
     </b-field>
 
+    <b-field expanded>
+      <university-picker :required="false" @input="onUniversityChange($event)" :value="university" />
+    </b-field>
+
     <b-table
-      :data="data"
-      :loading="loading"
+      :data="data ? data.data : []"
+      :loading="isLoading"
       paginated
       narrowed
       pagination-position="both"
       backend-pagination
       backend-sorting
-      :total="total"
+      :total="data ? data.total : 0"
       :per-page="perPage"
+      :current-page="page"
       @page-change="onPageChange"
       aria-next-label="Next page"
       aria-previous-label="Previous page"
       aria-page-label="Page"
       aria-current-label="Current page"
-      :default-sort-direction="defaultSortOrder"
-      :default-sort="[sortField, sortOrder]"
       @sort="onSort"
     >
       <template slot-scope="props">
@@ -82,6 +65,27 @@
           </div>
         </section>
       </template>
+
+      <template slot="footer">
+        <div class="has-text-right">
+          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+            <button class="button is-small" slot="trigger">
+              <span>{{ perPage == 99999999999 ? 'All' : perPage }} per page</span>
+              <b-icon icon="menu-down"></b-icon>
+            </button>
+
+            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
+            <b-dropdown-item value="30" aria-role="listitem">25 per page</b-dropdown-item>
+            <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
+            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
+            <b-dropdown-item value="99999999999" aria-role="listitem">All per page</b-dropdown-item>
+          </b-dropdown>
+        </div>
+      </template>
+
+      <template slot="top-left">
+        <b-button type="is-primary" @click="getUsers()">Reload</b-button>
+      </template>
     </b-table>
   </section>
 </template>
@@ -91,74 +95,81 @@
 export default {
   data() {
     return {
-      data: [],
-      total: 0,
-      loading: false,
-      sortField: "firstname",
-      sortOrder: "asc",
-      roleName: "sv",
-      searchString: "",
-      defaultSortOrder: "asc",
-      page: 1,
-      perPage: 25
+      data: this.$store.getters.userIndexData,
+      isLoading: false,
+      sortField: this.$store.getters.userIndexSortField,
+      sortDirection: this.$store.getters.userIndexSortDirection,
+      search: this.$store.getters.userIndexSearch,
+      university: this.$store.getters.userIndexUniversity,
+      page: this.$store.getters.userIndexPage,
+      perPage: this.$store.getters.userIndexPerPage
     };
   },
   methods: {
-    loadAsyncData() {
-      const params = [
+    getUsers() {
+      var params = [
         `sort_by=${this.sortField}`,
-        `sort_order=${this.sortOrder}`,
+        `sort_order=${this.sortDirection}`,
         `page=${this.page}`,
         `per_page=${this.perPage}`,
-        `search_string=${this.searchString}`,
-        `role_name=${this.roleName}`
-      ].join("&");
+        `search=${this.search}`
+      ];
 
-      this.loading = true;
+      if (this.university && this.university.id) {
+        params.push(`university_id=${this.university.id}`);
+      } else if (this.university) {
+        params.push(`university_fallback=${this.university.name}`);
+      }
+      params = params.join("&");
+
+      this.isLoading = true;
       axios
         .get(`user?${params}`)
-        .then(({ data }) => {
-          this.data = [];
-          this.total = data.meta.total;
-          data.data.forEach(user => {
-            // Change user infos here
-            this.data.push(user);
-          });
-          this.loading = false;
+        .then(data => {
+          this.data = data.data;
+          this.$store.commit("USER_INDEX_DATA", data.data);
+          this.isLoading = false;
         })
         .catch(error => {
           this.data = [];
           this.total = 0;
-          this.loading = false;
+          this.isLoading = false;
           throw error;
         });
     },
-    /*
-     * Handle page-change event
-     */
-    onPageChange(page) {
-      this.page = page;
-      this.loadAsyncData();
+    onUniversityChange(university) {
+      this.$store.commit("USER_INDEX_UNIVERSITY", university);
+      this.university = university;
+      this.getUsers();
     },
-    /*
-     * Handle sort event
-     */
-    onSort(field, order) {
+    onPageChange(page) {
+      this.$store.commit("USER_INDEX_PAGE", page);
+      this.page = page;
+      this.getUsers();
+    },
+    onPerPageChange(perPage) {
+      this.$store.commit("USER_INDEX_PER_PAGE", perPage);
+      this.perPage = perPage;
+      this.getUsers();
+    },
+    onSort(field, direction) {
       this.sortField = field;
-      this.sortOrder = order;
-      this.loadAsyncData();
+      this.sortDirection = direction;
+      this.$store.commit("USER_INDEX_SORT_FIELD", field);
+      this.$store.commit("USER_INDEX_SORT_DIRECTION", direction);
+      this.getUsers();
+    },
+    onSearch(search) {
+      this.$store.commit("USER_INDEX_SEARCH", search);
+      this.search = search;
+      this.getUsers();
     }
   },
-  filters: {
-    /**
-     * Filter to truncate string, accepts a length parameter
-     */
-    truncate(value, length) {
-      return value.length > length ? value.substr(0, length) + "..." : value;
-    }
-  },
+
   mounted() {
-    this.loadAsyncData();
+    if (!this.data) {
+      this.getUsers();
+    }
   }
 };
 </script>
