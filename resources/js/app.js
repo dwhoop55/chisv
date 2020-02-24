@@ -212,8 +212,25 @@ Vue.mixin({
                     return "Unknown";
             }
         },
+        stringToPreference(string) {
+            if (string == undefined) return -1;
+            let lowered = string.toLowerCase();
+            switch (lowered) {
+                case "unavailable":
+                    return 0;
+                case "low":
+                    return 1;
+                case "medium":
+                    return 2;
+                case "high":
+                    return 3;
+                default:
+                    return -1;
+            }
+        },
         preferenceType(preference) {
-            if (!preference || preference == undefined) return "is-dark";
+            console.log(preference)
+            if (preference == undefined) return "is-dark";
             switch (preference) {
                 case 0:
                     return "is-danger";

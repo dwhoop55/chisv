@@ -48,7 +48,7 @@
     </b-table>
   </div>
   <div v-else>
-    <p>No assignments found</p>
+    <p>No assignments yet</p>
   </div>
 </template>
 

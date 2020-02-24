@@ -63,20 +63,7 @@
                 <div>
                   <p class="heading">Bids placed</p>
                   <div class="subtitle">
-                    <b-tooltip type="is-danger" label="Unavailable">
-                      <small
-                        class="has-text-danger"
-                      >{{ props.option.stats.bids_placed['unavailable'] }}</small>
-                    </b-tooltip>
-                    <b-tooltip type="is-info" label="Low">
-                      <small class="has-text-info">{{ props.option.stats.bids_placed['low'] }}</small>
-                    </b-tooltip>
-                    <b-tooltip type="is-warning" label="Medium">
-                      <small class="has-text-warning">{{ props.option.stats.bids_placed['medium'] }}</small>
-                    </b-tooltip>
-                    <b-tooltip type="is-success" label="High">
-                      <small class="has-text-success">{{ props.option.stats.bids_placed['high'] }}</small>
-                    </b-tooltip>
+                    <bid-counter :bids="props.option.stats.bids_placed" />
                   </div>
                 </div>
               </div>

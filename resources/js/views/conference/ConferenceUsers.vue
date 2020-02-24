@@ -313,34 +313,24 @@
         <div v-if="props.row.stats">
           <div class="notification field is-floating-label">
             <label class="label">Statistics</label>
-            <small>
-              Bids below are displayed in
-              <small
-                class="has-text-weight-light has-text-danger"
-              >Unavailable</small>
-              <small class="has-text-info">Low</small>
-              <small class="has-text-warning">Medium</small>
-              <small class="has-text-success">High</small>
-              preference order
-            </small>
             <div class="level">
               <div class="level-item has-text-centered">
                 <div>
                   <p class="heading">Hours done</p>
                   <div class="subtitle">
-                    <small
+                    <span
                       :class="{
                 'has-text-danger has-text-weight-bold': props.row.stats.hours_done >= conference.volunteer_hours,
             }"
-                    >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_hours }}</small>
+                    >{{ props.row.stats.hours_done.toString().substr(0,5) }}/{{ conference.volunteer_hours }}</span>
                   </div>
                 </div>
               </div>
               <div class="level-item has-text-centered">
                 <div>
-                  <p class="heading">Assignments done / total</p>
+                  <p class="heading">Assignments done</p>
                   <div class="subtitle">
-                    <small>{{ props.row.stats.assignments['done'] }} / {{ props.row.stats.assignments['count'] }}</small>
+                    <span>{{ props.row.stats.assignments['done'] }} / {{ props.row.stats.assignments['count'] }}</span>
                   </div>
                 </div>
               </div>
@@ -348,10 +338,7 @@
                 <div>
                   <p class="heading">Bids placed</p>
                   <div class="subtitle">
-                    <small class="has-text-danger">{{ props.row.stats.bids_placed['unavailable'] }}</small>
-                    <small class="has-text-info">{{ props.row.stats.bids_placed['low'] }}</small>
-                    <small class="has-text-warning">{{ props.row.stats.bids_placed['medium'] }}</small>
-                    <small class="has-text-success">{{ props.row.stats.bids_placed['high'] }}</small>
+                    <bid-counter :bids="props.row.stats.bids_placed" />
                   </div>
                 </div>
               </div>
@@ -359,9 +346,7 @@
                 <div>
                   <p class="heading">Bids successful</p>
                   <div class="subtitle">
-                    <small class="has-text-info">{{ props.row.stats.bids_successful['low'] }}</small>
-                    <small class="has-text-warning">{{ props.row.stats.bids_successful['medium'] }}</small>
-                    <small class="has-text-success">{{ props.row.stats.bids_successful['high'] }}</small>
+                    <bid-counter :bids="props.row.stats.bids_successful" />
                   </div>
                 </div>
               </div>
@@ -369,9 +354,7 @@
                 <div>
                   <p class="heading">Bids conflicting</p>
                   <div class="subtitle">
-                    <small class="has-text-info">{{ props.row.stats.bids_conflict['low'] }}</small>
-                    <small class="has-text-warning">{{ props.row.stats.bids_conflict['medium'] }}</small>
-                    <small class="has-text-success">{{ props.row.stats.bids_conflict['high'] }}</small>
+                    <bid-counter :bids="props.row.stats.bids_successful" />
                   </div>
                 </div>
               </div>
