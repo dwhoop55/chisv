@@ -83,15 +83,18 @@
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Assignments">
                 <conference-assignments
-                  v-if="$store.getters.conferenceTab==3"
+                  v-show="$store.getters.conferenceTab==3"
                   :conference="conference"
                 ></conference-assignments>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Conference">
-                <conference-edit v-if="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
+                <conference-edit v-show="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Reports">
-                <conference-reports v-if="$store.getters.conferenceTab==5" :conference="conference"></conference-reports>
+                <conference-reports
+                  v-show="$store.getters.conferenceTab==5"
+                  :conference="conference"
+                ></conference-reports>
               </b-tab-item>
             </b-tabs>
           </div>
