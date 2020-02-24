@@ -3,7 +3,7 @@
     <b-field grouped group-multiline>
       <b-input
         expanded
-        v-debounce="onSearch"
+        v-debounce.fireonempty="onSearch"
         v-model="searchString"
         placeholder="Search anything..."
         type="search"

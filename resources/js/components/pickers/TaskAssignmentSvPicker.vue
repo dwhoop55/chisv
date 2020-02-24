@@ -8,7 +8,7 @@
       placeholder="Add SV.."
       :loading="isLoading"
       :value="searchString"
-      v-debounce:100ms="getAsyncData"
+      v-debounce:100ms.fireonempty="getAsyncData"
       debounce-events="typing"
       @select="option => $emit('input', option)"
     >

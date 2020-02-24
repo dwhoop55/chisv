@@ -25,7 +25,7 @@ Vue.component('downloadCsv', JsonCSV)
 Vue.use(Buefy, { defaultNoticeQueue: false });
 Vue.use(VueMoment);
 Vue.use(VueDOMPurifyHTML);
-Vue.use(vueDebounce, { defaultTime: '250ms', fireOnEmpty: true });
+Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });
 
 /**
  * The following block of code may be used to automatically register your
@@ -229,7 +229,6 @@ Vue.mixin({
             }
         },
         preferenceType(preference) {
-            console.log(preference)
             if (preference == undefined) return "is-dark";
             switch (preference) {
                 case 0:

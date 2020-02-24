@@ -5,7 +5,7 @@
       :key="`fruit-${index}`"
       :type="type(index)"
       :label="index | capitalize"
-      :class="$style.bid-counter-item"
+      class="bid-counter-item"
     >
       <span :class="type(index).replace('is-' ,'has-text-')">{{ bid }}</span>
     </b-tooltip>
@@ -23,10 +23,3 @@ export default {
   }
 };
 </script>
-
-<style module>
-.bid-counter-item {
-  margin-left: 0.2em;
-  margin-right: 0.2em;
-}
-</style>

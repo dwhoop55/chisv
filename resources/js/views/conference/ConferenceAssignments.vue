@@ -20,8 +20,7 @@
       <b-field>
         <b-input
           width="600"
-          v-debounce="onSearch"
-          :debounce-events="['input', 'icon-right-click']"
+          v-debounce.fireonempty="onSearch"
           v-model="searchString"
           placeholder="Search.."
           type="search"
