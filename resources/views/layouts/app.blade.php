@@ -116,6 +116,9 @@
             @yield('content')
         </div>
     </div>
+    @if (config('app.debug') === true)
+    <script src="http://localhost:8098"></script>
+    @endif
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 

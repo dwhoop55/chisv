@@ -21,6 +21,7 @@
         <b-input
           width="600"
           v-debounce="onSearch"
+          :debounce-events="['input', 'icon-right-click']"
           v-model="searchString"
           placeholder="Search.."
           type="search"
@@ -429,8 +430,8 @@ export default {
       }
 
       var days = [];
-      var start = new Date(this.conference.start_date);
-      var end = new Date(this.conference.end_date);
+      var start = this.dateFromMySql(this.conference.start_date);
+      var end = this.dateFromMySql(this.conference.end_date);
       var loop = new Date(start);
 
       for (var d = start; d <= end; d.setDate(d.getDate() + 1)) {

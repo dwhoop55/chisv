@@ -59,6 +59,13 @@ Vue.filter('textlimit', function (text, limit, clamp = '...') {
 
 Vue.mixin({
     methods: {
+        dateFromMySql(string) {
+            // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
+            let dateTimeParts = string.split(/[- :]/);
+            // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
+            dateTimeParts[1]--;
+            return new Date(...dateTimeParts);
+        },
         decimalFormat(decimal) {
             return parseFloat(parseFloat(decimal).toFixed(2));
         },
@@ -83,36 +90,37 @@ Vue.mixin({
             return n;
         },
         dateFromTime(time) {
-            return new Date(`1970-01-01 ${time}`);
+            return new Date(this.dateFromMySql(`1970-01-01 ${time}`));
+            return new Date();
         },
-        stringInObject: function (searchInput, object) {
-            if (!object) return false;
-            let search = searchInput.toLowerCase();
-            var found = false;
-            // We first get the keys of the object
-            // to loop through them. When the key
-            // is a string we compare it (and return true on match)
-            // or recusively go into the object if the key
-            // points to one and do matching there again
-            var keys = Object.keys(object);
-            keys.forEach(key => {
-                // Only compare strings
-                if (typeof object[key] === "string" || object[key] instanceof String) {
-                    let value = object[key].toLowerCase();
-                    if (value.indexOf(search) >= 0) {
-                        // console.log("Found in " + key + " (" + value + ")");
-                        found = true;
-                    }
-                }
+        // stringInObject: function (searchInput, object) {
+        //     if (!object) return false;
+        //     let search = searchInput.toLowerCase();
+        //     var found = false;
+        //     // We first get the keys of the object
+        //     // to loop through them. When the key
+        //     // is a string we compare it (and return true on match)
+        //     // or recusively go into the object if the key
+        //     // points to one and do matching there again
+        //     var keys = Object.keys(object);
+        //     keys.forEach(key => {
+        //         // Only compare strings
+        //         if (typeof object[key] === "string" || object[key] instanceof String) {
+        //             let value = object[key].toLowerCase();
+        //             if (value.indexOf(search) >= 0) {
+        //                 // console.log("Found in " + key + " (" + value + ")");
+        //                 found = true;
+        //             }
+        //         }
 
-                // Recursively go into the objects
-                if (typeof object[key] === "object" || object[key] instanceof Object) {
-                    if (this.stringInObject(searchInput, object[key])) found = true;
-                }
-            });
+        //         // Recursively go into the objects
+        //         if (typeof object[key] === "object" || object[key] instanceof Object) {
+        //             if (this.stringInObject(searchInput, object[key])) found = true;
+        //         }
+        //     });
 
-            return found;
-        },
+        //     return found;
+        // },
         filterStates: function (states, filter) {
             return states.filter((value, index) => {
                 return value.for == filter;

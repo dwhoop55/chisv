@@ -293,10 +293,10 @@ export default {
               description: "",
               date: new Date().toMySqlDate(),
               start_at: "09:00:00",
-              end_at: "09:00:00",
-              hours: 0,
+              end_at: "10:00:00",
+              hours: 1,
               priority: 1,
-              slots: 1,
+              slots: 2,
               conference_id: this.conference.id
             },
             updated: () => {
@@ -475,8 +475,8 @@ export default {
       }
 
       var days = [];
-      var start = new Date(this.conference.start_date);
-      var end = new Date(this.conference.end_date);
+      var start = this.dateFromMySql(this.conference.start_date);
+      var end = this.dateFromMySql(this.conference.end_date);
       var loop = new Date(start);
 
       for (var d = start; d <= end; d.setDate(d.getDate() + 1)) {
