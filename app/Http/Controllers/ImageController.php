@@ -38,7 +38,7 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        $imageValidationString = "required|image|mimes:jpeg,png,jpg,gif|between:0,5000";
+        $imageValidationString = "required|image|mimes:jpeg,png,jpg,gif|between:0,1024";
         if ($request->owner_type == "App\User") {
             $imageValidationString = "$imageValidationString|dimensions:max_width=128,max_height=128";
         } else if ($request->owner_type == "App\Conference") {

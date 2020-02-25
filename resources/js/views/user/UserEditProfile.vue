@@ -12,7 +12,13 @@
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
       <div class="is-flex">
         <b-field>
-          <user-edit-avatar v-if="user" v-model="user"></user-edit-avatar>
+          <image-component
+            v-if="user"
+            v-model="user"
+            type="avatar"
+            size="128x128"
+            text=" Drop new face..<br />png, jpg, gif<br />max 128x128"
+          ></image-component>
         </b-field>
 
         <div class="has-padding-l-5" style="flex-grow:2">
