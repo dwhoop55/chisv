@@ -106,15 +106,16 @@ class BidPolicy
         if (
             ($skip->contains("stateCheck") || $user->isSv($conference, State::byName('accepted'))) &&
             $conference->bidding_enabled &&
-            $conference->bidding_until && // must be set
-            new Carbon($task->date) <= new Carbon($conference->bidding_until) &&
-            new Carbon($task->date) >= Carbon::today() &&
+            $conference->bidding_start && // must be set
+            $conference->bidding_end && // must be set
+            new Carbon($task->date) >= new Carbon($conference->bidding_start) &&
+            new Carbon($task->date) <= new Carbon($conference->bidding_end) &&
             ($skip->contains("assignmentsCheck") || !$user->assignmentFor($task))
         ) {
             // Allow bidding if the user is SV for the task's conference and 'accepted',
             // the bidding is open
-            // the task is not after bidding_until
-            // the task is not in the past
+            // the task is not before bidding_start
+            // the task is not after bidding_end
             // the user is not already assigned to the task
             return true;
         } else {

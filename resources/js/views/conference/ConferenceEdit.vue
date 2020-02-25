@@ -82,9 +82,10 @@
         >
           <b-datepicker
             placeholder="Select a range"
-            @input="updateDateRange"
+            @input="updateDateRange($event)"
             :value="dateRange"
             range
+            icon="calendar-today"
           ></b-datepicker>
         </b-field>
       </b-field>
@@ -103,13 +104,13 @@
         ></b-input>
       </b-field>
 
-      <p>Leave any of the two fields empty to hide the button on the conference page</p>
+      <p>Leave any of the fields empty to hide the info</p>
       <b-field grouped>
         <b-field
           expanded
           :type="{ 'is-danger': form.errors.has('url_name') }"
           :message="form.errors.get('url_name')"
-          label="External link caption"
+          label="External link button caption"
         >
           <b-input v-model="form.url_name" maxlength="100" placeholder="e.g. ACM, Website, More"></b-input>
         </b-field>
@@ -124,6 +125,15 @@
       </b-field>
 
       <b-field
+        expanded
+        :type="{ 'is-danger': form.errors.has('email_chair') }"
+        :message="form.errors.get('email_chair')"
+        label="Email of the chair managing the conference (will be in the reply-to field of all emails)"
+      >
+        <b-input required v-model="form.email_chair"></b-input>
+      </b-field>
+
+      <b-field
         label="State"
         expanded
         :type="{ 'is-danger': form.errors.has('state_id') }"
@@ -134,33 +144,30 @@
 
       <b-field grouped>
         <b-field
-          label="Enable bidding on tasks (independent of state above)"
+          label="Enable bidding on tasks"
           :type="{ 'is-danger': form.errors.has('bidding_enabled') }"
           :message="form.errors.get('bidding_enabled')"
         >
           <b-switch
             v-model="form.bidding_enabled"
-          >{{ form.bidding_enabled ? 'Bidding open until' : 'Bidding closed' }}</b-switch>
+          >{{ form.bidding_enabled ? 'Bidding open for days:' : 'Bidding closed' }}</b-switch>
         </b-field>
         <b-field
           expanded
           v-if="form.bidding_enabled"
-          label="Bidding open until"
-          :type="{ 'is-danger': form.errors.has('bidding_until') }"
-          :message="form.errors.get('bidding_until')"
+          label="Bidding open for these days"
+          :type="{ 'is-danger': form.errors.has('bidding_start') || form.errors.has('bidding_end') }"
+          :message="biddingRangeError"
         >
           <b-datepicker
-            :value="biddingEnd"
-            @input="form.bidding_until = $event.toMySqlDate()"
-            :min-date="minDate"
+            :value="biddingRange"
+            @input="updateBiddingRange($event)"
             expanded
-            placeholder="Day (including) until which can be bid"
+            range
             icon="calendar-today"
           ></b-datepicker>
         </b-field>
       </b-field>
-
-      <br />
 
       <b-field grouped>
         <b-field
@@ -199,29 +206,20 @@
           :closable="false"
         >The enrollment form can no longer be changed. The enrollment form must not be changed when there are SVs already enrolled</b-notification>
       </b-field>
-      <br />
 
-      <b-field
-        expanded
-        :type="{ 'is-danger': form.errors.has('email_chair') }"
-        :message="form.errors.get('email_chair')"
-        label="Email of the chair managing the conference (will be in the reply-to field of all emails)"
-      >
-        <b-input required v-model="form.email_chair"></b-input>
-      </b-field>
+      <b-field>&nbsp;</b-field>
 
-      <b-field class="buttons" grouped position="is-right">
+      <b-field grouped position="is-right">
         <b-button
           type="is-success"
-          size="is-large"
           @click="save()"
           :disabled="form.busy"
-          icon-left="check-bold"
+          icon-left="content-save"
         >Save</b-button>
       </b-field>
     </form>
 
-    <b-loading :is-full-page="false" :active.sync="isLoading || form.busy"></b-loading>
+    <b-loading :is-full-page="false" :active="isLoading || form.busy"></b-loading>
   </div>
 </template>
 
@@ -240,6 +238,16 @@ export default {
   },
 
   computed: {
+    biddingRangeError() {
+      var message = "";
+      if (this.form.errors.has("bidding_start")) {
+        message += this.form.errors.get("bidding_start");
+      }
+      if (this.form.errors.has("bidding_end")) {
+        message += this.form.errors.get("bidding_end");
+      }
+      return message;
+    },
     dateErrors() {
       if (this.hasDateErrors) {
         return (
@@ -269,18 +277,14 @@ export default {
       d.setHours(0, 0, 0, 0);
       return d;
     },
-    biddingEnd() {
-      if (this.form.bidding_until) {
-        return this.dateFromMySql(this.form.bidding_until);
+    biddingRange() {
+      if (this.form.bidding_start && this.form.bidding_end) {
+        return [
+          this.dateFromMySql(this.form.bidding_start),
+          this.dateFromMySql(this.form.bidding_end)
+        ];
       } else {
-        return new Date();
-      }
-    },
-    biddingStart() {
-      if (this.form.bidding_start) {
-        return this.dateFromMySql(this.form.bidding_start);
-      } else {
-        return new Date();
+        return [new Date(), new Date()];
       }
     }
   },
@@ -308,7 +312,7 @@ export default {
         email_chair: null,
         bidding_enabled: null,
         bidding_start: null,
-        bidding_until: null,
+        bidding_end: null,
         created_at: null,
         updated_at: null
       }),
@@ -329,6 +333,10 @@ export default {
         "Conference",
         this.conference.id
       );
+    },
+    updateBiddingRange: function($event) {
+      this.form.bidding_start = $event[0].toMySqlDate();
+      this.form.bidding_end = $event[1].toMySqlDate();
     },
     updateDateRange: function($event) {
       this.form.start_date = $event[0].toMySqlDate();

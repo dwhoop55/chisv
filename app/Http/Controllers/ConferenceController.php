@@ -785,9 +785,13 @@ class ConferenceController extends Controller
      */
     public function index()
     {
-        $conferences = Conference::with('icon', 'artwork')->orderBy('start_date', 'desc')->get()->filter(function ($conference) {
-            return auth()->user()->can('view', $conference);
-        });
+        $conferences = Conference
+            ::with('icon', 'artwork')
+            ->orderBy('start_date', 'desc')
+            ->get()
+            ->filter(function ($conference) {
+                return auth()->user()->can('view', $conference);
+            });
 
         return new Conferences($conferences);
     }
@@ -961,7 +965,8 @@ class ConferenceController extends Controller
             'volunteer_max',
             'email_chair',
             'bidding_enabled',
-            'bidding_until'
+            'bidding_start',
+            'bidding_end'
         );
 
         $result = $conference->update($data);

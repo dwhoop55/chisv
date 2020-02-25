@@ -225,7 +225,6 @@ export default {
               message:
                 "You cannot bid or change your bid at the moment. One of the reasons might be:\
             <li>Bidding is not open for this day</li>\
-            <li>The task is in the past</li>\
             <li>You are not an SV with the state <i>accepted</i></li>\
             <li>You are already assigned to this task</li>"
             });
