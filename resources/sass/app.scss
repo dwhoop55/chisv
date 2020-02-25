@@ -146,6 +146,10 @@ h3 {
   align-items: stretch;
 }
 
+.is-flex-wrap {
+  flex-wrap: wrap;
+}
+
 .is-vertical-center {
   display: flex;
   align-items: center;

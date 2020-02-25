@@ -22,7 +22,7 @@ Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
 Vue.component('downloadCsv', JsonCSV)
 
-Vue.use(Buefy, { defaultNoticeQueue: false });
+Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right" });
 Vue.use(VueMoment);
 Vue.use(VueDOMPurifyHTML);
 Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });
