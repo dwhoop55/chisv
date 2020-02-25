@@ -60,30 +60,20 @@ export default {
     createConference(vform) {
         return vform.post(`conference`);
     },
-    createImage(form) {
+    createImage(model, type, image) {
+        let form = new FormData();
+        let owner = (type == "avatar") ? "App\\User" : "App\\Conference";
+        form.append('image', image);
+        form.append('type', type);
+        form.append('owner_type', owner);
+        form.append('owner_id', model.id);
+        form.append("name", model.id + "-" + type);
+
         return axios.post(`image`, form, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         });
-    },
-    createConferenceImage(conference, type, image) {
-        let form = new FormData();
-        form.append('image', image);
-        form.append('type', type);
-        form.append('owner_type', "App\\Conference");
-        form.append('owner_id', conference.id);
-        form.append("name", conference.key + "-" + type);
-        return this.createImage(form);
-    },
-    createUserImage(user, type, image) {
-        let form = new FormData();
-        form.append('image', image);
-        form.append('type', type);
-        form.append('owner_type', "App\\User");
-        form.append('owner_id', user.id);
-        form.append("name", type + "-" + user.id);
-        return this.createImage(form);
     },
     createPermission(vform) {
         return vform.post("permission");

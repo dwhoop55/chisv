@@ -71,9 +71,10 @@ export default {
       this.isLoading = true;
 
       if (this.id) {
+        // Update existing, since we have an image id
         promise = api.updateImage(this.id, this.image);
       } else {
-        promise = api.createUserImage(this.model, this.type, this.image);
+        promise = api.createImage(this.model, this.type, this.image);
       }
 
       promise
