@@ -36,7 +36,7 @@ export default {
 
   computed: {
     stateBackground: function() {
-      if (!this.conference.state || this.conference.state.name) {
+      if (!this.conference.state || !this.conference.state.name) {
         return "background: grey;";
       }
       let start = "#3cac8a";

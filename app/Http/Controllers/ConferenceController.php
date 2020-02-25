@@ -786,7 +786,7 @@ class ConferenceController extends Controller
     public function index()
     {
         $conferences = Conference
-            ::with('icon', 'artwork')
+            ::with('icon', 'artwork', 'state')
             ->orderBy('start_date', 'desc')
             ->get()
             ->filter(function ($conference) {
