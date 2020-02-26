@@ -288,17 +288,41 @@
 
         <b-field />
 
+        <div v-if="props.row.canViewBids">
+          <div class="notification field is-floating-label">
+            <label class="label">Bids</label>
+            {{ props.open }}
+            <b-collapse
+              @open="showBidsForUser=props.row.id"
+              @close="showBidsForUser=null"
+              :open="showBidsForUser == props.row.id"
+            >
+              <span slot="trigger" slot-scope="props">
+                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+                {{ !props.open ? 'Show' : 'Hide' }}
+              </span>
+              <sv-bids-list
+                v-if="showBidsForUser == props.row.id"
+                :user="props.row"
+                :conference="conference"
+              ></sv-bids-list>
+            </b-collapse>
+          </div>
+        </div>
+
+        <b-field />
+
         <div v-if="props.row.permission.enrollment_form">
           <div class="notification field is-floating-label">
             <label
               class="label"
             >Enrollment form (Type: {{ props.row.permission.enrollment_form.name }} )</label>
-            <b-collapse :open="conference.state.name != 'running'" aria-id="contentIdForA11y1">
+            <b-collapse :open="conference.state.name != 'running'">
               <!-- This will hide the enrollment form when the conference is running to make the tasks better visible -->
-              <a slot="trigger" slot-scope="props" aria-controls="contentIdForA11y1">
+              <span slot="trigger" slot-scope="props">
                 <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
                 {{ !props.open ? 'Show' : 'Hide' }}
-              </a>
+              </span>
 
               <enrollment-form-summary
                 class="section has-padding-t-8"
@@ -438,6 +462,12 @@ export default {
       // This will ensure that the details won't open
       // on SV state dropdown click
       ignoreNextToggleClick: false,
+
+      // We use this as a workaround to only 'v-if' the svBidsList
+      // when the b-collapse is open
+      // It will also close the bidList of other SVs
+      // to make sure the DOM is kept small
+      showBidsForUser: null,
 
       canUpdateEnrollment: false,
       canRunLottery: false,

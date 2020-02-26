@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Bid;
+use App\Conference;
 use App\User;
 use Illuminate\Http\Request;
 use App\Degree;
@@ -160,6 +162,29 @@ class UserController extends Controller
         }
 
         return ["result" => $user->loadMissing(['avatar', 'permissions']), "message" => "User updated"];
+    }
+
+    /** 
+     * Return all bids of a user of a given conference
+     * 
+     * @param  \App\User  $user
+     * @param \App\Conference $conference
+     * @return \Illuminate\Http\Response
+     */
+    public function bidsForConference(User $user, Conference $conference)
+    {
+        $bids = Bid
+            ::where('user_id', $user->id)
+            ->whereHas('task', function ($query) use ($conference) {
+                $query->where('conference_id', $conference->id);
+            })
+            ->with([
+                'task:id,name,start_at,end_at,hours,date',
+                'state:id,name,description'
+            ])
+            ->get(['id', 'task_id', 'state_id', 'preference', 'created_at', 'updated_at', 'preference']);
+
+        return $bids;
     }
 
     /**

@@ -301,6 +301,16 @@ Vue.mixin({
                 default:
                     return "is-light";
                     break;
+                // Bids
+                case "unsuccessful":
+                    return "is-danger";
+                    break;
+                case "conflict":
+                    return "is-danger";
+                    break;
+                case "placed":
+                    return "is-white";
+                    break;
             }
         },
         roleType: function (role) {

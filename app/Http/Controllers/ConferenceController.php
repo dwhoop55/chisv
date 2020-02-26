@@ -705,6 +705,8 @@ class ConferenceController extends Controller
                     return $bid->task->conference_id = $conference->id;
                 });
 
+                $safe['canViewBids'] = auth()->user()->can('viewBidsForConference', ['App\User', $user, $conference]);
+
 
                 $hoursDone = $user->assignments->where('state_id', $stateDone->id)->sum('hours');
                 $safe['stats'] = [

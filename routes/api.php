@@ -154,6 +154,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/report/{name}', 'ReportController@show')
             ->middleware("can:viewReports,conference")
             ->name('conference.reports');
+        Route::get('user/{user}/bid/{conference}', 'UserController@bidsForConference')
+            ->middleware("can:viewBidsForConference,user,conference")
+            ->name('user.bids');
 
         // Determine if a user has s specific role
         Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {

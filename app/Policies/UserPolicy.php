@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Conference;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use App\Role;
@@ -24,6 +25,28 @@ class UserPolicy
         // the index page. Which user is displayed is
         // up to the view method below
         return $user->isAdmin();
+    }
+
+    /**
+     * Determine whether the user can view the user's bids.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function viewBidsForConference(User $user, User $model, Conference $conference)
+    {
+        if (
+            $user->isAdmin()
+            || $user->isChair($conference)
+            || $user->isCaptain($conference)
+            || $user->id == $model->id // User can view self
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**

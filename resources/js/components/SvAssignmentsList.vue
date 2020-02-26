@@ -1,6 +1,12 @@
 <template>
   <div v-if="assignments && assignments.length > 0">
-    <b-table sortable :mobile-cards="false" :data="assignments">
+    <b-table
+      :default-sort="['task.date', 'desc']"
+      narrowed
+      sortable
+      :mobile-cards="false"
+      :data="assignments"
+    >
       <template slot-scope="props">
         <b-table-column field="state.name" label="State" sortable>
           <div v-if="props.row.state.name == 'assigned'">

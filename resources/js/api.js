@@ -26,6 +26,9 @@ export default {
     getUser(id) {
         return axios.get(`user/${id}`);
     },
+    getUserBidsForConference(id, conferenceKey) {
+        return axios.get(`user/${id}/bid/${conferenceKey}`);
+    },
     getEnrollmentFormTemplates() {
         return axios.get(`enrollment_form/template`)
     },

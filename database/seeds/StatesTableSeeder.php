@@ -32,7 +32,7 @@ class StatesTableSeeder extends Seeder
 
             // Id 31 has to be always 'placed' (used in the migration for field default)!
             ["id" => 31, "for" => "App\Bid", "name" => "placed", "description" => "The bid is waiting for the auction"],
-            ["id" => 32, "for" => "App\Bid", "name" => "successful", "description" => "The bid won the auction"],
+            ["id" => 32, "for" => "App\Bid", "name" => "successful", "description" => "The bid won the auction creating an assignment"],
             ["id" => 33, "for" => "App\Bid", "name" => "unsuccessful", "description" => "The bid did not win the auction"],
             ["id" => 34, "for" => "App\Bid", "name" => "conflict", "description" => "The bid is invalid due to a task time conflict"],
 
