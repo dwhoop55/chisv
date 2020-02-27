@@ -203,6 +203,10 @@ class Auction extends AdvancedJob implements ExecutableJob
                 $reject = true;
             } else if ($sv['preference'] === 0) {
                 $reject = true;
+                // we mark the bid as an unavailable bid
+                if (isset($sv['bid_id'])) {
+                    $bidsToUpdate->push(['id' => $sv['bid_id'], 'state_id' => $this->unavailableState->id]);
+                }
             } else if ($sv['hasConflict'] === true) {
                 $reject = true;
                 // we mark the bid (if there is one) as unsuccessfull
@@ -318,6 +322,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         $this->successfulState = State::byName('successful', 'App\Bid');
         $this->unsuccessfulState = State::byName('unsuccessful', 'App\Bid');
         $this->conflictState = State::byName('conflict', 'App\Bid');
+        $this->unavailableState = State::byName('unavailable', 'App\Bid');
         $this->doneState = State::byName('done', 'App\Assignment');
 
         $createdAssignments = 0;

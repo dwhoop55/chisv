@@ -311,6 +311,9 @@ Vue.mixin({
                 case "placed":
                     return "is-white";
                     break;
+                case "unavailable":
+                    return "is-danger";
+                    break;
             }
         },
         roleType: function (role) {
