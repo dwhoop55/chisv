@@ -42,6 +42,8 @@ class ConferenceController extends Controller
     {
         return $conference->loadMissing(['icon', 'artwork', 'state', 'timezone']);
     }
+
+
     /**
      * Delete all assignments of a signle day
      * 
@@ -63,6 +65,25 @@ class ConferenceController extends Controller
         ]);
         $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Delete all assignments for $conference->name on " . $date->toDateString() . " has been queued as a new job"];
+    }
+
+    public function importTasks(Conference $conference)
+    {
+        // We only checked for canCreate App\Task on the middleware, not if
+        // the specific conference is ok. Let's do this now
+        abort_if(
+            auth()->user()->cannot('createForConference', ['App\Task', null, $conference]),
+            403,
+            "You cannot create tasks for this conference"
+        );
+
+        // Now we need to differentiate between two cases:
+        // Update and new creation.
+        // An update has id set for every task in the collection
+        // where a new creation has not
+
+        $tasks = request();
+        return $tasks;
     }
 
     /**

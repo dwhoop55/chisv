@@ -148,6 +148,9 @@ export default {
         return axios.delete(`bid/${id}`);
     },
 
+    importTasks(tasks, conference) {
+        return axios.post(`conference/${conference}/task`, tasks)
+    },
     runAuction(conference, day) {
         return axios.post(`conference/${conference}/auction/${day}`);
     },

@@ -242,6 +242,7 @@
 import api from "@/api.js";
 import auth from "@/auth.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
+import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
 
 export default {
   props: ["conference"],
@@ -309,6 +310,19 @@ export default {
           hasModalCard: true
         });
       } else if (type == "multiple") {
+        this.$buefy.modal.open({
+          parent: this,
+          props: {
+            conference: this.conference,
+            updated: () => {
+              this.getTasks();
+              this.getTaskDays();
+            }
+          },
+          fullScreen: true,
+          component: TasksImportModalVue,
+          hasModalCard: true
+        });
       }
     },
     editTask(task) {

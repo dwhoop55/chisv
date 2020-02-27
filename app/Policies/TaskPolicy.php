@@ -65,7 +65,7 @@ class TaskPolicy
      * @param  \App\Conference  $conference
      * @return mixed
      */
-    public function createForConference(User $user, Task $task, Conference $conference)
+    public function createForConference(User $user, Task $task = null, Conference $conference)
     {
         return $user->isAdmin() || $user->isChair($conference);
     }

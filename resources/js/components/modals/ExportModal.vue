@@ -36,7 +36,7 @@
     </section>
     <section class="modal-card-foot">
       <b-button @click="$parent.close()">Cancel</b-button>
-      <download-csv
+      <csv-export
         @export-finished="$parent.close()"
         :data="data"
         :name="filename"
@@ -45,7 +45,7 @@
         :separator-excel="csvExcel"
       >
         <b-button type="is-success">Export</b-button>
-      </download-csv>
+      </csv-export>
     </section>
   </div>
 </template>

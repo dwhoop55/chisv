@@ -16,11 +16,13 @@ import moment from "moment-timezone";
 import vuexStore from './store';
 import JsonCSV from 'vue-json-csv';
 import vueDebounce from 'vue-debounce';
+import { VueCsvImport } from 'vue-csv-import';
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
-Vue.component('downloadCsv', JsonCSV)
+Vue.component('csv-export', JsonCSV)
+Vue.component('csv-import', VueCsvImport)
 
 Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right" });
 Vue.use(VueMoment);
