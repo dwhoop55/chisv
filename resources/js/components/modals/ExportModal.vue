@@ -20,7 +20,10 @@
         <b-input v-model="delimiter"></b-input>
       </b-field>
 
-      <b-field v-if="type == 'csv'" label="Excel compability">
+      <b-field
+        v-if="type == 'csv'"
+        :label="`Excel compability (Prepends 'SEP=${delimiter}' to the export)`"
+      >
         <b-checkbox v-model="csvExcel">{{ csvExcel ? 'Yes' : 'No' }}</b-checkbox>
       </b-field>
 

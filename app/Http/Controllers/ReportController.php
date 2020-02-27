@@ -8,6 +8,7 @@ use App\Shirt;
 use App\State;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
@@ -15,7 +16,6 @@ class ReportController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show(Conference $conference, String $name)
@@ -36,6 +36,9 @@ class ReportController extends Controller
             case 'tasks_free_slots':
                 return $this->taskFreeSlotsReport($conference);
                 break;
+            case 'tasks_table_dump':
+                return $this->tableDump('tasks', $conference);
+                break;
 
             default:
                 abort(404, "No report for $name at " . $conference->key);
@@ -43,7 +46,41 @@ class ReportController extends Controller
         }
     }
 
-    public function taskFreeSlotsReport($conference)
+    public function tableDump($table, Conference $conference = null)
+    {
+        $columns = collect([]);
+
+        // We select the table we want to dump
+        $query = DB::table($table);
+
+        // If this method was called with a conference
+        // we want to limit the call to the given conference's scope
+        if ($conference) {
+            $query->where('conference_id', $conference->id);
+        }
+
+        // Get all the items which match the query
+        $items = $query->get();
+
+        // If there is no element abort
+        abort_if($items->isEmpty(), 500, "Table is empty");
+
+        // First we construct the columns array
+        // from the first element
+        foreach ($items->first() as $key => $value) {
+            $column = $this->buildColumn(
+                $key,
+                $key,
+                is_numeric($value),
+                true
+            );
+            $columns->push($column);
+        }
+
+        return ["columns" => $columns, "data" => $items, "updated" => Carbon::create('now'), "paginate" => true];
+    }
+
+    public function taskFreeSlotsReport(Conference $conference)
     {
         $columns = collect([
             $this->buildColumn('day', 'Task day'),
@@ -79,7 +116,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data->values(), "updated" => Carbon::create('now'), "paginate" => true];
     }
 
-    public function taskOverviewReport($conference)
+    public function taskOverviewReport(Conference $conference)
     {
 
         $doneState = State::byName('done', 'App\Assignment');
@@ -138,7 +175,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data->values(), "updated" => Carbon::create('now')];
     }
 
-    public function svHoursReport($conference)
+    public function svHoursReport(Conference $conference)
     {
         $doneState = State::byName('done', 'App\Assignment');
 
@@ -174,7 +211,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
     }
 
-    public function svBidsReport($conference)
+    public function svBidsReport(Conference $conference)
     {
         $columns = collect([
             $this->buildColumn('firstname', 'Firstname'),
@@ -220,7 +257,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
     }
 
-    public function shirtsReport($conference)
+    public function shirtsReport(Conference $conference)
     {
         $columns = collect([
             $this->buildColumn('cut', 'Cut'),
@@ -250,7 +287,7 @@ class ReportController extends Controller
         return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => false];
     }
 
-    public function buildColumn(String $key, String $label, bool $numeric = false, bool $searchable = true, bool $sortable = true, String $width = null)
+    public function buildColumn(String $key, String $label, bool $numeric = false, bool $searchable = false, bool $sortable = true, String $width = null)
     {
         return [
             'field' => $key,
@@ -258,7 +295,7 @@ class ReportController extends Controller
             'width' => $width,
             'numeric' => $numeric,
             'sortable' => $sortable,
-            'searchable' => $numeric ? false : $searchable,
+            'searchable' => $searchable ? true : !$numeric,
         ];
     }
 }

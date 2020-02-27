@@ -12,6 +12,7 @@
         <option value="sv_bids">SV Bid</option>
         <option value="task_overview">Task Overview</option>
         <option value="tasks_free_slots">Tasks with free slots</option>
+        <option value="tasks_table_dump">Tasks table dump (for later import)</option>
       </b-select>
 
       <b-field v-if="data" class="is-vertical-center">
@@ -21,8 +22,8 @@
             <b-icon icon="menu-down"></b-icon>
           </button>
 
-          <b-dropdown-item value="model" aria-role="listitem">Unsorted datamodel behind table</b-dropdown-item>
-          <b-dropdown-item value="table" aria-role="listitem">Visible sorted table content</b-dropdown-item>
+          <b-dropdown-item value="model" aria-role="listitem">(All) Unsorted datamodel behind table</b-dropdown-item>
+          <b-dropdown-item value="table" aria-role="listitem">(Only visible) sorted table content</b-dropdown-item>
         </b-dropdown>
       </b-field>
 
@@ -53,6 +54,11 @@
           @input="$store.commit('REPORT_PAGINATED', $event)"
           v-model="isPaginated"
         >Paginated</b-switch>
+        <b-switch
+          :disabled="isLoading"
+          @input="onMultiSortChange($event)"
+          v-model="isMultiSort"
+        >Multi-column sort</b-switch>
       </b-field>
     </b-field>
 
@@ -60,6 +66,7 @@
     <span v-if="updated">Last updated {{ updated | moment("from") }}</span>
 
     <b-table
+      ref="table"
       :loading="isLoading"
       v-if="data && columns"
       :bordered="true"
@@ -69,11 +76,11 @@
       :paginated="isPaginated"
       :per-page="perPage"
       :current-page="page"
+      :sort-multiple="isMultiSort"
       @page-change="onPageChange"
       @per-page-change="onPerPageChange"
       default-sort-direction="desc"
       :mobile-cards="false"
-      ref="table"
     >
       <template slot="footer">
         <div v-if="isPaginated" class="has-text-right">
@@ -110,6 +117,7 @@ export default {
       updated: this.$store.getters.reportUpdated,
       selected: this.$store.getters.reportSelected,
       isPaginated: this.$store.getters.reportPaginated,
+      isMultiSort: this.$store.getters.reportMultiSort,
       perPage: this.$store.getters.reportPerPage,
       page: this.$store.getters.reportPage,
       isLoading: false
@@ -179,6 +187,9 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          if (this.$refs.table) {
+            this.$refs.table.resetMultiSorting();
+          }
         });
     },
     onPageChange(page) {
@@ -187,8 +198,13 @@ export default {
     },
     onPerPageChange(perPage) {
       this.$store.commit("REPORT_PER_PAGE", perPage);
-      this.onPageChange(1);
       this.perPage = perPage;
+    },
+    onMultiSortChange(bool) {
+      this.$store.commit("REPORT_MULTI_SORT", bool);
+      if (this.$refs.table) {
+        this.$refs.table.resetMultiSorting();
+      }
     }
   }
 };

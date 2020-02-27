@@ -74,6 +74,9 @@ export default {
     reportPaginated: state => {
         return state.report.page.paginated;
     },
+    reportMultiSort: state => {
+        return state.report.page.multiSort;
+    },
     reportPerPage: state => {
         return parseInt(state.report.page.items);
     },

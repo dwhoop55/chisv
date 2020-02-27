@@ -118,6 +118,9 @@ export default {
     REPORT_PAGINATED(state, bool) {
         state.report.page.paginated = bool;
     },
+    REPORT_MULTI_SORT(state, bool) {
+        state.report.page.multiSort = bool;
+    },
     REPORT_PER_PAGE(state, perPage) {
         state.report.page.items = perPage;
     },
