@@ -77,13 +77,13 @@ class ConferenceController extends Controller
             "You cannot create tasks for this conference"
         );
 
-        // Now we need to differentiate between two cases:
-        // Update and new creation.
-        // An update has id set for every task in the collection
-        // where a new creation has not
-
-        $tasks = request();
-        return $tasks;
+        $job = new Job([
+            'handler' => 'App\Jobs\ImportTasks',
+            'name' => "Task import for " . $conference->key,
+            'payload' => ["conference_id" => $conference->id, "tasks" => request()->all()]
+        ]);
+        $job->saveAndDispatch();
+        return ["result" => $job->id, "message" => "Task import for $conference->name has been queued as a new job"];
     }
 
     /**

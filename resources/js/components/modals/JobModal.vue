@@ -160,6 +160,18 @@ export default {
           case "App\\Jobs\\ResetToEnrolled":
             return `${r.reset} SVs have been reset to state <i>enrolled</i>`;
             break;
+          case "App\\Jobs\\ImportTasks":
+            return `<ul>
+                    <li>Created: ${r.create_success.length}</li>
+                    <li>Create Failed: ${r.create_fail.length}</li>
+                    <li>Updated: ${r.update_success.length}</li>
+                    <li>Update Failed: ${r.update_fail.length}</li>
+                    <li>Mismatch id: ${r.mismatch.length}</li>
+                    <li>Invalid task: ${
+                      r.invalid.length > 0 ? JSON.stringify(r.invalid) : 0
+                    }</li>
+                  </ul>`;
+            break;
 
           default:
             return this.job.result;

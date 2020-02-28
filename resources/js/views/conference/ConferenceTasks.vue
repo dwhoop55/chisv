@@ -243,6 +243,7 @@ import api from "@/api.js";
 import auth from "@/auth.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
 import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
+import JobModalVue from "../../components/modals/JobModal.vue";
 
 export default {
   props: ["conference"],
@@ -314,9 +315,19 @@ export default {
           parent: this,
           props: {
             conference: this.conference,
-            updated: () => {
-              this.getTasks();
-              this.getTaskDays();
+            updated: jobId => {
+              // Job dispatched, show job modal
+              // and reload once that closes
+              this.$buefy.modal.open({
+                parent: this,
+                props: { id: jobId },
+                component: JobModalVue,
+                hasModalCard: true,
+                onCancel: () => {
+                  this.getTasks();
+                  this.getTaskDays();
+                }
+              });
             }
           },
           fullScreen: true,

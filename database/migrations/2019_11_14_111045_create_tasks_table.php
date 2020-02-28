@@ -22,7 +22,7 @@ class CreateTasksTable extends Migration
             $table->date('date')->index();
             $table->time('start_at')->nullable()->index();
             $table->time('end_at')->nullable()->index();
-            $table->unsignedInteger('priority')->index()->default(0);
+            $table->unsignedInteger('priority')->index()->default(1);
             $table->unsignedInteger('slots');
             $table->double('hours')->nullable();
 

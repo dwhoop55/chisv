@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\TaskRequest;
+use App\Http\Requests\TaskCreateRequest;
+use App\Http\Requests\TaskUpdateRequest;
 use App\Task;
-use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
@@ -35,7 +35,7 @@ class TaskController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TaskRequest $request)
+    public function store(TaskCreateRequest $request)
     {
         $data = $request->only(
             'conference_id',
@@ -53,16 +53,16 @@ class TaskController extends Controller
         $task->save();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Task  $task
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Task $task)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  \App\Task  $task
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show(Task $task)
+    // {
+    //     //
+    // }
 
 
     /**
@@ -72,7 +72,7 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function update(TaskRequest $request, Task $task)
+    public function update(TaskUpdateRequest $request, Task $task)
     {
         $data = $request->only(
             'name',

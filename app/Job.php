@@ -81,7 +81,7 @@ class Job extends Model
         } else if ($percent < 0) {
             $percent = 0;
         }
-        $this->progress = $percent;
+        $this->progress = round($percent);
         $this->save();
         return $this;
     }
