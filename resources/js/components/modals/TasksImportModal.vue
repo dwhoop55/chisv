@@ -11,22 +11,28 @@
           label="Select columns"
         >
           <br />
-          <b-notification type="is-info" :closable="false">
-            <ul>
-              <li>
-                <b>Update:</b> To update matching tasks (matched by id) select the id column. No new tasks will be created, all the data you upload will update existing tasks. If a task is not found by id no update will occur for that task.
-              </li>
-              <li>
-                <b>Create new:</b> To create only new tasks uncheck the id column. No tasks will be updated, all the data you upload will create new tasks.
-              </li>
-            </ul>
-          </b-notification>
-          <b-field label="Columns to import">
-            <b-field grouped group-multiline>
-              <b-field v-for="field in fields" :key="field">
-                <b-checkbox v-model="activeFields" :native-value="field">{{ field }}</b-checkbox>
-              </b-field>
-            </b-field>
+          <b-field label="test" />
+          <b-field>
+            <b-radio
+              @input="onModeChange($event)"
+              v-model="isModeCreate"
+              :native-value="true"
+            >Create: All uploaded tasks will create new tasks</b-radio>
+          </b-field>
+          <b-field>
+            <b-radio @input="onModeChange($event)" v-model="isModeCreate" :native-value="false">
+              Update: Match uploaded tasks with their id to existing tasks and update all given fields.
+              <br />If an existing task cannot be matched by id (when its not in the data you uploaded) there will be no change to the task.
+            </b-radio>
+          </b-field>
+          <br />
+          <b-field label="Columns to import" />
+          <b-field v-for="field in fields" :key="field">
+            <b-checkbox
+              :disabled="requiredFields.includes(field)"
+              v-model="activeFields"
+              :native-value="field"
+            >{{ field }}</b-checkbox>
           </b-field>
         </b-step-item>
         <b-step-item
@@ -104,6 +110,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      isModeCreate: true,
       csv: [
         {
           id: "1",
@@ -412,12 +419,20 @@ export default {
         "slots",
         "hours"
       ],
-      activeFields: ["id", "name", "description", "location"],
+      requiredFields: ["id", "name", "date", "start_at", "end_at", "slots"],
+      activeFields: [],
       currentStep: 2
     };
   },
 
   methods: {
+    onModeChange(isModeCreate) {
+      if (isModeCreate) {
+        this.activeFields = this.activeFields.filter(item => item != "id");
+      } else if (this.activeFields.indexOf("id") < 0) {
+        this.activeFields.unshift("id");
+      }
+    },
     close() {
       this.updated();
       this.$parent.close();
@@ -468,6 +483,7 @@ export default {
 
   created() {
     this.activeFields = this.fields;
+    this.onModeChange(true);
   }
 };
 </script>
