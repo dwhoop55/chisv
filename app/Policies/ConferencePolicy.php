@@ -174,6 +174,32 @@ class ConferencePolicy
         return false;
     }
 
+    public function deleteAssignment(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function deleteTask(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if ($user->isChair($conference)) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Determine whether the user can enroll in the conferences.
      *

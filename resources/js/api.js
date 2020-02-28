@@ -113,9 +113,6 @@ export default {
     updateConferenceResetEnrollmentsToEnrolled(key) {
         return axios.put(`conference/${key}/reset_enrollments_to_enrolled`);
     },
-    updateConferenceDeleteAllAssignments(key, date) {
-        return axios.put(`conference/${key}/delete_all_assignments/${date}`);
-    },
     updatePermission(vform, id) {
         return vform.put(`permission/${id}`);
     },
@@ -126,6 +123,12 @@ export default {
         return vform.put(`task/${id}`);
     },
 
+    deleteAllTasksOfConference(key, date) {
+        return axios.delete(`conference/${key}/tasks/${date}`);
+    },
+    deleteAllAssignmentsOfConference(key, date) {
+        return axios.delete(`conference/${key}/assignments/${date}`);
+    },
     deleteAssignment(id) {
         return axios.delete(`assignment/${id}`);
     },

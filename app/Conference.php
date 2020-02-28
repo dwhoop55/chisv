@@ -85,4 +85,9 @@ class Conference extends Model
     {
         return $this->hasManyThrough('App\Assignment', 'App\Task', 'conference_id', 'task_id', 'id', 'id');
     }
+
+    public function bids()
+    {
+        return $this->hasManyThrough('App\Bid', 'App\Task', 'conference_id', 'task_id', 'id', 'id');
+    }
 }

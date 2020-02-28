@@ -85,6 +85,14 @@
         </b-dropdown>
       </b-field>
 
+      <b-field v-if="canDeleteTask">
+        <b-button
+          :disabled="isLoading"
+          @click="deleteAllTasks()"
+          type="is-danger"
+        >Delete all Tasks of this day</b-button>
+      </b-field>
+
       <b-field class="is-vertical-center">
         <b-checkbox
           @input="onOnlyOwnTasksChange($event)"
@@ -124,13 +132,16 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column
-          :visible="canCreateTask && activeColumns.includes('manage')"
-          width="150"
-          label="Manage"
-        >
-          <b-button @click="editTask(props.row)" outlined size="is-small" type="is-primary">Edit</b-button>
+        <b-table-column :visible="activeColumns.includes('manage')" width="150" label="Manage">
           <b-button
+            v-if="canCreateTask"
+            @click="editTask(props.row)"
+            outlined
+            size="is-small"
+            type="is-primary"
+          >Edit</b-button>
+          <b-button
+            v-if="canDeleteTask"
             @click="confirmDeleteTask(props.row)"
             outlined
             size="is-small"
@@ -244,6 +255,7 @@ import auth from "@/auth.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
 import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
 import JobModalVue from "../../components/modals/JobModal.vue";
+import moment from "moment-timezone";
 
 export default {
   props: ["conference"],
@@ -266,11 +278,64 @@ export default {
       isLoading: true,
       isLoadingCalendar: true,
 
-      canCreateTask: false
+      canCreateTask: false,
+      canDeleteTask: false
     };
   },
 
   methods: {
+    deleteAllTasks() {
+      let day = new moment(this.day).format("DD.MM.YYYY");
+      this.$buefy.dialog.confirm({
+        title: "Caution!",
+        message: `Are you sure you want to <b>delete all tasks for this day (${day})</b>?\
+         <br/>This will also delete associated assignments and bids for the tasks.\
+         This action cannot be undone.`,
+        confirmText: "Yes, delete all tasks of this day",
+        type: "is-danger",
+        hasIcon: true,
+        onConfirm: () => {
+          this.$buefy.dialog.confirm({
+            title: "Really?",
+            message: `Please confirm again that you want to <b>delete all tasks for this day (${day})</b>\
+         <br/><br/>This will also delete associated assignments and bids for the tasks.\
+         <br/><br/><b>This action cannot be undone.</b><br/><b>This action cannot be undone.</b>`,
+            confirmText: "Yes, delete!",
+            type: "is-danger",
+            hasIcon: true,
+            icon: "emoticon-dead",
+            onConfirm: () => {
+              this.isLoading = true;
+              api
+                .deleteAllTasksOfConference(
+                  this.conference.key,
+                  this.day.toMySqlDate()
+                )
+                .then(data => {
+                  this.$buefy.notification.open({
+                    indefinite: true,
+                    message: data.data.message,
+                    type: "is-success",
+                    hasIcon: true
+                  });
+                })
+                .catch(error => {
+                  this.$buefy.notification.open({
+                    duration: 5000,
+                    message: error.message,
+                    type: "is-danger",
+                    hasIcon: true
+                  });
+                })
+                .finally(() => {
+                  this.isLoading = false;
+                  this.getTasks();
+                });
+            } // onConfirm 2
+          });
+        } // onConfirm 1
+      });
+    },
     showHint(type) {
       switch (type) {
         case "bid":
@@ -372,6 +437,12 @@ export default {
       api
         .deleteTask(task.id)
         .then(data => {
+          this.$buefy.notification.open({
+            duration: 5000,
+            message: data.data.message,
+            type: "is-success",
+            hasIcon: true
+          });
           this.getTasks();
           this.getTaskDays();
         })
@@ -380,7 +451,7 @@ export default {
             ? error.response.data.message
             : error.message;
           this.$buefy.notification.open({
-            duration: 5000,
+            indefinite: true,
             message: message,
             type: "is-danger",
             hasIcon: true
@@ -393,6 +464,13 @@ export default {
     getCan: async function() {
       this.canCreateTask = await auth.can(
         "createForConference",
+        "Task",
+        null,
+        "Conference",
+        this.conference.id
+      );
+      this.canDeleteTask = await auth.can(
+        "deleteForConference",
         "Task",
         null,
         "Conference",

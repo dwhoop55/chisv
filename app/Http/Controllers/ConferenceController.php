@@ -45,11 +45,11 @@ class ConferenceController extends Controller
 
 
     /**
-     * Delete all assignments of a signle day
+     * Delete all tasks of a single day
      * 
      * @return \Illuminate\Http\Response
      */
-    public function deleteAllAssignments(Conference $conference, $date)
+    public function deleteAllTasks(Conference $conference, $date)
     {
         if (!$date) {
             abort(400, "You need to specify a day in YYYY-MM-DD format!");
@@ -57,14 +57,62 @@ class ConferenceController extends Controller
             abort(500, "Could not create date object");
         }
 
-        $date = Carbon::create($date);
-        $job = new Job([
-            'handler' => 'App\Jobs\DeleteAllAssignments',
-            'name' => "Delete all assignments for " . $conference->key . " " . $date->toDateString(),
-            'payload' => ["conference_id" => $conference->id, "date" => $date]
-        ]);
-        $job->saveAndDispatch();
-        return ["result" => $job->id, "message" => "Delete all assignments for $conference->name on " . $date->toDateString() . " has been queued as a new job"];
+        $bidCount = Bid
+            ::whereHas('task', function ($query) use ($date, $conference) {
+                $query->whereDate('date', $date);
+                $query->where("conference_id", $conference->id);
+            })
+            ->delete();
+
+        $assignmentCount = Assignment
+            ::whereHas('task', function ($query) use ($date, $conference) {
+                $query->whereDate('date', $date);
+                $query->where("conference_id", $conference->id);
+            })
+            ->delete();
+
+        $taskCount = Task
+            ::whereDate('date', $date)
+            ->where("conference_id", $conference->id)
+            ->delete();
+
+
+
+        return ["result" => null, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted for this day"];
+    }
+
+    /**
+     * Delete all assignments of a single day
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteAllAssignments(Conference $conference, $date)
+    {
+
+
+        if (!$date) {
+            abort(400, "You need to specify a day in YYYY-MM-DD format!");
+        } else if (!Carbon::create($date)) {
+            abort(500, "Could not create date object");
+        }
+
+        $bidCount = Bid
+            ::whereHas('task', function ($query) use ($date, $conference) {
+                $query->whereDate('date', $date);
+                $query->where("conference_id", $conference->id);
+            })
+            ->where('state_id', "!=", State::byName('placed')->id)
+            ->update(['state_id' => State::byName('placed', 'App\Bid')->id]);
+
+        $assignmentCount = Assignment
+            ::whereHas('task', function ($query) use ($date, $conference) {
+                $query->whereDate('date', $date);
+                $query->where("conference_id", $conference->id);
+            })
+            ->delete();
+
+
+        return ["result" => null, "message" => "$assignmentCount assignments have been deleted. $bidCount bids have been reset to 'placed'"];
     }
 
     public function importTasks(Conference $conference)
@@ -274,58 +322,6 @@ class ConferenceController extends Controller
         $taskDays = $this->taskDays($conference);
 
         return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total(), "task_days" => $taskDays];
-
-        // $paginator->transform(function ($task) use (&$doneState, &$tasks) {
-        //     $safe = $task->only([
-        //         'id', 'name', 'start_at',
-        //         'end_at', 'hours', 'location',
-        //         'description', 'slots', 'priority'
-        //     ]);
-        //     // Attach assignments - this is on a per-sv level
-        //     $safe['assignments'] = $task->assignments->transform(function ($assignment) use (&$task, &$doneState, &$tasks) {
-        //         $cleanAssignment = $assignment->only(['id', 'task_id', 'hours', 'state']);
-
-        //         // // Add the bid to the assignment if there is any
-        //         $bid = $task->bids->where('user_id', $assignment->user->id)->first();
-        //         if ($bid) {
-        //             $cleanAssignment['bid'] = $bid->only(['id', 'preference', 'state']);
-        //             $cleanAssignment['bid']['state'] = $cleanAssignment['bid']['state']->only(['id', 'name']);
-        //         }
-
-        //         // Add the state which the assignment is in
-        //         $cleanAssignment['state'] = $cleanAssignment['state']->only('id', 'name');
-
-        //         // Now we add the user with some of statistics
-        //         $user = $assignment->user->only('id', 'firstname', 'lastname');
-        //         // !!! This is time intensive !!!
-        //         // $hours = $assignment->user->hoursFor($assignment->task->conference, $doneState);
-        //         // $user['hours_done'] = $hours;
-        //         $cleanAssignment['user'] = $user;
-
-        //         // !!! This is time intensive !!!
-        //         // Check for multiple assignments at time period
-        //         $otherTasks = $tasks->where('id', '!=', $task->id)->values()->map(function ($t) {
-        //             return $t->id;
-        //         });
-
-        //         // $cleanAssignment['tasks_at_time'] = ($assignment->user->tasksAtTime($task));
-
-        //         return $cleanAssignment;
-        //     });
-
-        //     $safe['total_bids'] = $task->bids->count();
-
-        //     // // Attach all bids for this task and only keep important fields
-        //     // $safe['bids'] = $task->bids->transform(function ($bid) {
-        //     //     $cleanBid = $bid->only(['id', 'preference', 'user_id']);
-        //     //     $cleanBid['state'] = $bid->state->only(['id', 'name']);
-        //     //     return $cleanBid;
-        //     // });
-
-        //     return $safe;
-        // });
-
-        // return $pagination;
     }
 
     /**

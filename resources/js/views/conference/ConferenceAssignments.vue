@@ -273,20 +273,16 @@ export default {
         onConfirm: () => {
           this.isLoading = true;
           api
-            .updateConferenceDeleteAllAssignments(
+            .deleteAllAssignmentsOfConference(
               this.conference.key,
               this.day.toMySqlDate()
             )
             .then(data => {
-              let jobId = data.data.result;
-              this.$buefy.modal.open({
-                parent: this,
-                props: { id: jobId },
-                component: JobModalVue,
-                hasModalCard: true,
-                onCancel: () => {
-                  this.getTasks();
-                }
+              this.$buefy.notification.open({
+                indefinite: true,
+                message: data.data.message,
+                type: "is-success",
+                hasIcon: true
               });
             })
             .catch(error => {

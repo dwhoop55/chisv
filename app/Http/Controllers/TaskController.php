@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
+use App\Bid;
 use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Task;
@@ -97,15 +99,18 @@ class TaskController extends Controller
     public function destroy(Task $task)
     {
         // Remove all bids if there are any
-        $bids = $task->assignments;
-        if ($bids->isNotEmpty()) {
-            $bids->map(function ($bid) {
-                $bid->delete();
-            });
-        }
+        $bidsCount = Bid
+            ::where('task_id', $task->id)
+            ->delete();
+
+        // Remove all assignments if there are any
+        $assignmentCount = Assignment
+            ::where('task_id', $task->id)
+            ->delete();
+
 
         if ($task->delete()) {
-            return ["result" => true, "message" => "Task removed"];
+            return ["result" => true, "message" => "Task removed. $bidsCount/$assignmentCount associated bids/assignments have been deleted."];
         } else {
             return ["result" => false, "message" => "Task could not be removed"];
         }

@@ -127,9 +127,14 @@ Route::group(['prefix' => 'v1'], function () {
         Route::put('conference/{conference}/reset_enrollments_to_enrolled', 'ConferenceController@resetEnrollmentsToEnrolled')
             ->name('conference.resetEnrollmentsToEnrolled')
             ->middleware("can:updateEnrollment,conference");
-        Route::put('conference/{conference}/delete_all_assignments/{date}', 'ConferenceController@deleteAllAssignments')
+
+        // Custom delete
+        Route::delete('conference/{conference}/assignments/{date}', 'ConferenceController@deleteAllAssignments')
             ->name('conference.deleteAllAssignments')
-            ->middleware("can:runLottery,conference");
+            ->middleware("can:deleteAssignment,conference");
+        Route::delete('conference/{conference}/tasks/{date}', 'ConferenceController@deleteAllTasks')
+            ->name('conference.deleteAllTasks')
+            ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
         Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')

@@ -58,6 +58,19 @@ class TaskPolicy
     }
 
     /**
+     * Determine whether the user can delete tasks
+     * for a given conference.
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function deleteForConference(User $user, Task $task = null, Conference $conference)
+    {
+        return $user->isAdmin() || $user->isChair($conference);
+    }
+
+    /**
      * Determine whether the user can create tasks
      * for a given conference.
      *
