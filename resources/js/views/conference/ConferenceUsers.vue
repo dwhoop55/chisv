@@ -496,15 +496,11 @@ export default {
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
             .then(data => {
-              let jobId = data.data.result;
-              this.$buefy.modal.open({
-                parent: this,
-                props: { id: jobId },
-                component: JobModalVue,
-                hasModalCard: true,
-                onCancel: () => {
-                  this.getUsers();
-                }
+              this.$buefy.notification.open({
+                duration: 5000,
+                message: data.data.message,
+                type: "is-success",
+                hasIcon: true
               });
             })
             .catch(error => {

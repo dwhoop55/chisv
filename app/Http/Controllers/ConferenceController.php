@@ -78,7 +78,7 @@ class ConferenceController extends Controller
 
 
 
-        return ["result" => null, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted for this day"];
+        return ["result" => $taskCount, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted for this day"];
     }
 
     /**
@@ -112,7 +112,7 @@ class ConferenceController extends Controller
             ->delete();
 
 
-        return ["result" => null, "message" => "$assignmentCount assignments have been deleted. $bidCount bids have been reset to 'placed'"];
+        return ["result" => $assignmentCount, "message" => "$assignmentCount assignments have been deleted. $bidCount bids have been reset to 'placed'"];
     }
 
     public function importTasks(Conference $conference)
@@ -140,13 +140,17 @@ class ConferenceController extends Controller
      */
     public function resetEnrollmentsToEnrolled(Conference $conference)
     {
-        $job = new Job([
-            'handler' => 'App\Jobs\ResetToEnrolled',
-            'name' => "Reset SVs to enrolled for " . $conference->key,
-            'payload' => ["conference_id" => $conference->id]
-        ]);
-        $job->saveAndDispatch();
-        return ["result" => $job->id, "message" => "Resetting SVs to 'enrolled' at $conference->name has been queued as a new job"];
+
+        $resetCount = Permission
+            ::where('conference_id', $conference->id)
+            ->where('role_id', Role::byName('sv')->id)
+            ->where('state_id', '!=', State::byName('enrolled')->id)
+            ->update([
+                "state_id" => State::byName('enrolled')->id,
+                "lottery_position" => null
+            ]);
+
+        return ["result" => $resetCount, "message" => "$resetCount SVs have been reset to state 'enrolled'"];
     }
 
     /**
@@ -599,12 +603,12 @@ class ConferenceController extends Controller
 
     public function svsCount(Conference $conference)
     {
-        $svRole = Role::byName('sv');
-        $acceptedState = State::byName('accepted');
         return [
-            "result" => $conference
-                ->permissions($svRole)
-                ->where('state_id', $acceptedState->id)
+            "result" =>
+            Permission
+                ::where('conference_id', $conference->id)
+                ->where('role_id', Role::byName('sv')->id)
+                ->where('state_id', State::byName('accepted')->id)
                 ->count(),
             "message" => null
         ];
