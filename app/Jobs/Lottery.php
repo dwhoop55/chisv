@@ -48,6 +48,9 @@ class Lottery extends AdvancedJob implements ExecutableJob
     public function execute()
     {
 
+        $acceptedState = State::byName('accepted');
+        $waitlistedState = State::byName('waitlisted');
+
         $this->setProgress(5);
         $total = [
             'processed' => 0,
@@ -84,14 +87,15 @@ class Lottery extends AdvancedJob implements ExecutableJob
         $openPositions = ($this->conference->volunteer_max)
             - ($this->conference
                 ->permissions
-                ->where('state_id', State::byName('accepted')->id)
+                ->where('role_id', Role::byName('sv')->id)
+                ->where('state_id', $acceptedState->id)
                 ->count());
 
         // Since Elloquent has easier api for AND WHERE we negate the argument
         $permissionsToAccept = $this->conference->permissions
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', '!=', State::byName('dropped')->id)
-            ->where('state_id', '!=', State::byName('accepted')->id)
+            ->where('state_id', '!=', $acceptedState->id)
             ->sortBy('lottery_position');
 
         $this->setProgress(50);
@@ -101,14 +105,14 @@ class Lottery extends AdvancedJob implements ExecutableJob
             if ($total['accepted'] < $openPositions) {
                 // Still slots available for SVs,
                 // make the current SV 'accepted'
-                $permission->state()->associate(State::byName('accepted'));
+                $permission->state()->associate($acceptedState);
                 $total['accepted']++;
-            } else if ($permission->state != State::byName('waitlisted')) {
+            } else if ($permission->state != $waitlistedState) {
                 // No more slots, put the SV which is not on the
                 // waitlist yet on the waitlist 
-                $permission->state()->associate(State::byName('waitlisted'));
+                $permission->state()->associate($waitlistedState);
                 $total['waitlisted']++;
-            } else if ($permission->state == State::byName('waitlisted')) {
+            } else if ($permission->state == $waitlistedState) {
                 $total['still_waitlisted']++;
             }
             $permission->save();
