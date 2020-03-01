@@ -117,6 +117,7 @@ class Auction extends AdvancedJob implements ExecutableJob
             // Get SVs for this conference
             ::whereHas('permissions', function ($query) {
                 $query->where("role_id", $this->svRole->id);
+                $query->where("state_id", $this->acceptedState->id);
                 $query->where("conference_id", $this->conference->id);
             })
             // Get the bids if they are for this task
@@ -324,6 +325,7 @@ class Auction extends AdvancedJob implements ExecutableJob
         $this->conflictState = State::byName('conflict', 'App\Bid');
         $this->unavailableState = State::byName('unavailable', 'App\Bid');
         $this->doneState = State::byName('done', 'App\Assignment');
+        $this->acceptedState = State::byName('accepted', 'App\User');
 
         $createdAssignments = 0;
         $tasksWithFreeSlots = collect();

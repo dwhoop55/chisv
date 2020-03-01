@@ -465,11 +465,13 @@ class ConferenceController extends Controller
         $stateDone = State::byName('done', 'App\Assignment');
         $stateAssigned = State::byName('assigned', 'App\Assignment');
         $stateCheckedIn = State::byName('checked-in', 'App\Assignment');
+        $stateAccepted = State::byName('accepted', 'App\User');
         $roleSv = Role::byName('sv');
         $search = request()->search_string;
 
         $query = $conference
             ->users($roleSv)
+            ->where('state_id', $stateAccepted->id)
             ->with([
                 // Get the bid(s) of the user for this task
                 // There can only be one or no result

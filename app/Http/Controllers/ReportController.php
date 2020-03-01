@@ -188,6 +188,7 @@ class ReportController extends Controller
 
         $data = $conference
             ->users(Role::byName('sv'))
+            ->where('state_id', State::byName('accepted')->id)
             ->with([
                 'assignments' => function ($query) use ($doneState, $conference) {
                     $query->select(['id', 'state_id', 'user_id', 'task_id', 'hours']);
@@ -226,6 +227,7 @@ class ReportController extends Controller
 
         $data = $conference
             ->users(Role::byName('sv'))
+            ->where('state_id', State::byName('accepted')->id)
             ->with([
                 'bids' => function ($query) use ($conference) {
                     $query->select(['id', 'user_id', 'task_id', 'preference']);
