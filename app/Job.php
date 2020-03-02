@@ -23,12 +23,22 @@
  * that handler. It contains the jobId and the payload
  * 
  * This reference is used by the App\Jobs\* job to
- * mark itself as complete, return additional data
- * NOTE: It would be better to wrap this extra
- * functionality into some inheritance. To always
- * make sure any implemenation of that class updates
- * the App\Job model. However this code is currently
- * in the App\Jobs\* class itself.
+ * mark itself as complete, return additional data,
+ * set its progress or status message.
+ *
+ * Every Job extends AdvancedJob and implements the
+ * ExecuteableJob Interface (see AdvancedJob) to make
+ * sure it contains an execute() function. The
+ * AdvancedJob will execute the execute() method
+ * when its handle() method is called by laravel.
+ * The subclass of AdvancedJob will be able to access
+ * the extended functions like progress setting which
+ * will then again take this Elloquent Model from the
+ * database and alter its state.
+ * 
+ * Job.php - Elloquent Model for holding additional info
+ *    |<-- AdvancedJob interacts with, calls execute() when handle()'ed
+ *       |<-- Subclasses and implements ExecutableJob: Lottery/Auction 
  * 
  */
 
