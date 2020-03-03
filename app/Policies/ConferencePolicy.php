@@ -11,6 +11,26 @@ class ConferencePolicy
 {
     use HandlesAuthorization;
 
+    /**
+     * Determine whether the user can notify SVs
+     *
+     * @param  \App\User  $user
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function notifyUsers(User $user, Conference $conference)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        if (
+            ($user->isChair($conference) || $user->isCaptain($conference))
+        ) {
+            // Chairs and captains can notify SVs
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view the reports.

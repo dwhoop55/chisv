@@ -90,9 +90,15 @@
               <b-tab-item v-if="canEdit" label="Conference">
                 <conference-edit v-show="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
               </b-tab-item>
+              <b-tab-item v-if="canNotify" label="Notify">
+                <conference-notify
+                  v-show="$store.getters.conferenceTab==5"
+                  :conference="conference"
+                ></conference-notify>
+              </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Reports">
                 <conference-reports
-                  v-show="$store.getters.conferenceTab==5"
+                  v-show="$store.getters.conferenceTab==6"
                   :conference="conference"
                 ></conference-reports>
               </b-tab-item>
@@ -117,6 +123,7 @@ export default {
     return {
       loading: true,
       canEdit: false,
+      canNotify: false,
       canUpdateEnrollment: false,
       canUpdateAssignment: false,
       canViewUsers: false,
@@ -143,6 +150,11 @@ export default {
       );
       this.canUpdateAssignment = await auth.can(
         "viewAssignments",
+        "Conference",
+        this.conference.id
+      );
+      this.canNotify = await auth.can(
+        "notifyUsers",
         "Conference",
         this.conference.id
       );

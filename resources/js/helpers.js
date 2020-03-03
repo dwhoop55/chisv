@@ -7,6 +7,16 @@ function twoDigits(d) {
     return d.toString();
 }
 
+Array.prototype.move = function (old_index, new_index) {
+    if (new_index < 0 || new_index > this.length - 1) {
+        return this;
+    }
+
+    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+    return this;
+};
+
+
 /**
  * Prototype to output MySQL date format
  **/
