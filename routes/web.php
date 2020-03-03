@@ -16,7 +16,13 @@ use App\Conference;
 */
 
 // Landing
-Route::get('/', 'HomeController@index')->name('home');
+Route::get('/', function () {
+    return redirect("/conference");
+});
+
+Route::get('/conferences', function () {
+    return redirect("/conference");
+});
 
 // Auth routes
 // Route::get('register', 'Auth\RegisterController@index')->name('register');
