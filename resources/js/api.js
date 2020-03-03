@@ -56,6 +56,9 @@ export default {
     getReport(conferenceKey, name) {
         return axios.get(`conference/${conferenceKey}/report/${name}`);
     },
+    getDestinations(conferenceKey) {
+        return axios.get(`conference/${conferenceKey}/destination`)
+    },
 
     createAssignment(svId, taskId) {
         return axios.post(`assignment`, { user_id: svId, task_id: taskId });

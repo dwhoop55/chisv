@@ -43,6 +43,33 @@ class ConferenceController extends Controller
         return $conference->loadMissing(['icon', 'artwork', 'state', 'timezone']);
     }
 
+    /** 
+     * Get all the possible notification destinations
+     * for a conference
+     * 
+     * @param App\Conference
+     * @return Collection A collection with all destionations for that conference
+     */
+    public function destinations(Conference $conference)
+    {
+        $groups = [
+            [
+                'id' => 1,
+                'type' => 'group',
+                'display' => 'SVs'
+            ]
+        ];
+
+        $users = $conference->users->unique()->map(function ($user) {
+            return [
+                'id' => $user->id,
+                'type' => 'user',
+                'display' => "$user->firstname $user->lastname"
+            ];
+        });
+
+        return ['groups' => $groups, 'users' => $users];
+    }
 
     /**
      * Delete all tasks of a single day

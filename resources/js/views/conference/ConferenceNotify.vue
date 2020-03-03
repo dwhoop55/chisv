@@ -1,5 +1,6 @@
 <template>
   <div>
+    <notify-destination-picker :conference="conference" v-model="destinations" />
     <div class="columns">
       <div class="column">
         <!-- Subject and Greeting -->
@@ -83,7 +84,8 @@ export default {
             url: "https://chisv.org/conference/"
           }
         }
-      ]
+      ],
+      destinations: []
     };
   },
 
