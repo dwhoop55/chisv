@@ -11,14 +11,16 @@ class Announcement extends Notification
 {
     use Queueable;
 
+    private $subject;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($subject)
     {
-        //
+        $this->subject = $subject;
     }
 
     /**
@@ -55,6 +57,6 @@ class Announcement extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->messages;
+        return $this->subject;
     }
 }

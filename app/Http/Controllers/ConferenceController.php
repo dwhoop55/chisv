@@ -8,11 +8,13 @@ use App\Conference;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
 use App\Http\Requests\EnrollRequest;
+use App\Http\Requests\NotificationPostRequest;
 use App\State;
 use App\User;
 use App\Role;
 use App\Http\Resources\Conferences;
 use App\Job;
+use App\Notifications\Announcement;
 use App\Permission;
 use App\Services\EnrollmentFormService;
 use App\Task;
@@ -20,6 +22,7 @@ use Carbon\Carbon as Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Notification;
 
 class ConferenceController extends Controller
 {
@@ -43,21 +46,72 @@ class ConferenceController extends Controller
         return $conference->loadMissing(['icon', 'artwork', 'state', 'timezone']);
     }
 
+
+    /** 
+     * Post a notification to groups, users and email
+     * 
+     * @param App\Conference
+     * @return Collection A collection with all destionations for that conference
+     */
+    public function postNotification(Conference $conference, NotificationPostRequest $notification)
+    {
+        $destinations = collect($notification->destinations);
+
+        // First we pull in all the users
+        $users = $destinations
+            ->filter(function ($destination) {
+                return isset($destination['type']) && $destination['type'] == 'user';
+            })
+            ->map(function ($user) {
+                return User::find($user['id']);
+            });
+
+        // Then we load the groups to extract users from these
+        $groups = $destinations->filter(function ($destination) {
+            return isset($destination['type']) && $destination['type'] == 'group';
+        });
+        // And push them into the $users collection
+        $groups->each(function ($group) use (&$users, $conference) {
+            abort_if(!isset($group['role_id']), 500, "Group does not contain role_id!");
+            $groupUsers = User
+                ::whereHas('permissions', function ($query) use ($group, $conference) {
+                    $query->where('role_id', $group['role_id']);
+                    $query->where('conference_id', $conference->id);
+                })
+                ->get();
+            $users = $users->merge($groupUsers);
+        });
+
+        $users = $users->unique();
+
+        Notification::send($users, new Announcement($notification));
+
+
+        return ["result" => true, "message" => "Notification queued"];
+    }
+
     /** 
      * Get all the possible notification destinations
      * for a conference
      * 
      * @param App\Conference
-     * @return Collection A collection with all destionations for that conference
+     * @return Collection A collection with all destinations for that conference
      */
     public function destinations(Conference $conference)
     {
         $groups = [
             [
                 'id' => 1,
+                'role_id' => 10,
                 'type' => 'group',
                 'display' => 'SVs'
-            ]
+            ],
+            [
+                'id' => 2,
+                'role_id' => 3,
+                'type' => 'group',
+                'display' => 'Captains'
+            ],
         ];
 
         $users = $conference->users->unique()->map(function ($user) {

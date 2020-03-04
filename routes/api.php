@@ -104,6 +104,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
 
         // Custom posts (may overwrite ressource routes from below)
+        Route::post('conference/{conference}/notification', 'ConferenceController@postNotification')
+            ->name('conference.postNotification')
+            ->middleware("can:postNotification,conference");
         Route::post('conference/{conference}/task', 'ConferenceController@importTasks')
             ->name('conference.importTask')
             ->middleware("can:create,App\Task");

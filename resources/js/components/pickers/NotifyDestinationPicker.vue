@@ -1,9 +1,9 @@
 <template>
   <b-field label="Destinations">
-    <b-button @click="getDestinations">Reload</b-button>
     <b-taginput
-      :value="destinations"
-      :data="availableDestinations"
+      v-model="destinations"
+      :data="filteredAvailableDestinations"
+      @typing="search=$event"
       autocomplete
       field="display"
       icon="label"
@@ -12,7 +12,8 @@
       attached
       :loading="isLoading"
       open-on-focus
-      @add="validateAdd($event)"
+      :before-adding="beforeAdd"
+      @add="$emit('input', destinations)"
     >
       <template slot-scope="props">
         <strong>{{props.option.type}}</strong>
@@ -27,25 +28,55 @@
 import api from "@/api.js";
 
 export default {
-  props: ["conference", "destinations"],
-  model: {
-    prop: "destinations"
-  },
+  props: ["conference", "value"],
 
   data() {
     return {
+      search: "",
       isLoading: false,
+      destinations: [],
       availableDestinations: []
     };
   },
 
   created() {
     this.getDestinations();
+    this.value.forEach(element => {
+      this.destinations.push(element);
+    });
+  },
+
+  computed: {
+    filteredAvailableDestinations() {
+      if (this.search == "") {
+        return this.availableDestinations;
+      } else {
+        return this.availableDestinations.filter(destination => {
+          return (
+            destination.display
+              .toLowerCase()
+              .indexOf(this.search.toLowerCase()) >= 0
+          );
+        });
+      }
+    }
   },
 
   methods: {
-    validateAdd(event) {
-      console.log(event);
+    beforeAdd(tag) {
+      if ((tag.type == "user" || tag.type == "group") && tag.id > 0) {
+        // Tag is a tag from the backend
+        return true;
+      } else if (this.isEmail(tag)) {
+        // Tag is a manully typed email
+        return true;
+      } else {
+        // No valid input
+        this.$buefy.toast.open({
+          message: "Choose from the list or append an email",
+          type: "is-danger"
+        });
+      }
     },
     getDestinations() {
       this.isLoading = true;

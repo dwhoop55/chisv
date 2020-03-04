@@ -1,79 +1,121 @@
 <template>
   <div>
-    <notify-destination-picker :conference="conference" v-model="destinations" />
+    <b-field
+      expanded
+      :type="{ 'is-danger': form.errors.has('destinations') }"
+      :message="form.errors.get('destinations')"
+    >
+      <notify-destination-picker
+        :conference="conference"
+        @input="onDestinationChange($event)"
+        :value="form.destinations"
+      />
+    </b-field>
     <div class="columns">
       <div class="column">
-        <!-- Subject and Greeting -->
-        <div class="notification">
-          <div class="field is-floating-label">
-            <label class="label">Subject</label>
-            <b-input
-              @input="onSubjectChange($event)"
-              type="is-primary"
-              :value="subject"
-              placeholder="Put a subject here"
-            />
+        <form>
+          <!-- Subject and Greeting -->
+          <div class="notification">
+            <div class="field is-floating-label">
+              <b-field
+                expanded
+                :type="{ 'is-danger': form.errors.has('subject') }"
+                :message="form.errors.get('subject')"
+                label="Subject"
+              >
+                <b-input
+                  required
+                  maxlength="70"
+                  @input="onSubjectChange($event)"
+                  type="is-primary"
+                  :value="form.subject"
+                  placeholder="Put a subject here"
+                />
+              </b-field>
+            </div>
+            <div class="field is-floating-label">
+              <b-field
+                expanded
+                :type="{ 'is-danger': form.errors.has('greeting') }"
+                :message="form.errors.get('greeting')"
+                label="Greeting"
+              >
+                <b-input
+                  required
+                  maxlength="70"
+                  @input="onGreetingChange($event)"
+                  type="is-primary"
+                  :value="form.greeting"
+                  placeholder="Put a greeting here"
+                />
+              </b-field>
+            </div>
           </div>
-          <div class="field is-floating-label">
-            <label class="label">Greeting</label>
-            <b-input
-              @input="onGreetingChange($event)"
-              type="is-primary"
-              :value="greeting"
-              placeholder="Put a greeting here"
-            />
+
+          <!-- Add elments -->
+          <div class="notification">
+            <label class="label">Add Elements</label>
+            <b-field class="buttons" grouped group-multiline>
+              <b-button
+                @click="addElement(element)"
+                :icon-left="iconForElement(element.type)"
+                v-for="(element, index) in availableElements"
+                :key="index"
+              >{{ element.type | capitalize }}</b-button>
+            </b-field>
           </div>
-        </div>
 
-        <!-- Add elments -->
-        <div class="notification">
-          <label class="label">Add Elements</label>
-          <b-field class="buttons" grouped group-multiline>
-            <b-button
-              @click="addElement(element)"
-              :icon-left="iconForElement(element.type)"
-              v-for="(element, index) in availableElements"
-              :key="index"
-            >{{ element.type | capitalize }}</b-button>
-          </b-field>
-        </div>
-
-        <!-- Active elements -->
-        <notify-element
-          class="box"
-          @move="move(index, $event)"
-          @remove="remove($event)"
-          :type="element.type"
-          :index="index"
-          v-model="element.data"
-          v-for="(element, index) in elements"
-          :key="index"
-          :can-move-up="canMove('up', index)"
-          :can-move-down="canMove('down', index)"
-        />
+          <!-- Active elements -->
+          <b-notification
+            :closable="false"
+            v-if="form.errors.has('elements')"
+            type="is-danger"
+            :message="form.errors.get('elements')"
+          />
+          <notify-element
+            class="box"
+            @move="move(index, $event)"
+            @remove="remove($event)"
+            :type="element.type"
+            :index="index"
+            v-model="element.data"
+            v-for="(element, index) in form.elements"
+            :key="index"
+            :can-move-up="canMove('up', index)"
+            :can-move-down="canMove('down', index)"
+          />
+        </form>
       </div>
 
       <div class="column message">
         <div class="message-header">
-          <p>Preview{{ subject ? ': ' + subject : ''}}</p>
+          <p>Preview{{ form.subject ? ': ' + form.subject : ''}}</p>
         </div>
         <div class="message-body">
-          <notify-message :subject="subject" :greeting="greeting" :elements="elements" />
+          <notify-message
+            :subject="form.subject"
+            :greeting="form.greeting"
+            :elements="form.elements"
+          />
         </div>
       </div>
     </div>
+    <b-field grouped position="is-right">
+      <b-button @click="send" icon-right="send" type="is-primary">Send</b-button>
+    </b-field>
   </div>
 </template>
 
 <script>
+import api from "@/api.js";
+import { Form } from "vform";
+
 export default {
   props: ["conference"],
 
   data() {
     return {
-      subject: "SV Announcement",
-      greeting: "Hi everyone,",
-      elements: [],
+      isLoading: false,
       availableElements: [
         { type: "title", data: "Section in message for structure" },
         { type: "text", data: "Some text.." },
@@ -85,7 +127,12 @@ export default {
           }
         }
       ],
-      destinations: []
+      form: new Form({
+        subject: "SV Announcement",
+        greeting: "Hi everyone,",
+        elements: [],
+        destinations: []
+      })
     };
   },
 
@@ -94,6 +141,23 @@ export default {
   },
 
   methods: {
+    send() {
+      this.$buefy.dialog.confirm({
+        confirmText: "Send!",
+        message: "Ready to send?",
+        type: "is-primary",
+        hasIcon: true,
+        icon: "send",
+        onConfirm: () => {
+          this.isLoading = true;
+          api
+            .postNotification(this.conference.key, this.form)
+            .then(({ data }) => {})
+            .catch(error => {})
+            .finally((this.isLoading = false));
+        }
+      });
+    },
     iconForElement(type) {
       if (type == "text") {
         return "text";
@@ -106,63 +170,49 @@ export default {
     addElement(element) {
       // Copy the element
       let newElement = { ...element };
-
-      // Test if there is already a subject
-      if (
-        element.type == "subject" &&
-        this.elements.filter(e => e.type == "subject").length > 0
-      ) {
-        this.$buefy.toast.open({
-          message: "Only one subject possible",
-          type: "is-danger"
-        });
-
-        return;
-      } else if (element.type == "subject") {
-        // Subject should always be top
-        this.elements.unshift(newElement);
-      } else {
-        this.elements.push(newElement);
-      }
+      this.form.elements.push(newElement);
+      this.form.errors.clear("elements");
     },
 
     // Ensure that an element does not get above a subject
     // or out of the list
     canMove(direction, index) {
-      if (this.elements[index].type == "subject") {
+      if (direction == "up" && index == 0) {
         return false;
       } else if (
-        direction == "up" &&
-        index == 1 &&
-        this.elements[index - 1] &&
-        this.elements[index - 1].type == "subject"
+        direction == "down" &&
+        index == this.form.elements.length - 1
       ) {
         return false;
-      } else if (direction == "up" && index == 0) {
-        return false;
-      } else if (direction == "down" && index == this.elements.length - 1) {
-        return false;
+      } else {
+        return true;
       }
-      return true;
     },
 
     move(oldIndex, newIndex) {
       let direction = newIndex > oldIndex ? "down" : "up";
       if (!this.canMove(direction, oldIndex)) return false;
 
-      this.elements.move(oldIndex, newIndex);
+      this.form.elements.move(oldIndex, newIndex);
     },
 
     remove(index) {
-      this.elements.splice(index, 1);
+      this.form.elements.splice(index, 1);
+    },
+
+    onDestinationChange(destinations) {
+      this.form.destinations = destinations;
+      this.form.errors.clear("destinations");
     },
 
     onGreetingChange(event) {
-      this.greeting = event !== "" ? event : null;
+      this.form.greeting = event !== "" ? event : null;
+      this.form.errors.clear("greeting");
     },
 
     onSubjectChange(event) {
-      this.subject = event !== "" ? event : null;
+      this.form.subject = event !== "" ? event : null;
+      this.form.errors.clear("subject");
     }
   }
 };

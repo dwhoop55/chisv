@@ -154,6 +154,9 @@ export default {
         return axios.delete(`bid/${id}`);
     },
 
+    postNotification(conferenceKey, vform) {
+        return vform.post(`conference/${conferenceKey}/notification`);
+    },
     importTasks(tasks, conference) {
         return axios.post(`conference/${conference}/task`, tasks)
     },

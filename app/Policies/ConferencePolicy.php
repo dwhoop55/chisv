@@ -40,7 +40,7 @@ class ConferencePolicy
      * @param  \App\Conference  $conference
      * @return mixed
      */
-    public function notifyUsers(User $user, Conference $conference)
+    public function postNotification(User $user, Conference $conference)
     {
         if ($user->isAdmin()) {
             return true;

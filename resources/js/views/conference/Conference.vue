@@ -154,7 +154,7 @@ export default {
         this.conference.id
       );
       this.canNotify = await auth.can(
-        "notifyUsers",
+        "postNotification",
         "Conference",
         this.conference.id
       );
