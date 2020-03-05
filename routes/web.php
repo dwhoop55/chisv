@@ -3,6 +3,9 @@
 use App\Policies\UserPolicy;
 use App\User;
 use App\Conference;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\HtmlString;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +17,45 @@ use App\Conference;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/test', function () {
+    $mail = new MailMessage();
+    $notificationData = DatabaseNotification::all()->first()->data;
+    if (isset($notificationData['greeting'])) {
+        $greeting = $notificationData['greeting'];
+    } else {
+        $greeting = null;
+    }
+    if (isset($notificationData['subject'])) {
+        $subject = $notificationData['subject'];
+    } else {
+        $subject = null;
+    }
+    if (isset($notificationData['salutation'])) {
+        $salutation = $notificationData['salutation'];
+        $salutation = new HtmlString(str_replace("\n", "<br>", $salutation));
+    } else {
+        $salutation = null;
+    }
+    $mail->greeting($greeting);
+    $mail->subject($subject);
+    $mail->salutation($salutation);
+    collect($notificationData['elements'])->each(function ($element) use (&$mail) {
+        $data = new HtmlString(str_replace("\n", "<br>", $element['data']));
+        switch ($element['type']) {
+            case 'text':
+                $mail->line($data);
+                break;
+            case 'title':
+                $mail->line($data);
+                break;
+            case 'action':
+                $mail->action($element['data']['caption'], $element['data']['url']);
+                break;
+        }
+    });
+    return $mail;
+});
 
 // Landing
 Route::get('/', function () {

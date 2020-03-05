@@ -13,7 +13,7 @@
       :loading="isLoading"
       open-on-focus
       :before-adding="beforeAdd"
-      @add="$emit('input', destinations)"
+      @add="afterAdd"
     >
       <template slot-scope="props">
         <strong>{{props.option.type}}</strong>
@@ -63,12 +63,28 @@ export default {
   },
 
   methods: {
+    afterAdd() {
+      // Make sure all items are pretty objects
+      this.destinations = this.destinations.map(item => {
+        if (this.isEmail(item)) {
+          return {
+            type: "email",
+            email: item,
+            display: item
+          };
+        } else {
+          return item;
+        }
+      });
+      this.$emit("input", this.destinations);
+      this.search = "";
+    },
     beforeAdd(tag) {
-      if ((tag.type == "user" || tag.type == "group") && tag.id > 0) {
+      if (tag.type == "user" || tag.type == "group") {
         // Tag is a tag from the backend
         return true;
       } else if (this.isEmail(tag)) {
-        // Tag is a manully typed email
+        // Tag is a manually typed email
         return true;
       } else {
         // No valid input

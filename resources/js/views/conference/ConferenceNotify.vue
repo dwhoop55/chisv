@@ -1,10 +1,6 @@
 <template>
   <div>
-    <b-field
-      expanded
-      :type="{ 'is-danger': form.errors.has('destinations') }"
-      :message="form.errors.get('destinations')"
-    >
+    <b-field expanded :type="{ 'is-danger': destinationErrors() }" :message="destinationErrors()">
       <notify-destination-picker
         :conference="conference"
         @input="onDestinationChange($event)"
@@ -24,10 +20,8 @@
                 label="Subject"
               >
                 <b-input
-                  required
                   maxlength="70"
                   @input="onSubjectChange($event)"
-                  type="is-primary"
                   :value="form.subject"
                   placeholder="Put a subject here"
                 />
@@ -41,12 +35,26 @@
                 label="Greeting"
               >
                 <b-input
-                  required
                   maxlength="70"
                   @input="onGreetingChange($event)"
-                  type="is-primary"
                   :value="form.greeting"
                   placeholder="Put a greeting here"
+                />
+              </b-field>
+            </div>
+            <div class="field is-floating-label">
+              <b-field
+                expanded
+                :type="{ 'is-danger': form.errors.has('salutation') }"
+                :message="form.errors.get('salutation')"
+                label="Salutation"
+              >
+                <b-input
+                  maxlength="70"
+                  @input="onSalutationChange($event)"
+                  type="textarea"
+                  :value="form.salutation"
+                  placeholder="Put a salutation here"
                 />
               </b-field>
             </div>
@@ -89,13 +97,14 @@
 
       <div class="column message">
         <div class="message-header">
-          <p>Preview{{ form.subject ? ': ' + form.subject : ''}}</p>
+          <p>Preview{{ form.subject ? ': ' + form.subject : ' Announcement'}}</p>
         </div>
         <div class="message-body">
           <notify-message
             :subject="form.subject"
             :greeting="form.greeting"
             :elements="form.elements"
+            :salutation="form.salutation"
           />
         </div>
       </div>
@@ -130,6 +139,7 @@ export default {
       form: new Form({
         subject: "SV Announcement",
         greeting: "Hi everyone,",
+        salutation: "Regards,",
         elements: [],
         destinations: []
       })
@@ -138,6 +148,7 @@ export default {
 
   mounted() {
     this.availableElements[2].data.url += this.conference.key;
+    this.form.salutation += `\n${this.conference.key} chair`;
   },
 
   methods: {
@@ -157,6 +168,17 @@ export default {
             .finally((this.isLoading = false));
         }
       });
+    },
+    destinationErrors() {
+      var keys = Object.keys(this.form.errors.all()).filter(function(key) {
+        return /destinations.*/.test(key);
+      });
+
+      if (keys.length > 0) {
+        return "The destination has invalid items: " + JSON.stringify(keys);
+      } else {
+        return null;
+      }
     },
     iconForElement(type) {
       if (type == "text") {
@@ -188,28 +210,27 @@ export default {
         return true;
       }
     },
-
     move(oldIndex, newIndex) {
       let direction = newIndex > oldIndex ? "down" : "up";
       if (!this.canMove(direction, oldIndex)) return false;
 
       this.form.elements.move(oldIndex, newIndex);
     },
-
     remove(index) {
       this.form.elements.splice(index, 1);
     },
-
     onDestinationChange(destinations) {
       this.form.destinations = destinations;
       this.form.errors.clear("destinations");
     },
-
     onGreetingChange(event) {
       this.form.greeting = event !== "" ? event : null;
       this.form.errors.clear("greeting");
     },
-
+    onSalutationChange(event) {
+      this.form.salutation = event !== "" ? event : null;
+      this.form.errors.clear("salutation");
+    },
     onSubjectChange(event) {
       this.form.subject = event !== "" ? event : null;
       this.form.errors.clear("subject");

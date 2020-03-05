@@ -23,6 +23,8 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ConferenceController extends Controller
 {
@@ -63,7 +65,7 @@ class ConferenceController extends Controller
                 return isset($destination['type']) && $destination['type'] == 'user';
             })
             ->map(function ($user) {
-                return User::find($user['id']);
+                return User::find($user['user_id']);
             });
 
         // Then we load the groups to extract users from these
@@ -82,9 +84,20 @@ class ConferenceController extends Controller
             $users = $users->merge($groupUsers);
         });
 
-        $users = $users->unique();
+        // Next we collect all the manually added email adresses
+        $emails = $destinations->filter(function ($destination) {
+            return isset($destination['type']) && $destination['type'] == 'email';
+        });
 
-        Notification::send($users, new Announcement($notification));
+        // Now we dispatch the Announcement and let it deliver via its channels
+        $users = $users->unique();
+        $notificationData = $notification->only(['subject', 'greeting', 'salutation', 'elements']);
+        Notification::send($users, new Announcement($notificationData));
+
+        // Email the Announcement to the manually added addresses
+        $emails->each(function ($email) use ($notificationData) {
+            Notification::route('mail', $email)->notify(new Announcement($notificationData));
+        });
 
 
         return ["result" => true, "message" => "Notification queued"];
@@ -101,13 +114,11 @@ class ConferenceController extends Controller
     {
         $groups = [
             [
-                'id' => 1,
                 'role_id' => 10,
                 'type' => 'group',
                 'display' => 'SVs'
             ],
             [
-                'id' => 2,
                 'role_id' => 3,
                 'type' => 'group',
                 'display' => 'Captains'
@@ -116,7 +127,7 @@ class ConferenceController extends Controller
 
         $users = $conference->users->unique()->map(function ($user) {
             return [
-                'id' => $user->id,
+                'user_id' => $user->id,
                 'type' => 'user',
                 'display' => "$user->firstname $user->lastname"
             ];

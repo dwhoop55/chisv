@@ -43,6 +43,7 @@ class Announcement extends Notification
      */
     public function toMail($notifiable)
     {
+        // $mail = new MailMessage();
         // return (new MailMessage)
         //     ->line('The introduction to the notification.')
         //     ->action('Notification Action', url('/'))
