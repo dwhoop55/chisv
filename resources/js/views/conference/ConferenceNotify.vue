@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-loading :active="isLoading" :is-full-page="true" />
     <b-field expanded>
       <notify-destination-picker
         :conference="conference"
@@ -38,13 +39,13 @@
                 expanded
                 :type="{ 'is-danger': form.errors.has('greeting') }"
                 :message="form.errors.get('greeting')"
-                label="Greeting"
+                label="Greeting (clear for 'Hello {firstname},')"
               >
                 <b-input
                   maxlength="70"
                   @input="onGreetingChange($event)"
                   :value="form.greeting"
-                  placeholder="Put a greeting here"
+                  placeholder="Hello, {firstname},"
                 />
               </b-field>
             </div>
@@ -174,9 +175,26 @@ export default {
           this.isLoading = true;
           api
             .postNotification(this.conference.key, this.form)
-            .then(({ data }) => {})
-            .catch(error => {})
-            .finally((this.isLoading = false));
+            .then(({ data }) => {
+              this.$buefy.dialog.alert({
+                message: data.message,
+                type: "is-success",
+                hasIcon: true
+              });
+            })
+            .catch(error => {
+              if (error.response.status != 422) {
+                this.$buefy.notification.open({
+                  infinite: true,
+                  message: error.message,
+                  type: "is-danger",
+                  hasIcon: true
+                });
+              }
+            })
+            .finally(() => {
+              this.isLoading = false;
+            });
         }
       });
     },
@@ -187,7 +205,7 @@ export default {
       });
 
       if (keys.length > 0) {
-        var message = `The ${pattern} has invalid items:<br>`;
+        var message = `The ${pattern} field has invalid items:<br>`;
         keys.forEach(key => {
           message += `${key}: ${this.form.errors.get(key)}<br>`;
         });

@@ -15,7 +15,7 @@ class AlterConferencesAddFields extends Migration
     {
         Schema::table('conferences', function (Blueprint $table) {
             $table->unsignedTinyInteger('volunteer_hours')->default(20)->nullable(false);
-            $table->unsignedTinyInteger('volunteer_max')->default(20)->nullable(false);
+            $table->unsignedTinyInteger('volunteer_max')->default(100)->nullable(false);
             $table->string('email_chair')->default('noreply@chisv.org');
         });
     }

@@ -109,8 +109,11 @@ class ConferenceController extends Controller
             Notification::route('mail', $email['email'])->notify($announcement);
         });
 
-
-        return ["result" => true, "message" => "Notifications queued"];
+        $count = $users->count() + $emails->count();
+        return [
+            "result" => true,
+            "message" => "$count users will be notified via the available channels (e.g. email, web notification system). You may check 'Background Jobs'."
+        ];
     }
 
     /** 

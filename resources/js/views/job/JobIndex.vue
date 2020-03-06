@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p>Showing up to 100 of the last jobs</p>
+    <p>Showing up to 200 of the last jobs</p>
     <b-field grouped position="is-right">
       <b-button :disabled="isLoading" icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
     </b-field>
@@ -16,17 +16,26 @@
       default-sort="start_at"
       default-sort-direction="desc"
     >
-      <template slot="bottom-left">Total: {{ jobs.length }}</template>
+      <template slot="bottom-left">Total: {{ jobs ? jobs.length : 0 }}</template>
       <template slot-scope="props">
-        <b-table-column sortable field="id" label="ID">{{ props.row.id }}</b-table-column>
-        <b-table-column sortable field="name" label="Name">{{ props.row.name }}</b-table-column>
+        <b-table-column sortable field="id" label="ID">{{ props.row.id ? props.row.id : 'n/a' }}</b-table-column>
+        <b-table-column
+          sortable
+          field="name"
+          label="Name"
+        >{{ props.row.name ? props.row.name : props.row.name.to }}</b-table-column>
         <b-table-column
           sortable
           field="handler"
           label="Handler"
-        >{{ props.row.handler.replace("App\\Jobs\\", '') }}</b-table-column>
+        >{{ props.row.handler.replace("App\\", '') }}</b-table-column>
         <b-table-column sortable field="state.id" label="State">
-          <state-tag :state="props.row.state" />
+          <b-tag
+            v-if="props.row.attempts >=0"
+            rounded
+            type="is-white"
+          >Attempt {{ props.row.attempts+1 }}</b-tag>
+          <state-tag v-else="props.row.state" :state="props.row.state" />
         </b-table-column>
         <b-table-column
           sortable
@@ -66,23 +75,36 @@ export default {
       this.getJobs();
     },
     showDetail(row) {
-      let jobId = row.id;
-      this.$buefy.modal.open({
-        parent: this,
-        props: { id: jobId },
-        component: JobModalVue,
-        hasModalCard: true,
-        onCancel: () => {
-          this.getJobs();
-        }
-      });
+      if (row.type == "job") {
+        let jobId = row.id;
+        this.$buefy.modal.open({
+          parent: this,
+          props: { id: jobId },
+          component: JobModalVue,
+          hasModalCard: true,
+          onCancel: () => {
+            this.getJobs();
+          }
+        });
+      } else if (row.type == "queue") {
+        this.$buefy.dialog.alert({
+          title: `Job: ${row.handler.replace("App\\", "")}`,
+          message:
+            "This is a queued job. It has no further information and vanished when processed.\
+            You can ofter see these queued jobs with notifications (e.g. emails) and scheduled tasks.\
+            <br><br>When a queued job fails it will reschedule itself after some delay.",
+          type: "is-primary",
+          hasIcon: true,
+          icon: "clock"
+        });
+      }
     },
     getJobs() {
       this.isLoading = true;
       api
         .getJobs()
-        .then(data => {
-          this.jobs = data.data.data;
+        .then(({ data }) => {
+          this.jobs = data;
         })
         .catch(error => {})
         .finally(() => {

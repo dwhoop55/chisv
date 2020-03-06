@@ -1,6 +1,6 @@
 <template>
   <b-tag rounded :size="size" :type="type">
-    <b-tooltip :type="type" :label="state.description" multilined>{{ state.name | capitalize }}</b-tooltip>
+    <b-tooltip :type="type" :label="tooltip" multilined>{{ name | capitalize }}</b-tooltip>
   </b-tag>
 </template>
 
@@ -10,7 +10,25 @@ export default {
 
   computed: {
     type: function() {
-      return this.stateType(this.state);
+      if (this.state) {
+        return this.stateType(this.state);
+      } else {
+        return "is-white";
+      }
+    },
+    tooltip() {
+      if (this.state) {
+        return this.state.description;
+      } else {
+        return "Currently in an unknown state";
+      }
+    },
+    name() {
+      if (this.state) {
+        return this.state.name;
+      } else {
+        return "unknown";
+      }
     }
   }
 };

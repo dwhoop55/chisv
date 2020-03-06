@@ -28,22 +28,23 @@ export default {
     "salutation",
     "elements",
     "hideGreeting",
-    "hideSalutation"
+    "hideSalutation",
+    "firstname"
   ],
 
   computed: {
     getSalutation() {
       if (this.salutation) {
         return this.salutation.replace("\n", "<br/>");
-      } else {
-        return "Regards,<br/>chisv";
       }
     },
     getGreeting() {
       if (this.greeting) {
         return this.greeting;
+      } else if (this.firstname) {
+        return `Hello ${firstname},`;
       } else {
-        return "Hello!";
+        return "Hello {firstname},";
       }
     },
     getSubject() {
