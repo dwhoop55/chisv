@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p>Showing up to 50 of the last jobs</p>
+    <p>Showing up to 100 of the last jobs</p>
     <b-field grouped position="is-right">
       <b-button :disabled="isLoading" icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
     </b-field>
@@ -10,7 +10,7 @@
       @click="showDetail"
       narrowed
       paginated
-      per-page="10"
+      per-page="50"
       :loading="isLoading"
       :data="jobs"
       default-sort="start_at"
