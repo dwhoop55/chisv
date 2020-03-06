@@ -18,41 +18,6 @@ use Illuminate\Support\HtmlString;
 |
 */
 
-Route::get('/test', function () {
-    $mail = new MailMessage();
-    $notificationData = DatabaseNotification::all()->last()->data;
-    if (isset($notificationData['greeting'])) {
-        $greeting = $notificationData['greeting'];
-    } else {
-        $greeting = null;
-    }
-    if (isset($notificationData['subject'])) {
-        $subject = $notificationData['subject'];
-    } else {
-        $subject = null;
-    }
-    if (isset($notificationData['salutation'])) {
-        $salutation = $notificationData['salutation'];
-        $salutation = new HtmlString(str_replace("\n", "<br>", $salutation));
-    } else {
-        $salutation = null;
-    }
-    $mail->greeting($greeting);
-    $mail->subject($subject);
-    $mail->salutation($salutation);
-    collect($notificationData['elements'])->each(function ($element) use (&$mail) {
-        if ($element['type'] == 'markdown') {
-            $data = explode("\n", $element['data']);
-            foreach ($data as $line) {
-                $mail->line($line);
-            }
-        } else if ($element['type'] == 'action') {
-            $mail->action($element['data']['caption'], $element['data']['url']);
-        }
-    });
-    return $mail;
-});
-
 // Landing
 Route::get('/', function () {
     return redirect("/conference");

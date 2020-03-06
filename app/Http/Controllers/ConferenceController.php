@@ -79,10 +79,14 @@ class ConferenceController extends Controller
                 ::whereHas('permissions', function ($query) use ($group, $conference) {
                     $query->where('role_id', $group['role_id']);
                     $query->where('conference_id', $conference->id);
+                    $query->when(isset($group['state_id']), function ($query) use ($group) {
+                        $query->where('state_id', $group['state_id']);
+                    });
                 })
                 ->get();
             $users = $users->merge($groupUsers);
         });
+
 
         // Next we collect all the manually added email adresses
         $emails = $destinations->filter(function ($destination) {
@@ -91,16 +95,22 @@ class ConferenceController extends Controller
 
         // Now we dispatch the Announcement and let it deliver via its channels
         $users = $users->unique();
-        $notificationData = $notification->only(['subject', 'greeting', 'salutation', 'elements']);
-        Notification::send($users, new Announcement($notificationData));
+        $announcement = new Announcement(
+            $notification->elements,
+            $conference,
+            $notification->subject,
+            $notification->greeting,
+            $notification->salutation
+        );
+        Notification::send($users, $announcement);
 
         // Email the Announcement to the manually added addresses
-        $emails->each(function ($email) use ($notificationData) {
-            Notification::route('mail', $email)->notify(new Announcement($notificationData));
+        $emails->each(function ($email) use ($announcement) {
+            Notification::route('mail', $email['email'])->notify($announcement);
         });
 
 
-        return ["result" => true, "message" => "Notification queued"];
+        return ["result" => true, "message" => "Notifications queued"];
     }
 
     /** 
@@ -116,7 +126,19 @@ class ConferenceController extends Controller
             [
                 'role_id' => 10,
                 'type' => 'group',
-                'display' => 'SVs'
+                'display' => 'All SVs'
+            ],
+            [
+                'role_id' => 10,
+                'state_id' => 12,
+                'type' => 'group',
+                'display' => 'Accepted SVs'
+            ],
+            [
+                'role_id' => 10,
+                'state_id' => 13,
+                'type' => 'group',
+                'display' => 'Waitlisted SVs'
             ],
             [
                 'role_id' => 3,

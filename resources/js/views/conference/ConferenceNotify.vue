@@ -183,7 +183,6 @@ export default {
     errorsFor(pattern) {
       var keys = Object.keys(this.form.errors.all()).filter(function(key) {
         var regex = new RegExp(pattern + ".*", "g");
-        console.log(regex);
         return regex.test(key);
       });
 

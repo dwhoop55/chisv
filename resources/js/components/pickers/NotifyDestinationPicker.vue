@@ -7,7 +7,7 @@
       autocomplete
       field="display"
       icon="label"
-      placeholder="Add one ore multiple destinations"
+      placeholder="Pick destinations from the list or manually add email adresses"
       allow-new
       attached
       :loading="isLoading"

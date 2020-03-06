@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="subtitle">{{ getGreeting }}</p>
+    <p v-if="!hideGreeting" class="subtitle">{{ getGreeting }}</p>
     <div v-for="(element, index) in elements" :key="index">
       <div class="content" v-if="element.type == 'markdown'">
         <VueShowdown :markdown="element.data" />
@@ -16,13 +16,20 @@
       </div>
     </div>
     <p>&nbsp;</p>
-    <p v-html="getSalutation"></p>
+    <p v-if="!hideSalutation" v-html="getSalutation"></p>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["subject", "greeting", "salutation", "elements"],
+  props: [
+    "subject",
+    "greeting",
+    "salutation",
+    "elements",
+    "hideGreeting",
+    "hideSalutation"
+  ],
 
   computed: {
     getSalutation() {

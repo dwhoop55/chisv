@@ -4,23 +4,33 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
-class Announcement extends Notification
+class Announcement extends Notification implements ShouldQueue
 {
     use Queueable;
 
     private $subject;
+    private $greeting;
+    private $salutation;
+    private $elements;
+    private $conference;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($subject)
+    public function __construct($elements, $conference = null, $subject = null, $greeting = null, $salutation = null)
     {
+        $this->elements = collect($elements);
         $this->subject = $subject;
+        $this->greeting = $greeting;
+        $this->salutation = $salutation;
+        $this->conference = $conference;
     }
 
     /**
@@ -31,8 +41,11 @@ class Announcement extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
-        return ['mail', 'database'];
+        if ($notifiable && isset($notifiable->id)) {
+            return ['mail', 'database'];
+        } else {
+            return ['mail'];
+        }
     }
 
     /**
@@ -43,11 +56,29 @@ class Announcement extends Notification
      */
     public function toMail($notifiable)
     {
-        // $mail = new MailMessage();
-        // return (new MailMessage)
-        //     ->line('The introduction to the notification.')
-        //     ->action('Notification Action', url('/'))
-        //     ->line('Thank you for using our application!');
+        $mail = new MailMessage();
+        if ($this->conference && isset($this->conference->email_chair)) {
+            $mail->replyTo($this->conference->email_chair);
+        }
+        if ($this->greeting) {
+            $mail->greeting($this->greeting);
+        } else if ($notifiable && isset($notifiable->firstname)) {
+            $mail->greeting("Hello $notifiable->firstname,");
+        }
+        $mail->subject($this->subject);
+        $mail->salutation(new HtmlString(str_replace("\n", "<br>", $this->salutation)));
+        $this->elements->each(function ($element) use (&$mail) {
+            if ($element['type'] == 'markdown') {
+                $data = explode("\n", $element['data']);
+                foreach ($data as $line) {
+                    $mail->line($line);
+                }
+            } else if ($element['type'] == 'action') {
+                $mail->action($element['data']['caption'], $element['data']['url']);
+            }
+        });
+
+        return $mail;
     }
 
     /**
@@ -58,6 +89,11 @@ class Announcement extends Notification
      */
     public function toArray($notifiable)
     {
-        return $this->subject;
+        return [
+            'elements' => $this->elements,
+            'subject' => $this->subject,
+            'greeting' => $this->greeting,
+            'salutation' => $this->salutation
+        ];
     }
 }
