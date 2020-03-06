@@ -1,12 +1,18 @@
 <template>
   <div>
-    <b-field expanded :type="{ 'is-danger': destinationErrors() }" :message="destinationErrors()">
+    <b-field expanded>
       <notify-destination-picker
         :conference="conference"
         @input="onDestinationChange($event)"
         :value="form.destinations"
       />
     </b-field>
+    <b-notification
+      :closable="false"
+      v-if="errorsFor('destinations')"
+      type="is-danger"
+      :message="errorsFor('destinations')"
+    />
     <div class="columns">
       <div class="column">
         <form>
@@ -66,6 +72,7 @@
             <b-field class="buttons" grouped group-multiline>
               <b-button
                 @click="addElement(element)"
+                :disabled="element.type == 'action' && !canAddAction"
                 :icon-left="iconForElement(element.type)"
                 v-for="(element, index) in availableElements"
                 :key="index"
@@ -76,9 +83,9 @@
           <!-- Active elements -->
           <b-notification
             :closable="false"
-            v-if="form.errors.has('elements')"
+            v-if="errorsFor('elements')"
             type="is-danger"
-            :message="form.errors.get('elements')"
+            :message="errorsFor('elements')"
           />
           <notify-element
             class="box"
@@ -125,9 +132,13 @@ export default {
   data() {
     return {
       isLoading: false,
+      canAddAction: true,
       availableElements: [
-        { type: "title", data: "Section in message for structure" },
-        { type: "text", data: "Some text.." },
+        {
+          type: "markdown",
+          data:
+            "## Some Heading\nA *paragraph*\n\nAnother **paragraph** with [url](https://chisv.org)\n\n* A\n* list"
+        },
         {
           type: "action",
           data: {
@@ -147,7 +158,7 @@ export default {
   },
 
   mounted() {
-    this.availableElements[2].data.url += this.conference.key;
+    this.availableElements[1].data.url += this.conference.key;
     this.form.salutation += `\n${this.conference.key} chair`;
   },
 
@@ -169,29 +180,38 @@ export default {
         }
       });
     },
-    destinationErrors() {
+    errorsFor(pattern) {
       var keys = Object.keys(this.form.errors.all()).filter(function(key) {
-        return /destinations.*/.test(key);
+        var regex = new RegExp(pattern + ".*", "g");
+        console.log(regex);
+        return regex.test(key);
       });
 
       if (keys.length > 0) {
-        return "The destination has invalid items: " + JSON.stringify(keys);
+        var message = `The ${pattern} has invalid items:<br>`;
+        keys.forEach(key => {
+          message += `${key}: ${this.form.errors.get(key)}<br>`;
+        });
+        return message;
       } else {
         return null;
       }
     },
     iconForElement(type) {
-      if (type == "text") {
+      if (type == "markdown") {
         return "text";
-      } else if (type == "title") {
-        return "format-title";
       } else if (type == "action") {
         return "cursor-default-click";
       }
     },
     addElement(element) {
       // Copy the element
-      let newElement = { ...element };
+      var newElement = { ...element };
+      if (element.type == "action") {
+        if (!this.canAddAction) return;
+        newElement.data = { ...element.data };
+        this.canAddAction = false;
+      }
       this.form.elements.push(newElement);
       this.form.errors.clear("elements");
     },
@@ -217,6 +237,9 @@ export default {
       this.form.elements.move(oldIndex, newIndex);
     },
     remove(index) {
+      if (this.form.elements[index].type == "action") {
+        this.canAddAction = true;
+      }
       this.form.elements.splice(index, 1);
     },
     onDestinationChange(destinations) {

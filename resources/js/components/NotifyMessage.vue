@@ -2,15 +2,20 @@
   <div>
     <p class="subtitle">{{ getGreeting }}</p>
     <div v-for="(element, index) in elements" :key="index">
-      <p class="has-margin-b-7" v-if="element.type == 'text'">{{ element.data }}</p>
-      <p
-        v-else-if="element.type == 'title'"
-        class="subtitle has-text-weight-bold has-margin-t-5 has-margin-b-7"
-      >{{ element.data }}</p>
+      <div class="content" v-if="element.type == 'markdown'">
+        <VueShowdown :markdown="element.data" />
+      </div>
       <div v-else-if="element.type == 'action'">
-        <a class="button" target="_blank" :href="element.data.url">{{ element.data.caption }}</a>
+        <b-field grouped position="is-centered">
+          <a
+            class="button is-primary has-margin-7"
+            target="_blank"
+            :href="element.data.url"
+          >{{ element.data.caption }}</a>
+        </b-field>
       </div>
     </div>
+    <p>&nbsp;</p>
     <p v-html="getSalutation"></p>
   </div>
 </template>

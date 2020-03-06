@@ -17,6 +17,7 @@ import vuexStore from './store';
 import JsonCSV from 'vue-json-csv';
 import vueDebounce from 'vue-debounce';
 import { VueCsvImport } from 'vue-csv-import';
+import VueShowdown from 'vue-showdown'
 
 Vue.component(HasError.name, HasError)
 Vue.component(AlertError.name, AlertError)
@@ -28,6 +29,13 @@ Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right"
 Vue.use(VueMoment);
 Vue.use(VueDOMPurifyHTML);
 Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });
+Vue.use(VueShowdown, {
+    options: {
+        emoji: true,
+        flavor: 'github',
+        strikethrough: true
+    }
+})
 
 /**
  * The following block of code may be used to automatically register your

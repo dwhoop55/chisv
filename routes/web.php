@@ -20,7 +20,7 @@ use Illuminate\Support\HtmlString;
 
 Route::get('/test', function () {
     $mail = new MailMessage();
-    $notificationData = DatabaseNotification::all()->first()->data;
+    $notificationData = DatabaseNotification::all()->last()->data;
     if (isset($notificationData['greeting'])) {
         $greeting = $notificationData['greeting'];
     } else {
@@ -41,17 +41,13 @@ Route::get('/test', function () {
     $mail->subject($subject);
     $mail->salutation($salutation);
     collect($notificationData['elements'])->each(function ($element) use (&$mail) {
-        $data = new HtmlString(str_replace("\n", "<br>", $element['data']));
-        switch ($element['type']) {
-            case 'text':
-                $mail->line($data);
-                break;
-            case 'title':
-                $mail->line($data);
-                break;
-            case 'action':
-                $mail->action($element['data']['caption'], $element['data']['url']);
-                break;
+        if ($element['type'] == 'markdown') {
+            $data = explode("\n", $element['data']);
+            foreach ($data as $line) {
+                $mail->line($line);
+            }
+        } else if ($element['type'] == 'action') {
+            $mail->action($element['data']['caption'], $element['data']['url']);
         }
     });
     return $mail;

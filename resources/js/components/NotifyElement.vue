@@ -3,12 +3,7 @@
     <label class="label">{{ type | capitalize }}</label>
     <b-field grouped>
       <b-field expanded>
-        <b-input
-          @input="$emit('input', $event)"
-          :value="value"
-          v-if="isInput"
-          :type="type=='text' ? 'textarea' : ''"
-        />
+        <markdown-input @input="$emit('input', $event)" :value="value" v-if="isInput"></markdown-input>
         <b-field grouped group-multiline v-else-if="isAction">
           <b-input
             @input="onActionChange('caption', $event)"
@@ -54,7 +49,7 @@ export default {
 
   computed: {
     isInput() {
-      return this.type == "title" || this.type == "text";
+      return this.type == "markdown";
     },
     isAction() {
       return this.type == "action";
