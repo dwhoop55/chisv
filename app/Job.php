@@ -47,6 +47,7 @@ namespace App;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use App\JobParameters;
+use Illuminate\Queue\Jobs\Job as QueueJob;
 
 class Job extends Model
 {
@@ -121,6 +122,7 @@ class Job extends Model
     public function markAsProcessing()
     {
         $this->setState(State::byName('processing'));
+        $this->save();
         return $this;
     }
 
@@ -130,6 +132,14 @@ class Job extends Model
         if ($result) {
             $this->setResult($result);
         }
+        $this->save();
+        return $this;
+    }
+
+    public function markAsSoftFail()
+    {
+        $this->setState(State::byName('softfail'));
+        $this->save();
         return $this;
     }
 
@@ -139,12 +149,20 @@ class Job extends Model
         if ($result) {
             $this->setResult($result);
         }
+        $this->save();
         return $this;
     }
 
     public function setEndedNow()
     {
         $this->ended_at = Carbon::now();
+        $this->save();
+        return $this;
+    }
+
+    public function setStartIn($seconds)
+    {
+        $this->start_at = Carbon::now()->addSecond($seconds)->toDateTimeString();
         $this->save();
         return $this;
     }

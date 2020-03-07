@@ -290,8 +290,9 @@ Vue.mixin({
                 case "over":
                     return "is-danger";
                     break;
+                // Jobs
                 case "planned":
-                    return "is-warning";
+                    return "is-light";
                     break;
                 case "processing":
                     return "is-primary";
@@ -301,6 +302,9 @@ Vue.mixin({
                     break;
                 case "failed":
                     return "is-danger";
+                    break;
+                case "softfail":
+                    return "is-warning";
                     break;
                 // Assignments
                 case "assigned":

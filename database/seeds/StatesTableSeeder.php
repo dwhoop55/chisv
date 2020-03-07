@@ -29,6 +29,7 @@ class StatesTableSeeder extends Seeder
             ["id" => 22, "for" => "App\Job", "name" => "processing", "description" => "The job is currently running"],
             ["id" => 23, "for" => "App\Job", "name" => "successful", "description" => "The job finished successfully"],
             ["id" => 24, "for" => "App\Job", "name" => "failed", "description" => "The job stopped and failed"],
+            ["id" => 25, "for" => "App\Job", "name" => "softfail", "description" => "The job encountered an error and will restart shortly"],
 
             // Id 31 has to be always 'placed' (used in the migration for field default)!
             ["id" => 31, "for" => "App\Bid", "name" => "placed", "description" => "The bid is waiting for the auction"],

@@ -70,7 +70,6 @@
 
 namespace App\Jobs;
 
-use App\Assignment;
 use App\Bid;
 use App\Conference;
 use App\JobParameters;
@@ -81,7 +80,6 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class Auction extends AdvancedJob implements ExecutableJob
 {
@@ -393,6 +391,8 @@ class Auction extends AdvancedJob implements ExecutableJob
         // });
         // unset($svs);
         // // Now every SV has one bid for every task
+
+        $this->setProgress(0);
 
         // ============================ PHASES START ===========================
         // Run this twice, phase 1 and phase 2

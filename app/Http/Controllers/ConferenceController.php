@@ -307,7 +307,7 @@ class ConferenceController extends Controller
             'name' => "Lottery for " . $conference->key,
             'payload' => ["conference_id" => $conference->id]
         ]);
-        $job->saveAndDispatch();
+        $t = $job->saveAndDispatch();
         return ["result" => $job->id, "message" => "Lottery for $conference->name has been queued as a new job"];
     }
 

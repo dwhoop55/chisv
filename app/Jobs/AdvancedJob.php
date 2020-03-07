@@ -4,19 +4,21 @@ namespace App\Jobs;
 
 use App\Job;
 use App\JobParameters;
-use Error;
 use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Throwable;
 
 class AdvancedJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     public $job_id;
+    public $tries = 3;
+    public $delayOnFail = 5;
 
     /**
      * Create a new job instance.
@@ -41,16 +43,21 @@ class AdvancedJob implements ShouldQueue
     public function handle()
     {
 
+
         $job = Job::find($this->job_id);
         $job->markAsProcessing();
 
         try {
             $result = $this->execute();
-            $job->markAsSuccessful($result)->save();
-        } catch (Exception $e) {
-            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
-        } catch (Error $e) {
-            $job->markAsFailed($e->getMessage() . " " . $e->getTraceAsString())->save();
+            $job->markAsSuccessful($result);
+        } catch (Throwable $e) {
+            if ($this->attempts() <= $this->tries) {
+                $job->markAsSoftFail();
+                $job->setStartIn($this->delayOnFail);
+                $this->release($this->delayOnFail);
+            } else {
+                $this->fail($e);
+            }
         }
     }
 

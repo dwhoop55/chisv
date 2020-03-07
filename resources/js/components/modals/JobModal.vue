@@ -67,7 +67,8 @@ export default {
           if (
             this.$parent.isActive &&
             (this.job.state.name == "planned" ||
-              this.job.state.name == "processing")
+              this.job.state.name == "processing" ||
+              this.job.state.name == "softfail")
           ) {
             setTimeout(this.getJob, 1000);
           }
@@ -80,7 +81,7 @@ export default {
         });
     },
     getProgressForProcessingState() {
-      if (this.job && this.job.progress) {
+      if (this.job && this.job.progress >= 0) {
         return parseInt(this.job.progress);
       } else {
         return undefined;
