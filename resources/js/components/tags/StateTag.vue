@@ -1,6 +1,7 @@
 <template>
   <b-tag rounded :size="size" :type="type">
     <b-tooltip :type="type" :label="tooltip" multilined>{{ name | capitalize }}</b-tooltip>
+    <slot></slot>
   </b-tag>
 </template>
 
