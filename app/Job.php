@@ -135,7 +135,7 @@ class Job extends Model
 
     public function markAsSuccessful($result = null)
     {
-        $this->setState(State::byName('successful'))->setEndedNow();
+        $this->setState(State::byName('successful'))->setEndedNow()->setProgress(100);
         if ($result) {
             $this->setResult($result);
         }
