@@ -4,6 +4,8 @@
 apt update
 apt install -y git curl wget zip unzip
 ```
+* Add this `www-data ALL=(ALL) NOPASSWD: /usr/bin/supervisorctl` to `/etc/sudoers`
+
 ## MySQL
 We are using a MariaDB on an remote server.
 You may however use any backend you like.
@@ -132,16 +134,13 @@ git pull
 
 php artisan down --message "Upgrade progress.. Check back in a few minutes"
 
-composer update
 composer install
 
 npm install
-npm outdated
-npm update
 npm run prod
 
 php artisan migrate
 php artisan up
 
-supervisorctl restart laravel-worker:*
+sudo supervisorctl restart laravel-worker:*
 ```
