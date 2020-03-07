@@ -22,7 +22,7 @@ $factory->define(Task::class, function (Faker $faker) {
         )->setTime(0, 0, 0),
         'start_at' =>  $start->format('H:i:s'),
         'end_at' =>  $end->format('H:i:s'),
-        'hours' => round(($end->diffInHours($start)), 2),
+        'hours' => round(($end->diffInMinutes($start)) / 60, 2),
         'priority' => $faker->numberBetween($min = 1, $max = 3),
         'slots' => $faker->numberBetween($min = 1, $max = 5),
     ];
