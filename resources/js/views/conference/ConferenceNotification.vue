@@ -1,8 +1,16 @@
 <template>
   <div>
     <b-loading :active="isLoading" :is-full-page="true" />
+    <b-field grouped position="is-right">
+      <b-button
+        @click="openTemplates()"
+        size="is-small"
+        icon-left="package-variant-closed"
+        type="is-primary"
+      >Templates</b-button>
+    </b-field>
     <b-field expanded>
-      <notify-destination-picker
+      <notification-destination-picker
         :conference="conference"
         @input="onDestinationChange($event)"
         :value="form.destinations"
@@ -39,7 +47,7 @@
                 expanded
                 :type="{ 'is-danger': form.errors.has('greeting') }"
                 :message="form.errors.get('greeting')"
-                label="Greeting (clear for 'Hello {firstname},')"
+                label="Greeting (clear for personalized 'Hello {firstname},')"
               >
                 <b-input
                   maxlength="70"
@@ -88,7 +96,7 @@
             type="is-danger"
             :message="errorsFor('elements')"
           />
-          <notify-element
+          <notification-element
             class="box"
             @move="move(index, $event)"
             @remove="remove($event)"
@@ -108,7 +116,7 @@
           <p>Preview{{ form.subject ? ': ' + form.subject : ' Announcement'}}</p>
         </div>
         <div class="message-body">
-          <notify-message
+          <notification-display
             :subject="form.subject"
             :greeting="form.greeting"
             :elements="form.elements"
@@ -126,6 +134,7 @@
 <script>
 import api from "@/api.js";
 import { Form } from "vform";
+import NotificationTemplateModalVue from "@/components/modals/NotificationTemplateModal.vue";
 
 export default {
   props: ["conference"],
@@ -213,6 +222,36 @@ export default {
       } else {
         return null;
       }
+    },
+    openTemplates() {
+      this.$buefy.modal.open({
+        parent: this,
+        fullScreen: true,
+        props: {
+          conference: this.conference,
+          template: {
+            destinations: this.getDestinationsForTemplate(),
+            elements: this.form.elements,
+            greeting: this.form.greeting,
+            subject: this.form.subject,
+            salutation: this.form.salutation
+          },
+          apply: template => {
+            this.form.destinations = template.destinations;
+            this.form.elements = template.elements;
+            this.form.greeting = template.greeting;
+            this.form.subject = template.subject;
+            this.form.salutation = template.salutation;
+          }
+        },
+        component: NotificationTemplateModalVue,
+        hasModalCard: true
+      });
+    },
+    getDestinationsForTemplate() {
+      return this.form.destinations.filter(destination => {
+        return destination.type == "group";
+      });
     },
     iconForElement(type) {
       if (type == "markdown") {

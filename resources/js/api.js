@@ -57,7 +57,10 @@ export default {
         return axios.get(`conference/${conferenceKey}/report/${name}`);
     },
     getDestinations(conferenceKey) {
-        return axios.get(`conference/${conferenceKey}/destination`)
+        return axios.get(`conference/${conferenceKey}/destination`);
+    },
+    getNotificationTemplates() {
+        return axios.get(`notification_template`);
     },
 
     createAssignment(svId, taskId) {
@@ -89,6 +92,10 @@ export default {
     },
     createTask(vform) {
         return vform.post(`task`);
+    },
+    createNotificationTemplate(name, data, conference) {
+        let template = { name: name, data: data, conference_id: conference.id };
+        return axios.post(`notification_template`, template);
     },
 
     updateAssignment(id, payload) {
@@ -152,6 +159,9 @@ export default {
     },
     deleteBid(id) {
         return axios.delete(`bid/${id}`);
+    },
+    deleteNotificationTemplate(id) {
+        return axios.delete(`notification_template/${id}`);
     },
 
     postNotification(conferenceKey, vform) {

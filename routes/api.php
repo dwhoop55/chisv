@@ -248,6 +248,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('assignment', 'AssignmentController', [
             'only' => ['store', 'update', 'destroy']
         ]);
+        Route::resource('notification_template', 'NotificationTemplateController', [
+            'only' => ['index', 'store', 'destroy']
+        ]);
     });
     //// AUTHENTICATED ////
 

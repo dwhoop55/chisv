@@ -91,10 +91,10 @@
                 <conference-edit v-show="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
               </b-tab-item>
               <b-tab-item v-if="canNotify" label="Notify">
-                <conference-notify
+                <conference-notification
                   v-show="$store.getters.conferenceTab==5"
                   :conference="conference"
-                ></conference-notify>
+                ></conference-notification>
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Reports">
                 <conference-reports
