@@ -77,7 +77,11 @@
             <b-icon icon="menu-down"></b-icon>
           </button>
 
-          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="manage">Manage</b-dropdown-item>
+          <b-dropdown-item
+            v-if="canCreateTask || canDeleteTask"
+            aria-role="listitem"
+            value="manage"
+          >Manage</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
           <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
@@ -132,7 +136,11 @@
       aria-current-label="Current page"
     >
       <template slot-scope="props">
-        <b-table-column :visible="activeColumns.includes('manage')" width="150" label="Manage">
+        <b-table-column
+          :visible="(canCreateTask || canDeleteTask) && activeColumns.includes('manage')"
+          width="150"
+          label="Manage"
+        >
           <b-button
             v-if="canCreateTask"
             @click="editTask(props.row)"
