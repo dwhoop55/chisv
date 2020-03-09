@@ -1,5 +1,17 @@
 <?php
 
+/**
+ * How to use:
+ * Just run
+ *  php UnivCcParser.php 
+ * and the script will fetch all universities from the
+ * website and put them in a json (in this folder)
+ * The database seeder for universities will pull
+ * in the json and seed the universities into the
+ * database
+ *
+ */
+
 function getUrl($page, $domain)
 {
     return "https://univ.cc/search.php?dom=$domain&key=&start=$page";
