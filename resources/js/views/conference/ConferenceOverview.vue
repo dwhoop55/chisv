@@ -6,7 +6,7 @@
       </div>
     </div>
 
-    <p class="content has-margin-t-1" v-dompurify-html="conference.description"></p>
+    <VueShowdown class="section content" :markdown="conference.description" />
   </div>
 </template>
 

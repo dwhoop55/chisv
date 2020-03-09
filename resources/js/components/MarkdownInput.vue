@@ -55,13 +55,20 @@
         </button>
       </p>
     </b-field>
-    <b-input expanded @input="$emit('input', $event)" :value="value" type="textarea"></b-input>
+    <b-input
+      expanded
+      :placeholder="placeholder"
+      :maxlength="maxlength"
+      @input="$emit('input', $event)"
+      :value="value"
+      type="textarea"
+    ></b-input>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["value"],
+  props: ["value", "placeholder", "maxlength"],
 
   methods: {
     add(text) {

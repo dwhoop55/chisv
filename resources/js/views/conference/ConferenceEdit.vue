@@ -96,12 +96,11 @@
         :type="{ 'is-danger': form.errors.has('description') }"
         :message="form.errors.get('description')"
       >
-        <b-input
+        <markdown-input
+          v-model="form.description"
           maxlength="1000"
           placeholder="Let your users know what the conference is about"
-          v-model="form.description"
-          type="textarea"
-        ></b-input>
+        />
       </b-field>
 
       <p>Leave any of the fields empty to hide the info</p>
