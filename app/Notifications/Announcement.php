@@ -66,7 +66,7 @@ class Announcement extends Notification implements ShouldQueue
             $mail->greeting("Hello $notifiable->firstname,");
         }
         $mail->subject($this->subject);
-        $mail->salutation(new HtmlString(str_replace("\n", "<br>", $this->salutation)));
+        $mail->salutation($this->salutation);
         $this->elements->each(function ($element) use (&$mail) {
             if ($element['type'] == 'markdown') {
                 $data = explode("\n", $element['data']);
