@@ -24,7 +24,10 @@
             >{{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
           </div>
         </div>
-        <div class="content">{{ conference.description | textlimit(300) }}</div>
+
+        <div class="content">
+          <VueShowdown :markdown="conferenceDescription" />
+        </div>
       </div>
     </div>
   </a>
@@ -35,6 +38,16 @@ export default {
   props: ["conference"],
 
   computed: {
+    conferenceDescription() {
+      let length = 300;
+      let str = this.conference.description.replace(/[#_\[\]]/g, "");
+      let strSub = str.substr(0, length);
+      if (str != strSub) {
+        return strSub + "..";
+      } else {
+        return strSub;
+      }
+    },
     stateBackground: function() {
       if (!this.conference.state || !this.conference.state.name) {
         return "background: grey;";
