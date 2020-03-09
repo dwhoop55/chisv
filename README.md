@@ -100,7 +100,7 @@ Ensure you are root for the below
 ```
 [program:laravel-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /var/www/chisv/artisan queue:work database --sleep=3 --memory=512 --timeout=600 --tries=3
+command=php /var/www/chisv/artisan queue:work database --sleep=5 --memory=512 --timeout=600 --tries=5 --delay=120
 autostart=true
 autorestart=true
 user=www-data
