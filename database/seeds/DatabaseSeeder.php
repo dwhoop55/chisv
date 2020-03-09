@@ -33,7 +33,8 @@ class DatabaseSeeder extends Seeder
             LanguageUserSeeder::class,
             PermissionsTableSeeder::class,
 
-            BidsTableSeeder::class
+            BidsTableSeeder::class,
+            NotificationTemplateSeeder::class
         ]);
     }
 }
