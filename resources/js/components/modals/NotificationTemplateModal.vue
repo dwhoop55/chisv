@@ -40,7 +40,6 @@
         :mobile-cards="false"
       >
         <template slot-scope="props">
-          <b-table-column field="id" label="ID" width="4" numeric sortable>{{ props.row.id }}</b-table-column>
           <b-table-column
             field="year"
             width="5"
