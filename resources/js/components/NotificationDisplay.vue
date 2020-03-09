@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="content">
     <p v-if="!hideGreeting" class="subtitle">{{ getGreeting }}</p>
     <div v-for="(element, index) in elements" :key="index">
-      <div class="content" v-if="element.type == 'markdown'">
+      <div v-if="element.type == 'markdown'">
         <VueShowdown :markdown="element.data" />
       </div>
       <div v-else-if="element.type == 'action'">
