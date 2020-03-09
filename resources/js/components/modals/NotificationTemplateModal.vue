@@ -103,7 +103,7 @@
         class="button is-success"
         type="button"
         @click="applyTemplate()"
-      >Apply selected</button>
+      >Use selected</button>
     </footer>
   </div>
 </template>

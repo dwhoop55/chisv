@@ -16,7 +16,7 @@
       </div>
     </div>
     <p>&nbsp;</p>
-    <p v-if="!hideSalutation" v-html="getSalutation"></p>
+    <VueShowdown v-if="!hideSalutation" :markdown="salutation" />
   </div>
 </template>
 
@@ -33,11 +33,6 @@ export default {
   ],
 
   computed: {
-    getSalutation() {
-      if (this.salutation) {
-        return this.salutation.replace("\n", "<br/>");
-      }
-    },
     getGreeting() {
       if (this.greeting) {
         return this.greeting;

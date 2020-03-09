@@ -1,7 +1,7 @@
 <template>
   <b-field label="Destinations">
     <b-taginput
-      v-model="destinations"
+      :value="value"
       :data="filteredAvailableDestinations"
       @typing="search=$event"
       autocomplete
@@ -34,16 +34,16 @@ export default {
     return {
       search: "",
       isLoading: false,
-      destinations: [],
+      // destinations: [],
       availableDestinations: []
     };
   },
 
   created() {
     this.getDestinations();
-    this.value.forEach(element => {
-      this.destinations.push(element);
-    });
+    // this.value.forEach(element => {
+    //   this.destinations.push(element);
+    // });
   },
 
   computed: {
@@ -65,7 +65,7 @@ export default {
   methods: {
     afterAdd() {
       // Make sure all items are pretty objects
-      this.destinations = this.destinations.map(item => {
+      let newDestinations = this.value.map(item => {
         if (this.isEmail(item)) {
           return {
             type: "email",
@@ -76,7 +76,7 @@ export default {
           return item;
         }
       });
-      this.$emit("input", this.destinations);
+      this.$emit("input", newDestinations);
       this.search = "";
     },
     beforeAdd(tag) {
