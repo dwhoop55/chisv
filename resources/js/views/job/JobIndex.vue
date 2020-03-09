@@ -35,7 +35,7 @@
             rounded
             type="is-white"
           >Attempt {{ props.row.attempts+1 }}</b-tag>
-          <state-tag v-else="props.row.state" :state="props.row.state">
+          <state-tag v-else :state="props.row.state">
             <span v-if="props.row.progress">{{ props.row.progress }}%</span>
           </state-tag>
         </b-table-column>

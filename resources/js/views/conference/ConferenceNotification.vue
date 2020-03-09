@@ -35,7 +35,7 @@
                 label="Subject"
               >
                 <b-input
-                  maxlength="70"
+                  maxlength="140"
                   @input="onSubjectChange($event)"
                   :value="form.subject"
                   placeholder="Put a subject here"
@@ -50,7 +50,6 @@
                 label="Greeting (clear for personalized 'Hello {firstname},')"
               >
                 <b-input
-                  maxlength="70"
                   @input="onGreetingChange($event)"
                   :value="form.greeting"
                   placeholder="Hello, {firstname},"
@@ -62,10 +61,9 @@
                 expanded
                 :type="{ 'is-danger': form.errors.has('salutation') }"
                 :message="form.errors.get('salutation')"
-                label="Salutation"
+                label="Salutation (supports markdown)"
               >
                 <b-input
-                  maxlength="70"
                   @input="onSalutationChange($event)"
                   type="textarea"
                   :value="form.salutation"
@@ -159,7 +157,7 @@ export default {
       ],
       form: new Form({
         subject: "SV Announcement",
-        greeting: "Hi everyone,",
+        greeting: "",
         salutation: "Regards,",
         elements: [],
         destinations: []
@@ -169,7 +167,13 @@ export default {
 
   mounted() {
     this.availableElements[1].data.url += this.conference.key;
-    this.form.salutation += `\n${this.conference.key} chair`;
+    this.form.salutation +=
+      `\n\nSV Chairs ${this.conference.key.toUpperCase()}, ` +
+      `${this.conference.location}\n\n` +
+      `[${this.conference.email_chair}](mailto:${this.conference.email_chair})`;
+    if (this.conference.url && this.conference.url_name) {
+      this.form.salutation += `\n\n[${this.conference.url_name}](${this.conference.url})`;
+    }
   },
 
   methods: {

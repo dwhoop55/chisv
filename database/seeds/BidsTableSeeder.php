@@ -62,7 +62,7 @@ class BidsTableSeeder extends Seeder
                         $massBids->push($b);
                     }
                 });
-                echo "New bids: " . $massBids->count() . "\n";
+                // echo "New bids: " . $massBids->count() . "\n";
                 DB::table('bids')->insert($massBids->toArray());
                 $massBids = collect();
             });

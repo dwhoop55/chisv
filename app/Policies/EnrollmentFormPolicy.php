@@ -108,28 +108,4 @@ class EnrollmentFormPolicy
     {
         //
     }
-
-    /**
-     * Determine whether the user can restore the enrollment form.
-     *
-     * @param  \App\User  $user
-     * @param  \App\EnrollmentForm  $enrollmentForm
-     * @return mixed
-     */
-    public function restore(User $user, EnrollmentForm $enrollmentForm)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the enrollment form.
-     *
-     * @param  \App\User  $user
-     * @param  \App\EnrollmentForm  $enrollmentForm
-     * @return mixed
-     */
-    public function forceDelete(User $user, EnrollmentForm $enrollmentForm)
-    {
-        //
-    }
 }

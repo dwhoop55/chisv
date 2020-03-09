@@ -75,9 +75,10 @@
     <br />
     <b-table
       ref="table"
-      @click="toggle($event)"
       :data="users"
+      @click="toggle($event)"
       detail-key="id"
+      :opened-detailed="detailOpen"
       :show-detail-icon="true"
       detailed
       paginated
@@ -449,6 +450,7 @@ export default {
       users: [],
       totalUsers: 0,
       acceptedCount: 0,
+      detailOpen: [],
       states: [],
       isLoading: true,
       searchString: this.$store.getters.svsSearch,
@@ -721,7 +723,11 @@ export default {
       if (this.ignoreNextToggleClick) {
         this.ignoreNextToggleClick = false;
       } else {
-        this.$refs.table.toggleDetails(row);
+        if (this.detailOpen.includes(row.id)) {
+          this.detailOpen = [];
+        } else {
+          this.detailOpen = [row.id];
+        }
       }
     }
   },
