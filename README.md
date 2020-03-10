@@ -135,6 +135,7 @@ git pull
 php artisan down --message "Upgrade progress.. Check back in a few minutes"
 
 composer install
+composer dump-autoload
 
 npm install
 npm run prod

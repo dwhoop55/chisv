@@ -21,19 +21,19 @@ class UniversityTableSeeder extends Seeder
             $cache = [];
             $cacheCount = 0;
             foreach ($universities as $key => $university) {
-                echo "Caching (count=$cacheCount) " . $university['name'] . "\n";
+                // echo "Caching (count=$cacheCount) " . $university['name'] . "\n";
                 array_push($cache, $university);
                 $cacheCount++;
                 if ($cacheCount >= 400) {
                     // Cache full enough, send to database
-                    echo "Cache has $cacheCount elements: Writing to database...\n";
+                    // echo "Cache has $cacheCount elements: Writing to database...\n";
                     DB::table('universities')->insert($cache);
                     $cache = [];
                     $cacheCount = 0;
                 }
             }
             DB::table('universities')->insert($cache);
-            echo "All universities have been written to the database\n";
+            // echo "All universities have been written to the database\n";
         }
     }
 }
