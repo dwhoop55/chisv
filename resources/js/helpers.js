@@ -16,7 +16,6 @@ Array.prototype.move = function (old_index, new_index) {
     return this;
 };
 
-
 /**
  * Prototype to output MySQL date format
  **/

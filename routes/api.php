@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use App\Http\Resources\Locations;
 use App\Http\Resources\Universities;
 use App\Http\Resources\Languages;
@@ -14,9 +13,6 @@ use App\Language;
 use App\Degree;
 use App\Shirt;
 
-use Illuminate\Database\Eloquent\Collection;
-use PharIo\Manifest\Email;
-use App\Http\Resources\Users;
 use App\Http\Resources\Timezones;
 use App\Timezone;
 use App\Conference;
@@ -104,6 +100,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
 
         // Custom posts (may overwrite ressource routes from below)
+        Route::post('logout', function () {
+            return auth()->user();
+        });
         Route::post('conference/{conference}/notification', 'ConferenceController@postNotification')
             ->name('conference.postNotification')
             ->middleware("can:postNotification,conference");
@@ -140,6 +139,9 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
+        Route::get('user/self', function () {
+            return auth()->user();
+        });
         Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.taskDays');

@@ -1,4 +1,7 @@
 export default {
+    getUsers(params) {
+        return axios.get(`user?${params}`);
+    },
     getConferences() {
         return axios.get("conference");
     },
@@ -6,7 +9,7 @@ export default {
         return axios.get(`conference/${key}`);
     },
     getConferenceSvs(key, params) {
-        return axios.get(`conference/${key}/sv${params}`)
+        return axios.get(`conference/${key}/sv?${params}`)
     },
     getConferenceSvsForTaskAssignment(key, taskId, params) {
         return axios.get(`conference/${key}/sv_for_task_assignment/${taskId}${params}`)
@@ -15,7 +18,7 @@ export default {
         return axios.get(`conference/${key}/sv/count`)
     },
     getConferenceTasks(key, params) {
-        return axios.get(`conference/${key}/task${params}`);
+        return axios.get(`conference/${key}/task?${params}`);
     },
     getConferenceAssignments(key, params) {
         return axios.get(`conference/${key}/assignment${params}`);

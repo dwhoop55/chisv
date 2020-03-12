@@ -87,13 +87,13 @@
         <form @submit.prevent="enroll">
           <div class="card-content">
             <div class="content">
-              <enrollment-form v-model="form"></enrollment-form>
+              <enrollment-form v-if="form" v-model="form"></enrollment-form>
               <p class="notification is-warning" v-if="form && form.agreement">{{ form.agreement }}</p>
             </div>
           </div>
           <footer class="card-footer">
             <a
-              :disabled="form.vform.busy"
+              :disabled="form && form.vform && form.vform.busy"
               @click="enroll"
               class="card-footer-item is-success"
             >Agree and Enroll</a>
@@ -121,7 +121,7 @@ export default {
 
   data() {
     return {
-      form: {},
+      form: null,
       showEnrollmentForm: false,
 
       permission: null,

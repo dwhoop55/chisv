@@ -4,7 +4,7 @@
       <b-input
         expanded
         v-debounce.fireonempty="onSearch"
-        v-model="searchString"
+        :value="search"
         placeholder="Search anything..."
         type="search"
         icon="magnify"
@@ -13,20 +13,21 @@
       <b-dropdown
         :disabled="isLoading"
         class="control"
-        @active-change="($event == false) ? getUsers() : null"
-        v-model="selectedStates"
-        v-if="selectedStates && svStates"
+        @input="onStatesChange($event)"
+        @active-change="($event == false) ? fetchSvs() : null"
+        :value="states"
+        v-if="states && allStates"
         multiple
         aria-role="list"
       >
         <button class="button" type="button" slot="trigger">
-          <span>SV states {{ selectedStates.length }}/{{ svStates.length }}</span>
+          <span>SV states {{ states.length }}/{{ states.length }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
 
         <b-dropdown-item
           :disabled="isLoading"
-          v-for="state in svStates"
+          v-for="state in allStates"
           :key="state.id"
           :value="state.id"
           aria-role="listitem"
@@ -41,8 +42,8 @@
         :disabled="isLoading"
         v-if="enrollmentFormTemplate"
         class="control"
-        @input="templateSettingsChanged()"
-        v-model="enrollmentFormTemplate"
+        @input="templateSettingsChanged($event)"
+        :value="parseEnrollmentForm(enrollmentFormTemplate)"
       ></enrollment-form-settings-button>
 
       <b-field v-if="canRunLottery">
@@ -68,14 +69,14 @@
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="getUsers()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="fetchSvs()" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
     </b-field>
 
     <br />
     <b-table
       ref="table"
-      :data="users"
+      :data="data.data"
       @click="toggle($event)"
       detail-key="id"
       :opened-detailed="detailOpen"
@@ -84,7 +85,7 @@
       paginated
       pagination-position="both"
       backend-pagination
-      :total="totalUsers"
+      :total="data.total"
       :per-page="perPage"
       :current-page="page"
       @page-change="onPageChange"
@@ -195,7 +196,7 @@
                 <b-icon icon="menu-down"></b-icon>
               </button>
               <b-dropdown-item
-                v-for="state in svStates"
+                v-for="state in allStates"
                 :key="state.id"
                 :value="state.id"
                 aria-role="listitem"
@@ -396,15 +397,15 @@
               <b-icon v-else icon="emoticon-sad" size="is-large"></b-icon>
             </p>
             <p
-              v-if="searchString.length == 0 && selectedStates.length == svStates.length && !isLoading"
+              v-if="search.length == 0 && states.length == allStates.length && !isLoading"
             >No users found.</p>
             <p v-else-if="isLoading">Loading..</p>
-            <p v-else-if="searchString.length > 0">
+            <p v-else-if="search.length > 0">
               No users found for
-              <b>{{ searchString }}</b>
-              in {{ selectedStates.length }} SV States
+              <b>{{ search }}</b>
+              in {{ states.length }} SV States
             </p>
-            <p v-else>No users found in {{ selectedStates.length }} SV States</p>
+            <p v-else>No users found in {{ states.length }} SV States</p>
           </div>
         </section>
       </template>
@@ -412,7 +413,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >Found {{ totalUsers }} SV{{ totalUsers > 1 ? 's' : '' }}</small>
+        >Found {{ data.total }} SV{{ data.total > 1 ? 's' : '' }}</small>
       </template>
       <template slot="footer">
         <div class="has-text-right">
@@ -439,27 +440,15 @@
 import api from "@/api.js";
 import auth from "@/auth.js";
 import Form from "vform";
-import { filter } from "minimatch";
 import JobModalVue from "@/components/modals/JobModal.vue";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   props: ["conference"],
 
   data() {
     return {
-      users: [],
-      totalUsers: 0,
-      acceptedCount: 0,
       detailOpen: [],
-      states: [],
-      isLoading: true,
-      searchString: this.$store.getters.svsSearch,
-      selectedStates: [],
-      sortField: "lastname",
-      sortOrder: "asc",
-      perPage: this.$store.getters.svsPerPage,
-      page: this.$store.getters.svsPage,
-      enrollmentFormTemplate: null,
 
       // This will ensure that the details won't open
       // on SV state dropdown click
@@ -471,17 +460,13 @@ export default {
       // to make sure the DOM is kept small
       showBidsForUser: null,
 
-      canUpdateEnrollment: false,
-      canRunLottery: false,
-
-      isCaptain: false
+      canUpdateEnrollment: true,
+      canRunLottery: true
     };
   },
 
   created() {
     this.getCan();
-    this.getEnrollmentFormTemplate();
-    this.getStates(); // Also calls getUsers()
   },
 
   methods: {
@@ -494,7 +479,7 @@ export default {
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.isLoading = true;
+          this.setIsLoading(true);
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
             .then(data => {
@@ -514,14 +499,14 @@ export default {
               });
             })
             .finally(() => {
-              this.isLoading = false;
-              this.getUsers();
+              this.setIsLoading(false);
+              this.fetchSvs();
             });
         } // onConfirm
       });
     },
     runLottery() {
-      this.isLoading = true;
+      this.setIsLoading(true);
       api
         .runLottery(this.conference.key)
         .then(data => {
@@ -532,7 +517,7 @@ export default {
             component: JobModalVue,
             hasModalCard: true,
             onCancel: () => {
-              this.getUsers();
+              this.fetchSvs();
             }
           });
         })
@@ -548,26 +533,26 @@ export default {
           });
         })
         .finally(() => {
-          this.isLoading = false;
-          this.getUsers();
+          this.setIsLoading(false);
+          this.fetchSvs();
         });
     },
-    templateSettingsChanged() {
+    templateSettingsChanged(newSettings) {
       var weights = {};
 
-      for (var key in this.enrollmentFormTemplate.meta) {
+      for (var key in newSettings.meta) {
         if (
-          this.enrollmentFormTemplate.meta.hasOwnProperty(key) &&
-          this.enrollmentFormTemplate.meta[key].weight != undefined
+          newSettings.meta.hasOwnProperty(key) &&
+          newSettings.meta[key].weight != undefined
         ) {
-          weights[key] = this.enrollmentFormTemplate.meta[key].weight;
+          weights[key] = newSettings.meta[key].weight;
         }
       }
 
       this.updateWeights(weights);
     },
     updateWeights(weights) {
-      this.isLoading = true;
+      this.setIsLoading(true);
       api
         .updateConferenceEnrollmentFormWeights(this.conference.key, weights)
         .then(data => {
@@ -577,7 +562,7 @@ export default {
             type: "is-success",
             hasIcon: true
           });
-          this.getUsers();
+          this.fetchSvs();
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -588,17 +573,7 @@ export default {
           });
         })
         .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    getEnrollmentFormTemplate() {
-      api
-        .getEnrollmentForm(this.conference.enrollment_form_id)
-        .then(data => {
-          this.enrollmentFormTemplate = this.parseEnrollmentForm(data.data);
-        })
-        .catch(error => {
-          this.enrollmentFormTemplate = null;
+          this.setIsLoading(false);
         });
     },
     updateSvState(user, $event) {
@@ -610,13 +585,13 @@ export default {
         state_id: $event
       });
 
-      this.isLoading = true;
+      this.setIsLoading(true);
       api
         .updatePermission(vform, user.permission.id)
         .then(response => {
           user.permission = response.data.result;
-          this.getAcceptedCount();
-          this.getUsers();
+          this.fetchAcceptedCount();
+          this.fetchSvs();
         })
         .catch(error => {
           this.$buefy.notification.open({
@@ -627,27 +602,7 @@ export default {
           });
         })
         .finally(() => {
-          this.isLoading = false;
-        });
-    },
-    getStates: function() {
-      api
-        .getStates()
-        .then(response => {
-          this.states = response.data.data;
-          this.svStates.forEach(state => {
-            this.selectedStates.push(state.id);
-          });
-          this.getUsers();
-        })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: error.message,
-            type: "is-danger",
-            hasIcon: true
-          });
-          reject();
+          this.setIsLoading(false);
         });
     },
     getCan: async function() {
@@ -662,62 +617,25 @@ export default {
         this.conference.id
       );
     },
-    getAcceptedCount() {
-      api
-        .getConferenceAcceptedCount(this.conference.key)
-        .then(data => {
-          this.acceptedCount = data.data.result;
-        })
-        .catch(error => {
-          this.acceptedCount = "error";
-        });
-    },
     onPageChange(page) {
-      this.$store.commit("SVS_PAGE", page);
-      this.page = page;
-      this.getUsers();
+      this.setPage(page);
+      this.fetchSvs();
     },
     onPerPageChange(perPage) {
-      this.$store.commit("SVS_PER_PAGE", perPage);
-      this.perPage = perPage;
-      this.getUsers();
+      this.setPerPage(perPage);
+      this.fetchSvs();
     },
     onSort(field, order) {
-      this.sortField = field;
-      this.sortOrder = order;
-      this.getUsers();
-    },
-    getUsers() {
-      const params = [
-        `sort_by=${this.sortField}`,
-        `sort_order=${this.sortOrder}`,
-        `page=${this.page}`,
-        `per_page=${this.perPage}`,
-        `search_string=${this.searchString}`,
-        `selected_states=${this.selectedStates}`
-      ].join("&");
-
-      this.getAcceptedCount();
-
-      this.isLoading = true;
-      api
-        .getConferenceSvs(this.conference.key, `?${params}`)
-        .then(({ data }) => {
-          this.users = data.data;
-          this.totalUsers = data.total;
-        })
-        .catch(error => {
-          this.users = [];
-          this.totalUsers = 0;
-          throw error;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      this.setSortField(field);
+      this.setSortDirection(order);
+      this.fetchSvs();
     },
     onSearch(search) {
-      this.getUsers();
-      this.$store.commit("SVS_SEARCH", this.searchString);
+      this.setSearch(search);
+      this.fetchSvs();
+    },
+    onStatesChange(states) {
+      this.setStates(states);
     },
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
@@ -729,12 +647,44 @@ export default {
           this.detailOpen = [row.id];
         }
       }
-    }
+    },
+    ...mapActions("svs", ["fetchSvs"]),
+    ...mapActions("conference", ["fetchAcceptedCount"]),
+    ...mapMutations("svs", [
+      "setSearch",
+      "setSortField",
+      "setSortDirection",
+      "setPerPage",
+      "setPage",
+      "setStates",
+      "setIsLoading"
+    ])
   },
 
   computed: {
-    svStates: function() {
-      return this.filterStates(this.states, "App\\User");
+    enrollmentFormTemplate() {
+      return this.conference.enrollment_form_template;
+    },
+    allStates() {
+      return this.unfilteredStates("App\\User");
+    },
+    ...mapGetters("svs", [
+      "data",
+      "search",
+      "sortField",
+      "sortDirection",
+      "perPage",
+      "page",
+      "states",
+      "isLoading"
+    ]),
+    ...mapGetters("conference", ["acceptedCount"]),
+    ...mapGetters("defines", { unfilteredStates: "states" })
+  },
+
+  created() {
+    if (!this.data) {
+      this.fetchSvs();
     }
   }
 };

@@ -2,9 +2,8 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        :loading="isLoadingCalendar"
-        @input="onDayChange()"
-        v-model="day"
+        @input="onDayChange($event)"
+        :value="day"
         :events="calendarEvents"
         indicators="bars"
         :mobile-native="false"
@@ -20,7 +19,7 @@
       <b-input
         width="600"
         v-debounce.fireonempty="onSearch"
-        v-model="searchString"
+        v-model="search"
         placeholder="Search.."
         type="search"
         icon="magnify"
@@ -29,15 +28,15 @@
       <b-dropdown
         v-if="canCreateTask"
         @input="onPrioritiesChange"
-        @active-change="($event == false) ? getTasks() : null"
-        :value="selectedPriorities"
+        @active-change="($event == false) ? fetchTasks() : null"
+        :value="priorities"
         :disabled="isLoading"
         class="control"
         multiple
         aria-role="list"
       >
         <button class="button" type="button" slot="trigger">
-          <span>Priorities {{ selectedPriorities.length }} / {{ allPriorities.length }}</span>
+          <span>Priorities {{ priorities.length }} / {{ allPriorities.length }}</span>
           <b-icon icon="menu-down"></b-icon>
         </button>
         <b-dropdown-item
@@ -66,12 +65,7 @@
       >Import task</b-button>
 
       <b-field>
-        <b-dropdown
-          :value="activeColumns"
-          @input="$store.commit('TASKS_COLUMNS', $event)"
-          multiple
-          aria-role="list"
-        >
+        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
           <button class="button is-primary" slot="trigger">
             <span>Visible columns</span>
             <b-icon icon="menu-down"></b-icon>
@@ -108,7 +102,7 @@
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="getTasks();getTaskDays()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="fetchTasks();fetchTaskDays()" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
     </b-field>
     <br />
@@ -137,7 +131,7 @@
     >
       <template slot-scope="props">
         <b-table-column
-          :visible="(canCreateTask || canDeleteTask) && activeColumns.includes('manage')"
+          :visible="(canCreateTask || canDeleteTask) && columns.includes('manage')"
           width="150"
           label="Manage"
         >
@@ -160,7 +154,7 @@
           :width="conference.bidding_enabled ? 315 : 0"
           :label="conference.bidding_enabled ? 'Preference' : 'Status'"
         >
-          <task-bid-picker @error="getTasks()" size="is-small" v-model="props.row"></task-bid-picker>
+          <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
         <b-table-column
           field="tasks.start_at"
@@ -182,13 +176,13 @@
         >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
         <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('location')"
+          :visible="columns.includes('location')"
           field="tasks.location"
           sortable
           label="Location"
         >{{ props.row.location }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('description')"
+          :visible="columns.includes('description')"
           field="tasks.description"
           sortable
           label="Description"
@@ -198,14 +192,14 @@
           >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
         </b-table-column>
         <b-table-column
-          :visible="canCreateTask && activeColumns.includes('slots')"
+          :visible="canCreateTask && columns.includes('slots')"
           field="tasks.slots"
           width="10"
           sortable
           label="Slots"
         >{{ props.row.slots }}</b-table-column>
         <b-table-column
-          :visible="canCreateTask && activeColumns.includes('priority')"
+          :visible="canCreateTask && columns.includes('priority')"
           field="tasks.priority"
           width="10"
           sortable
@@ -221,7 +215,7 @@
             </p>
             <p>
               No tasks found for
-              <b v-if="searchString.length > 0">{{ searchString }}</b>
+              <b v-if="search.length > 0">{{ search }}</b>
               {{ day | moment('ll') }}
             </p>
             <p class="has-text-danger" v-if="onlyOwnTasks">
@@ -264,27 +258,14 @@ import TaskModalVue from "@/components/modals/TaskModal.vue";
 import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
 import JobModalVue from "../../components/modals/JobModal.vue";
 import moment from "moment-timezone";
+import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 
 export default {
   props: ["conference"],
 
   data() {
     return {
-      tasks: [],
-      taskDays: [],
-      totalTasks: null,
-      searchString: this.$store.getters.tasksSearch,
-      day: new Date(this.$store.getters.tasksDay),
-      selectedPriorities: this.$store.getters.tasksPriorities,
       allPriorities: [1, 2, 3],
-      sortField: this.$store.getters.tasksSortField,
-      sortDirection: this.$store.getters.tasksSortDirection,
-      perPage: this.$store.getters.tasksPerPage,
-      page: this.$store.getters.tasksPage,
-      onlyOwnTasks: this.$store.getters.tasksOnlyOwnTasks,
-
-      isLoading: true,
-      isLoadingCalendar: true,
 
       canCreateTask: false,
       canDeleteTask: false
@@ -313,7 +294,6 @@ export default {
             hasIcon: true,
             icon: "emoticon-dead",
             onConfirm: () => {
-              this.isLoading = true;
               api
                 .deleteAllTasksOfConference(
                   this.conference.key,
@@ -336,8 +316,7 @@ export default {
                   });
                 })
                 .finally(() => {
-                  this.isLoading = false;
-                  this.getTasks();
+                  this.fetchTasks();
                 });
             } // onConfirm 2
           });
@@ -375,8 +354,8 @@ export default {
               conference_id: this.conference.id
             },
             updated: () => {
-              this.getTasks();
-              this.getTaskDays();
+              this.fetchTasks();
+              this.fetchTaskDays();
             },
             calendarEvents: this.calendarEvents
           },
@@ -397,8 +376,8 @@ export default {
                 component: JobModalVue,
                 hasModalCard: true,
                 onCancel: () => {
-                  this.getTasks();
-                  this.getTaskDays();
+                  this.fetchTasks();
+                  this.fetchTaskDays();
                 }
               });
             }
@@ -415,8 +394,8 @@ export default {
         props: {
           task: task,
           updated: () => {
-            this.getTasks();
-            this.getTaskDays();
+            this.fetchTasks();
+            this.fetchTaskDays();
           },
           calendarEvents: this.calendarEvents
         },
@@ -441,7 +420,6 @@ export default {
       });
     },
     deleteTask(task) {
-      this.isLoading = true;
       api
         .deleteTask(task.id)
         .then(data => {
@@ -451,8 +429,8 @@ export default {
             type: "is-success",
             hasIcon: true
           });
-          this.getTasks();
-          this.getTaskDays();
+          this.fetchTasks();
+          this.fetchTaskDays();
         })
         .catch(error => {
           var message = error.response.data.message
@@ -464,9 +442,6 @@ export default {
             type: "is-danger",
             hasIcon: true
           });
-        })
-        .finally(() => {
-          this.isLoading = false;
         });
     },
     getCan: async function() {
@@ -485,127 +460,83 @@ export default {
         this.conference.id
       );
     },
-    getTaskDays() {
-      this.isLoadingCalendar = true;
-      api
-        .getConferenceTaskDays(this.conference.key)
-        .then(data => {
-          this.taskDays = data.data;
-        })
-        .catch(error => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.isLoadingCalendar = false;
-        });
-    },
-    getTasks() {
-      this.$store.commit("TASKS_DAY", this.day);
-
-      const params = [
-        `sort_by=${this.sortField}`,
-        `sort_order=${this.sortDirection}`,
-        `page=${this.page}`,
-        `per_page=${this.perPage}`,
-        `search_string=${this.searchString}`,
-        `priorities=${this.selectedPriorities}`,
-        `day=${this.day.toMySqlDate()}`,
-        `only_own_tasks=${this.onlyOwnTasks}`
-      ].join("&");
-
-      this.isLoading = true;
-      api
-        .getConferenceTasks(this.conference.key, `?${params}`)
-        .then(({ data }) => {
-          this.tasks = data.data;
-          this.totalTasks = data.total;
-        })
-        .catch(error => {
-          this.tasks = [];
-          this.totalTasks = 0;
-          throw error;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
     onPageChange(page) {
-      this.$store.commit("TASKS_PAGE", page);
-      this.page = page;
-      this.getTasks();
+      this.setPage(page);
+      this.fetchTasks();
     },
     onPerPageChange(perPage) {
-      this.$store.commit("TASKS_PER_PAGE", perPage);
-      this.perPage = perPage;
-      this.getTasks();
+      this.setPerPage(page);
+      this.fetchTasks();
     },
     onSort(field, direction) {
-      this.sortField = field;
-      this.sortDirection = direction;
-      this.$store.commit("TASKS_SORT_FIELD", field);
-      this.$store.commit("TASKS_SORT_DIRECTION", direction);
-      this.getTasks();
+      this.setSortField(field);
+      this.setSortDirection(direction);
+      this.fetchTasks();
     },
     onPrioritiesChange(priorities) {
-      this.$store.commit("TASKS_PRIORITIES", priorities);
-      this.selectedPriorities = priorities;
-    },
-    onDayChange() {
-      this.onPageChange(1);
+      this.setPriorities(priorities);
     },
     onOnlyOwnTasksChange(bool) {
-      this.$store.commit("TASKS_ONLY_OWN_TASKS", bool);
-      this.onlyOwnTasks = bool;
-      this.getTasks();
+      this.setOnlyOwnTasks(bool);
+      this.fetchTasks();
     },
     onSearch(search) {
-      this.$store.commit("TASKS_SEARCH", this.searchString);
-      this.getTasks();
+      this.setSearch(search);
+      this.fetchTasks();
+    },
+    onDayChange(day) {
+      this.setDay(day);
+      this.setPage(1);
+      this.fetchTasks();
     },
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
         message: task.description
       });
-    }
+    },
+    ...mapMutations("tasks", {
+      setColumns: "setColumns",
+      setSearch: "setSearch",
+      setDay: "setDay",
+      setSortField: "setSortField",
+      setSortDirection: "setSortDirection",
+      setPerPage: "setPerPage",
+      setPage: "setPage",
+      setPriorities: "setPriorities",
+      setOnlyOwnTasks: "setOnlyOwnTasks"
+    }),
+    ...mapActions("conference", ["fetchTaskDays"]),
+    ...mapActions("tasks", ["fetchTasks"])
   },
 
   created() {
-    this.getTasks();
-    this.getTaskDays();
+    this.fetchTasks();
+    this.fetchTasks();
+    this.fetchTaskDays();
     this.getCan();
   },
 
   computed: {
-    activeColumns() {
-      return this.$store.getters.tasksColumns;
-    },
     calendarEvents() {
-      if (!this.conference.start_date || !this.conference.end_date) {
-        return null;
-      }
-
-      var days = [];
-      var start = this.dateFromMySql(this.conference.start_date);
-      var end = this.dateFromMySql(this.conference.end_date);
-      var loop = new Date(start);
-
-      for (var d = start; d <= end; d.setDate(d.getDate() + 1)) {
-        days.push({
-          date: new Date(d),
-          type: "is-primary"
-        });
-      }
-
-      Object.keys(this.taskDays).forEach(function(day) {
-        days.push({
-          date: new Date(day),
-          type: "is-warning"
-        });
-      });
-
-      return days;
-    }
+      return [...this.conferenceDays, ...this.taskDays];
+    },
+    ...mapGetters("tasks", [
+      "columns",
+      "search",
+      "day",
+      "sortField",
+      "sortDirection",
+      "perPage",
+      "page",
+      "priorities",
+      "onlyOwnTasks",
+      "tasks",
+      "totalTasks",
+      "isLoading"
+    ]),
+    ...mapGetters("conference", ["conferenceDays", "taskDays"]),
+    ...mapGetters("defines", ["states"])
   }
 };
 </script>

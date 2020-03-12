@@ -45,7 +45,13 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
-        return $conference->loadMissing(['icon', 'artwork', 'state', 'timezone']);
+        $enrollmentFormService = new EnrollmentFormService;
+        $conference->loadMissing(['icon', 'artwork', 'state', 'timezone', 'enrollmentFormTemplate']);
+        if (auth()->user()->cannot('updateEnrollmentFormWeights', $conference)) {
+            $conference->enrollment_form_template = $enrollmentFormService
+                ->removeWeights($conference->enrollmentFormTemplate);
+        }
+        return $conference;
     }
 
 
@@ -967,7 +973,7 @@ class ConferenceController extends Controller
             return ["permission" => $permission];
         } else {
             // User is not associated as SV. Return the template form
-            $form = $conference->templateEnrollmentForm;
+            $form = $conference->enrollmentFormTemplate;
             $form = $enrollmentFormService->removeWeights($form)->only('is_template', 'body', 'id');
             return ["enrollment_form" => $form];
         }
@@ -1037,7 +1043,7 @@ class ConferenceController extends Controller
         if (!$weights) {
             // load the default weights from the default conference
             // enrollmentForm
-            $weights = $enrollmentFormService->extractWeights($conference->templateEnrollmentForm);
+            $weights = $enrollmentFormService->extractWeights($conference->enrollmentFormTemplate);
         }
 
         foreach ($conference->filledEnrollmentForms as $form) {
@@ -1138,15 +1144,7 @@ class ConferenceController extends Controller
      */
     public function showIndex()
     {
-        $conferences = Conference::all()->filter(function ($conference) {
-            return auth()->user()->can('view', $conference);
-        });
-
-        $user = auth()->user();
-        $overState = State::byName('over');
-        $planningState = State::byName('planning');
-
-        return view('conference.index', compact('user', 'conferences', 'overState', 'planningState'));
+        return view('conference.index');
     }
 
     /**
@@ -1168,11 +1166,7 @@ class ConferenceController extends Controller
      */
     public function showModel(Conference $conference)
     {
-        $overState = State::byName('over');
-        $planningState = State::byName('planning');
-        $user = auth()->user();
-        // $fullContent = true;
-        return view('conference.show', compact('fullContent', 'user', 'conference', 'overState', 'planningState'));
+        return view('conference.show', compact('conference'));
     }
 
     /**

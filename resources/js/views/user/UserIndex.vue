@@ -84,7 +84,7 @@
       </template>
 
       <template slot="top-left">
-        <b-button type="is-primary" @click="getUsers()">Reload</b-button>
+        <b-button type="is-primary" @click="fetchUsers()">Reload</b-button>
       </template>
     </b-table>
   </section>
@@ -92,83 +92,55 @@
 
 
 <script>
+import { mapMutations, mapGetters, mapActions } from "vuex";
 export default {
-  data() {
-    return {
-      data: this.$store.getters.userIndexData,
-      isLoading: false,
-      sortField: this.$store.getters.userIndexSortField,
-      sortDirection: this.$store.getters.userIndexSortDirection,
-      search: this.$store.getters.userIndexSearch,
-      university: this.$store.getters.userIndexUniversity,
-      page: this.$store.getters.userIndexPage,
-      perPage: this.$store.getters.userIndexPerPage
-    };
-  },
   methods: {
-    getUsers() {
-      var params = [
-        `sort_by=${this.sortField}`,
-        `sort_order=${this.sortDirection}`,
-        `page=${this.page}`,
-        `per_page=${this.perPage}`,
-        `search=${this.search}`
-      ];
-
-      if (this.university && this.university.id) {
-        params.push(`university_id=${this.university.id}`);
-      } else if (this.university) {
-        params.push(`university_fallback=${this.university.name}`);
-      }
-      params = params.join("&");
-
-      this.isLoading = true;
-      axios
-        .get(`user?${params}`)
-        .then(data => {
-          this.data = data.data;
-          this.$store.commit("USER_INDEX_DATA", data.data);
-          this.isLoading = false;
-        })
-        .catch(error => {
-          this.data = [];
-          this.total = 0;
-          this.isLoading = false;
-          throw error;
-        });
-    },
     onUniversityChange(university) {
-      this.$store.commit("USER_INDEX_UNIVERSITY", university);
-      this.university = university;
-      this.getUsers();
+      this.setUniversity(university);
+      this.fetchUsers();
     },
     onPageChange(page) {
-      this.$store.commit("USER_INDEX_PAGE", page);
-      this.page = page;
-      this.getUsers();
+      this.setPage(page);
+      this.fetchUsers();
     },
     onPerPageChange(perPage) {
-      this.$store.commit("USER_INDEX_PER_PAGE", perPage);
-      this.perPage = perPage;
-      this.getUsers();
+      this.setPerPage(perPage);
+      this.fetchUsers();
     },
     onSort(field, direction) {
-      this.sortField = field;
-      this.sortDirection = direction;
-      this.$store.commit("USER_INDEX_SORT_FIELD", field);
-      this.$store.commit("USER_INDEX_SORT_DIRECTION", direction);
-      this.getUsers();
+      this.setSortField(field);
+      this.setSortDirection(direction);
+      this.fetchUsers();
     },
     onSearch(search) {
-      this.$store.commit("USER_INDEX_SEARCH", search);
-      this.search = search;
-      this.getUsers();
-    }
+      this.setSearch(search);
+      this.fetchUsers();
+    },
+    ...mapMutations("userIndex", [
+      "setUniversity",
+      "setSearch",
+      "setSortField",
+      "setSortDirection",
+      "setPerPage",
+      "setPage"
+    ]),
+    ...mapActions("userIndex", ["fetchUsers"])
   },
+
+  computed: mapGetters("userIndex", [
+    "search",
+    "university",
+    "perPage",
+    "page",
+    "sortField",
+    "sortDirection",
+    "data",
+    "isLoading"
+  ]),
 
   mounted() {
     if (!this.data) {
-      this.getUsers();
+      this.fetchUsers();
     }
   }
 };

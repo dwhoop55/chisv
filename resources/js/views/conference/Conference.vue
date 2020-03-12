@@ -64,24 +64,24 @@
             </nav>
 
             <b-tabs
-              :value="$store.getters.conferenceTab"
+              :value="tab"
+              @input="setTab($event)"
               :animated="false"
               position="is-left"
               type="is-boxed"
-              @input="$store.commit('CONFERENCE_TAB', $event)"
             >
               <b-tab-item label="Overview">
                 <conference-overview @update="getCan()" v-if="conference" v-model="conference"></conference-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
-                <conference-users v-if="canViewUsers" :conference="conference"></conference-users>
+                <conference-svs v-if="canViewUsers" :conference="conference"></conference-svs>
                 <p v-else>You need to be accepted to see other SVs!</p>
               </b-tab-item>
               <b-tab-item label="Tasks">
                 <conference-tasks v-if="canViewUsers" :conference="conference"></conference-tasks>
                 <p v-else>You need to be accepted to see tasks!</p>
               </b-tab-item>
-              <b-tab-item v-if="canUpdateAssignment" label="Assignments">
+              <!-- <b-tab-item v-if="canUpdateAssignment" label="Assignments">
                 <conference-assignments
                   v-show="$store.getters.conferenceTab==3"
                   :conference="conference"
@@ -101,40 +101,42 @@
                   v-show="$store.getters.conferenceTab==6"
                   :conference="conference"
                 ></conference-reports>
-              </b-tab-item>
+              </b-tab-item>-->
             </b-tabs>
           </div>
         </div>
       </div>
       <!--  -->
     </div>
-    <b-loading :is-full-page="false" :active="loading"></b-loading>
   </div>
 </template>
 
 <script>
 import api from "@/api.js";
 import auth from "@/auth.js";
+import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
   props: ["conferenceKey"],
 
   data() {
     return {
-      loading: true,
       canEdit: false,
       canNotify: false,
       canUpdateEnrollment: false,
       canUpdateAssignment: false,
-      canViewUsers: false,
-      conference: null
+      canViewUsers: false
     };
   },
 
   created() {
-    this.getConference();
+    this.fetchTaskDays(this.conferenceKey);
+    this.fetchConference(this.conferenceKey).then(() => {
+      this.getCan();
+    });
   },
 
+  computed: mapGetters("conference", ["conference", "tab"]),
   methods: {
     getCan: async function() {
       this.canEdit = await auth.can("update", "Conference", this.conference.id);
@@ -159,21 +161,8 @@ export default {
         this.conference.id
       );
     },
-    getConference: function() {
-      api
-        .getConference(this.conferenceKey)
-        .then(data => {
-          this.conference = data.data;
-          this.getCan();
-          this.$store.commit("LAST_CONFERENCE", this.conference.key);
-        })
-        .catch(error => {
-          this.$buefy.notification.open(error.message);
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
+    ...mapActions("conference", ["fetchConference", "fetchTaskDays"]),
+    ...mapMutations("conference", ["setTab"])
   }
 };
 </script>

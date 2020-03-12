@@ -32,7 +32,7 @@ class Conference extends Model
         return 'key';
     }
 
-    public function templateEnrollmentForm()
+    public function enrollmentFormTemplate()
     {
         return $this->belongsTo('App\EnrollmentForm', 'enrollment_form_id');
     }
