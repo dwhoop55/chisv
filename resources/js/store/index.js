@@ -28,7 +28,8 @@ export default new Vuex.Store({
         paths: [
             'auth.user',
             'conference.tab',
-            'conference.conference',
+            // 'conference.conference',
+            // 'conference.acceptedCount',
             'conference.taskDays',
             'svs',
             'tasks',

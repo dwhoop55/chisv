@@ -953,7 +953,8 @@ class ConferenceController extends Controller
     public function enrollment(Conference $conference)
     {
         $permission = Permission
-            ::where('conference_id', $conference->id)
+            ::with(['state'])
+            ->where('conference_id', $conference->id)
             ->where('user_id', auth()->user()->id)
             ->where('role_id', Role::byName('sv')->id)->first();
 

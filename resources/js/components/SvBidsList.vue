@@ -45,7 +45,7 @@
             <b-tag
               rounded
               :type="preferenceType(props.row.preference)"
-            >{{ preferenceToString(props.row.preference) }}</b-tag>
+            >{{ preferenceString(props.row.preference) }}</b-tag>
           </b-table-column>
           <b-table-column searchable width="40" field="state.name" label="State" sortable>
             <state-tag :state="props.row.state"></state-tag>

@@ -7,7 +7,7 @@
       :size="size"
       type="is-danger"
       :native-value="parseInt(0)"
-    >{{ preferenceToString(0) }}</b-radio-button>
+    >{{ preferenceString(0) }}</b-radio-button>
     <b-radio-button
       @click.native="click(1)"
       :value="value"
@@ -15,7 +15,7 @@
       :size="size"
       type="is-info"
       :native-value="parseInt(1)"
-    >{{ preferenceToString(1) }}</b-radio-button>
+    >{{ preferenceString(1) }}</b-radio-button>
     <b-radio-button
       @click.native="click(2)"
       :value="value"
@@ -23,7 +23,7 @@
       :size="size"
       type="is-warning"
       :native-value="parseInt(2)"
-    >{{ preferenceToString(2) }}</b-radio-button>
+    >{{ preferenceString(2) }}</b-radio-button>
     <b-radio-button
       @click.native="click(3)"
       :value="value"
@@ -31,7 +31,7 @@
       :size="size"
       type="is-success"
       :native-value="parseInt(3)"
-    >{{ preferenceToString(3) }}</b-radio-button>
+    >{{ preferenceString(3) }}</b-radio-button>
   </b-field>
 </template>
 

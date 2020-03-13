@@ -18,7 +18,7 @@ export default {
 
   methods: {
     type(string) {
-      return this.preferenceType(this.stringToPreference(string));
+      return this.preferenceType(this.preferenceId(string));
     }
   }
 };

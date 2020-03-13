@@ -112,6 +112,7 @@
       @sort="onSort"
       ref="table"
       :data="tasks"
+      :mobile-cards="false"
       paginated
       backend-pagination
       pagination-position="both"
@@ -265,10 +266,7 @@ export default {
 
   data() {
     return {
-      allPriorities: [1, 2, 3],
-
-      canCreateTask: false,
-      canDeleteTask: false
+      allPriorities: [1, 2, 3]
     };
   },
 
@@ -444,22 +442,6 @@ export default {
           });
         });
     },
-    getCan: async function() {
-      this.canCreateTask = await auth.can(
-        "createForConference",
-        "Task",
-        null,
-        "Conference",
-        this.conference.id
-      );
-      this.canDeleteTask = await auth.can(
-        "deleteForConference",
-        "Task",
-        null,
-        "Conference",
-        this.conference.id
-      );
-    },
     onPageChange(page) {
       this.setPage(page);
       this.fetchTasks();
@@ -507,17 +489,46 @@ export default {
       setOnlyOwnTasks: "setOnlyOwnTasks"
     }),
     ...mapActions("conference", ["fetchTaskDays"]),
-    ...mapActions("tasks", ["fetchTasks"])
+    ...mapActions("tasks", ["fetchTasks"]),
+    ...mapActions("auth", ["fetchCan"])
   },
 
   created() {
     this.fetchTasks();
-    this.fetchTasks();
     this.fetchTaskDays();
-    this.getCan();
   },
 
   computed: {
+    canCreateTask() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      // const ability = {
+      //   ability: "createForConference",
+      //   model: "Task",
+      //   id: null,
+      //   onModel: "Conference",
+      //   onId: this.conference.id
+      // };
+      // const result = this.can(ability);
+      // if (!result) {
+      //   this.fetchCan(ability);
+      // }
+      // return result;
+    },
+    canDeleteTask() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      // const ability = {
+      //   ability: "deleteForConference",
+      //   model: "Task",
+      //   id: null,
+      //   onModel: "Conference",
+      //   onId: this.conference.id
+      // };
+      // const result = this.can(ability);
+      // if (!result) {
+      //   this.fetchCan(ability);
+      // }
+      // return result;
+    },
     calendarEvents() {
       return [...this.conferenceDays, ...this.taskDays];
     },
@@ -536,7 +547,8 @@ export default {
       "isLoading"
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
-    ...mapGetters("defines", ["states"])
+    ...mapGetters("defines", ["states"]),
+    ...mapGetters("auth", ["userIs"])
   }
 };
 </script>

@@ -11,12 +11,24 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
+
+    /**
+     * Determine whether the user can view the own
+     * user object
+     *
+     * @param  \App\User  $user
+     * @return mixed
+     */
+    public function viewSelf(User $user)
+    {
+        return true;
+    }
+
     /**
      * Determine whether the user can view a list of users.
      * Which user in particular is decided by view below
      *
      * @param  \App\User  $user
-     * @param  \App\User  $model
      * @return mixed
      */
     public function viewAny(User $user)

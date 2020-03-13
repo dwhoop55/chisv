@@ -139,9 +139,9 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
-        Route::get('user/self', function () {
-            return auth()->user();
-        });
+        Route::get('user/self', 'UserController@showSelf')
+            ->middleware("can:viewSelf,App\User")
+            ->name('user.self');
         Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.taskDays');
@@ -174,10 +174,10 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:viewDestinations,conference")
             ->name('conference.destinations');
 
-        // Determine if a user has s specific role
-        Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {
-            return ["result" => auth()->user()->hasPermission($role, $conference, $state)];
-        });
+        // // Determine if a user has s specific role
+        // Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {
+        //     return ["result" => auth()->user()->hasPermission($role, $conference, $state)];
+        // });
 
         // Determine if a user can perform a certain action
         Route::get('can/{ability}/{model}/{id?}/{onModel?}/{onId?}', function ($ability, $model, $id = null, $onModel = null, $onId = null) {

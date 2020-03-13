@@ -121,46 +121,78 @@ export default {
 
   data() {
     return {
-      canEdit: false,
-      canNotify: false,
-      canUpdateEnrollment: false,
-      canUpdateAssignment: false,
-      canViewUsers: false
+      // canEdit: false,
+      // canNotify: false,
+      // canUpdateEnrollment: false,
+      // canUpdateAssignment: false
+      // canViewUsers: false
     };
   },
 
   created() {
-    this.fetchTaskDays(this.conferenceKey);
-    this.fetchConference(this.conferenceKey).then(() => {
-      this.getCan();
-    });
+    let key = this.conferenceKey;
+    this.fetchTaskDays(key);
+    if (!this.conference || this.conference.key !== key) {
+      this.fetchConference(key);
+    }
   },
 
-  computed: mapGetters("conference", ["conference", "tab"]),
-  methods: {
-    getCan: async function() {
-      this.canEdit = await auth.can("update", "Conference", this.conference.id);
-      this.canUpdateEnrollment = await auth.can(
-        "updateEnrollment",
-        "Conference",
-        this.conference.id
-      );
-      this.canViewUsers = await auth.can(
-        "viewUsers",
-        "Conference",
-        this.conference.id
-      );
-      this.canUpdateAssignment = await auth.can(
-        "viewAssignments",
-        "Conference",
-        this.conference.id
-      );
-      this.canNotify = await auth.can(
-        "postNotification",
-        "Conference",
-        this.conference.id
+  computed: {
+    canViewUsers() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key) ||
+        this.userIs("sv", this.conference.key, "accepted")
       );
     },
+    canEdit() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
+    canUpdateEnrollment() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
+    canUpdateAssignment() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
+    },
+    canNotify() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
+    },
+    ...mapGetters("conference", ["conference", "tab"]),
+    ...mapGetters("auth", ["userIs"])
+  },
+  methods: {
+    // getCan: async function() {
+    // this.canEdit = await auth.can("update", "Conference", this.conference.id);
+    // this.canUpdateEnrollment = await auth.can(
+    //   "updateEnrollment",
+    //   "Conference",
+    //   this.conference.id
+    // );
+    // this.canViewUsers = await auth.can(
+    //   "viewUsers",
+    //   "Conference",
+    //   this.conference.id
+    // );
+    // this.canUpdateAssignment = await auth.can(
+    //   "viewAssignments",
+    //   "Conference",
+    //   this.conference.id
+    // );
+    // this.canNotify = await auth.can(
+    //   "postNotification",
+    //   "Conference",
+    //   this.conference.id
+    // );
+    // },
     ...mapActions("conference", ["fetchConference", "fetchTaskDays"]),
     ...mapMutations("conference", ["setTab"])
   }

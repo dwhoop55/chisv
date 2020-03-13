@@ -5,6 +5,9 @@ import Form from "vform";
 export { methods }
 
 let methods = {
+    abilityString(ability, model, id = null, onModel = null, onId = null) {
+        return `${ability},${model},${id},${onModel},${onId}`;
+    },
     showError(error) {
         this.$buefy.notification.open({
             duration: 5000,
@@ -123,7 +126,7 @@ let methods = {
     goBack: function () {
         window.history.back();
     },
-    preferenceToString(preference) {
+    preferenceString(preference) {
         if (preference == undefined) return "Unknown";
         switch (preference) {
             case 0:
@@ -138,7 +141,7 @@ let methods = {
                 return "Unknown";
         }
     },
-    stringToPreference(string) {
+    preferenceId(string) {
         if (string == undefined) return -1;
         let lowered = string.toLowerCase();
         switch (lowered) {
@@ -176,89 +179,128 @@ let methods = {
             // states for users
             case "accepted":
                 return "is-success";
-                break;
             case "dropped":
                 return "is-danger";
-                break;
             case "enrolled":
                 return "is-light";
-                break;
             case "waitlisted":
                 return "is-warning";
-                break;
             // states for conferences
             case "planning":
                 return "is-danger";
-                break;
             case "enrollment":
                 return "is-warning";
-                break;
             case "registration":
                 return "is-warning";
-                break;
             case "running":
                 return "is-success";
-                break;
             case "over":
                 return "is-danger";
-                break;
             // Jobs
             case "planned":
                 return "is-light";
-                break;
             case "processing":
                 return "is-primary";
-                break;
             case "successful":
                 return "is-success";
-                break;
             case "failed":
                 return "is-danger";
-                break;
             case "softfail":
                 return "is-warning";
-                break;
             // Assignments
             case "assigned":
                 return "is-light";
-                break;
             case "checked-in":
                 return "is-warning";
-                break;
             case "done":
                 return "is-success";
-                break;
-            default:
-                return "is-light";
-                break;
             // Bids
             case "unsuccessful":
                 return "is-danger";
-                break;
             case "conflict":
                 return "is-danger";
-                break;
             case "placed":
                 return "is-white";
-                break;
             case "unavailable":
                 return "is-danger";
-                break;
         }
     },
+    // stateIdFromName: function (state) {
+    //     if (!state || !state.name) return null
+
+    //     switch (state.name) {
+    //         // states for users
+    //         case "accepted":
+    //             return 11
+    //         case "dropped":
+    //             return 14
+    //         case "enrolled":
+    //             return 11
+    //         case "waitlisted":
+    //             return 13
+    //         // states for conferences
+    //         case "planning":
+    //             return 1
+    //         case "enrollment":
+    //             return 2
+    //         case "registration":
+    //             return 3
+    //         case "running":
+    //             return 4
+    //         case "over":
+    //             return 5
+    //         // Jobs
+    //         case "planned":
+    //             return 21
+    //         case "processing":
+    //             return 22
+    //         case "successful":
+    //             return 23
+    //         case "failed":
+    //             return 24
+    //         case "softfail":
+    //             return 25
+    //         // Assignments
+    //         case "assigned":
+    //             return 41
+    //         case "checked-in":
+    //             return 42
+    //         case "done":
+    //             return 43
+    //         // Bids
+    //         case "unsuccessful":
+    //             return 33
+    //         case "conflict":
+    //             return 34
+    //         case "placed":
+    //             return 31
+    //         case "unavailable":
+    //             return 35
+    //     }
+    // },
     roleType: function (role) {
         if (role.name) {
             switch (role.name) {
                 case "sv":
                     return "is-light";
-                    break;
                 case "chair":
                     return "is-dark";
-                    break;
                 case "captain":
                     return "is-primary";
-                    break;
             }
         }
     },
+    // roleIdFromName: function (name) {
+    //     if (name) {
+    //         switch (name) {
+    //             case "sv":
+    //                 return 10;
+    //             case "chair":
+    //                 return 2;
+    //             case "captain":
+    //                 return 3;
+    //         }
+    //     }
+    //     return null;
+    // }
 }

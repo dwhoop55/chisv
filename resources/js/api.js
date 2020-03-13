@@ -1,4 +1,7 @@
 export default {
+    getSelf() {
+        return axios.get(`user/self`);
+    },
     getUsers(params) {
         return axios.get(`user?${params}`);
     },

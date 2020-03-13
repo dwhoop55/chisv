@@ -7,9 +7,9 @@ const state = {
 const getters = {
     states: state => filter => {
         if (Number.isInteger(filter)) {
-            return state.states.filter(s => s.id === filter);
+            return state.states?.filter(s => s.id === filter);
         } else if (filter) {
-            return state.states.filter(s => s.for === filter);
+            return state.states?.filter(s => s.for === filter);
         } else {
             return state.states;
         }

@@ -54,7 +54,7 @@
                     <small
                       v-if="props.option.bid"
                       :class="preferenceType(props.option.bid.preference).replace('is-', 'has-text-')"
-                    >{{ preferenceToString(props.option.bid.preference) }}</small>
+                    >{{ preferenceString(props.option.bid.preference) }}</small>
                     <small v-else>no bid</small>
                   </div>
                 </div>

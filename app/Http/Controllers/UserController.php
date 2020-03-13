@@ -71,6 +71,31 @@ class UserController extends Controller
     }
 
     /**
+     * Show the authenticated user
+     *
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\Response
+     */
+    public function showSelf(User $user)
+    {
+        return User
+            ::where('id', auth()->user()->id)
+            ->with([
+                'permissions' => function ($query) {
+                    $query->select(['id', 'user_id', 'conference_id', 'role_id', 'state_id']);
+                    $query->orderBy('created_at', 'desc');
+                    $query->with([
+                        'role:id,name,description',
+                        'state:id,name,description',
+                        'conference:id,key'
+                    ]);
+                }
+            ])
+            ->first();
+    }
+
+
+    /**
      * Display the specified resource.
      *
      * @param  \App\User  $user
@@ -83,6 +108,7 @@ class UserController extends Controller
                 'avatar',
                 'languages',
                 'permissions' => function ($query) {
+                    $query->with(['conference', 'role', 'state', 'user']);
                     $query->orderBy('created_at', 'DESC');
                 },
                 'university',

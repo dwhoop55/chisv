@@ -89,7 +89,7 @@ export default {
             detail += "failed";
             break;
         }
-        detail += " with preference " + this.preferenceToString(bid.preference);
+        detail += " with preference " + this.preferenceString(bid.preference);
       } else {
         detail += "- no bid by user ";
       }

@@ -212,7 +212,7 @@ export default {
     },
     formatPreference() {
       if (this.task.own_bid && this.task.own_bid.preference) {
-        return this.preferenceToString(this.task.own_bid.preference);
+        return this.preferenceString(this.task.own_bid.preference);
       } else {
         return "none";
       }
