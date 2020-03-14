@@ -1,66 +1,80 @@
 <template>
-  <b-select
-    @input="$emit('input', $event)"
+  <b-dropdown
+    @change="$emit('change', $event)"
+    @active-change="$emit('active-change', $event)"
+    :value="getValue"
+    aria-role="list"
+    :multiple="multiple"
+    :inline="inline"
     :disabled="disabled"
-    :value="value"
-    expanded
-    :loading="loading"
-    placeholder="Select a state"
   >
-    <option
-      v-for="state in filteredStates"
-      :value="state.id"
-      :key="state.id"
-    >{{ state.name | capitalize }} ({{ state.description }})</option>
-  </b-select>
+    <button class="button" type="button" slot="trigger">
+      <!-- Multiple -->
+      <span v-if="multiple && getValue.length >= 1">States {{ value.length }}/{{ allStates.length }}</span>
+      <span v-else-if="multiple && getValue.length == 0 && text">{{ text }}</span>
+      <span v-else-if="multiple && getValue.length == 0">Select states</span>
+      <!-- Single -->
+      <span v-else-if="!multiple && getValue.name">{{ value.name | capitalize }}</span>
+      <span v-else-if="!multiple && !getValue && text">{{ text }}</span>
+      <span v-else-if="!multiple && !getValue">Select state</span>
+      <b-icon icon="menu-down"></b-icon>
+    </button>
+    <b-dropdown-item v-for="state in allStates" :value="state" :key="state.id" aria-role="listitem">
+      <span :class="stateType(state).replace('is-', 'has-text-')">{{ state.name | capitalize }}</span>
+      <span v-if="!hideDescription">({{ state.description }})</span>
+    </b-dropdown-item>
+  </b-dropdown>
 </template>
 
 <script>
-import api from "@/api.js";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: ["value", "range", "disabled"],
+  props: [
+    "value",
+    "forType",
+    "disabled",
+    "multiple",
+    "hideDescription",
+    "text",
+    "inline"
+  ],
 
   data() {
     return {
-      states: [],
-      loading: true
+      isLoading: false
     };
   },
 
   created() {
-    this.load();
+    if (!this.states) {
+      this.isLoading = true;
+      this.fetchStates().then((this.isLoading = false));
+    }
   },
 
-  destroyed() {
-    this.$emit("input", null);
-  },
+  // destroyed() {
+  //   this.$emit("input", null);
+  // },
 
   computed: {
-    filteredStates: function() {
-      return this.states.filter(
-        function(state) {
-          return state.id >= this.range[0] && state.id <= this.range[1];
-        }.bind(this)
-      );
-    }
+    getValue() {
+      if (this.value) {
+        return this.value;
+      } else {
+        return this.multiple ? [] : {};
+      }
+    },
+    allStates() {
+      if (this.forType) {
+        return this.statesFor(`App\\${this.forType}`);
+      } else {
+        return this.states;
+      }
+    },
+    ...mapGetters("defines", ["statesFor", "states"])
   },
 
-  methods: {
-    load() {
-      this.loading = false;
-      api
-        .getStates()
-        .then(data => {
-          this.states = data.data.data;
-        })
-        .catch(error => {
-          throw error;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
+  methods: mapActions("defines", ["fetchStates"])
 };
 </script>

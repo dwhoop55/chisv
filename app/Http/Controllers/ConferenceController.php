@@ -758,7 +758,7 @@ class ConferenceController extends Controller
             || auth()->user()->isChair($conference)
             || auth()->user()->isCaptain($conference);
         $searchString = request()->search_string;
-        $selectedStates = collect(explode(',', request()->selected_states));
+        $selectedStates = collect(explode(',', request()->only_states));
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';
         $perPage = request()->per_page ?? '10';
@@ -819,7 +819,7 @@ class ConferenceController extends Controller
         }
 
         // Only add state filter when in the request
-        if (request()->selected_states) {
+        if (request()->only_states) {
             $query->whereIn("state_id", $selectedStates);
         }
 
@@ -941,7 +941,7 @@ class ConferenceController extends Controller
                 return auth()->user()->can('view', $conference);
             });
 
-        return new Conferences($conferences);
+        return $conferences;
     }
 
     /** 

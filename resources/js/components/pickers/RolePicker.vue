@@ -13,36 +13,42 @@
 
 <script>
 import api from "@/api.js";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: ["value", "disabled"],
 
   data() {
     return {
-      roles: [],
-      loading: true
+      isLoading: true
     };
   },
 
   created() {
-    this.load();
+    if (!this.roles) {
+      this.isLoading = true;
+      this.fetchRoles().then((this.isLoading = false));
+    }
   },
 
-  methods: {
-    load() {
-      this.loading = false;
-      api
-        .getRoles()
-        .then(data => {
-          this.roles = data.data.data;
-        })
-        .catch(error => {
-          throw error;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
+  computed: mapGetters("defines", ["roles"]),
+  methods: mapActions("defines", ["fetchRoles"])
+
+  // methods: {
+  //   load() {
+  //     this.loading = false;
+  //     api
+  //       .getRoles()
+  //       .then(data => {
+  //         this.roles = data.data.data;
+  //       })
+  //       .catch(error => {
+  //         throw error;
+  //       })
+  //       .finally(() => {
+  //         this.loading = false;
+  //       });
+  //   }
+  // }
 };
 </script>

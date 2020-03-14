@@ -10,7 +10,18 @@
         icon="magnify"
       ></b-input>
 
-      <b-dropdown
+      <b-field>
+        <state-picker
+          :hide-description="true"
+          :multiple="true"
+          forType="User"
+          :value="states"
+          @change="onStatesChange($event)"
+          @active-change="($event == false) ? fetchSvs() : null"
+          text="Filter by state"
+        ></state-picker>
+      </b-field>
+      <!-- <b-dropdown
         :disabled="isLoading"
         class="control"
         @input="onStatesChange($event)"
@@ -36,7 +47,7 @@
             :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
           >{{ state.name }}</p>
         </b-dropdown-item>
-      </b-dropdown>
+      </b-dropdown>-->
 
       <enrollment-form-settings-button
         :disabled="isLoading"
@@ -76,6 +87,7 @@
     <br />
     <b-table
       ref="table"
+      v-if="data.data"
       :data="data.data"
       @click="toggle($event)"
       detail-key="id"
@@ -180,33 +192,41 @@
         </b-table-column>
         <b-table-column class="is-vertical-center-column" width="130" label="SV State">
           <template>
-            <b-dropdown
-              ref="stateDropdown"
-              v-if="canUpdateEnrollment"
-              :value="props.row.permission.state.id"
-              @change="updateSvState(props.row, $event)"
-              @active-change="ignoreNextToggleClick=true"
-              aria-role="list"
-            >
-              <button
-                :class="'button is-small ' + stateType(props.row.permission.state)"
-                slot="trigger"
-              >
-                <span>{{ props.row.permission.state.name + (props.row.permission.waitlist_position ? " ("+props.row.permission.waitlist_position.position+")" : "") }}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item
-                v-for="state in allStates"
-                :key="state.id"
-                :value="state.id"
-                aria-role="listitem"
-              >
-                <p
-                  :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
-                >{{ state.name }}</p>
-              </b-dropdown-item>
-            </b-dropdown>
-            <state-tag v-else :state="props.row.permission.state" />
+            <div class="is-relative">
+              <transition name="fade">
+                <b-dropdown
+                  ref="stateDropdown"
+                  v-if="canUpdateEnrollment && props.row.permission && props.row.permission.state"
+                  :value="props.row.permission.state.id"
+                  @change="updateSvState(props.row, $event)"
+                  @active-change="ignoreNextToggleClick=true"
+                  aria-role="list"
+                >
+                  <button
+                    :class="'button is-small ' + stateType(props.row.permission.state)"
+                    slot="trigger"
+                  >
+                    <span>{{ props.row.permission.state.name + (props.row.permission.waitlist_position ? " ("+props.row.permission.waitlist_position.position+")" : "") }}</span>
+                    <b-icon icon="menu-down"></b-icon>
+                  </button>
+                  <b-dropdown-item
+                    v-for="state in allStates"
+                    :key="state.id"
+                    :value="state.id"
+                    aria-role="listitem"
+                  >
+                    <p
+                      :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
+                    >{{ state.name }}</p>
+                  </b-dropdown-item>
+                </b-dropdown>
+                <state-tag
+                  v-else-if="props.row.permission && props.row.permission.state"
+                  :state="props.row.permission.state"
+                />
+              </transition>
+              <b-loading :is-full-page="false" :active="isUpdatingState"></b-loading>
+            </div>
           </template>
         </b-table-column>
         <b-table-column
@@ -449,6 +469,7 @@ export default {
   data() {
     return {
       detailOpen: [],
+      isUpdatingState: false,
 
       // This will ensure that the details won't open
       // on SV state dropdown click
@@ -585,7 +606,7 @@ export default {
         state_id: $event
       });
 
-      this.setIsLoading(true);
+      this.isUpdatingState = true;
       api
         .updatePermission(vform, user.permission.id)
         .then(response => {
@@ -602,7 +623,7 @@ export default {
           });
         })
         .finally(() => {
-          this.setIsLoading(false);
+          this.isUpdatingState = false;
         });
     },
     getCan: async function() {
@@ -666,7 +687,7 @@ export default {
       return this.conference.enrollment_form_template;
     },
     allStates() {
-      return this.unfilteredStates("App\\User");
+      return this.statesFor("App\\User");
     },
     ...mapGetters("svs", [
       "data",
@@ -679,13 +700,19 @@ export default {
       "isLoading"
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
-    ...mapGetters("defines", { unfilteredStates: "states" })
+    ...mapGetters("defines", ["statesFor"])
   },
 
   created() {
-    if (!this.data) {
+    if (!this.data?.data) {
       this.fetchSvs();
     }
+
+    // if (!this.states || this.states.length == 0) {
+    //   // Filtered states have not been loaded
+    //   // do that now
+    //   this.setStates(this.statesFor("App\\User"));
+    // }
   }
 };
 </script>

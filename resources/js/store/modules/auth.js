@@ -8,7 +8,7 @@ const state = {
 
 const getters = {
     user: state => state.user,
-    can: (state, getters) => a => {
+    userCan: (state, getters) => a => {
         return getters.ability(a)?.value;
     },
     userIs: state => (roleName, conferenceKey = null, stateName = null) => {

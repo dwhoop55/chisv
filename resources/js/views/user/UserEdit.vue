@@ -1,8 +1,8 @@
 <template>
   <section>
     <b-tabs
-      :value="activeTab"
-      @input="$store.commit('PROFILE_TAB', $event)"
+      :value="tab"
+      @input="setTab($event)"
       :animated="false"
       position="is-left"
       type="is-boxed"
@@ -54,6 +54,7 @@
 import Form from "vform";
 import api from "@/api.js";
 import auth from "@/auth.js";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   props: ["id"],
@@ -74,14 +75,14 @@ export default {
     },
     hasPastPermissions: function() {
       return this.pastPermissions.length != 0;
-    }
+    },
+    ...mapGetters("profile", ["tab"])
   },
 
   data() {
     return {
       user: null,
       isLoading: true,
-      activeTab: this.$store.getters.profileTab,
       showGrantModal: false,
       canGrant: false,
       canDelete: false
@@ -141,7 +142,8 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-    }
+    },
+    ...mapMutations("profile", ["setTab"])
   }
 };
 </script>

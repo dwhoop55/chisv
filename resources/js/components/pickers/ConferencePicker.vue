@@ -4,7 +4,7 @@
     :disabled="disabled"
     :value="value"
     expanded
-    :loading="loading"
+    :loading="isLoading"
     placeholder="Select a conference"
   >
     <option
@@ -17,36 +17,18 @@
 
 <script>
 import api from "@/api.js";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   props: ["value", "disabled"],
 
-  data() {
-    return {
-      conferences: [],
-      loading: true
-    };
-  },
-
   created() {
-    this.load();
+    if (!this.conferences) {
+      this.fetchConferences();
+    }
   },
 
-  methods: {
-    load() {
-      this.loading = false;
-      api
-        .getConferences()
-        .then(data => {
-          this.conferences = data.data.data;
-        })
-        .catch(error => {
-          throw error;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
+  methods: mapActions("conferences", ["fetchConferences"]),
+  computed: mapGetters("conferences", ["isLoading", "conferences"])
 };
 </script>

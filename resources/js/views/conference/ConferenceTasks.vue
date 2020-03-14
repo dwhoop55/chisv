@@ -547,7 +547,6 @@ export default {
       "isLoading"
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
-    ...mapGetters("defines", ["states"]),
     ...mapGetters("auth", ["userIs"])
   }
 };

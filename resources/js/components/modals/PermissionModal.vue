@@ -26,8 +26,12 @@
           :type="{ 'is-danger': form.errors.has('state_id') }"
           :message="form.errors.get('state_id')"
         >
-          <!-- Assigning min-id will only show states for the sv -->
-          <state-picker :range="[10,20]" v-model="form.state_id"></state-picker>
+          <state-picker
+            :inline="true"
+            forType="User"
+            :value="permission ? permission.state : null"
+            @change="form.state_id = $event.id"
+          ></state-picker>
         </b-field>
       </section>
       <footer class="modal-card-foot">

@@ -1,11 +1,12 @@
 import api from "@/api";
+import defines from "./defines";
 
 const state = {
-    data: null,
+    data: {},
     search: "",
     sort: { field: 'firstname', direction: 'asc' },
     page: { items: 10, index: 1 },
-    states: null,
+    states: [],
     isLoading: false,
 };
 
@@ -29,7 +30,7 @@ const actions = {
             `page=${getters.page}`,
             `per_page=${getters.perPage}`,
             `search_string=${getters.search}`,
-            `selected_states=${getters.states}`
+            `only_states=${getters.states?.map(s => s.id)}`
         ].join("&");
 
         const response = await api.getConferenceSvs(

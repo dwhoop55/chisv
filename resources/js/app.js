@@ -105,11 +105,14 @@ export const vm = new Vue({
     store,
     methods: {
         ...mapActions('auth', ['fetchUser']),
-        ...mapActions('defines', ['fetchStates'])
+        ...mapActions('conferences', ['fetchConferences']),
+        ...mapActions('defines', ['fetchStates', 'fetchRoles'])
     },
     created() {
         // This will load states as new for every page refresh
+        this.fetchConferences();
         this.fetchUser();
         this.fetchStates();
+        this.fetchRoles();
     }
 });
