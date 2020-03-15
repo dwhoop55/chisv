@@ -55,7 +55,6 @@
 <script>
 import Form from "vform";
 import api from "@/api.js";
-import auth from "@/auth.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
@@ -76,7 +75,14 @@ export default {
     hasPastPermissions: function() {
       return this.pastPermissions.length != 0;
     },
-    ...mapGetters("profile", ["tab"])
+    canGrant() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
+    canDelete() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
+    ...mapGetters("profile", ["tab"]),
+    ...mapGetters("auth", ["userIs"])
   },
 
   data() {
@@ -84,15 +90,12 @@ export default {
       user: null,
       id: this.$route.params.id,
       isLoading: true,
-      showGrantModal: false,
-      canGrant: false,
-      canDelete: false
+      showGrantModal: false
     };
   },
 
   mounted() {
     this.getUser();
-    this.getCan();
   },
 
   methods: {
@@ -117,10 +120,6 @@ export default {
         }
       });
     },
-    async getCan() {
-      this.canGrant = await auth.can("create", "Permission");
-      this.canDelete = await auth.can("delete", "User", this.user.id);
-    },
     getUser() {
       this.isLoading = true;
       api
@@ -130,7 +129,6 @@ export default {
         })
         .catch(error => {
           if (error.response.status == 403 || error.response.status == 404) {
-            // Unauthorized
             this.$router.replace({ name: "conferences" });
           }
           this.$buefy.notification.open({

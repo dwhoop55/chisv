@@ -19,39 +19,44 @@ apt install nginx
 We publish our application in a local environment and have it proxied/loadbalanced via a central HAProxy/Nginx which will also put a certificate on it. Our backend has the application in a shielded environment which is why we publish plain http:
 ```
 server {
-        listen 80 default_server;
-        listen [::]:80 default_server;
+	listen 80 default_server;
+	listen [::]:80 default_server;
 
-        root /var/www/chisv/public;
+	root /var/www/chisv/public;
 
-        add_header X-Frame-Options "SAMEORIGIN";
-        add_header X-XSS-Protection "1; mode=block";
-        add_header X-Content-Type-Options "nosniff";
+	add_header X-Frame-Options "SAMEORIGIN";
+	add_header X-XSS-Protection "1; mode=block";
+	add_header X-Content-Type-Options "nosniff";
 
-        index index.html index.htm index.php;
+	index index.html index.htm index.php;
 
-        charset utf-8;
+	charset utf-8;
 
-        location / {
-                try_files $uri $uri/ /index.php?$query_string;
-        }
+	# serve static files directly
+	location ~* \.(jpg|jpeg|gif|css|png|js|ico|html|txt)$ {
+		access_log off;
+		expires max;
+		log_not_found off;
+	}
 
-        location = /favicon.ico { access_log off; log_not_found off; }
-        location = /robots.txt  { access_log off; log_not_found off; }
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
 
-        error_page 404 /index.php;
+	location ~ \.php$ {
+		fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
+		fastcgi_index index.php;
+		fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+		include fastcgi_params;
+	}
 
-        location ~ \.php$ {
-                fastcgi_pass unix:/var/run/php/php7.2-fpm.sock;
-                fastcgi_index index.php;
-                fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-                include fastcgi_params;
-        }
+	location ~ /\.(?!well-known).* {
+		deny all;
+	}
 
-        location ~ /\.(?!well-known).* {
-                deny all;
-        }
-
+	location ~ /\.ht {
+		deny all;
+	}
 }
 ```
 ### PHP-FPM and Related Modules
@@ -85,6 +90,7 @@ npm run prod
 composer install
 php artisan migrate:fresh --seed
 php artisan passport:install
+php artisan storage:link
 
 php artisan up
 ```
@@ -142,6 +148,7 @@ npm run prod
 
 php artisan migrate
 php artisan up
+php artisan storage:link
 
 sudo supervisorctl restart laravel-worker:*
 ```

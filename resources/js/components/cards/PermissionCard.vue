@@ -63,31 +63,19 @@
 
 <script>
 import api from "@/api.js";
-import auth from "@/auth.js";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["permission"],
 
   data() {
     return {
-      canRevoke: false,
       showEditModal: false,
       showEnrollmentForm: false
     };
   },
 
-  created() {
-    this.getCan();
-  },
-
   methods: {
-    getCan: async function() {
-      this.canRevoke = await auth.can(
-        "delete",
-        "Permission",
-        this.permission.id
-      );
-    },
     confirmRevoke: function() {
       let message = `Are you sure you want to <b>revoke</b> ${this.permission.role.name} permissions?`;
       let extra = "";
@@ -141,7 +129,14 @@ export default {
       if (this.permission && this.permission.enrollment_form) {
         return this.parseEnrollmentForm(this.permission.enrollment_form);
       }
-    }
+    },
+    canRevoke() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.permission.conference.key)
+      );
+    },
+    ...mapGetters("auth", ["userIs"])
   }
 };
 </script>

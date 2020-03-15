@@ -289,12 +289,15 @@ export default {
         return [new Date(), new Date()];
       }
     },
-    ...mapGetters("defines", ["statesFor"])
+    canDelete() {
+      return this.userIs("admin");
+    },
+    ...mapGetters("defines", ["statesFor"]),
+    ...mapGetters("auth", ["userIs"])
   },
 
   data() {
     return {
-      canDelete: false,
       activeTab: 0,
       timezone: null,
       enrollmentFormTemplates: [],
@@ -324,19 +327,11 @@ export default {
   },
 
   created() {
-    this.getCan();
     this.timezone = this.conference.timezone;
     this.form.fill(this.conference);
   },
 
   methods: {
-    getCan: async function() {
-      this.canDelete = await auth.can(
-        "delete",
-        "Conference",
-        this.conference.id
-      );
-    },
     updateBiddingRange: function($event) {
       this.form.bidding_start = $event[0].toMySqlDate();
       this.form.bidding_end = $event[1].toMySqlDate();
