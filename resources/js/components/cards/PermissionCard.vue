@@ -44,7 +44,9 @@
 
         <div class="has-margin-4">
           <p class="subtitle" v-if="permission.conference">
-            <a :href="'/conference/' + permission.conference.key">{{ permission.conference.name }}</a>
+            <router-link
+              :to="{name: 'conference', params: {key: permission.conference.key}}"
+            >{{ permission.conference.name }}</router-link>
           </p>
           <p class="subtitle" v-else>All conferences</p>
         </div>
