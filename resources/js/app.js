@@ -21,6 +21,7 @@ import VueShowdown from 'vue-showdown'
 import { mapActions } from 'vuex';
 
 import store from './store';
+import router from './router';
 import { methods as mixins } from './mixins';
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
@@ -103,6 +104,7 @@ Vue.mixin({ methods: mixins });
 export const vm = new Vue({
     el: "#app",
     store,
+    router,
     methods: {
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),

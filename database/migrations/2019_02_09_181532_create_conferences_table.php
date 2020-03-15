@@ -19,7 +19,7 @@ class CreateConferencesTable extends Migration
             $table->string('name', 100);
             $table->string('key', 30)->unique()->index();
             $table->string('location', 100)->nullable()->default(null);
-            $table->integer('timezone_id')->nullable()->default(null);
+            $table->integer('timezone_id')->nullable()->default(291);
             $table->date('start_date')->nullable()->default(null);
             $table->date('end_date')->nullable()->default(null);
             $table->text('description')->nullable()->default(null);

@@ -63,7 +63,7 @@ class ReportController extends Controller
         $items = $query->get();
 
         // If there is no element abort
-        abort_if($items->isEmpty(), 500, "Table is empty");
+        abort_if($items->isEmpty(), 400, "Table is empty");
 
         // First we construct the columns array
         // from the first element

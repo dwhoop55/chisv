@@ -1,5 +1,6 @@
 <template>
-  <a :href="conferenceUrl">
+  <router-link :to="{ name: 'conference', params: { key: conference.key } }">
+    <!-- <a :href="conferenceUrl"> -->
     <div class="card is-hoverable-anim is-clickable is-100vh">
       <div
         class="card-image is-cover"
@@ -30,7 +31,8 @@
         </div>
       </div>
     </div>
-  </a>
+  </router-link>
+  <!-- </a> -->
 </template>
 
 <script>
@@ -39,6 +41,9 @@ export default {
 
   computed: {
     conferenceDescription() {
+      if (!this.conference.description) {
+        return "No description yet";
+      }
       let length = 300;
       let str = this.conference.description.replace(/[#_\[\]]/g, "");
       let strSub = str.substr(0, length);

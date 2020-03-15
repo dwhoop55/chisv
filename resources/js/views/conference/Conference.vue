@@ -1,5 +1,6 @@
 <template>
   <div>
+    <b-loading :active="isLoading"></b-loading>
     <div v-if="conference">
       <div
         class="is-fixed is-100hw is-100vh is-pinned-l is-pinned-t is-cover is-below is-blurred is-visible-8"
@@ -116,14 +117,12 @@ import auth from "@/auth.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
-  props: ["conferenceKey"],
-
   data() {
     return {};
   },
 
   created() {
-    let key = this.conferenceKey;
+    let key = this.$route.params.key;
     this.fetchTaskDays(key);
 
     if (!this.conference || this.conference.key !== key) {
@@ -160,7 +159,7 @@ export default {
         this.userIs("captain", this.conference.key)
       );
     },
-    ...mapGetters("conference", ["conference", "tab"]),
+    ...mapGetters("conference", ["conference", "tab", "isLoading"]),
     ...mapGetters("auth", ["userIs"])
   },
   methods: {

@@ -6,12 +6,22 @@
       </div>
     </div>
 
-    <VueShowdown class="section content" :markdown="conference.description" />
+    <VueShowdown class="section content" :markdown="description" />
   </div>
 </template>
 
 <script>
 export default {
-  props: ["conference"]
+  props: ["conference"],
+
+  computed: {
+    description() {
+      if (this.conference.description) {
+        return this.conference.description;
+      } else {
+        return "#### No description yet..";
+      }
+    }
+  }
 };
 </script>

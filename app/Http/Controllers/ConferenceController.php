@@ -1081,6 +1081,8 @@ class ConferenceController extends Controller
     public function store(ConferenceCreateRequest $request)
     {
         $validated = $request->validated();
+        $validated['start_date'] = Carbon::create('now')->toDateString();
+        $validated['end_date'] = Carbon::create('now')->addDays(1)->toDateString();
         $result = Conference::create($validated);
         return ["success" => $result, "message" => "Conference created"];
     }

@@ -138,7 +138,13 @@
         :type="{ 'is-danger': form.errors.has('state_id') }"
         :message="form.errors.get('state_id')"
       >
-        <state-picker :range="[0,10]" v-model="form.state_id"></state-picker>
+        <b-select v-model="form.state_id" placeholder="Select a state">
+          <option
+            v-for="state in statesFor('App\\Conference')"
+            :value="state.id"
+            :key="state.id"
+          >{{ state.name | capitalize }} ({{ state.description }})</option>
+        </b-select>
       </b-field>
 
       <b-field grouped>
@@ -228,6 +234,7 @@ import api from "@/api.js";
 import auth from "@/auth.js";
 import moment from "moment-timezone";
 import { parse } from "path";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["conference"],
@@ -281,7 +288,8 @@ export default {
       } else {
         return [new Date(), new Date()];
       }
-    }
+    },
+    ...mapGetters("defines", ["statesFor"])
   },
 
   data() {

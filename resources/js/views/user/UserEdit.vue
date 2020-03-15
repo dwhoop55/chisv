@@ -1,53 +1,55 @@
 <template>
-  <section>
-    <b-tabs
-      :value="tab"
-      @input="setTab($event)"
-      :animated="false"
-      position="is-left"
-      type="is-boxed"
-    >
-      <b-tab-item icon="format-list-bulleted" label="Conferences">
-        <div v-if="user">
-          <b-button v-if="canGrant" @click="showGrantModal=true" class="is-pulled-right">Grant</b-button>
-          <b-modal :active.sync="showGrantModal" has-modal-card>
-            <permission-modal v-if="user" @created="getUser()" :user="user"></permission-modal>
-          </b-modal>
+  <div class="columns is-centered">
+    <div class="column is-two-thirds">
+      <b-tabs
+        :value="tab"
+        @input="setTab($event)"
+        :animated="false"
+        position="is-left"
+        type="is-boxed"
+      >
+        <b-tab-item icon="format-list-bulleted" label="Conferences">
+          <div v-if="user">
+            <b-button v-if="canGrant" @click="showGrantModal=true" class="is-pulled-right">Grant</b-button>
+            <b-modal :active.sync="showGrantModal" has-modal-card>
+              <permission-modal v-if="user" @created="getUser()" :user="user"></permission-modal>
+            </b-modal>
 
-          <div class="subtitle has-margin-t-3">
-            <p v-if="hasActivePermissions">Active conferences</p>
-            <p v-else>Not associated to active conferences</p>
+            <div class="subtitle has-margin-t-3">
+              <p v-if="hasActivePermissions">Active conferences</p>
+              <p v-else>Not associated to active conferences</p>
+            </div>
+            <div class="column" v-for="permission in activePermissions" v-bind:key="permission.id">
+              <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
+            </div>
+
+            <div class="subtitle has-margin-t-3">
+              <p v-if="hasPastPermissions">Past conferences</p>
+            </div>
+            <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
+              <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
+            </div>
           </div>
-          <div class="column" v-for="permission in activePermissions" v-bind:key="permission.id">
-            <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
-          </div>
+        </b-tab-item>
 
-          <div class="subtitle has-margin-t-3">
-            <p v-if="hasPastPermissions">Past conferences</p>
-          </div>
-          <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
-            <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
-          </div>
-        </div>
-      </b-tab-item>
+        <b-tab-item v-if="user" icon="account" label="Profile">
+          <user-edit-profile v-model="user"></user-edit-profile>
+        </b-tab-item>
 
-      <b-tab-item v-if="user" icon="account" label="Profile">
-        <user-edit-profile v-model="user"></user-edit-profile>
-      </b-tab-item>
+        <b-tab-item v-if="user" icon="key" label="Password">
+          <user-edit-password v-model="user"></user-edit-password>
+        </b-tab-item>
 
-      <b-tab-item v-if="user" icon="key" label="Password">
-        <user-edit-password v-model="user"></user-edit-password>
-      </b-tab-item>
+        <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
+          <b-field class="section" grouped position="is-centered">
+            <button @click="deleteUser" class="button is-danger is-pulled-right">Delete this user</button>
+          </b-field>
+        </b-tab-item>
+      </b-tabs>
 
-      <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
-        <b-field class="section" grouped position="is-centered">
-          <button @click="deleteUser" class="button is-danger is-pulled-right">Delete this user</button>
-        </b-field>
-      </b-tab-item>
-    </b-tabs>
-
-    <b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
-  </section>
+      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -57,8 +59,6 @@ import auth from "@/auth.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
-  props: ["id"],
-
   computed: {
     activePermissions: function() {
       return this.user.permissions.filter(function(permission) {
@@ -82,6 +82,7 @@ export default {
   data() {
     return {
       user: null,
+      id: this.$route.params.id,
       isLoading: true,
       showGrantModal: false,
       canGrant: false,

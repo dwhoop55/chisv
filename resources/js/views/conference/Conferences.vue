@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
@@ -27,9 +27,7 @@ export default {
   },
 
   created() {
-    if (!this.conferences) {
-      this.fetchConferences();
-    }
+    this.fetchConferences();
   },
 
   computed: {
@@ -39,10 +37,11 @@ export default {
 
   methods: {
     editConference(key) {
-      this.$store.commit("CONFERENCE_TAB", 4);
-      this.goTo(`/conference/${key}`);
+      this.setTab(4);
+      this.$router.push({ name: "conference", params: { key: key } });
     },
-    ...mapActions("conferences", ["fetchConferences"])
+    ...mapActions("conferences", ["fetchConferences"]),
+    ...mapMutations("conference", ["setTab"])
   }
 };
 </script>

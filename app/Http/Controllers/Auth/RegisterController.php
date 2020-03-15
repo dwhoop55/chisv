@@ -85,10 +85,4 @@ class RegisterController extends Controller
 
         return ["result" => $user, "error" => null];
     }
-
-
-    public function index()
-    {
-        return view('auth.register');
-    }
 }

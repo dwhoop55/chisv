@@ -94,6 +94,7 @@
       :loading="isLoading"
       :hoverable="true"
       backend-sorting
+      :mobile-cards="false"
       :default-sort="sortField"
       :default-sort-direction="sortDirection"
       sort-icon="chevron-up"

@@ -4,12 +4,14 @@ import { methods as mixins } from '@/mixins';
 const state = {
     conference: null,
     last: { key: null, name: null },
+    isLoading: false,
     tab: 0,
     taskDays: {},
     acceptedCount: null,
 };
 
 const getters = {
+    isLoading: state => state.isLoading,
     last: state => state.last,
     conference: state => state.conference,
     tab: state => state.tab,
@@ -45,13 +47,21 @@ const getters = {
 };
 
 const actions = {
-    async fetchConference({ commit, dispatch, state }, key) {
-        const response = await api.getConference(key || state.conference.key);
+    async fetchConference({ commit, dispatch, state }, conferenceKey) {
+        const key = conferenceKey || state.conference.key;
+        commit('setIsLoading', true);
+        const response = await api.getConference(key);
         commit('setConference', response.data);
         commit('setLast', response.data);
 
-        dispatch('fetchTaskDays');
-        dispatch('fetchAcceptedCount');
+        var p1 = dispatch('fetchTaskDays', key);
+        var p2 = dispatch('fetchAcceptedCount', key);
+        var p3 = dispatch('tasks/fetchTasks', key, { root: true });
+        var p4 = dispatch('svs/fetchSvs', key, { root: true });
+        var p4 = dispatch('assignments/fetchAssignments', key, { root: true });
+        Promise.all([p1, p2, p3]).finally(() => {
+            commit('setIsLoading', false);
+        });
     },
     async fetchTaskDays({ commit, state }, key) {
         const response = await api.getConferenceTaskDays(key || state.conference.key);
@@ -71,6 +81,7 @@ const mutations = {
     setTab: (state, tab) => (state.tab = tab),
     setTaskDays: (state, days) => (state.taskDays = days),
     setAcceptedCount: (state, count) => (state.acceptedCount = count),
+    setIsLoading: (state, bool) => (state.isLoading = bool),
 };
 
 export default {

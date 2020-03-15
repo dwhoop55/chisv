@@ -159,7 +159,7 @@ export default {
     },
     fetch(name) {
       this.isLoading = true;
-      this.fetchReport(this.conference.key, name).then(() => {
+      this.fetchReport(this.conference.key, name).finally(() => {
         this.isLoading = false;
         if (this.$refs.table) {
           this.$refs.table.resetMultiSorting();

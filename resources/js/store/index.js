@@ -33,6 +33,7 @@ export default new Vuex.Store({
             'auth.user',
             'profile.tab',
             'conference.last',
+            'conference.tab',
             'svs',
             'tasks',
             'assignments',
