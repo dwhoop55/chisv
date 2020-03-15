@@ -1,7 +1,16 @@
 <template>
-  <h3>404 Not Found</h3>
+  <div class="has-text-left">
+    <h3>Page not found</h3>
+    <b-button size="is-large" type="is-primary" @click="goHome">Home</b-button>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {
+    goHome() {
+      this.$router.replace({ name: "conferences" });
+    }
+  }
+};
 </script>
