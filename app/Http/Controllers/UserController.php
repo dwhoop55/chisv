@@ -38,11 +38,13 @@ class UserController extends Controller
 
         $query = User
             ::with([
-                'degree',
-                'shirt',
-                'university',
-                'permissions'
+                'university:id,name',
+                'permissions:user_id,role_id,state_id,conference_id',
+                'permissions.role:id,name,description',
+                'permissions.state:id,name,description',
+                'permissions.conference:id,name,key',
             ])
+            ->select(['id', 'firstname', 'lastname', 'email', 'university_id'])
             ->orderBy(request()->sort_by, request()->sort_order);
 
         if ($universityId) {
