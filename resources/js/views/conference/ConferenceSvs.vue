@@ -97,12 +97,12 @@
               </figure>
               <div class="media-content">
                 <div class="content">
-                  <a
+                  <router-link
                     v-if="userIsChairOrCaptain(conference.key)"
                     title="Go to the users profile"
                     @click="ignoreNextToggleClick=true"
-                    :href="'/user/' + props.row.id + '/edit'"
-                  >{{ props.row.firstname }}</a>
+                    :to="{name: 'user', params: {id: props.row.id}}"
+                  >{{ props.row.firstname }}</router-link>
                   <div v-else>{{ props.row.firstname }}</div>
                 </div>
               </div>

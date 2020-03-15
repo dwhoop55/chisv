@@ -383,7 +383,7 @@ export default {
           api
             .deleteConference(this.conference.key)
             .then(() => {
-              this.goTo("/conference");
+              this.$router.replace({ name: "conferences" });
             })
             .catch(error => {
               this.$buefy.toast.open({

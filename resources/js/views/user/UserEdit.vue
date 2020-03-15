@@ -104,7 +104,7 @@ export default {
           api
             .deleteUser(this.user.id)
             .then(() => {
-              this.goTo("/user");
+              this.$router.replace({ name: "users" });
             })
             .catch(error => {
               this.$buefy.notification.open({
@@ -129,9 +129,9 @@ export default {
           this.user = data.data;
         })
         .catch(error => {
-          if (error.response.status == 403) {
+          if (error.response.status == 403 || error.response.status == 404) {
             // Unauthorized
-            this.goTo("/");
+            this.$router.replace({ name: "conferences" });
           }
           this.$buefy.notification.open({
             duration: 5000,
