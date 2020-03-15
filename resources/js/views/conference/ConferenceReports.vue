@@ -108,9 +108,7 @@ export default {
   props: ["conference"],
 
   data() {
-    return {
-      isLoading: false
-    };
+    return {};
   },
 
   computed: {
@@ -134,7 +132,8 @@ export default {
       "paginated",
       "multiSort",
       "perPage",
-      "page"
+      "page",
+      "isLoading"
     ])
   },
 
@@ -158,9 +157,7 @@ export default {
       });
     },
     fetch(name) {
-      this.isLoading = true;
       this.fetchReport(this.conference.key, name).finally(() => {
-        this.isLoading = false;
         if (this.$refs.table) {
           this.$refs.table.resetMultiSorting();
         }

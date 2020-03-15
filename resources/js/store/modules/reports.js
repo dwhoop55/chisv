@@ -6,6 +6,7 @@ const state = {
     updated: null,
     selected: null,
     page: { items: 10, index: 1, paginated: false, multiSort: false },
+    isLoading: false,
 };
 
 const getters = {
@@ -17,17 +18,30 @@ const getters = {
     multiSort: state => state.page.multiSort,
     perPage: state => state.page.items,
     page: state => state.page.index,
+    isLoading: state => state.isLoading,
 };
 
 const actions = {
     async fetchReport({ commit, rootGetters, getters, state }, { key, name }) {
-        const response = await api.getReport(key || rootGetters['conference/conference'].key, name || getters.selected);
-        commit('setData', response.data.data);
-        commit('setColumns', response.data.columns);
-        commit('setUpdated', response.data.updated);
-        commit('setPaginated', response.data.paginate);
-        commit('setPage', 1);
-    }
+        commit('setIsLoading', true);
+        api.getReport(key || rootGetters['conference/conference'].key, name || getters.selected)
+            .then(({ data }) => {
+                commit('setData', data.data);
+                commit('setColumns', data.columns);
+                commit('setUpdated', data.updated);
+                commit('setPaginated', data.paginate);
+                commit('setPage', 1);
+            })
+            .catch(error => {
+                commit('setData', null);
+                commit('setColumns', null);
+                commit('setUpdated', null);
+            })
+            .finally(() => {
+                commit('setIsLoading', false);
+            })
+
+    },
 }
 
 const mutations = {
@@ -39,6 +53,7 @@ const mutations = {
     setMultiSort: (state, multiSort) => (state.page.multiSort = multiSort),
     setPerPage: (state, perPage) => (state.page.items = perPage),
     setPage: (state, page) => (state.page.index = page),
+    setIsLoading: (state, bool) => (state.isLoading = bool),
 };
 
 export default {

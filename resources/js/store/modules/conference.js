@@ -50,9 +50,17 @@ const actions = {
     async fetchConference({ commit, dispatch, state }, conferenceKey) {
         const key = conferenceKey || state.conference.key;
         commit('setIsLoading', true);
-        const response = await api.getConference(key);
-        commit('setConference', response.data);
-        commit('setLast', response.data);
+        api.getConference(key)
+            .then(({ data }) => {
+                commit('setConference', data);
+                commit('setLast', data);
+            })
+            .catch(error => {
+                commit('setConference', null);
+                commit('setLast', { key: null, name: null });
+            })
+
+
 
         var p1 = dispatch('fetchTaskDays', key);
         var p2 = dispatch('fetchAcceptedCount', key);

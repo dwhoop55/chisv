@@ -42,14 +42,21 @@ const actions = {
             `only_own_tasks=${getters.onlyOwnTasks}`
         ].join("&");
 
-        const response = await api.getConferenceTasks(
+        await api.getConferenceTasks(
             key || rootGetters['conference/conference'].key,
             params
-        );
-
-        commit('setTasks', response.data.data);
-        commit('setTotalTasks', response.data.total);
-        commit('setIsLoading', false);
+        )
+            .then(({ data }) => {
+                commit('setTasks', data.data);
+                commit('setTotalTasks', data.total);
+            })
+            .catch(error => {
+                commit('setTasks', null);
+                commit('setTotalTasks', 0);
+            })
+            .finally(() => {
+                commit('setIsLoading', false);
+            })
     }
 };
 

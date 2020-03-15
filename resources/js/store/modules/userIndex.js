@@ -38,10 +38,14 @@ const actions = {
         }
         params = params.join("&");
 
-        const response = await api.getUsers(params);
+        api.getUsers(params)
+            .then(({ data }) => { commit('setData', data) })
+            .catch(error => { commit('setData', null) })
+            .finally(() => {
+                commit('setIsLoading', false);
+            })
 
-        commit('setData', response.data);
-        commit('setIsLoading', false);
+
     },
 };
 

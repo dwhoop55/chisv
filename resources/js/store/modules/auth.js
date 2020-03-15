@@ -45,7 +45,6 @@ const getters = {
 const actions = {
     async fetchUser({ commit }) {
         const response = await api.getSelf();
-
         commit('setUser', response.data);
     },
     async fetchCan({ commit, getters }, { ability, model, id, onModel, onId }) {

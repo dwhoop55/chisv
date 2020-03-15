@@ -37,7 +37,11 @@ export default new Vuex.Store({
             'svs',
             'tasks',
             'assignments',
-            'userIndex',
+            'userIndex.data',
+            'userIndex.search',
+            'userIndex.university',
+            'userIndex.sort',
+            'userIndex.page',
             'reports',
         ]
     })]

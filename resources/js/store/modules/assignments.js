@@ -37,13 +37,21 @@ const actions = {
             `day=${getters.day.toMySqlDate()}`,
         ].join("&");
 
-        const response = await api.getConferenceAssignments(
+        api.getConferenceAssignments(
             key || rootGetters['conference/conference'].key,
             params
-        );
+        )
+            .then(({ data }) => {
+                commit('setData', data);
+            })
+            .catch(error => {
+                commit('setData', null);
+            })
+            .finally(() => {
+                commit('setIsLoading', false);
+            })
 
-        commit('setData', response.data);
-        commit('setIsLoading', false);
+
     }
 };
 

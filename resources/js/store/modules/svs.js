@@ -33,13 +33,19 @@ const actions = {
             `only_states=${getters.states?.map(s => s.id)}`
         ].join("&");
 
-        const response = await api.getConferenceSvs(
+        api.getConferenceSvs(
             key || rootGetters['conference/conference'].key,
             params
-        );
-
-        commit('setData', response.data);
-        commit('setIsLoading', false);
+        )
+            .then(({ data }) => {
+                commit('setData', data);
+            })
+            .catch(error => {
+                commit('setData', null);
+            })
+            .finally(() => {
+                commit('setIsLoading', false);
+            })
     }
 };
 
