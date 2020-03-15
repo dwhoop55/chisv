@@ -3,12 +3,14 @@ import { methods as mixins } from '@/mixins';
 
 const state = {
     conference: null,
+    last: { key: null, name: null },
     tab: 0,
     taskDays: {},
     acceptedCount: null,
 };
 
 const getters = {
+    last: state => state.last,
     conference: state => state.conference,
     tab: state => state.tab,
     conferenceDays: state => {
@@ -46,6 +48,7 @@ const actions = {
     async fetchConference({ commit, dispatch, state }, key) {
         const response = await api.getConference(key || state.conference.key);
         commit('setConference', response.data);
+        commit('setLast', response.data);
 
         dispatch('fetchTaskDays');
         dispatch('fetchAcceptedCount');
@@ -63,6 +66,7 @@ const actions = {
 };
 
 const mutations = {
+    setLast: (state, conference) => (state.last = { key: conference.key, name: conference.name }),
     setConference: (state, conference) => (state.conference = conference),
     setTab: (state, tab) => (state.tab = tab),
     setTaskDays: (state, days) => (state.taskDays = days),

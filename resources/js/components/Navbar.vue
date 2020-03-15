@@ -18,7 +18,7 @@
         <hr class="navbar-divider" />
         <nav-build-info></nav-build-info>
       </b-navbar-dropdown>
-      <b-navbar-item v-if="conference" :href="`/conference/${conference.key}`">{{ conference.name }}</b-navbar-item>
+      <b-navbar-item v-if="last" :href="`/conference/${last.key}`">{{ last.name }}</b-navbar-item>
     </template>
 
     <template slot="end">
@@ -44,7 +44,7 @@ export default {
       return this.user?.firstname || "Account";
     },
     ...mapGetters("auth", ["user", "userIs"]),
-    ...mapGetters("conference", ["conference"])
+    ...mapGetters("conference", ["conference", "last"])
   },
   methods: {
     logout() {

@@ -13,7 +13,7 @@ import userIndex from './modules/userIndex';
 import profile from './modules/profile';
 import reports from './modules/reports';
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
@@ -32,8 +32,7 @@ export default new Vuex.Store({
         paths: [
             'auth.user',
             'profile.tab',
-            // 'defines.states',
-            // 'conference',
+            'conference.last',
             'svs',
             'tasks',
             'assignments',
@@ -41,20 +40,4 @@ export default new Vuex.Store({
             'reports',
         ]
     })]
-})
-
-// const store = new Vuex.Store({
-//     state: {
-//         tasks: tasks,
-//         assignments: assignments,
-//         svs: svs,
-//         report: report,
-//         navigation: navigation,
-//         userIndex: userIndex
-//     },
-//     plugins: [createPersistedState()],
-//     mutations: mutations,
-//     getters: getters,
-// });
-
-// export default store;
+});
