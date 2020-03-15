@@ -18,7 +18,7 @@
         <hr class="navbar-divider" />
         <nav-build-info></nav-build-info>
       </b-navbar-dropdown>
-      <b-navbar-item :href="`/conference/${conference.key}`">{{ conference.name }}</b-navbar-item>
+      <b-navbar-item v-if="conference" :href="`/conference/${conference.key}`">{{ conference.name }}</b-navbar-item>
     </template>
 
     <template slot="end">

@@ -47,6 +47,7 @@ const actions = {
         const response = await api.getConference(key || state.conference.key);
         commit('setConference', response.data);
 
+        dispatch('fetchTaskDays');
         dispatch('fetchAcceptedCount');
     },
     async fetchTaskDays({ commit, state }, key) {
