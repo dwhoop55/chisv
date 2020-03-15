@@ -21,37 +21,10 @@
           text="Filter by state"
         ></state-picker>
       </b-field>
-      <!-- <b-dropdown
-        :disabled="isLoading"
-        class="control"
-        @input="onStatesChange($event)"
-        @active-change="($event == false) ? fetchSvs() : null"
-        :value="states"
-        v-if="states && allStates"
-        multiple
-        aria-role="list"
-      >
-        <button class="button" type="button" slot="trigger">
-          <span>SV states {{ states.length }}/{{ states.length }}</span>
-          <b-icon icon="menu-down"></b-icon>
-        </button>
-
-        <b-dropdown-item
-          :disabled="isLoading"
-          v-for="state in allStates"
-          :key="state.id"
-          :value="state.id"
-          aria-role="listitem"
-        >
-          <p
-            :class="'has-text-weight-bold ' + stateType(state).replace('is-', 'has-text-')"
-          >{{ state.name }}</p>
-        </b-dropdown-item>
-      </b-dropdown>-->
 
       <enrollment-form-settings-button
         :disabled="isLoading"
-        v-if="enrollmentFormTemplate"
+        v-if="userIsChair(conference.key) && enrollmentFormTemplate"
         class="control"
         @input="templateSettingsChanged($event)"
         :value="parseEnrollmentForm(enrollmentFormTemplate)"
@@ -125,7 +98,7 @@
               <div class="media-content">
                 <div class="content">
                   <a
-                    v-if="canUpdateEnrollment"
+                    v-if="userIsChairOrCaptain(conference.key)"
                     title="Go to the users profile"
                     @click="ignoreNextToggleClick=true"
                     :href="'/user/' + props.row.id + '/edit'"
@@ -161,7 +134,7 @@
         </b-table-column>
         <b-table-column
           class="is-vertical-center-column"
-          :visible="canRunLottery"
+          :visible="userIsChairOrCaptain(conference.key)"
           width="130"
           field="email"
           label="E-Mail"
@@ -176,7 +149,7 @@
         </b-table-column>
         <b-table-column
           class="is-vertical-center-column"
-          :visible="canUpdateEnrollment"
+          :visible="userIsChairOrCaptain(conference.key)"
           width="130"
           field="stats.hours_done"
           label="Hours done"
@@ -248,7 +221,7 @@
         <b-table-column
           class="is-vertical-center-column"
           field="lottery_position"
-          v-if="canUpdateEnrollment"
+          v-if="userIsChairOrCaptain(conference.key)"
           width="150"
           label="Lottery position"
           sortable
@@ -270,7 +243,7 @@
         <b-table-column
           class="is-vertical-center-column"
           field="enrollment_forms.total_weight"
-          :visible="canUpdateEnrollment"
+          :visible="userIsChairOrCaptain(conference.key)"
           width="150"
           label="Weighted form"
           sortable
@@ -417,7 +390,7 @@
               <b-icon v-else icon="emoticon-sad" size="is-large"></b-icon>
             </p>
             <p
-              v-if="search.length == 0 && states.length == allStates.length && !isLoading"
+              v-if="search.length == 0 && states && allStates && states.length == allStates.length && !isLoading"
             >No users found.</p>
             <p v-else-if="isLoading">Loading..</p>
             <p v-else-if="search.length > 0">
@@ -479,15 +452,8 @@ export default {
       // when the b-collapse is open
       // It will also close the bidList of other SVs
       // to make sure the DOM is kept small
-      showBidsForUser: null,
-
-      canUpdateEnrollment: true,
-      canRunLottery: true
+      showBidsForUser: null
     };
-  },
-
-  created() {
-    this.getCan();
   },
 
   methods: {
@@ -626,18 +592,6 @@ export default {
           this.isUpdatingState = false;
         });
     },
-    getCan: async function() {
-      this.canUpdateEnrollment = await auth.can(
-        "updateEnrollment",
-        "Conference",
-        this.conference.id
-      );
-      this.canRunLottery = await auth.can(
-        "runLottery",
-        "Conference",
-        this.conference.id
-      );
-    },
     onPageChange(page) {
       this.setPage(page);
       this.fetchSvs();
@@ -683,6 +637,12 @@ export default {
   },
 
   computed: {
+    canUpdateEnrollment() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
+    canRunLottery() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+    },
     enrollmentFormTemplate() {
       return this.conference.enrollment_form_template;
     },
@@ -700,19 +660,14 @@ export default {
       "isLoading"
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
-    ...mapGetters("defines", ["statesFor"])
+    ...mapGetters("defines", ["statesFor"]),
+    ...mapGetters("auth", ["userIs", "userIsChair", "userIsChairOrCaptain"])
   },
 
   created() {
     if (!this.data?.data) {
       this.fetchSvs();
     }
-
-    // if (!this.states || this.states.length == 0) {
-    //   // Filtered states have not been loaded
-    //   // do that now
-    //   this.setStates(this.statesFor("App\\User"));
-    // }
   }
 };
 </script>

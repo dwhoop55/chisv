@@ -71,7 +71,11 @@
               type="is-boxed"
             >
               <b-tab-item label="Overview">
-                <conference-overview @update="getCan()" v-if="conference" v-model="conference"></conference-overview>
+                <conference-overview
+                  @update="fetchUser()"
+                  v-if="conference"
+                  :conference="conference"
+                ></conference-overview>
               </b-tab-item>
               <b-tab-item label="SVs">
                 <conference-svs v-if="canViewUsers" :conference="conference"></conference-svs>
@@ -81,27 +85,22 @@
                 <conference-tasks v-if="canViewUsers" :conference="conference"></conference-tasks>
                 <p v-else>You need to be accepted to see tasks!</p>
               </b-tab-item>
-              <!-- <b-tab-item v-if="canUpdateAssignment" label="Assignments">
-                <conference-assignments
-                  v-show="$store.getters.conferenceTab==3"
-                  :conference="conference"
-                ></conference-assignments>
+              <b-tab-item v-if="canUpdateAssignment" label="Assignments">
+                <conference-assignments v-show="tab==3" :conference="conference"></conference-assignments>
               </b-tab-item>
               <b-tab-item v-if="canEdit" label="Conference">
-                <conference-edit v-show="$store.getters.conferenceTab==4" v-model="conference"></conference-edit>
+                <conference-edit
+                  v-show="tab==4"
+                  @updated="fetchConference()"
+                  :conference="conference"
+                ></conference-edit>
               </b-tab-item>
               <b-tab-item v-if="canNotify" label="Notify">
-                <conference-notification
-                  v-show="$store.getters.conferenceTab==5"
-                  :conference="conference"
-                ></conference-notification>
+                <conference-notification v-show="tab==5" :conference="conference"></conference-notification>
               </b-tab-item>
               <b-tab-item v-if="canUpdateAssignment" label="Reports">
-                <conference-reports
-                  v-show="$store.getters.conferenceTab==6"
-                  :conference="conference"
-                ></conference-reports>
-              </b-tab-item>-->
+                <conference-reports v-show="tab==6" :conference="conference"></conference-reports>
+              </b-tab-item>
             </b-tabs>
           </div>
         </div>
@@ -120,18 +119,13 @@ export default {
   props: ["conferenceKey"],
 
   data() {
-    return {
-      // canEdit: false,
-      // canNotify: false,
-      // canUpdateEnrollment: false,
-      // canUpdateAssignment: false
-      // canViewUsers: false
-    };
+    return {};
   },
 
   created() {
     let key = this.conferenceKey;
     this.fetchTaskDays(key);
+
     if (!this.conference || this.conference.key !== key) {
       this.fetchConference(key);
     }
@@ -170,29 +164,7 @@ export default {
     ...mapGetters("auth", ["userIs"])
   },
   methods: {
-    // getCan: async function() {
-    // this.canEdit = await auth.can("update", "Conference", this.conference.id);
-    // this.canUpdateEnrollment = await auth.can(
-    //   "updateEnrollment",
-    //   "Conference",
-    //   this.conference.id
-    // );
-    // this.canViewUsers = await auth.can(
-    //   "viewUsers",
-    //   "Conference",
-    //   this.conference.id
-    // );
-    // this.canUpdateAssignment = await auth.can(
-    //   "viewAssignments",
-    //   "Conference",
-    //   this.conference.id
-    // );
-    // this.canNotify = await auth.can(
-    //   "postNotification",
-    //   "Conference",
-    //   this.conference.id
-    // );
-    // },
+    ...mapActions("auth", ["fetchUser"]),
     ...mapActions("conference", ["fetchConference", "fetchTaskDays"]),
     ...mapMutations("conference", ["setTab"])
   }

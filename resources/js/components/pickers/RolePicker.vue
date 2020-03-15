@@ -4,7 +4,7 @@
     :disabled="disabled"
     :value="value"
     expanded
-    :loading="loading"
+    :loading="isLoading"
     placeholder="Select a role"
   >
     <option v-for="role in roles" :value="role.id" :key="role.id">{{ role.name | capitalize }}</option>
@@ -20,7 +20,7 @@ export default {
 
   data() {
     return {
-      isLoading: true
+      isLoading: false
     };
   },
 

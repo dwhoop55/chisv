@@ -24,6 +24,10 @@ const getters = {
         });
         return found;
     },
+    userIsAdmin: (state, getters) => getters.userIs('admin'),
+    userIsChair: (state, getters, rootState, rootGetters) => key => getters.userIsAdmin || getters.userIs('chair', key || rootGetters['conference/conference'].key),
+    userIsCaptain: (state, getters, rootState, rootGetters) => key => getters.userIsAdmin || getters.userIs('captain', key || rootGetters['conference/conference'].key),
+    userIsChairOrCaptain: (state, getters) => key => getters.userIsAdmin || getters.userIsChair(key) || getters.userIsCaptain(key),
     ability: state => a => {
         // Get the first ability from the array where is matches
         // Use shift() to take first object from the filtered array

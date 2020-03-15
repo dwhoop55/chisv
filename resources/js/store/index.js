@@ -6,14 +6,12 @@ import defines from './modules/defines';
 import auth from './modules/auth';
 import svs from './modules/svs';
 import tasks from './modules/tasks';
+import assignments from './modules/assignments';
 import conferences from './modules/conferences';
 import conference from './modules/conference';
 import userIndex from './modules/userIndex';
 import profile from './modules/profile';
-
-// import mutations from './mutations'; // Setters
-// import getters from './getters'; // Getters
-// import { tasks, assignments, svs, report, navigation, userIndex } from './stateObjects'; // Statemodels
+import reports from './modules/reports';
 
 Vue.use(Vuex)
 
@@ -23,23 +21,28 @@ export default new Vuex.Store({
         auth,
         svs,
         tasks,
+        assignments,
         conference,
         conferences,
         userIndex,
         profile,
+        reports
     },
     plugins: [createPersistedState({
         paths: [
             'auth.user',
             'profile.tab',
             // 'defines.states',
+            'conference',
             'conference.tab',
-            'conference.conference',
+            'conference.lastActive',
             // 'conference.acceptedCount',
             'conference.taskDays',
             'svs',
             'tasks',
+            'assignments',
             'userIndex',
+            'reports',
         ]
     })]
 })

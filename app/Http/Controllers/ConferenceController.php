@@ -446,9 +446,7 @@ class ConferenceController extends Controller
             return $nTask;
         });
 
-        $taskDays = $this->taskDays($conference);
-
-        return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total(), "task_days" => $taskDays];
+        return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total()];
     }
 
     /**

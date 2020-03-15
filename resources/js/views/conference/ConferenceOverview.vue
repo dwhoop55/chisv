@@ -12,9 +12,6 @@
 
 <script>
 export default {
-  props: ["conference"],
-  model: {
-    prop: "conference"
-  }
+  props: ["conference"]
 };
 </script>

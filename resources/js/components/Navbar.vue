@@ -7,9 +7,14 @@
     </template>
     <template slot="start">
       <b-navbar-item href="/conference">Conferences</b-navbar-item>
-      <b-navbar-item href="/user">Users</b-navbar-item>
-      <b-navbar-dropdown hoverable label="System">
-        <b-navbar-item href="/job">Background Jobs</b-navbar-item>
+      <b-navbar-item v-if="userIs('admin') || userIs('chair')" href="/user">Users</b-navbar-item>
+      <b-navbar-dropdown
+        v-if="userIs('admin') || userIs('chair')"
+        href="/job"
+        hoverable
+        label="System"
+      >
+        <b-navbar-item>Background Jobs</b-navbar-item>
         <hr class="navbar-divider" />
         <nav-build-info></nav-build-info>
       </b-navbar-dropdown>
@@ -38,7 +43,7 @@ export default {
     firstname() {
       return this.user?.firstname || "Account";
     },
-    ...mapGetters("auth", ["user"]),
+    ...mapGetters("auth", ["user", "userIs"]),
     ...mapGetters("conference", ["conference"])
   },
   methods: {

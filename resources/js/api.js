@@ -15,7 +15,7 @@ export default {
         return axios.get(`conference/${key}/sv?${params}`)
     },
     getConferenceSvsForTaskAssignment(key, taskId, params) {
-        return axios.get(`conference/${key}/sv_for_task_assignment/${taskId}${params}`)
+        return axios.get(`conference/${key}/sv_for_task_assignment/${taskId}?${params}`)
     },
     getConferenceAcceptedCount(key) {
         return axios.get(`conference/${key}/sv/count`)
@@ -24,7 +24,7 @@ export default {
         return axios.get(`conference/${key}/task?${params}`);
     },
     getConferenceAssignments(key, params) {
-        return axios.get(`conference/${key}/assignment${params}`);
+        return axios.get(`conference/${key}/assignment?${params}`);
     },
     getConferenceTaskDays(key) {
         return axios.get(`conference/${key}/task/day`);

@@ -182,7 +182,7 @@ let methods = {
             case "dropped":
                 return "is-danger";
             case "enrolled":
-                return "is-dark";
+                return "is-light";
             case "waitlisted":
                 return "is-warning";
             // states for conferences

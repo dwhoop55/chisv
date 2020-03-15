@@ -18,7 +18,7 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->isAdmin() || $user->isChair() || $user->isCaptain();
+        return true;
     }
 
     /**

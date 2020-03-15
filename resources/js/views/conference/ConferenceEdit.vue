@@ -231,10 +231,6 @@ import { parse } from "path";
 
 export default {
   props: ["conference"],
-  model: {
-    prop: "conference",
-    event: "updated"
-  },
 
   computed: {
     biddingRangeError() {

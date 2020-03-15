@@ -501,33 +501,9 @@ export default {
   computed: {
     canCreateTask() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);
-      // const ability = {
-      //   ability: "createForConference",
-      //   model: "Task",
-      //   id: null,
-      //   onModel: "Conference",
-      //   onId: this.conference.id
-      // };
-      // const result = this.can(ability);
-      // if (!result) {
-      //   this.fetchCan(ability);
-      // }
-      // return result;
     },
     canDeleteTask() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);
-      // const ability = {
-      //   ability: "deleteForConference",
-      //   model: "Task",
-      //   id: null,
-      //   onModel: "Conference",
-      //   onId: this.conference.id
-      // };
-      // const result = this.can(ability);
-      // if (!result) {
-      //   this.fetchCan(ability);
-      // }
-      // return result;
     },
     calendarEvents() {
       return [...this.conferenceDays, ...this.taskDays];

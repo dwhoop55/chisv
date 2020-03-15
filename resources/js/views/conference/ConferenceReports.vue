@@ -3,8 +3,8 @@
     <b-field grouped group-multiline>
       <b-select
         :disabled="isLoading"
-        v-model="selected"
-        @input="fetch($event)"
+        :value="selected"
+        @input="onSelectChange($event)"
         placeholder="Select a report"
       >
         <option value="shirts">T-Shirts</option>
@@ -49,15 +49,11 @@
 
     <b-field v-if="data && columns" grouped>
       <b-field class="is-vertical-center">
-        <b-switch
-          :disabled="isLoading"
-          @input="$store.commit('REPORT_PAGINATED', $event)"
-          v-model="isPaginated"
-        >Paginated</b-switch>
+        <b-switch :disabled="isLoading" @input="setPaginated($event)" :value="paginated">Paginated</b-switch>
         <b-switch
           :disabled="isLoading"
           @input="onMultiSortChange($event)"
-          v-model="isMultiSort"
+          :value="multiSort"
         >Multi-column sort</b-switch>
       </b-field>
     </b-field>
@@ -73,18 +69,18 @@
       :narrowed="true"
       :data="data"
       :columns="columns"
-      :paginated="isPaginated"
+      :paginated="paginated"
       :per-page="perPage"
       :current-page="page"
-      :sort-multiple="isMultiSort"
-      @page-change="onPageChange"
-      @per-page-change="onPerPageChange"
+      :sort-multiple="multiSort"
+      @page-change="setPage($event)"
+      @per-page-change="setPerPage($event)"
       default-sort-direction="desc"
       :mobile-cards="false"
     >
       <template slot="footer">
-        <div v-if="isPaginated" class="has-text-right">
-          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+        <div v-if="paginated" class="has-text-right">
+          <b-dropdown @change="onPerPageChange($event)" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
@@ -106,20 +102,13 @@
 import api from "@/api.js";
 import moment from "moment-timezone";
 import ExportModalVue from "@/components/modals/ExportModal.vue";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   props: ["conference"],
 
   data() {
     return {
-      data: this.$store.getters.reportData,
-      columns: this.$store.getters.reportColumns,
-      updated: this.$store.getters.reportUpdated,
-      selected: this.$store.getters.reportSelected,
-      isPaginated: this.$store.getters.reportPaginated,
-      isMultiSort: this.$store.getters.reportMultiSort,
-      perPage: this.$store.getters.reportPerPage,
-      page: this.$store.getters.reportPage,
       isLoading: false
     };
   },
@@ -136,7 +125,17 @@ export default {
       } else {
         return null;
       }
-    }
+    },
+    ...mapGetters("reports", [
+      "data",
+      "columns",
+      "updated",
+      "selected",
+      "paginated",
+      "multiSort",
+      "perPage",
+      "page"
+    ])
   },
 
   methods: {
@@ -160,52 +159,31 @@ export default {
     },
     fetch(name) {
       this.isLoading = true;
-      api
-        .getReport(this.conference.key, name)
-        .then(data => {
-          this.isPaginated = data.data.paginate;
-          this.data = data.data.data;
-          this.columns = data.data.columns;
-          this.updated = data.data.updated;
-          this.$store.commit("REPORT_PAGINATED", data.data.paginate);
-          this.$store.commit("REPORT_SELECTED", this.selected);
-          this.$store.commit("REPORT_DATA", data.data.data);
-          this.$store.commit("REPORT_COLUMNS", data.data.columns);
-          this.$store.commit("REPORT_UPDATED", data.data.updated);
-        })
-        .catch(error => {
-          var message = error.response.data
-            ? error.response.data.message
-            : error.message;
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: message,
-            type: "is-danger",
-            hasIcon: true
-          });
-          this.selected = this.$store.getters.reportSelected;
-        })
-        .finally(() => {
-          this.isLoading = false;
-          if (this.$refs.table) {
-            this.$refs.table.resetMultiSorting();
-          }
-        });
+      this.fetchReport(this.conference.key, name).then(() => {
+        this.isLoading = false;
+        if (this.$refs.table) {
+          this.$refs.table.resetMultiSorting();
+        }
+      });
     },
-    onPageChange(page) {
-      this.$store.commit("REPORT_PAGE", page);
-      this.page = page;
-    },
-    onPerPageChange(perPage) {
-      this.$store.commit("REPORT_PER_PAGE", perPage);
-      this.perPage = perPage;
+    onSelectChange(selected) {
+      this.setSelected(selected);
+      this.fetch(selected);
     },
     onMultiSortChange(bool) {
-      this.$store.commit("REPORT_MULTI_SORT", bool);
+      this.setMultiSort(bool);
       if (this.$refs.table) {
         this.$refs.table.resetMultiSorting();
       }
-    }
+    },
+    ...mapActions("reports", ["fetchReport"]),
+    ...mapMutations("reports", [
+      "setSelected",
+      "setPaginated",
+      "setPage",
+      "setPerPage",
+      "setMultiSort"
+    ])
   }
 };
 </script>

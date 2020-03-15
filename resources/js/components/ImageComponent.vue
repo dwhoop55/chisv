@@ -79,7 +79,6 @@ export default {
 
       promise
         .then(data => {
-          console.log(data);
           let result = data.data.result;
           this.updateModel(result);
           this.$emit("input", this.model);

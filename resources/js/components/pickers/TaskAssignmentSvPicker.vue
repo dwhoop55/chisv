@@ -1,6 +1,7 @@
 <template>
   <div class="is-larger-autocomplete">
     <b-autocomplete
+      max-height="400"
       @focus="getAsyncData()"
       :data="data"
       keep-first
@@ -111,7 +112,7 @@ export default {
         .getConferenceSvsForTaskAssignment(
           this.conference.key,
           this.task.id,
-          `?${params}`
+          params
         )
         .then(data => {
           this.data = data.data.svs;
@@ -129,7 +130,7 @@ export default {
 </script>
 
 <style>
-div.is-larger-autocomplete div.dropdown-menu > div.dropdown-content {
+/* div.is-larger-autocomplete div.dropdown-menu > div.dropdown-content {
   max-height: 400px !important;
-}
+} */
 </style>

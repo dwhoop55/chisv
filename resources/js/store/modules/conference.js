@@ -43,8 +43,8 @@ const getters = {
 };
 
 const actions = {
-    async fetchConference({ commit, dispatch }, key) {
-        const response = await api.getConference(key);
+    async fetchConference({ commit, dispatch, state }, key) {
+        const response = await api.getConference(key || state.conference.key);
         commit('setConference', response.data);
 
         dispatch('fetchAcceptedCount');

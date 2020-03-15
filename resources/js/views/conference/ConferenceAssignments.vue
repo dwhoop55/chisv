@@ -2,9 +2,8 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        :loading="isLoading"
-        @input="onDayChange(day)"
-        v-model="day"
+        @input="onDayChange($event)"
+        :value="day"
         :events="calendarEvents"
         indicators="bars"
         :mobile-native="false"
@@ -21,7 +20,7 @@
         <b-input
           width="600"
           v-debounce.fireonempty="onSearch"
-          v-model="searchString"
+          :value="search"
           placeholder="Search.."
           type="search"
           icon="magnify"
@@ -34,12 +33,7 @@
       </b-field>
 
       <b-field>
-        <b-dropdown
-          :value="activeColumns"
-          @input="$store.commit('ASSIGNMENTS_COLUMNS', $event)"
-          multiple
-          aria-role="list"
-        >
+        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
           <button :disabled="isLoading" class="button is-primary" slot="trigger">
             <span>Visible columns</span>
             <b-icon icon="menu-down"></b-icon>
@@ -78,7 +72,7 @@
       <b-field position="is-right">
         <b-button
           :disabled="isLoading"
-          @click="getTasks()"
+          @click="fetchAssignments()"
           type="is-primary"
           icon-left="refresh"
         >Reload</b-button>
@@ -110,40 +104,40 @@
     >
       <template slot-scope="props">
         <b-table-column
-          :visible="activeColumns.includes('start_at')"
+          :visible="columns.includes('start_at')"
           field="tasks.start_at"
           width="10"
           sortable
           label="Starts"
         >{{ hoursFromTime(props.row.start_at) }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('end_at')"
+          :visible="columns.includes('end_at')"
           field="tasks.end_at"
           sortable
           width="10"
           label="Ends"
         >{{ hoursFromTime(props.row.end_at) }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('hours')"
+          :visible="columns.includes('hours')"
           field="tasks.hours"
           width="10"
           sortable
           label="Hours"
         >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('name')"
+          :visible="columns.includes('name')"
           field="tasks.name"
           sortable
           label="Name"
         >{{ props.row.name }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('location')"
+          :visible="columns.includes('location')"
           field="tasks.location"
           sortable
           label="Location"
         >{{ props.row.location }}</b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('description')"
+          :visible="columns.includes('description')"
           field="tasks.description"
           sortable
           label="Description"
@@ -153,7 +147,7 @@
           >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
         </b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('slots')"
+          :visible="columns.includes('slots')"
           field="tasks.slots"
           width="80"
           sortable
@@ -168,7 +162,7 @@
           >{{ props.row.assignments.length }} / {{ props.row.slots }}</p>
         </b-table-column>
         <b-table-column
-          :visible="activeColumns.includes('priority')"
+          :visible="columns.includes('priority')"
           field="tasks.priority"
           width="10"
           sortable
@@ -176,7 +170,7 @@
         >{{ props.row.priority }}</b-table-column>
         <b-table-column
           class="is-marginless is-paddingless"
-          :visible="activeColumns.includes('assignments')"
+          :visible="columns.includes('assignments')"
           label="Assignments"
           width="700"
         >
@@ -184,7 +178,7 @@
             :task="props.row"
             :conference="conference"
             :users="users"
-            @reload="getTasks()"
+            @reload="fetchAssignments()"
             @updateHours="users[$event.userId].hours_done += $event.hours"
           ></task-assignments-component>
         </b-table-column>
@@ -198,7 +192,7 @@
             </p>
             <p>
               No tasks found for
-              <b v-if="searchString.length > 0">{{ searchString }}</b>
+              <b v-if="search.length > 0">{{ search }}</b>
               {{ day | moment('ll') }}
             </p>
           </div>
@@ -236,29 +230,13 @@
 import api from "@/api.js";
 import auth from "@/auth.js";
 import JobModalVue from "@/components/modals/JobModal.vue";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 
 export default {
   props: ["conference"],
 
   data() {
-    return {
-      users: [],
-      tasks: [],
-      taskDays: [],
-      totalTasks: null,
-      searchString: this.$store.getters.assignmentsSearch,
-      day: new Date(this.$store.getters.assignmentsDay),
-      sortField: this.$store.getters.assignmentsSortField,
-      sortDirection: this.$store.getters.assignmentsSortDirection,
-      perPage: this.$store.getters.assignmentsPerPage,
-      page: this.$store.getters.assignmentsPage,
-
-      isLoading: true,
-
-      canRunAuction: false,
-
-      ignoreNextToggleClick: false
-    };
+    return {};
   },
 
   methods: {
@@ -294,8 +272,7 @@ export default {
               });
             })
             .finally(() => {
-              this.isLoading = false;
-              this.getTasks();
+              this.fetchAssignments();
             });
         } // onConfirm
       });
@@ -312,7 +289,7 @@ export default {
             component: JobModalVue,
             hasModalCard: true,
             onCancel: () => {
-              this.getTasks();
+              this.fetchAssignments();
             }
           });
         })
@@ -328,16 +305,8 @@ export default {
           });
         })
         .finally(() => {
-          this.isLoading = false;
-          this.getTasks();
+          this.fetchAssignments();
         });
-    },
-    getCan: async function() {
-      this.canRunAuction = await auth.can(
-        "runAuction",
-        "Conference",
-        this.conference.id
-      );
     },
     showSearchHelp() {
       this.$buefy.dialog.alert(
@@ -348,103 +317,73 @@ export default {
             <li>SVs lastname</li>"
       );
     },
-    getTasks() {
-      const params = [
-        `sort_by=${this.sortField}`,
-        `sort_order=${this.sortDirection}`,
-        `page=${this.page}`,
-        `per_page=${this.perPage}`,
-        `search_string=${this.searchString}`,
-        `day=${this.day.toMySqlDate()}`
-      ].join("&");
-
-      this.isLoading = true;
-      api
-        .getConferenceAssignments(this.conference.key, `?${params}`)
-        .then(({ data }) => {
-          this.users = data.users;
-          this.tasks = data.tasks;
-          this.taskDays = data.task_days;
-          this.totalTasks = data.total;
-        })
-        .catch(error => {
-          this.tasks = [];
-          this.users = [];
-          this.totalTasks = 0;
-          throw error;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    },
     onPageChange(page) {
-      this.$store.commit("ASSIGNMENTS_PAGE", page);
-      this.page = page;
-      this.getTasks();
+      this.setPage(page);
+      this.fetchAssignments();
     },
     onPerPageChange(perPage) {
-      this.$store.commit("ASSIGNMENTS_PER_PAGE", perPage);
-      this.perPage = perPage;
-      this.getTasks();
+      this.setPerPage(page);
+      this.fetchAssignments();
     },
     onSort(field, direction) {
-      this.sortField = field;
-      this.sortDirection = direction;
-      this.$store.commit("ASSIGNMENTS_SORT_FIELD", field);
-      this.$store.commit("ASSIGNMENTS_SORT_DIRECTION", direction);
-      this.getTasks();
+      this.setSortField(field);
+      this.setSortDirection(direction);
+      this.fetchAssignments();
     },
     onDayChange(day) {
-      this.$store.commit("ASSIGNMENTS_DAY", day);
+      this.setDay(day);
+      console.log(day);
       this.onPageChange(1);
     },
     onSearch(search) {
-      this.$store.commit("ASSIGNMENTS_SEARCH", this.searchString);
-      this.getTasks();
+      this.setSearch(search);
+      this.fetchAssignments();
     },
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
         message: task.description
       });
-    }
+    },
+    ...mapActions("assignments", ["fetchAssignments"]),
+    ...mapMutations("assignments", {
+      setColumns: "setColumns",
+      setSearch: "setSearch",
+      setDay: "setDay",
+      setSortField: "setSortField",
+      setSortDirection: "setSortDirection",
+      setPerPage: "setPerPage",
+      setPage: "setPage"
+    })
   },
 
   created() {
-    this.getTasks();
-    this.getCan();
+    this.fetchAssignments(this.conference.key);
   },
 
   computed: {
-    activeColumns() {
-      return this.$store.getters.assignmentsColumns;
+    canRunAuction() {
+      return this.userIs("admin") || this.userIs("chair", this.conference.key);
     },
     calendarEvents() {
-      if (!this.conference.start_date || !this.conference.end_date) {
-        return null;
-      }
-
-      var days = [];
-      var start = this.dateFromMySql(this.conference.start_date);
-      var end = this.dateFromMySql(this.conference.end_date);
-      var loop = new Date(start);
-
-      for (var d = start; d <= end; d.setDate(d.getDate() + 1)) {
-        days.push({
-          date: new Date(d),
-          type: "is-primary"
-        });
-      }
-
-      Object.keys(this.taskDays).forEach(function(day) {
-        days.push({
-          date: new Date(day),
-          type: "is-warning"
-        });
-      });
-
-      return days;
-    }
+      return [...this.conferenceDays, ...this.taskDays];
+    },
+    ...mapGetters("assignments", [
+      "columns",
+      "search",
+      "day",
+      "sortField",
+      "sortDirection",
+      "perPage",
+      "page",
+      "users",
+      "tasks",
+      "totalTasks",
+      "data",
+      "isLoading"
+    ]),
+    ...mapGetters("conference", ["conferenceDays", "taskDays"]),
+    ...mapGetters("auth", ["userIs"])
   }
 };
 </script>
