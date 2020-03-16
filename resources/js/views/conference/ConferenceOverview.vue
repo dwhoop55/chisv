@@ -2,7 +2,7 @@
   <div>
     <div class="columns is-centered">
       <div class="column is-two-thirds">
-        <enrollment-component @update="$emit('update',$event)" v-model="conference"></enrollment-component>
+        <enrollment-component @update="$emit('update',$event)" :conference="conference"></enrollment-component>
       </div>
     </div>
 

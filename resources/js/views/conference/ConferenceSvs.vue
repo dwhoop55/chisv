@@ -22,13 +22,14 @@
         ></state-picker>
       </b-field>
 
-      <enrollment-form-settings-button
-        :disabled="isLoading"
-        v-if="userIsChair(conference.key) && enrollmentFormTemplate"
-        class="control"
-        @input="templateSettingsChanged($event)"
-        :value="parseEnrollmentForm(enrollmentFormTemplate)"
-      ></enrollment-form-settings-button>
+      <b-field>
+        <b-button
+          type="is-primary"
+          :disabled="isLoading"
+          v-if="(userIs('admin') || userIs('chair', conference.key)) && enrollmentFormTemplate"
+          @click="showEnrollmentFormWeightsSettings"
+        >Form Weights</b-button>
+      </b-field>
 
       <b-field v-if="canRunLottery">
         <b-button :disabled="isLoading" @click="runLottery()" type="is-primary">Run lottery & Accept</b-button>
@@ -98,7 +99,7 @@
               <div class="media-content">
                 <div class="content">
                   <router-link
-                    v-if="userIsChairOrCaptain(conference.key)"
+                    v-if="userIsAdminOrChairOrCaptain(conference.key)"
                     title="Go to the users profile"
                     @click="ignoreNextToggleClick=true"
                     :to="{name: 'user', params: {id: props.row.id}}"
@@ -134,7 +135,7 @@
         </b-table-column>
         <b-table-column
           class="is-vertical-center-column"
-          :visible="userIsChairOrCaptain(conference.key)"
+          :visible="userIsAdminOrChairOrCaptain(conference.key)"
           width="130"
           field="email"
           label="E-Mail"
@@ -149,7 +150,7 @@
         </b-table-column>
         <b-table-column
           class="is-vertical-center-column"
-          :visible="userIsChairOrCaptain(conference.key)"
+          :visible="userIsAdminOrChairOrCaptain(conference.key)"
           width="130"
           field="stats.hours_done"
           label="Hours done"
@@ -221,7 +222,7 @@
         <b-table-column
           class="is-vertical-center-column"
           field="lottery_position"
-          v-if="userIsChairOrCaptain(conference.key)"
+          v-if="userIsAdminOrChairOrCaptain(conference.key)"
           width="150"
           label="Lottery position"
           sortable
@@ -243,7 +244,7 @@
         <b-table-column
           class="is-vertical-center-column"
           field="enrollment_forms.total_weight"
-          :visible="userIsChairOrCaptain(conference.key)"
+          :visible="userIsAdminOrChairOrCaptain(conference.key)"
           width="150"
           label="Weighted form"
           sortable
@@ -435,6 +436,7 @@ import auth from "@/auth.js";
 import Form from "vform";
 import JobModalVue from "@/components/modals/JobModal.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import EnrollmentFormSettingsModalVue from "../../components/modals/EnrollmentFormSettingsModal.vue";
 
 export default {
   props: ["conference"],
@@ -457,6 +459,20 @@ export default {
   },
 
   methods: {
+    showEnrollmentFormWeightsSettings() {
+      this.$buefy.modal.open({
+        parent: this,
+        props: {
+          value: this.parseEnrollmentForm(
+            this.conference.enrollment_form_template
+          ),
+          update: form => {
+            this.templateSettingsChanged(form);
+          }
+        },
+        component: EnrollmentFormSettingsModalVue
+      });
+    },
     resetEnrolled() {
       this.$buefy.dialog.confirm({
         title: "Caution!",
@@ -661,7 +677,7 @@ export default {
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),
-    ...mapGetters("auth", ["userIs", "userIsChair", "userIsChairOrCaptain"])
+    ...mapGetters("auth", ["userIs", "userIsAdminOrChairOrCaptain"])
   },
 
   created() {
