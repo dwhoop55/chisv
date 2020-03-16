@@ -11,23 +11,46 @@ const getters = {
     userCan: (state, getters) => a => {
         return getters.ability(a)?.value;
     },
-    userIs: state => (roleName, conferenceKey = null, stateName = null) => {
+    userIs: state => (roleName, conferenceKey, stateName) => {
         var found = false;
         state.user?.permissions?.forEach(permission => {
             // Caution: we match undefined == null here!
             // === will obviously not work
-            if (permission.role?.name == roleName &&
-                permission?.conference?.key == conferenceKey &&
-                permission?.state?.name == stateName) {
-                found = true;
-            }
+            var conferenceOk = false;
+            if (roleName && permission.role && roleName === permission?.role?.name) {
+                if (conferenceKey === undefined) { // So not given
+                    // conferenceKey can be anything!
+                    conferenceOk = true;
+                } else if (
+                    conferenceKey === null &&
+                    // conferenceKey is set to null, so it is
+                    // required to be null
+                    permission.conference === null) {
+                    conferenceOk = true;
+                } else if (permission.conference &&
+                    conferenceKey &&
+                    conferenceKey === permission.conference.key) {
+                    conferenceOk = true;
+                }
+
+                if (conferenceOk) {
+                    if (stateName === undefined) { // So not given
+                        // stateName can be anything!
+                        found = true;
+                    } else if (stateName === null &&
+                        permission.stateName === null) {
+                        found = true;
+                    } else if (permission.state &&
+                        stateName &&
+                        stateName === permission.state.name) {
+                        found = true;
+                    }
+                } // conferenceOk
+            } // forEach
         });
         return found;
     },
-    userIsAdmin: (state, getters) => getters.userIs('admin'),
-    userIsChair: (state, getters, rootState, rootGetters) => key => getters.userIsAdmin || getters.userIs('chair', key || rootGetters['conference/conference'].key),
-    userIsCaptain: (state, getters, rootState, rootGetters) => key => getters.userIsAdmin || getters.userIs('captain', key || rootGetters['conference/conference'].key),
-    userIsChairOrCaptain: (state, getters) => key => getters.userIsAdmin || getters.userIsChair(key) || getters.userIsCaptain(key),
+    userIsAdminOrChairOrCaptain: (state, getters) => key => getters.userIs('admin') || getters.userIs('chair', key) || getters.userIs('captain', key),
     ability: state => a => {
         // Get the first ability from the array where is matches
         // Use shift() to take first object from the filtered array
