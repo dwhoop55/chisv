@@ -32,11 +32,11 @@
     >
       <template slot-scope="props">
         <b-table-column field="firstname" label="Firstname" sortable>
-          <a :href="`/user/${props.row.id}/edit`">{{ props.row.firstname }}</a>
+          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.firstname }}</router-link>
         </b-table-column>
 
         <b-table-column field="lastname" label="Lastname" sortable>
-          <a :href="`/user/${props.row.id}/edit`">{{ props.row.lastname }}</a>
+          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.firstname }}</router-link>
         </b-table-column>
 
         <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>

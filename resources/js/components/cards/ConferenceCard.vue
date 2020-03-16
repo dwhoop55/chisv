@@ -1,6 +1,5 @@
 <template>
   <router-link :to="{ name: 'conference', params: { key: conference.key } }">
-    <!-- <a :href="conferenceUrl"> -->
     <div class="card is-hoverable-anim is-clickable is-100vh">
       <div
         class="card-image is-cover"
@@ -32,7 +31,6 @@
       </div>
     </div>
   </router-link>
-  <!-- </a> -->
 </template>
 
 <script>

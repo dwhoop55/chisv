@@ -1,7 +1,9 @@
 <template>
   <b-tag rounded :size="size" type="is-light">
     <b-tooltip type="is-light" :label="'Go to ' + conference.name" multilined>
-      <a :href="'/conference/' + conference.key">{{ conference.key.substring(0,20) }}</a>
+      <router-link
+        :to="{name: 'conference', params: {key: conference.key}}"
+      >{{ conference.key.substring(0,20) }}</router-link>
     </b-tooltip>
   </b-tag>
 </template>

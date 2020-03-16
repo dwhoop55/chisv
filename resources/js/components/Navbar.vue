@@ -1,7 +1,7 @@
 <template>
   <b-navbar type="is-primary">
     <template slot="brand">
-      <b-navbar-item href="/">
+      <b-navbar-item tag="router-link" :to="{name: 'conferences'}">
         <p class="has-text-weight-bold">chisv</p>
       </b-navbar-item>
     </template>
@@ -22,7 +22,7 @@
 
     <template slot="end">
       <b-navbar-dropdown right hoverable :label="firstname">
-        <b-navbar-item v-if="id" :href="`/user/${id}/edit`">My Profile</b-navbar-item>
+        <b-navbar-item v-if="id" tag="router-link" :to="{name: 'user', params: { id}}">My Profile</b-navbar-item>
         <hr v-if="id" class="navbar-divider" />
         <b-navbar-item @click="logout()">Logout</b-navbar-item>
       </b-navbar-dropdown>
