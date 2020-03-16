@@ -50,6 +50,15 @@ export default {
 
   created() {
     this.getJob();
+
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      this.$parent.close();
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
   },
 
   methods: {

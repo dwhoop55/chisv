@@ -14,6 +14,17 @@
 
 <script>
 export default {
-  props: ["value"]
+  props: ["value"],
+
+  created() {
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      this.$parent.close();
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
+  }
 };
 </script>

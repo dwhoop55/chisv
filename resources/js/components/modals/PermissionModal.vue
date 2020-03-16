@@ -75,6 +75,17 @@ export default {
     };
   },
 
+  created() {
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      this.$parent.close();
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
+  },
+
   methods: {
     save: function() {
       let promise;

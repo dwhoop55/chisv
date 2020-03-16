@@ -68,6 +68,15 @@ export default {
     if (this.suggestedName) {
       this.name = this.suggestedName;
     }
+
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      this.$parent.close();
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
   },
 
   computed: {

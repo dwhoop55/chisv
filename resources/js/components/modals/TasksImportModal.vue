@@ -199,8 +199,20 @@ export default {
   },
 
   created() {
-    // this.activeFields = this.fields;
     this.onModeChange(true);
+
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      if (this.currentStep > 0) {
+        this.currentStep--;
+      } else {
+        this.$parent.close();
+      }
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
   }
 };
 </script>

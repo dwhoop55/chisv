@@ -127,6 +127,15 @@ export default {
     this.getTemplates();
     this.templateName =
       this.conference.key + "-" + new Date().toISOString().slice(0, 10);
+
+    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+      this.$parent.close();
+      next(false);
+    });
+
+    this.$once("hook:destroyed", () => {
+      unregisterRouterGuard();
+    });
   },
 
   computed: {
