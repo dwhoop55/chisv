@@ -42,7 +42,7 @@ const actions = {
             `only_own_tasks=${getters.onlyOwnTasks}`
         ].join("&");
 
-        await api.getConferenceTasks(
+        api.getConferenceTasks(
             key || rootGetters['conference/conference'].key,
             params
         )

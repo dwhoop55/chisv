@@ -76,10 +76,10 @@ export default {
       return this.pastPermissions.length != 0;
     },
     canGrant() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      return this.userIs("admin") || this.userIs("chair");
     },
     canDelete() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      return this.userIs("admin") || this.userIs("chair");
     },
     ...mapGetters("profile", ["tab"]),
     ...mapGetters("auth", ["userIs"])

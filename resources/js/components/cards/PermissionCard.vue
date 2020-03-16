@@ -133,7 +133,7 @@ export default {
     canRevoke() {
       return (
         this.userIs("admin") ||
-        this.userIs("chair", this.permission.conference.key)
+        this.userIs("chair", this.permission.conference?.key)
       );
     },
     ...mapGetters("auth", ["userIs"])
