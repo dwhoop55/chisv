@@ -20,8 +20,8 @@ class ConferenceUpdateRequest extends FormRequest
         abort_unless($conference, 400, "No conference with this id!");
 
         $rules = [
-            'name' => 'max:70|unique:conferences,name,' . $conference->id,
-            'key' => 'max:30|alpha_num|unique:conferences,key,' . $conference->id,
+            'name' => 'required|max:70|unique:conferences,name,' . $conference->id,
+            'key' => 'required|max:30|alpha_num|unique:conferences,key,' . $conference->id,
             'location' => 'string|max:70',
             'timezone_id' => 'integer|exists:timezones,id',
             'start_date' => 'date',

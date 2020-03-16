@@ -344,27 +344,12 @@ export default {
       this.isLoading = true;
       api
         .updateConference(this.conference.key, this.form)
-        .then(data => {
-          this.$emit("updated", data.data.result);
+        .then(({ data }) => {
+          this.$emit("updated", data.result);
           this.$buefy.toast.open({
-            message: data.data.message,
+            message: data.message,
             type: "is-success"
           });
-        })
-        .catch(error => {
-          if (error.response.status == 422) {
-            this.$buefy.toast.open({
-              duration: 5000,
-              message: `Some fields are invalid`,
-              type: "is-danger"
-            });
-          } else {
-            this.$buefy.toast.open({
-              duration: 5000,
-              message: `Could not save conference: ${error.message}`,
-              type: "is-danger"
-            });
-          }
         })
         .finally(() => {
           this.isLoading = false;
