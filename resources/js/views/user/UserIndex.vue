@@ -36,7 +36,7 @@
         </b-table-column>
 
         <b-table-column field="lastname" label="Lastname" sortable>
-          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.firstname }}</router-link>
+          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.lastname }}</router-link>
         </b-table-column>
 
         <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
