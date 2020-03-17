@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\State;
 use Illuminate\Http\Request;
-use App\Http\Resources\States;
 
 class StateController extends Controller
 {
@@ -15,6 +14,6 @@ class StateController extends Controller
      */
     public function index()
     {
-        return new States(State::all());
+        return State::all();
     }
 }

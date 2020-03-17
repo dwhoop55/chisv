@@ -53,6 +53,24 @@ export default {
     getStates() {
         return axios.get("state");
     },
+    getDegrees() {
+        return axios.get("degree");
+    },
+    getShirts() {
+        return axios.get("shirt");
+    },
+    getTimezones() {
+        return axios.get("timezone");
+    },
+    getLanguage(name) {
+        return axios.get(`language/name/${name}`);
+    },
+    getLocation(name) {
+        return axios.get(`location/name/${name}`);
+    },
+    getUniversity(name) {
+        return axios.get(`university/name/${name}`);
+    },
     getJobs() {
         return axios.get("job");
     },

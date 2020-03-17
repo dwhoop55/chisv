@@ -159,24 +159,13 @@ export default {
 
   methods: {
     save() {
-      api
-        .updateUser(this.user.id, this.form)
-        .then(data => {
-          this.$emit("input", data.data.result);
-          this.$buefy.toast.open({
-            message: "Changes saved!",
-            type: "is-success"
-          });
-        })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `Could not save user: ${error.message}`,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {});
+      api.updateUser(this.user.id, this.form).then(({ data }) => {
+        this.$emit("input", data.result);
+        this.$buefy.toast.open({
+          message: "Changes saved!",
+          type: "is-success"
+        });
+      });
     },
 
     removeUiPreferences() {
@@ -187,8 +176,7 @@ export default {
         type: "is-success",
         hasIcon: true
       });
-      this.$store.commit("INIT");
-      this.$store.commit("PROFILE_TAB", 0);
+      document.location = "/";
     }
   }
 };

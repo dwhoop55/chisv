@@ -22,36 +22,6 @@
     </div>
     <div v-else>No enrollment form templates found, selected is {{ value }}</div>
   </section>
-  <!-- <b-dropdown
-    v-if="enrollmentFormTemplates.length > 0"
-    :value="value"
-    @input="$emit('input', $event)"
-    aria-role="list"
-  >
-    <button class="button is-primary" type="button" slot="trigger">
-      <template>{{ selectedEnrollmentFormTemplate.name }} ({{ selectedEnrollmentFormTemplate.id }})</template>
-      <b-icon icon="menu-down"></b-icon>
-    </button>
-
-    <b-dropdown-item
-      :value="form.id"
-      v-for="form in enrollmentFormTemplates"
-      :key="form.id"
-      aria-role="listitem"
-    >
-      <template>
-        {{ form.name }}
-        <div class="box">
-          <enrollment-form-summary
-            :value="form"
-            :showType="true"
-            :showValue="false"
-            :showMargin="false"
-          ></enrollment-form-summary>
-        </div>
-      </template>
-    </b-dropdown-item>
-  </b-dropdown>-->
 </template>
 
 <script>
@@ -73,21 +43,11 @@ export default {
 
   methods: {
     getEnrollmentFormTemplates() {
+      this.isLoading = true;
       api
         .getEnrollmentFormTemplates()
-        .then(data => {
-          this.enrollmentFormTemplates = data.data;
-        })
-        .catch(error => {
-          this.$buefy.toast.open({
-            duration: 5000,
-            message: `Could not load enrollment form templates: ${error.message}`,
-            type: "is-danger"
-          });
-        })
-        .finally(() => {
-          // this.isLoading = false;
-        });
+        .then(data => (this.enrollmentFormTemplates = data.data))
+        .finally(() => (this.isLoading = false));
     }
   },
 

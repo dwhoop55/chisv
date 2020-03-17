@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Assignment;
 use App\Bid;
 use App\Conference;
 use App\User;
@@ -10,6 +11,7 @@ use App\Degree;
 use App\Shirt;
 use App\Http\Resources\Users;
 use App\Http\Requests\UserUpdateRequest;
+use App\Image;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -223,6 +225,17 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        // Delete assignments, bids
+        Assignment::where('user_id', $user->id)->delete();
+        Bid::where('user_id', $user->id)->delete();
+        if ($user->avatar) $user->avatar->delete();
+        foreach ($user->permissions as $permission) {
+            if ($permission->enrollmentForm) {
+                $permission->enrollmentForm->delete();
+            }
+            $permission->delete();
+        }
+
         $result = $user->delete();
         return ["success" => $result, "message" => "User deleted"];
     }

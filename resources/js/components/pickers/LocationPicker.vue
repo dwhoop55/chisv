@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   props: ["value"],
 
@@ -64,18 +66,11 @@ export default {
         return;
       }
       this.isLoading = true;
-      axios
-        .get(`search/location/${name}`)
-        .then(({ data }) => {
-          this.rows = data.data;
-        })
-        .catch(error => {
-          this.rows = [];
-          throw error;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      api
+        .getLocation(name)
+        .then(({ data }) => (this.rows = data))
+        .catch(error => (this.rows = []))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

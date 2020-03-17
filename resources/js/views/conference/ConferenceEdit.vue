@@ -231,7 +231,6 @@
 <script>
 import { Form } from "vform";
 import api from "@/api.js";
-import auth from "@/auth.js";
 import moment from "moment-timezone";
 import { parse } from "path";
 import { mapGetters } from "vuex";
@@ -357,23 +356,14 @@ export default {
     },
     deleteConference() {
       this.$buefy.dialog.confirm({
+        type: "is-danger",
         message: `Are your sure you want to delete ${this.conference.name}?`,
         onConfirm: () => {
           this.isLoading = true;
           api
             .deleteConference(this.conference.key)
-            .then(() => {
-              this.$router.replace({ name: "conferences" });
-            })
-            .catch(error => {
-              this.$buefy.toast.open({
-                message: `An error occured: ${error.message}`,
-                type: "is-danger"
-              });
-            })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .then(() => this.$router.replace({ name: "conferences" }))
+            .finally(() => (this.isLoading = false));
         }
       });
     }

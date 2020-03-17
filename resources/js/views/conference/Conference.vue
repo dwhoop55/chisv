@@ -113,7 +113,6 @@
 
 <script>
 import api from "@/api.js";
-import auth from "@/auth.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {

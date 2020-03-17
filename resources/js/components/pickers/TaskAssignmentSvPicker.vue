@@ -118,19 +118,8 @@ export default {
           this.data = data.data.svs;
           this.total_matches = data.data.total_matches;
         })
-        .catch(error => {
-          console.error(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     }
   }
 };
 </script>
-
-<style>
-/* div.is-larger-autocomplete div.dropdown-menu > div.dropdown-content {
-  max-height: 400px !important;
-} */
-</style>

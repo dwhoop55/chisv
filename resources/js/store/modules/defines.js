@@ -22,11 +22,11 @@ const getters = {
 const actions = {
     async fetchStates({ commit }) {
         const response = await api.getStates();
-        commit('setStates', response.data.data);
+        commit('setStates', response.data);
     },
     async fetchRoles({ commit }) {
         const response = await api.getRoles();
-        commit('setRoles', response.data.data);
+        commit('setRoles', response.data);
     }
 };
 

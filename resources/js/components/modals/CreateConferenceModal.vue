@@ -36,10 +36,12 @@
 <script>
 import Form from "vform";
 import api from "@/api.js";
+import { mapMutations } from "vuex";
 
 export default {
   data() {
     return {
+      unregisterRouterGuard: null,
       form: new Form({
         name: null,
         key: "e.g. chi19, autoui2019"
@@ -48,40 +50,34 @@ export default {
   },
 
   created() {
-    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+    this.unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
       this.$parent.close();
       next(false);
     });
+  },
 
-    this.$once("hook:destroyed", () => {
-      unregisterRouterGuard();
-    });
+  destroyed() {
+    this.unregisterRouterGuard();
   },
 
   methods: {
     create: function() {
-      api
-        .createConference(this.form)
-        .then(data => {
-          this.$buefy.toast.open({
-            message: data.data.message,
-            type: "is-success",
-            queue: false
-          });
-          this.$emit("created", this.form.key);
-          this.$parent.close();
-        })
-        .catch(error => {
-          if (error.response.status != 422) {
-            this.$buefy.notification.open({
-              indefinite: true,
-              hasIcon: true,
-              message: error.response.data.message,
-              type: "is-danger"
-            });
-          }
+      api.createConference(this.form).then(data => {
+        this.$buefy.toast.open({
+          message: data.data.message,
+          type: "is-success",
+          queue: false
         });
-    }
+        this.$parent.close();
+        this.setTab(4);
+        this.unregisterRouterGuard();
+        this.$router.push({
+          name: "conference",
+          params: { key: this.form.key }
+        });
+      });
+    },
+    ...mapMutations("conference", ["setTab"])
   }
 };
 </script>

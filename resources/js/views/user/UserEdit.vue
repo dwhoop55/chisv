@@ -39,13 +39,9 @@
         <b-tab-item v-if="user" icon="key" label="Password">
           <user-edit-password v-model="user"></user-edit-password>
         </b-tab-item>
-
-        <b-tab-item v-if="canDelete" icon="sign-caution" label="Delete">
-          <b-field class="section" grouped position="is-centered">
-            <button @click="deleteUser" class="button is-danger is-pulled-right">Delete this user</button>
-          </b-field>
-        </b-tab-item>
       </b-tabs>
+
+      <b-button v-if="canDelete" type="is-danger" @click="deleteUser()">Delete user</b-button>
 
       <b-loading :is-full-page="false" :active="isLoading"></b-loading>
     </div>
@@ -79,10 +75,13 @@ export default {
       return this.userIs("admin") || this.userIs("chair");
     },
     canDelete() {
-      return this.userIs("admin") || this.userIs("chair");
+      return (
+        this.user?.id != this.authUser?.id &&
+        (this.userIs("admin") || this.userIs("chair"))
+      );
     },
     ...mapGetters("profile", ["tab"]),
-    ...mapGetters("auth", ["userIs"])
+    ...mapGetters("auth", { userIs: "userIs", authUser: "user" })
   },
 
   data() {
@@ -94,7 +93,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.getUser();
   },
 
@@ -104,19 +103,10 @@ export default {
         message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,
         type: "is-danger",
         onConfirm: () => {
-          api
-            .deleteUser(this.user.id)
-            .then(() => {
-              this.$router.replace({ name: "users" });
-            })
-            .catch(error => {
-              this.$buefy.notification.open({
-                duration: 5000,
-                message: `Error: ${error.message}`,
-                type: "is-danger",
-                hasIcon: true
-              });
-            });
+          api.deleteUser(this.user.id).then(() => {
+            this.fetchUsers();
+            this.$router.replace({ name: "users" });
+          });
         }
       });
     },
@@ -142,7 +132,8 @@ export default {
           this.isLoading = false;
         });
     },
-    ...mapMutations("profile", ["setTab"])
+    ...mapMutations("profile", ["setTab"]),
+    ...mapActions("userIndex", ["fetchUsers"])
   }
 };
 </script>

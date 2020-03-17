@@ -432,7 +432,6 @@
 
 <script>
 import api from "@/api.js";
-import auth from "@/auth.js";
 import Form from "vform";
 import JobModalVue from "@/components/modals/JobModal.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";

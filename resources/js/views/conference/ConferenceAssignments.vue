@@ -229,7 +229,6 @@
 
 <script>
 import api from "@/api.js";
-import auth from "@/auth.js";
 import JobModalVue from "@/components/modals/JobModal.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 
@@ -250,7 +249,6 @@ export default {
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.isLoading = true;
           api
             .deleteAllAssignmentsOfConference(
               this.conference.key,
@@ -264,22 +262,11 @@ export default {
                 hasIcon: true
               });
             })
-            .catch(error => {
-              this.$buefy.notification.open({
-                duration: 5000,
-                message: error.message,
-                type: "is-danger",
-                hasIcon: true
-              });
-            })
-            .finally(() => {
-              this.fetchAssignments();
-            });
+            .finally(() => this.fetchAssignments());
         } // onConfirm
       });
     },
     runAuction() {
-      this.isLoading = true;
       api
         .runAuction(this.conference.key, this.day.toMySqlDate())
         .then(data => {
@@ -289,25 +276,10 @@ export default {
             props: { id: jobId },
             component: JobModalVue,
             hasModalCard: true,
-            onCancel: () => {
-              this.fetchAssignments();
-            }
+            onCancel: () => this.fetchAssignments()
           });
         })
-        .catch(error => {
-          var message = error.response.data.message
-            ? error.response.data.message
-            : error.message;
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: message,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.fetchAssignments();
-        });
+        .finally(() => this.fetchAssignments());
     },
     showSearchHelp() {
       this.$buefy.dialog.alert(

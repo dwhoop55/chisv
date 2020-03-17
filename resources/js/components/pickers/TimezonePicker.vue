@@ -1,10 +1,9 @@
-// v-model safe
 <template>
   <section>
     <b-select
       expanded
       placeholder="Select a timezone"
-      :loading="fetching"
+      :loading="isLoading"
       :value="value"
       @input="input"
     >
@@ -14,13 +13,15 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   props: ["value"],
 
   data() {
     return {
       timezones: [],
-      fetching: true
+      isLoading: true
     };
   },
 
@@ -40,20 +41,11 @@ export default {
     }
   },
 
-  mounted() {
-    axios
-      .get("timezone")
-      .then(data => {
-        this.timezones = data.data.data;
-        this.fetching = false;
-      })
-      .catch(error => {
-        this.$notification.open({
-          message: `Could not load timezone: ${error}`,
-          type: "is-danger",
-          indefinite: true
-        });
-      });
+  created() {
+    api
+      .getTimezones()
+      .then(({ data }) => (this.timezones = data))
+      .finally(() => (this.isLoading = false));
   }
 };
 </script>

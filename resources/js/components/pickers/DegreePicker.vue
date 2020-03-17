@@ -2,7 +2,7 @@
 <template>
   <b-select
     required
-    :loading="fetching"
+    :loading="isLoading"
     :value="value"
     placeholder="Select your current degree program"
     icon="school"
@@ -13,13 +13,14 @@
 </template>
 
 <script>
+import api from "@/api";
 export default {
   props: ["value"],
 
   model: {},
   data() {
     return {
-      fetching: true,
+      isLoading: true,
       degrees: []
     };
   },
@@ -32,20 +33,12 @@ export default {
     }
   },
 
-  mounted() {
-    axios
-      .get(`degree`)
-      .then(({ data }) => {
-        this.degrees = [];
-        data.data.forEach(entry => this.degrees.push(entry));
-      })
-      .catch(error => {
-        this.degrees = [];
-        throw error;
-      })
-      .finally(() => {
-        this.fetching = false;
-      });
+  created() {
+    api
+      .getDegrees()
+      .then(({ data }) => (this.degrees = data))
+      .catch(error => (this.degrees = []))
+      .finally(() => (this.isLoading = false));
   }
 };
 </script>

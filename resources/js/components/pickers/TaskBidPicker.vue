@@ -136,9 +136,7 @@ export default {
               this.showError();
               this.$emit("error");
             })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .finally(() => (this.isLoading = false));
         } else {
           // Preference removed, delete bid
           api
@@ -154,9 +152,7 @@ export default {
               this.showError();
               this.$emit("error");
             })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .finally(() => (this.isLoading = false));
         }
       } else {
         // New bid, create new
@@ -174,9 +170,7 @@ export default {
             this.showError();
             this.$emit("error");
           })
-          .finally(() => {
-            this.isLoading = false;
-          });
+          .finally(() => (this.isLoading = false));
       }
     },
     buildBid(preference) {

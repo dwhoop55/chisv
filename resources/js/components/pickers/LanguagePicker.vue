@@ -16,6 +16,8 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   props: ["value"],
   data() {
@@ -31,19 +33,11 @@ export default {
         return;
       }
       this.isLoading = true;
-      axios
-        .get(`search/language/${text}`)
-        .then(data => {
-          this.filteredTags = [];
-          data.data.data.forEach(entry => this.filteredTags.push(entry));
-        })
-        .catch(error => {
-          this.rows = [];
-          throw error;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      api
+        .getLanguage(text)
+        .then(({ data }) => (this.filteredTags = data))
+        .catch(error => (this.filteredTags = []))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

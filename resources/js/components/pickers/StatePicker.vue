@@ -53,10 +53,6 @@ export default {
     }
   },
 
-  // destroyed() {
-  //   this.$emit("input", null);
-  // },
-
   computed: {
     getValue() {
       if (this.value) {

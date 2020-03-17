@@ -2,7 +2,7 @@
 <template>
   <b-select
     required
-    :loading="fetching"
+    :loading="isLoading"
     :value="value"
     placeholder="Select your cut and size"
     icon="tshirt-crew"
@@ -17,12 +17,13 @@
 </template>
 
 <script>
+import api from "@/api";
 export default {
   props: ["value"],
 
   data() {
     return {
-      fetching: true,
+      isLoading: true,
       shirts: []
     };
   },
@@ -35,20 +36,11 @@ export default {
     }
   },
 
-  mounted() {
-    axios
-      .get(`shirt`)
-      .then(({ data }) => {
-        this.shirts = [];
-        data.data.forEach(entry => this.shirts.push(entry));
-      })
-      .catch(error => {
-        this.shirts = [];
-        throw error;
-      })
-      .finally(() => {
-        this.fetching = false;
-      });
+  created() {
+    api
+      .getShirts()
+      .then(({ data }) => (this.shirts = data))
+      .finally(() => (this.isLoading = false));
   }
 };
 </script>

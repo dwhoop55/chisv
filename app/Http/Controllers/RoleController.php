@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Role;
 use Illuminate\Http\Request;
-use App\Http\Resources\Roles;
 
 class RoleController extends Controller
 {
@@ -29,6 +28,6 @@ class RoleController extends Controller
             return auth()->user()->can('view', $role);
         });
 
-        return new Roles($roles);
+        return $roles;
     }
 }

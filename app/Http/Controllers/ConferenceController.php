@@ -417,31 +417,41 @@ class ConferenceController extends Controller
                 'end_at', 'hours', 'location',
                 'description', 'slots', 'priority'
             ]);
-            // $nTask['total_bids'] = $task->bids->count();
+
             $nTask['assignments'] = $task->assignments->map(function ($assignment) use (&$task) {
-                $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
+                if (isset($assignment->user)) {
 
-                // Append a SVs bid if there is one
-                $bid = $task->bids->where('user_id', $assignment->user->id)->first();
-                $nAssignment['bid'] = $bid ? $bid->only('id', 'preference', 'state', 'user_created') : null;
+                    $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
 
-                // Provide the reference to the $users collection
-                $nAssignment['user'] = $assignment->user->only(['id']);
+                    // Append a SVs bid if there is one
+                    $bid = $task->bids->where('user_id', $assignment->user->id)->first();
+                    $nAssignment['bid'] = $bid ? $bid->only('id', 'preference', 'state', 'user_created') : null;
 
-                // Test for conflicts with other assignments
-                // Create a list of all tasks which the user with
-                // the current assignment has for this day and conference
-                $allTasks = $assignment->user->assignments->map(function ($assignment) {
-                    return $assignment->task;
-                });
+                    // Provide the reference to the $users collection
+                    $nAssignment['user'] = $assignment->user->only(['id']);
 
-                // Now remove the task this current assignment is bound to (which would
-                // otherwise always conflict with itself)
-                $otherTasks = $allTasks->where('id', "!=", $task->id);
+                    // Test for conflicts with other assignments
+                    // Create a list of all tasks which the user with
+                    // the current assignment has for this day and conference
+                    $allTasks = $assignment->user->assignments->map(function ($assignment) {
+                        return $assignment->task;
+                    });
 
-                $nAssignment['is_conflicting'] = $task->isConflicting($otherTasks);
+                    // Now remove the task this current assignment is bound to (which would
+                    // otherwise always conflict with itself)
+                    $otherTasks = $allTasks->where('id', "!=", $task->id);
 
-                return $nAssignment;
+                    $nAssignment['is_conflicting'] = $task->isConflicting($otherTasks);
+
+                    return $nAssignment;
+                } else {
+                    return null; // If a user has been deleted and the assignments not removed
+                    // we have to make sure to filter these assignments
+                }
+            });
+            // Now remove nonexistent users
+            $nTask['assignments'] = $nTask['assignments']->filter(function ($assignment) {
+                return $assignment;
             });
             return $nTask;
         });
@@ -1131,6 +1141,18 @@ class ConferenceController extends Controller
      */
     public function destroy(Conference $conference)
     {
+        if ($conference->icon) $conference->icon->delete();
+        if ($conference->artwork) $conference->artwork->delete();
+        Permission::where('conference_id', $conference->id)->delete();
+        foreach ($conference->assignments as $assignment) {
+            $assignment->delete();
+        }
+        foreach ($conference->bids as $bid) {
+            $bid->delete();
+        }
+        foreach ($conference->tasks as $task) {
+            $task->delete();
+        }
         $result = $conference->delete();
         return ["success" => $result, "message" => "Conference deleted"];
     }

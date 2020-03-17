@@ -1,7 +1,7 @@
 <template>
   <section>
     <b-field v-if="userIs('admin')" grouped position="is-right">
-      <b-button @click="showCreateModal=true" class="button">Add Conference</b-button>
+      <b-button @click="showCreate()" class="button">Add Conference</b-button>
     </b-field>
     <div class="columns is-multiline is-flex-stretch">
       <div class="column is-half" v-for="conference in conferences" :key="conference.id">
@@ -10,20 +10,19 @@
     </div>
 
     <b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
-    <b-modal :active.sync="showCreateModal" has-modal-card>
+    <!-- <b-modal :active.sync="showCreateModal" has-modal-card>
       <create-conference-modal @created="editConference"></create-conference-modal>
-    </b-modal>
+    </b-modal>-->
   </section>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from "vuex";
+import CreateConferenceModalVue from "../../components/modals/CreateConferenceModal.vue";
 
 export default {
   data() {
-    return {
-      showCreateModal: false
-    };
+    return {};
   },
 
   created() {
@@ -36,9 +35,11 @@ export default {
   },
 
   methods: {
-    editConference(key) {
-      this.setTab(4);
-      this.$router.push({ name: "conference", params: { key: key } });
+    showCreate() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: CreateConferenceModalVue
+      });
     },
     ...mapActions("conferences", ["fetchConferences"]),
     ...mapMutations("conference", ["setTab"])

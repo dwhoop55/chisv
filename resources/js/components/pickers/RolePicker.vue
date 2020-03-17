@@ -27,28 +27,11 @@ export default {
   created() {
     if (!this.roles) {
       this.isLoading = true;
-      this.fetchRoles().then((this.isLoading = false));
+      this.fetchRoles().then(() => (this.isLoading = false));
     }
   },
 
   computed: mapGetters("defines", ["roles"]),
   methods: mapActions("defines", ["fetchRoles"])
-
-  // methods: {
-  //   load() {
-  //     this.loading = false;
-  //     api
-  //       .getRoles()
-  //       .then(data => {
-  //         this.roles = data.data.data;
-  //       })
-  //       .catch(error => {
-  //         throw error;
-  //       })
-  //       .finally(() => {
-  //         this.loading = false;
-  //       });
-  //   }
-  // }
 };
 </script>

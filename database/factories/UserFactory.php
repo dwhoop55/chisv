@@ -35,7 +35,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'city_id' => $faker->numberBetween(1, 47000),
         'university_id' => $faker->numberBetween(1, 380),
         'university_fallback' => $faker->optional($weight = 0.5)->company(),
-        'shirt_id' => $faker->numberBetween(1, 13),
+        'shirt_id' => $faker->boolean() ? $faker->numberBetween(1, 6) : $faker->numberBetween(11, 17),
         'degree_id' => $faker->numberBetween(1, 8),
         'past_conferences' => $faker->text(30),
         'past_conferences_sv' => $faker->text(30),

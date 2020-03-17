@@ -34,16 +34,12 @@ export default {
     return {
       search: "",
       isLoading: false,
-      // destinations: [],
       availableDestinations: []
     };
   },
 
   created() {
     this.getDestinations();
-    // this.value.forEach(element => {
-    //   this.destinations.push(element);
-    // });
   },
 
   computed: {
@@ -104,8 +100,7 @@ export default {
           available = available.concat(data.users);
           this.availableDestinations = available;
         })
-        .catch(error => {})
-        .finally((this.isLoading = false));
+        .finally(() => (this.isLoading = false));
     }
   }
 };

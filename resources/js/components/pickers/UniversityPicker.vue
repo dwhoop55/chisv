@@ -2,12 +2,12 @@
 <template>
   <div>
     <b-autocomplete
-      :required="isRequired"
+      :required="required === false"
       :value="universityName"
       :data="rows"
       :placeholder="'e.g. RWTH'"
       :field="'name'"
-      :loading="isFetching"
+      :loading="isLoading"
       :keep-first="true"
       debounce-events="typing"
       v-debounce="typing"
@@ -15,11 +15,11 @@
       icon="magnify"
     >
       <template slot="empty">
-        <div v-if="!isFetching" class="content has-text-grey has-text-centered">
+        <div v-if="!isLoading" class="content has-text-grey has-text-centered">
           <b-icon icon="emoticon-sad"></b-icon>
           <p>Nothing found, just type the name</p>
         </div>
-        <div v-if="isFetching" class="content has-text-grey has-text-centered">
+        <div v-if="isLoading" class="content has-text-grey has-text-centered">
           <b-icon icon="timer-sand"></b-icon>
           <p>Loading..</p>
         </div>
@@ -33,13 +33,15 @@
 </template>
 
 <script>
+import api from "@/api";
+
 export default {
   props: ["value", "required"],
 
   data() {
     return {
       rows: [],
-      isFetching: false,
+      isLoading: false,
       internal: this.value
     };
   },
@@ -51,13 +53,6 @@ export default {
       } else if (this.value && this.value.name) {
         return this.value.name;
       }
-    },
-    isRequired() {
-      if (this.required === false) {
-        return false;
-      } else {
-        return true;
-      }
     }
   },
 
@@ -65,35 +60,23 @@ export default {
     typing: function(text) {
       this.internal = { name: text };
       this.$emit("input", this.internal);
-      this.getAsyncData(text);
+      this.getUniversity(text);
     },
     select: function(event) {
       this.internal = event;
       this.$emit("input", event);
     },
-    getAsyncData(name) {
+    getUniversity(name) {
       if (!name.length || name.length < 2) {
         this.rows = [];
         return;
       }
-      this.isFetching = true;
-      axios
-        .get(`search/university/${name}`)
-        .then(({ data }) => {
-          this.rows = [];
-          data.data.forEach(entry => this.rows.push(entry));
-        })
-        .catch(error => {
-          this.rows = [];
-          this.$notification.open({
-            message: `Could not load University: ${error}`,
-            type: "is-danger",
-            indefinite: true
-          });
-        })
-        .finally(() => {
-          this.isFetching = false;
-        });
+      this.isLoading = true;
+      api
+        .getUniversity(name)
+        .then(({ data }) => (this.rows = data))
+        .catch(error => (this.rows = []))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

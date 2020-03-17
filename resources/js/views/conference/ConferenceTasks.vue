@@ -254,7 +254,6 @@
 
 <script>
 import api from "@/api.js";
-import auth from "@/auth.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
 import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
 import JobModalVue from "../../components/modals/JobModal.vue";
