@@ -182,12 +182,7 @@ export default {
             this.updated();
             this.$parent.close();
           })
-          .catch(error => {
-            throw error;
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
+          .finally(() => (this.isLoading = false));
       } else {
         // Create request
         this.isLoading = true;
@@ -197,12 +192,7 @@ export default {
             this.updated();
             this.$parent.close();
           })
-          .catch(error => {
-            throw error;
-          })
-          .finally(() => {
-            this.isLoading = false;
-          });
+          .finally(() => (this.isLoading = false));
       }
     },
     setTime(which, time) {

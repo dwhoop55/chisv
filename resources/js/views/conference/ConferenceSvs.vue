@@ -484,19 +484,11 @@ export default {
           this.setIsLoading(true);
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
-            .then(data => {
+            .then(({ data }) => {
               this.$buefy.notification.open({
                 duration: 5000,
-                message: data.data.message,
+                message: data.message,
                 type: "is-success",
-                hasIcon: true
-              });
-            })
-            .catch(error => {
-              this.$buefy.notification.open({
-                duration: 5000,
-                message: error.message,
-                type: "is-danger",
                 hasIcon: true
               });
             })
@@ -511,8 +503,8 @@ export default {
       this.setIsLoading(true);
       api
         .runLottery(this.conference.key)
-        .then(data => {
-          let jobId = data.data.result;
+        .then(({ data }) => {
+          let jobId = data.result;
           this.$buefy.modal.open({
             parent: this,
             props: { id: jobId },
@@ -521,17 +513,6 @@ export default {
             onCancel: () => {
               this.fetchSvs();
             }
-          });
-        })
-        .catch(error => {
-          var message = error.response.data.message
-            ? error.response.data.message
-            : error.message;
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: message,
-            type: "is-danger",
-            hasIcon: true
           });
         })
         .finally(() => {
@@ -557,26 +538,16 @@ export default {
       this.setIsLoading(true);
       api
         .updateConferenceEnrollmentFormWeights(this.conference.key, weights)
-        .then(data => {
+        .then(({ data }) => {
           this.$buefy.notification.open({
             duration: 5000,
-            message: data.data.message,
+            message: data.message,
             type: "is-success",
             hasIcon: true
           });
           this.fetchSvs();
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: error.message,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.setIsLoading(false);
-        });
+        .finally(() => this.setIsLoading(false));
     },
     updateSvState(user, $event) {
       var vform = new Form({
@@ -590,22 +561,12 @@ export default {
       this.isUpdatingState = true;
       api
         .updatePermission(vform, user.permission.id)
-        .then(response => {
-          user.permission = response.data.result;
+        .then(({ data }) => {
+          user.permission = data.result;
           this.fetchAcceptedCount();
           this.fetchSvs();
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: error.message,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.isUpdatingState = false;
-        });
+        .finally(() => (this.isUpdatingState = false));
     },
     onPageChange(page) {
       this.setPage(page);

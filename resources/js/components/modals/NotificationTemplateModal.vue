@@ -165,12 +165,7 @@ export default {
             return template;
           });
         })
-        .catch(error => {
-          this.showError(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     },
     deleteTemplate(template) {
       this.$buefy.dialog.confirm({
@@ -186,15 +181,8 @@ export default {
           this.isLoading = true;
           api
             .deleteNotificationTemplate(template.id)
-            .then(({ data }) => {
-              this.getTemplates();
-            })
-            .catch(error => {
-              this.showError(error);
-            })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .then(({ data }) => this.getTemplates())
+            .finally(() => (this.isLoading = false));
         }
       });
     },
@@ -202,15 +190,8 @@ export default {
       this.isLoading = true;
       api
         .createNotificationTemplate(name, this.template, this.conference)
-        .then(({ data }) => {
-          this.getTemplates();
-        })
-        .catch(error => {
-          this.showError(error);
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .then(({ data }) => this.getTemplates())
+        .finally(() => (this.isLoading = false));
     },
     toggle(row) {
       if (this.detailOpen.includes(row.id)) {

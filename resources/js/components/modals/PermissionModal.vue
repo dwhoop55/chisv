@@ -97,25 +97,14 @@ export default {
         promise = api.createPermission(this.form);
       }
 
-      promise
-        .then(data => {
-          this.$buefy.toast.open({
-            message: data.data.message,
-            type: "is-success"
-          });
-          this.permission ? this.$emit("updated") : this.$emit("created");
-          this.$parent.close();
-        })
-        .catch(error => {
-          if (error.response.status != 422) {
-            this.$buefy.notification.open({
-              indefinite: true,
-              hasIcon: true,
-              message: error.response.data.message,
-              type: "is-danger"
-            });
-          }
+      promise.then(data => {
+        this.$buefy.toast.open({
+          message: data.data.message,
+          type: "is-success"
         });
+        this.permission ? this.$emit("updated") : this.$emit("created");
+        this.$parent.close();
+      });
     },
     getUserId: function() {
       if (this.permission && this.permission.user && this.permission.user.id) {

@@ -85,9 +85,7 @@ export default {
         .catch(error => {
           this.error = error;
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     },
     getProgressForProcessingState() {
       if (this.job && this.job.progress >= 0) {

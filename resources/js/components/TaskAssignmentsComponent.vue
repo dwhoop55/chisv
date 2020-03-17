@@ -107,14 +107,6 @@ export default {
         .then(data => {
           assignment.state = data.data.result.state;
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `An error occured: ${error.response.data.message}`,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
         .finally(() => {
           this.isLoading = false;
           // Now we add/remove the hours in the frontend model to the user
@@ -141,17 +133,7 @@ export default {
         .then(data => {
           this.$emit("reload");
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: "An error occured. Is the SV already assigned?",
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     },
     remove(assignment) {
       this.$buefy.dialog.confirm({
@@ -165,17 +147,7 @@ export default {
               // Reload data from server
               this.$emit("reload");
             })
-            .catch(error => {
-              this.$buefy.notification.open({
-                duration: 5000,
-                message: `An error occured: ${error.response.data.message}`,
-                type: "is-danger",
-                hasIcon: true
-              });
-            })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .finally(() => (this.isLoading = false));
         }
       });
     },
@@ -254,17 +226,7 @@ export default {
               // assignment
               assignment.hours = data.data.result.hours;
             })
-            .catch(error => {
-              this.$buefy.notification.open({
-                duration: 5000,
-                message: `An error occured: ${error.response.data.message}`,
-                type: "is-danger",
-                hasIcon: true
-              });
-            })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .finally(() => (this.isLoading = false));
         }
       });
     },

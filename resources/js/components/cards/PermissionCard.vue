@@ -98,21 +98,13 @@ export default {
       });
     },
     revoke: function() {
-      api
-        .deletePermission(this.permission.id)
-        .then(data => {
-          this.$buefy.toast.open({
-            type: "is-success",
-            message: data.data.message
-          });
-          this.$emit("revoked", this.permission);
-        })
-        .catch(error => {
-          this.$buefy.toast.open({
-            type: "is-danger",
-            message: error.message
-          });
+      api.deletePermission(this.permission.id).then(data => {
+        this.$buefy.toast.open({
+          type: "is-success",
+          message: data.data.message
         });
+        this.$emit("revoked", this.permission);
+      });
     },
     tagClick: function() {
       if (this.canRevoke) {

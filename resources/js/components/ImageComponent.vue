@@ -87,36 +87,20 @@ export default {
             type: "is-success"
           });
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            message: error.response.data.errors.image[0],
-            type: "is-danger",
-            indefinite: true
-          });
-        })
         .finally(() => {
           this.isLoading = false;
         });
     },
     deleteImage() {
-      api
-        .deleteImage(this.id)
-        .then(data => {
-          this.updateModel();
-          this.$forceUpdate();
-          this.$emit("input", this.model);
-          this.$buefy.toast.open({
-            message: data.data.message,
-            type: "is-success"
-          });
-        })
-        .catch(error => {
-          this.$buefy.toast.open({
-            duration: 5000,
-            message: `Could not delete: ${error.message}`,
-            type: "is-danger"
-          });
+      api.deleteImage(this.id).then(data => {
+        this.updateModel();
+        this.$forceUpdate();
+        this.$emit("input", this.model);
+        this.$buefy.toast.open({
+          message: data.data.message,
+          type: "is-success"
         });
+      });
     }
   }
 };

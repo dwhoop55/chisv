@@ -88,14 +88,11 @@ export default {
       this.isLoading = true;
       api
         .getUserBidsForConference(this.user.id, this.conference.key)
-        .then(data => {
-          this.bids = data.data;
+        .then(({ data }) => {
+          this.bids = data;
           this.wasLoaded = true;
         })
-        .catch(error => {})
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     }
   }
 };

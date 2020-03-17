@@ -114,23 +114,13 @@ export default {
       this.isLoading = true;
       api
         .getUser(this.id)
-        .then(data => {
-          this.user = data.data;
-        })
+        .then(({ data }) => (this.user = data))
         .catch(error => {
           if (error.response.status == 403 || error.response.status == 404) {
             this.$router.replace({ name: "conferences" });
           }
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `Could not fetch user: ${error.message}`,
-            type: "is-danger",
-            hasIcon: true
-          });
         })
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .finally(() => (this.isLoading = false));
     },
     ...mapMutations("profile", ["setTab"]),
     ...mapActions("userIndex", ["fetchUsers"])

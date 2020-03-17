@@ -104,13 +104,8 @@ export default {
       if (showLoading) this.isLoading = true;
       api
         .getJobs()
-        .then(({ data }) => {
-          this.jobs = data;
-        })
-        .catch(error => {})
-        .finally(() => {
-          this.isLoading = false;
-        });
+        .then(({ data }) => (this.jobs = data))
+        .finally(() => (this.isLoading = false));
     }
   }
 };

@@ -195,19 +195,7 @@ export default {
                 hasIcon: true
               });
             })
-            .catch(error => {
-              if (error.response.status != 422) {
-                this.$buefy.notification.open({
-                  infinite: true,
-                  message: error.message,
-                  type: "is-danger",
-                  hasIcon: true
-                });
-              }
-            })
-            .finally(() => {
-              this.isLoading = false;
-            });
+            .finally(() => (this.isLoading = false));
         }
       });
     },

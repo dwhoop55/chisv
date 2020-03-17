@@ -62,17 +62,7 @@ export default {
             type: "is-success"
           });
         })
-        .catch(error => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: `Could not save user: ${error.message}`,
-            type: "is-danger",
-            hasIcon: true
-          });
-        })
-        .finally(() => {
-          this.$emit("input", this.user);
-        });
+        .finally(() => this.$emit("input", this.user));
     }
   }
 };

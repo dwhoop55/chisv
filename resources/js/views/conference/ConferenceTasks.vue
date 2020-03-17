@@ -296,25 +296,15 @@ export default {
                   this.conference.key,
                   this.day.toMySqlDate()
                 )
-                .then(data => {
+                .then(({ data }) => {
                   this.$buefy.notification.open({
                     indefinite: true,
-                    message: data.data.message,
+                    message: data.message,
                     type: "is-success",
                     hasIcon: true
                   });
                 })
-                .catch(error => {
-                  this.$buefy.notification.open({
-                    duration: 5000,
-                    message: error.message,
-                    type: "is-danger",
-                    hasIcon: true
-                  });
-                })
-                .finally(() => {
-                  this.fetchTasks();
-                });
+                .finally(() => this.fetchTasks());
             } // onConfirm 2
           });
         } // onConfirm 1
@@ -417,29 +407,16 @@ export default {
       });
     },
     deleteTask(task) {
-      api
-        .deleteTask(task.id)
-        .then(data => {
-          this.$buefy.notification.open({
-            duration: 5000,
-            message: data.data.message,
-            type: "is-success",
-            hasIcon: true
-          });
-          this.fetchTasks();
-          this.fetchTaskDays();
-        })
-        .catch(error => {
-          var message = error.response.data.message
-            ? error.response.data.message
-            : error.message;
-          this.$buefy.notification.open({
-            indefinite: true,
-            message: message,
-            type: "is-danger",
-            hasIcon: true
-          });
+      api.deleteTask(task.id).then(({ data }) => {
+        this.$buefy.notification.open({
+          duration: 5000,
+          message: data.message,
+          type: "is-success",
+          hasIcon: true
         });
+        this.fetchTasks();
+        this.fetchTaskDays();
+      });
     },
     onPageChange(page) {
       this.setPage(page);

@@ -165,18 +165,7 @@ export default {
 
   methods: {
     save() {
-      this.form
-        .post(`register`)
-        .then(data => {
-          this.registerSuccess = true;
-        })
-        .catch(error => {
-          this.$toast.open({
-            duration: 5000,
-            message: `Could not save user: ${error.message}`,
-            type: "is-danger"
-          });
-        });
+      this.form.post(`register`).then(data => (this.registerSuccess = true));
     }
   }
 };

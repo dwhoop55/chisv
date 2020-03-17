@@ -159,12 +159,7 @@ export default {
             this.$parent.close();
             this.updated(jobId);
           })
-          .catch(error => {
-            console.error(error);
-          })
-          .finally(() => {
-            this.currentStep++;
-          });
+          .finally(() => this.currentStep++);
       }
     }
   },
