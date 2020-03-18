@@ -8,14 +8,6 @@ let methods = {
     abilityString(ability, model, id = null, onModel = null, onId = null) {
         return `${ability},${model},${id},${onModel},${onId}`;
     },
-    showError(error) {
-        this.$buefy.notification.open({
-            duration: 5000,
-            message: error.message,
-            type: "is-danger",
-            hasIcon: true
-        });
-    },
     isEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         return re.test(String(email).toLowerCase());

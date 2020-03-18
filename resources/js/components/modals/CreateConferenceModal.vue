@@ -36,7 +36,7 @@
 <script>
 import Form from "vform";
 import api from "@/api.js";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 
 export default {
   data() {
@@ -71,13 +71,16 @@ export default {
         this.$parent.close();
         this.setTab(4);
         this.unregisterRouterGuard();
-        this.$router.push({
-          name: "conference",
-          params: { key: this.form.key }
+        this.fetchConference(this.form.key).then(() => {
+          this.$router.push({
+            name: "conference",
+            params: { key: this.form.key }
+          });
         });
       });
     },
-    ...mapMutations("conference", ["setTab"])
+    ...mapMutations("conference", ["setTab"]),
+    ...mapActions("conference", ["fetchConference"])
   }
 };
 </script>

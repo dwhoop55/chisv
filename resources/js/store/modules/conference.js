@@ -48,28 +48,35 @@ const getters = {
 
 const actions = {
     async fetchConference({ commit, dispatch, state }, conferenceKey) {
-        const key = conferenceKey || state.conference.key;
-        commit('setIsLoading', true);
-        api.getConference(key)
-            .then(({ data }) => {
-                commit('setConference', data);
-                commit('setLast', data);
-            })
-            .catch(error => {
-                commit('setConference', null);
-                commit('setLast', { key: null, name: null });
-            })
+        var promise = new Promise((resolve, reject) => {
+            const key = conferenceKey || state.conference.key;
+            commit('setIsLoading', true);
+            api.getConference(key)
+                .then(({ data }) => {
+                    commit('setConference', data);
+                    commit('setLast', data);
+                })
+                .catch(error => {
+                    commit('setConference', null);
+                    commit('setLast', { key: null, name: null });
+                })
+                .finally(() => {
+                });
 
 
 
-        var p1 = dispatch('fetchTaskDays', key);
-        var p2 = dispatch('fetchAcceptedCount', key);
-        var p3 = dispatch('tasks/fetchTasks', key, { root: true });
-        var p4 = dispatch('svs/fetchSvs', key, { root: true });
-        var p4 = dispatch('assignments/fetchAssignments', key, { root: true });
-        Promise.all([p1, p2, p3]).finally(() => {
-            commit('setIsLoading', false);
+            var p1 = dispatch('fetchTaskDays', key);
+            var p2 = dispatch('fetchAcceptedCount', key);
+            var p3 = dispatch('tasks/fetchTasks', key, { root: true });
+            var p4 = dispatch('svs/fetchSvs', key, { root: true });
+            var p5 = dispatch('assignments/fetchAssignments', key, { root: true });
+            Promise.all([p1, p2, p3, p4, p5]).finally(() => {
+                commit('setIsLoading', false);
+                resolve();
+            });
         });
+
+        return promise;
     },
     async fetchTaskDays({ commit, state }, key) {
         const response = await api.getConferenceTaskDays(key || state.conference.key);

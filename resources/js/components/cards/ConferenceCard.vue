@@ -1,41 +1,58 @@
 <template>
-  <router-link :to="{ name: 'conference', params: { key: conference.key } }">
-    <div class="card is-hoverable-anim is-clickable is-100vh">
+  <div @click="enterConference()" class="card is-hoverable-anim is-clickable is-100vh">
+    <b-loading :is-full-page="false" :active="isLoading" />
+    <div
+      class="card-image is-cover"
+      :style="`height:350px;${conferenceArtworkBackground(conference)}`"
+    >
       <div
-        class="card-image is-cover"
-        :style="`height:350px;${conferenceArtworkBackground(conference)}`"
-      >
-        <div
-          :style="stateBackground"
-          class="has-text-weight-bold has-text-shadow is-rounded-b-l is-rounded-b-r is-pinned-t is-pinned-r has-text-white-bis is-absolute has-margin-r-7 has-padding-l-5 has-padding-r-5 has-padding-b-7 has-padding-t-7"
-        >{{ (conference.state && conference.state.name) ? conference.state.name : "Unknown status" }}</div>
+        :style="stateBackground"
+        class="has-text-weight-bold has-text-shadow is-rounded-b-l is-rounded-b-r is-pinned-t is-pinned-r has-text-white-bis is-absolute has-margin-r-7 has-padding-l-5 has-padding-r-5 has-padding-b-7 has-padding-t-7"
+      >{{ (conference.state && conference.state.name) ? conference.state.name : "Unknown status" }}</div>
+    </div>
+    <div class="card-content">
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-48x48">
+            <img :src="conferenceIcon(conference)" />
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-4">{{ conference.name | textlimit(70) }}</p>
+          <p
+            class="subtitle is-6"
+          >{{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
+        </div>
       </div>
-      <div class="card-content">
-        <div class="media">
-          <div class="media-left">
-            <figure class="image is-48x48">
-              <img :src="conferenceIcon(conference)" />
-            </figure>
-          </div>
-          <div class="media-content">
-            <p class="title is-4">{{ conference.name | textlimit(70) }}</p>
-            <p
-              class="subtitle is-6"
-            >{{ conference.start_date | moment("ll") }} – {{ conference.end_date | moment("ll") }}</p>
-          </div>
-        </div>
 
-        <div class="content">
-          <VueShowdown :markdown="conferenceDescription" />
-        </div>
+      <div class="content">
+        <VueShowdown :markdown="conferenceDescription" />
       </div>
     </div>
-  </router-link>
+  </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   props: ["conference"],
+
+  data() {
+    return {};
+  },
+
+  methods: {
+    enterConference() {
+      if (this.isLoading) return;
+      this.fetchConference(this.conference.key).finally(() => {
+        this.$router.push({
+          name: "conference",
+          params: { key: this.conference.key }
+        });
+      });
+    },
+    ...mapActions("conference", { fetchConference: "fetchConference" })
+  },
 
   computed: {
     conferenceDescription() {
@@ -73,9 +90,7 @@ export default {
       }
       return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
     },
-    conferenceUrl: function() {
-      return `/conference/${this.conference.key}`;
-    }
+    ...mapGetters("conference", ["isLoading"])
   }
 };
 </script>
