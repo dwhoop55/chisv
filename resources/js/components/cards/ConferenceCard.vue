@@ -44,11 +44,10 @@ export default {
   methods: {
     enterConference() {
       if (this.isLoading) return;
-      this.fetchConference(this.conference.key).finally(() => {
-        this.$router.push({
-          name: "conference",
-          params: { key: this.conference.key }
-        });
+      this.fetchConference(this.conference.key);
+      this.$router.push({
+        name: "conference",
+        params: { key: this.conference.key }
       });
     },
     ...mapActions("conference", { fetchConference: "fetchConference" })

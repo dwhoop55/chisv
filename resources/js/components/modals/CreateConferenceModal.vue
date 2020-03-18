@@ -71,11 +71,9 @@ export default {
         this.$parent.close();
         this.setTab(4);
         this.unregisterRouterGuard();
-        this.fetchConference(this.form.key).then(() => {
-          this.$router.push({
-            name: "conference",
-            params: { key: this.form.key }
-          });
+        this.$router.push({
+          name: "conference",
+          params: { key: this.form.key }
         });
       });
     },

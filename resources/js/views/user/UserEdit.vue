@@ -1,18 +1,18 @@
 <template>
-  <div class="columns is-centered">
-    <div class="column is-two-thirds">
-      <b-tabs
-        :value="tab"
-        @input="setTab($event)"
-        :animated="false"
-        position="is-left"
-        type="is-boxed"
-      >
-        <b-tab-item icon="format-list-bulleted" label="Conferences">
-          <div v-if="user">
+  <transition name="fade">
+    <div v-if="user" class="columns is-centered">
+      <div class="column is-two-thirds">
+        <b-tabs
+          :value="tab"
+          @input="setTab($event)"
+          :animated="false"
+          position="is-left"
+          type="is-boxed"
+        >
+          <b-tab-item icon="format-list-bulleted" label="Conferences">
             <b-button v-if="canGrant" @click="showGrantModal=true" class="is-pulled-right">Grant</b-button>
             <b-modal :active.sync="showGrantModal" has-modal-card>
-              <permission-modal v-if="user" @created="getUser()" :user="user"></permission-modal>
+              <permission-modal @created="getUser()" :user="user"></permission-modal>
             </b-modal>
 
             <div class="subtitle has-margin-t-3">
@@ -29,23 +29,23 @@
             <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
               <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
             </div>
-          </div>
-        </b-tab-item>
+          </b-tab-item>
 
-        <b-tab-item v-if="user" icon="account" label="Profile">
-          <user-edit-profile v-model="user"></user-edit-profile>
-        </b-tab-item>
+          <b-tab-item icon="account" label="Profile">
+            <user-edit-profile v-model="user"></user-edit-profile>
+          </b-tab-item>
 
-        <b-tab-item v-if="user" icon="key" label="Password">
-          <user-edit-password v-model="user"></user-edit-password>
-        </b-tab-item>
-      </b-tabs>
+          <b-tab-item icon="key" label="Password">
+            <user-edit-password v-model="user"></user-edit-password>
+          </b-tab-item>
+        </b-tabs>
 
-      <b-button v-if="canDelete" type="is-danger" @click="deleteUser()">Delete user</b-button>
+        <b-button v-if="canDelete" type="is-danger" @click="deleteUser()">Delete user</b-button>
 
-      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+        <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+      </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -105,7 +105,7 @@ export default {
         onConfirm: () => {
           api.deleteUser(this.user.id).then(() => {
             this.fetchUsers();
-            this.$router.replace({ name: "users" });
+            this.$router.go(-1);
           });
         }
       });
@@ -117,7 +117,7 @@ export default {
         .then(({ data }) => (this.user = data))
         .catch(error => {
           if (error.response.status == 403 || error.response.status == 404) {
-            this.$router.replace({ name: "conferences" });
+            this.$router.go(-1);
           }
         })
         .finally(() => (this.isLoading = false));
