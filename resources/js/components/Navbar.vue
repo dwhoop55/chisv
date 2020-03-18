@@ -21,6 +21,12 @@
     </template>
 
     <template slot="end">
+      <b-navbar-dropdown right arrowless hoverable>
+        <template slot="label">
+          <b-icon :icon="hasUnread ? 'bell' : 'bell'"></b-icon>
+        </template>
+        <p>Here will be alerts</p>
+      </b-navbar-dropdown>
       <b-navbar-dropdown right hoverable :label="firstname">
         <b-navbar-item v-if="id" tag="router-link" :to="{name: 'user', params: { id}}">My Profile</b-navbar-item>
         <hr v-if="id" class="navbar-divider" />
@@ -31,8 +37,7 @@
 </template>
 
 <script>
-import auth from "@/auth";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
@@ -43,12 +48,10 @@ export default {
       return this.user?.firstname || "Account";
     },
     ...mapGetters("auth", ["user", "userIs"]),
-    ...mapGetters("conference", ["conference", "last"])
+    ...mapGetters("conference", ["conference", "last"]),
+    ...mapGetters("notifications", ["hasUnread"])
   },
-  methods: {
-    logout() {
-      auth.logout();
-    }
-  }
+
+  methods: mapActions("auth", { logout: "logout" })
 };
 </script>

@@ -12,6 +12,7 @@ import conference from './modules/conference';
 import userIndex from './modules/userIndex';
 import profile from './modules/profile';
 import reports from './modules/reports';
+import notifications from './modules/notifications';
 
 Vue.use(Vuex);
 
@@ -26,7 +27,8 @@ export default new Vuex.Store({
         conferences,
         userIndex,
         profile,
-        reports
+        reports,
+        notifications
     },
     plugins: [createPersistedState({
         paths: [

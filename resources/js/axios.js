@@ -1,5 +1,6 @@
 window.axios = require("axios");
 import { NotificationProgrammatic as Notification } from 'buefy';
+import store from "@/store"
 
 window.axios.defaults.headers.common["X-Requested-With"] = "XMLHttpRequest";
 window.axios.defaults.headers.common["Content-Type"] = "application/json";
@@ -40,8 +41,12 @@ window.axios.interceptors.response.use(response => response, error => {
                 message = error.response.data.message;
             }
             type = 'is-danger';
-        } else if (status === 401) {
-            document.location = '/login';
+        } else if (status === 401 && store.getters['auth/user']) {
+            console.log(401, 'Not logged in', error);
+            return Promise.reject(error)
+        } else if (status === 403) {
+            console.log(403, "No permission to ressource", error);
+            return Promise.reject(error)
         } else if (status == 422) {
             // Validation error
             message = error.response.data.message

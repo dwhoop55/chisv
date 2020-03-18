@@ -33,10 +33,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        // Note, this only is for if the user can access
-        // the index page. Which user is displayed is
-        // up to the view method below
-        return $user->isAdmin();
+        return $user->isAdmin() || $user->isChair();
     }
 
     /**

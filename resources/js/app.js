@@ -98,9 +98,14 @@ export const vm = new Vue({
     },
     created() {
         // This will load states as new for every page refresh
-        this.fetchConferences();
-        this.fetchUser();
-        this.fetchStates();
-        this.fetchRoles();
+        this.fetchUser()
+            .then(() => {
+                // Will resolve when a user could be fetched,
+                // so we're logged in
+                this.fetchConferences();
+                this.fetchStates();
+                this.fetchRoles();
+            })
+            .catch((error) => (console.log(error)));
     }
 });

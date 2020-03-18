@@ -66,9 +66,27 @@ const getters = {
 };
 
 const actions = {
+    async logout({ commit }) {
+        var p = new Promise((resolve, reject) => {
+            api.logout()
+                .then(data => commit('setUser', null))
+                .catch(error => reject(error))
+                .finally(() => {
+                    resolve();
+                    window.location.href = '/login';
+                })
+        })
+    },
     async fetchUser({ commit }) {
-        const response = await api.getSelf();
-        commit('setUser', response.data);
+        var p = new Promise((resolve, reject) => {
+            api.getSelf()
+                .then(({ data }) => {
+                    commit('setUser', data);
+                    resolve(data);
+                })
+                .catch(error => reject());
+        })
+        return p;
     },
     async fetchCan({ commit, getters }, { ability, model, id, onModel, onId }) {
         const response = await api.can(ability, model, id, onModel, onId);

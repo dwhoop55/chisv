@@ -228,6 +228,10 @@ export default {
             console.error("No role given");
         }
     },
+    logout() {
+        return axios.post(`logout`, undefined, { baseURL: '/', maxRedirects: 0 })
+    }
+
 
 
 }
