@@ -469,14 +469,18 @@ class ConferenceController extends Controller
     {
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain
-        $showMore =
-            auth()->user()->isAdmin()
-            || auth()->user()->isChair($conference)
-            || auth()->user()->isCaptain($conference);
+        $user = auth()->user();
+        $showMore = $user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference);
+
+        // If the user is no admin, chair, captain or accepted SV, reject access
+        if (!$showMore && !$user->isSv($conference, State::byName('accepted'))) {
+            abort(403);
+        }
+
+
         $search = request()->search_string;
         $day = request()->day;
         $priorities = collect(explode(',', request()->priorities));
-        $user = auth()->user();
         $onlyOwnTasks = request()->only_own_tasks;
         $userIsAccepted = $user->isSv($conference, State::byName('accepted'));
 
