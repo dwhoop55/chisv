@@ -1,4 +1,5 @@
 import api from "@/api";
+import moment from 'moment-timezone'
 import { methods as mixins } from '@/mixins';
 
 const state = {
@@ -7,6 +8,7 @@ const state = {
 };
 
 const getters = {
+    usersTimezone: state => state.user?.timezone,
     user: state => state.user,
     userCan: (state, getters) => a => {
         return getters.ability(a)?.value;
@@ -82,6 +84,14 @@ const actions = {
             api.getSelf()
                 .then(({ data }) => {
                     commit('setUser', data);
+
+                    // If the user has a timezone,
+                    // set it on our moment instance
+                    // so all moment instances will render
+                    // the correct timezone
+                    if (data.timezone?.name) {
+                        moment.tz.setDefault(data.timezone.name);
+                    }
                     resolve(data);
                 })
                 .catch(error => reject());

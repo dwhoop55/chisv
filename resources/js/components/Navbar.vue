@@ -1,5 +1,5 @@
 <template>
-  <b-navbar type="is-primary">
+  <b-navbar fixed-top type="is-primary">
     <template slot="brand">
       <b-navbar-item tag="router-link" :to="{name: 'conferences'}">
         <p class="has-text-weight-bold">chisv</p>
@@ -21,23 +21,69 @@
     </template>
 
     <template slot="end">
-      <b-navbar-dropdown right arrowless hoverable>
+      <!-- vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv -->
+      <!-- Notifications for mobile -->
+      <b-navbar-item @click="showNotifications" class="is-hidden-desktop">
+        <span
+          v-if="hasUnread"
+          class="has-text-warning"
+        >{{ numberUnread | pluralize('New notification') }}</span>
+        <span v-else>Notifications</span>
+      </b-navbar-item>
+      <!-- Notifications for desktop -->
+      <b-navbar-dropdown
+        ref="notificationDropdown"
+        class="is-hidden-touch"
+        right
+        arrowless
+        hoverable
+      >
         <template slot="label">
-          <b-icon :icon="hasUnread ? 'bell' : 'bell'"></b-icon>
+          <b-icon
+            class="has-margin-l-6 has-margin-r-6"
+            @click.native="showNotifications"
+            v-if="hasUnread"
+            type="is-warning"
+            icon="bell-ring"
+          />
+          <b-icon
+            class="has-margin-l-6 has-margin-r-6"
+            @click.native="showNotifications"
+            v-else
+            icon="bell"
+          />
         </template>
-        <p>Here will be alerts</p>
+        <notifications-list
+          @show="showNotification($event)"
+          limit="5"
+          :style="notifications && notifications.length>0 ? 'width: 500px' : 'width: 220px'"
+        ></notifications-list>
       </b-navbar-dropdown>
-      <b-navbar-dropdown right hoverable :label="firstname">
+      <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
+
+      <!-- vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv -->
+      <!-- Profile and logout for mobile -->
+      <b-navbar-item
+        class="is-hidden-desktop"
+        v-if="id"
+        tag="router-link"
+        :to="{name: 'user', params: { id}}"
+      >My Profile</b-navbar-item>
+      <b-navbar-item class="is-hidden-desktop" @click="logout()">Logout</b-navbar-item>
+      <!-- Profile and logout for desktop -->
+      <b-navbar-dropdown class="is-hidden-touch" right hoverable :label="firstname">
         <b-navbar-item v-if="id" tag="router-link" :to="{name: 'user', params: { id}}">My Profile</b-navbar-item>
         <hr v-if="id" class="navbar-divider" />
         <b-navbar-item @click="logout()">Logout</b-navbar-item>
       </b-navbar-dropdown>
+      <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
     </template>
   </b-navbar>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import NotificationsListModalVue from "./modals/NotificationsListModal.vue";
 
 export default {
   computed: {
@@ -49,9 +95,32 @@ export default {
     },
     ...mapGetters("auth", ["user", "userIs"]),
     ...mapGetters("conference", ["conference", "last"]),
-    ...mapGetters("notifications", ["hasUnread"])
+    ...mapGetters("notifications", [
+      "hasUnread",
+      "numberUnread",
+      "notifications"
+    ])
   },
 
-  methods: mapActions("auth", { logout: "logout" })
+  methods: {
+    showNotification(id) {
+      this.$buefy.modal.open({
+        parent: this,
+        props: {
+          showId: id
+        },
+        component: NotificationsListModalVue,
+        hasModalCard: true
+      });
+    },
+    showNotifications() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: NotificationsListModalVue,
+        hasModalCard: true
+      });
+    },
+    ...mapActions("auth", { logout: "logout" })
+  }
 };
 </script>

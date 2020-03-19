@@ -93,7 +93,8 @@ class Announcement extends Notification implements ShouldQueue
             'elements' => $this->elements,
             'subject' => $this->subject,
             'greeting' => $this->greeting,
-            'salutation' => $this->salutation
+            'salutation' => $this->salutation,
+            'conference' => $this->conference->only(['id', 'key', 'name'])
         ];
     }
 }

@@ -18,9 +18,8 @@ class NotificationPolicy
      */
     public function viewAny(User $user)
     {
-        if ($user->isAdmin()) {
-            return true;
-        }
+        // Always ok, since index will return notifications for only the auth()->user
+        return true;
     }
 
     /**
@@ -42,17 +41,6 @@ class NotificationPolicy
         }
     }
 
-    // /**
-    //  * Determine whether the user can create database notifications.
-    //  *
-    //  * @param  \App\User  $user
-    //  * @return mixed
-    //  */
-    // public function create(User $user)
-    // {
-    //     //
-    // }
-
     /**
      * Determine whether the user can update the database notification.
      *
@@ -72,16 +60,15 @@ class NotificationPolicy
         }
     }
 
-    // /**
-    //  * Determine whether the user can delete the database notification.
-    //  *
-    //  * @param  \App\User  $user
-    //  * @param  Illuminate\Notifications\DatabaseNotification  $databaseNotification
-    //  * @return mixed
-    //  */
-    // public function delete(User $user, DatabaseNotification $databaseNotification)
-    // {
-    //     //
-    // }
-
+    /**
+     * Determine whether the user can delete the database notification.
+     *
+     * @param  \App\User  $user
+     * @param  Illuminate\Notifications\DatabaseNotification  $databaseNotification
+     * @return mixed
+     */
+    public function delete(User $user, DatabaseNotification $databaseNotification)
+    {
+        return $this->update($user, $databaseNotification);
+    }
 }

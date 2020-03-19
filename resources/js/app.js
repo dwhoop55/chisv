@@ -9,14 +9,13 @@ require("./helpers");
 import Vue from "vue";
 import Buefy from "buefy";
 import { Form, HasError, AlertError } from 'vform'
-import VueMoment from 'vue-moment'
-import VueDOMPurifyHTML from 'vue-dompurify-html'
-import moment from "moment-timezone";
 import JsonCSV from 'vue-json-csv';
-import vueDebounce from 'vue-debounce';
 import { VueCsvImport } from 'vue-csv-import';
+import moment from "moment-timezone";
+import vueDebounce from 'vue-debounce';
 import VueShowdown from 'vue-showdown'
-import { mapActions } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import pluralize from 'pluralize'
 
 import store from './store';
 import router from './router';
@@ -44,8 +43,6 @@ Vue.component('csv-export', JsonCSV)
 Vue.component('csv-import', VueCsvImport)
 
 Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right" });
-Vue.use(VueMoment);
-Vue.use(VueDOMPurifyHTML);
 Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });
 Vue.use(VueShowdown, {
     options: {
@@ -77,14 +74,18 @@ Vue.filter('capitalize', function (value) {
     if (!value) return ''
     value = value.toString()
     return value.charAt(0).toUpperCase() + value.slice(1)
-})
-
+});
 Vue.filter('textlimit', function (text, limit, clamp = '...') {
     if (text) {
         return text.length > limit ? text.slice(0, limit) + clamp : text;
     }
-})
-
+});
+Vue.filter('pluralize', function (number, value, prefix = true) {
+    return pluralize(value, number, prefix);
+});
+Vue.filter('moment', function (value, format) {
+    return moment(value).tz('UTC').format(format);
+});
 Vue.mixin({ methods: mixins });
 
 export const vm = new Vue({
@@ -92,9 +93,14 @@ export const vm = new Vue({
     store,
     router,
     methods: {
+        async refreshNotifications() {
+            this.fetchNotifications();
+            setTimeout(this.refreshNotifications, 10000);
+        },
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles'])
+        ...mapActions('defines', ['fetchStates', 'fetchRoles']),
+        ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
     created() {
         // This will load states as new for every page refresh
@@ -105,6 +111,8 @@ export const vm = new Vue({
                 this.fetchConferences();
                 this.fetchStates();
                 this.fetchRoles();
+                this.refreshNotifications();
+
             })
             .catch((error) => (console.log(error)));
     }

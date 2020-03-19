@@ -85,15 +85,13 @@
         <university-picker v-model="form.university"></university-picker>
       </b-field>
 
-      <!-- <b-field
-      :type="{ 'is-danger': form.errors.has('timezone_id') }"
-      :message="form.errors.get('timezone_id')"
-      label="All dates are converted to this timezone"
-    >
-      <b-tooltip position="is-bottom" label="Not used yet, but please set it" always>
+      <b-field
+        :type="{ 'is-danger': form.errors.has('timezone_id') }"
+        :message="form.errors.get('timezone_id')"
+        label="All dates are converted to this timezone"
+      >
         <timezone-picker v-model="form.timezone_id"></timezone-picker>
-      </b-tooltip>
-      </b-field>-->
+      </b-field>
 
       <b-field grouped>
         <b-field
@@ -130,6 +128,7 @@
 <script>
 import Form from "vform";
 import api from "@/api.js";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   props: ["user"],
@@ -165,10 +164,16 @@ export default {
           message: "Changes saved!",
           type: "is-success"
         });
+        if (this.user.id == this.authUser.id) {
+          // If the editing user is the logged in user
+          // we refresh the vuex store
+          this.fetchAuthUser();
+        }
       });
     },
-
     removeUiPreferences() {
+      // First we remove the persistens backup of the in-memory
+      // vuex store
       localStorage.removeItem("vuex");
       this.$buefy.notification.open({
         duration: 5000,
@@ -176,8 +181,12 @@ export default {
         type: "is-success",
         hasIcon: true
       });
-      document.location = "/";
-    }
-  }
+      // This will actually resetting the vuex store in memory
+      window.location.href = "/";
+    },
+    ...mapActions("auth", { fetchAuthUser: "fetchUser" })
+  },
+
+  computed: mapGetters("auth", { authUser: "user" })
 };
 </script>

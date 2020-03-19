@@ -93,7 +93,9 @@ class UserController extends Controller
                         'state:id,name,description',
                         'conference:id,key'
                     ]);
-                }
+                },
+                'timezone',
+                'avatar'
             ])
             ->first();
     }
@@ -115,6 +117,7 @@ class UserController extends Controller
                     $query->with(['conference', 'role', 'state', 'user']);
                     $query->orderBy('created_at', 'DESC');
                 },
+                'timezone',
                 'university',
                 'city'
             ])

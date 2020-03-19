@@ -1,4 +1,14 @@
 export default {
+    getNotification(id) {
+        return axios.get(`notification/${id}`);
+    },
+    getNotifications(since) {
+        if (since) {
+            return axios.get(`notification?since=${since}`)
+        } else {
+            return axios.get(`notification`)
+        }
+    },
     getSelf() {
         return axios.get(`user/self`);
     },

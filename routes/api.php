@@ -126,6 +126,9 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
+        // Route::get('notification/unread', 'NotificationController@numberUnread')
+        //     ->middleware("can:viewAny,Illuminate\Notifications\DatabaseNotification")
+        //     ->name('notification.unread');
         Route::get('user/self', 'UserController@showSelf')
             ->middleware("can:viewSelf,App\User")
             ->name('user.self');
@@ -239,6 +242,10 @@ Route::group(['prefix' => 'v1'], function () {
         ]);
         Route::resource('notification_template', 'NotificationTemplateController', [
             'only' => ['index', 'store', 'destroy']
+        ]);
+        Route::resource('notification', 'NotificationController', [
+            'only' => ['index', 'show', 'update', 'destroy'],
+            'parameters' => ['notification' => 'database_notification']
         ]);
     });
     //// AUTHENTICATED ////

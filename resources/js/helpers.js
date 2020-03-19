@@ -55,8 +55,8 @@ Date.prototype.toMySqlTime = function () {
     );
 };
 
-Array.prototype.column = function (column) {
-    return this.map(function (value, index) {
-        return value[column];
-    });
-}
+// Array.prototype.column = function (column) {
+//     return this.map(function (value, index) {
+//         return value[column];
+//     });
+// }

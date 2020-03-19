@@ -216,7 +216,7 @@
               type="is-light"
               :label="props.row.permission.created_at | moment('lll') "
               multilined
-            >{{ $moment(props.row.permission.created_at).fromNow() }}</b-tooltip>
+            >{{ tzFormat(props.row.permission.created_at, null, {fromNow: true}) }}</b-tooltip>
           </template>
         </b-table-column>
         <b-table-column

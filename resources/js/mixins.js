@@ -5,6 +5,14 @@ import Form from "vform";
 export { methods }
 
 let methods = {
+    tzFormat(date, format, options = {}) {
+        var m = new moment(date).tz('Europe/Berlin');
+        // var m = new moment(date).tz(this.$store.getters['auth/usersTimezone']?.name);
+        if (options.fromNow) {
+            return m.fromNow(options.withoutSuffix ? true : false);
+        }
+        return m.format(format);
+    },
     abilityString(ability, model, id = null, onModel = null, onId = null) {
         return `${ability},${model},${id},${onModel},${onId}`;
     },
@@ -115,9 +123,6 @@ let methods = {
     goTo: function (path) {
         window.location.href = path;
     },
-    goBack: function () {
-        window.history.back();
-    },
     preferenceString(preference) {
         if (preference == undefined) return "Unknown";
         switch (preference) {
@@ -217,61 +222,8 @@ let methods = {
                 return "is-danger";
         }
     },
-    // stateIdFromName: function (state) {
-    //     if (!state || !state.name) return null
-
-    //     switch (state.name) {
-    //         // states for users
-    //         case "accepted":
-    //             return 11
-    //         case "dropped":
-    //             return 14
-    //         case "enrolled":
-    //             return 11
-    //         case "waitlisted":
-    //             return 13
-    //         // states for conferences
-    //         case "planning":
-    //             return 1
-    //         case "enrollment":
-    //             return 2
-    //         case "registration":
-    //             return 3
-    //         case "running":
-    //             return 4
-    //         case "over":
-    //             return 5
-    //         // Jobs
-    //         case "planned":
-    //             return 21
-    //         case "processing":
-    //             return 22
-    //         case "successful":
-    //             return 23
-    //         case "failed":
-    //             return 24
-    //         case "softfail":
-    //             return 25
-    //         // Assignments
-    //         case "assigned":
-    //             return 41
-    //         case "checked-in":
-    //             return 42
-    //         case "done":
-    //             return 43
-    //         // Bids
-    //         case "unsuccessful":
-    //             return 33
-    //         case "conflict":
-    //             return 34
-    //         case "placed":
-    //             return 31
-    //         case "unavailable":
-    //             return 35
-    //     }
-    // },
     roleType: function (role) {
-        if (role.name) {
+        if (role?.name) {
             switch (role.name) {
                 case "sv":
                     return "is-light";
@@ -282,17 +234,5 @@ let methods = {
             }
         }
     },
-    // roleIdFromName: function (name) {
-    //     if (name) {
-    //         switch (name) {
-    //             case "sv":
-    //                 return 10;
-    //             case "chair":
-    //                 return 2;
-    //             case "captain":
-    //                 return 3;
-    //         }
-    //     }
-    //     return null;
-    // }
+
 }
