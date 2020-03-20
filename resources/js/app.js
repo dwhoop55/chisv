@@ -95,7 +95,7 @@ export const vm = new Vue({
     methods: {
         async refreshNotifications() {
             this.fetchNotifications();
-            setTimeout(this.refreshNotifications, 10000);
+            setTimeout(this.refreshNotifications, 30000);
         },
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
