@@ -48,7 +48,7 @@
                         </span>
                         @endif
 
-                        <div class="field">
+                        <div class="field is-hidden">
                             <div class="field">
                                 <div class="control">
                                     <label id="remember" class="checkbox">
@@ -57,8 +57,8 @@
                                     </label>
                                 </div>
                             </div>
-
                         </div>
+
                         <div class="field">
                             <a href="{{ route('password.request') }}">Forgot Your Password?</a>
                         </div>
