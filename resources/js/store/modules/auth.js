@@ -69,12 +69,22 @@ const getters = {
 };
 
 const actions = {
-    async logout({ commit }) {
+    async resetStore() {
+        return new Promise((resolve, reject) => {
+            if (localStorage.removeItem("vuex")) {
+                resolve();
+            } else {
+                reject();
+            }
+        });
+    },
+    async logout({ commit, dispatch }) {
         var p = new Promise((resolve, reject) => {
             api.logout()
                 .then(data => commit('setUser', null))
                 .catch(error => reject(error))
                 .finally(() => {
+                    commit('setUser', null);
                     resolve();
                     window.location.href = '/login';
                 })

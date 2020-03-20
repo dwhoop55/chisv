@@ -185,7 +185,7 @@ export default {
     removeUiPreferences() {
       // First we remove the persistens backup of the in-memory
       // vuex store
-      localStorage.removeItem("vuex");
+      this.resetStore();
       this.$buefy.notification.open({
         duration: 5000,
         message: `Preferences reset`,
@@ -195,7 +195,10 @@ export default {
       // This will actually resetting the vuex store in memory
       window.location.href = "/";
     },
-    ...mapActions("auth", { fetchAuthUser: "fetchUser" })
+    ...mapActions("auth", {
+      fetchAuthUser: "fetchUser",
+      resetStore: "resetStore"
+    })
   },
 
   computed: {
