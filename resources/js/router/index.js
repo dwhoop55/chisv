@@ -68,7 +68,7 @@ const router = new VueRouter({
 router.beforeEach((to, from, next) => {
     /* It will change the title when the router is change*/
     if (to.name == "conference") {
-        to.meta.title = to.params?.key?.toUpperCase();
+        to.meta.title = to.params?.key;
     }
     if (to.meta.title) {
         document.title = to.meta?.title + " - chisv";
