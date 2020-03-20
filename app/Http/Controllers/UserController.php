@@ -197,7 +197,11 @@ class UserController extends Controller
             }
         }
 
-        return ["result" => $user->loadMissing(['avatar', 'permissions']), "message" => "User updated"];
+        return ["result" => $user->loadMissing([
+            'avatar', 'permissions',
+            'permissions.conference', 'permissions.role',
+            'permissions.state'
+        ]), "message" => "User updated"];
     }
 
     /** 
