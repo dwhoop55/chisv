@@ -50,8 +50,8 @@
                     <div class="field">
                         <div class="control has-icons-left has-icons-right">
                             <input id="password-confirm" type="password" placeholder="{{ __('Confirm Password') }}"
-                                class="input {{ $errors->has('password_confirm') ? 'is-danger' : '' }}"
-                                name="password_confirm" required autofocus>
+                                class="input {{ $errors->has('password_confirmation') ? 'is-danger' : '' }}"
+                                name="password_confirmation" required autofocus>
                             <span class="icon is-small is-left">
                                 <i class="icon mdi mdi-at"></i>
                             </span>
