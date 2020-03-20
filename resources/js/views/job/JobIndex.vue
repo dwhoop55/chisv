@@ -43,9 +43,9 @@
           sortable
           field="start_at"
           label="Start At"
-        >{{ props.row.start_at | moment('lll') }}</b-table-column>
+        >{{ timeFormat(props.row.start_at, 'lll') }}</b-table-column>
         <b-table-column sortable field="ended_at" label="Ended At">
-          <div v-if="props.row.ended_at">{{ props.row.ended_at | moment('lll') }}</div>
+          <div v-if="props.row.ended_at">{{ timeFormat(props.row.ended_at, 'lll') }}</div>
           <div v-else>Not ended yet</div>
         </b-table-column>
       </template>

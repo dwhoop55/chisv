@@ -91,10 +91,11 @@ class UserController extends Controller
                     $query->with([
                         'role:id,name,description',
                         'state:id,name,description',
-                        'conference:id,key'
+                        'conference:id,key',
                     ]);
                 },
                 'timezone',
+                'locale',
                 'avatar'
             ])
             ->first();
@@ -117,6 +118,7 @@ class UserController extends Controller
                     $query->with(['conference', 'role', 'state', 'user']);
                     $query->orderBy('created_at', 'DESC');
                 },
+                'locale',
                 'timezone',
                 'university',
                 'city'
@@ -146,6 +148,7 @@ class UserController extends Controller
             'time_format',
             'time_sec_format',
             'timezone_id',
+            'locale_id',
             'degree_id',
             'shirt_id',
             'past_conferences',

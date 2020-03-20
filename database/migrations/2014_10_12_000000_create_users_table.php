@@ -34,6 +34,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->integer('timezone_id')->default(291); // This is UTC/ETC
+            $table->integer('locale_id')->default(40); // This is en_US
             $table->rememberToken();
 
             $table->timestamp('created_at')->useCurrent();

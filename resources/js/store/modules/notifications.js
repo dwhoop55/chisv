@@ -23,17 +23,21 @@ const actions = {
         api.getNotifications(timestamp)
             .then(({ data }) => {
                 if (data.data.length > 0) {
-                    if (since === 0) {
-                        //reset all
-                        commit('setNotifications', data.data);
-                    } else {
-                        // add new ones
-                        commit('setNotifications', [...data.data, ...getters.notifications]);
-                    }
+                    var newNotifications = data.data.map((n) => {
+                        n.created_at = new Date(Date.parse(n.created_at));
+                        n.read_at = n.read_at ? new Date(Date.parse(n.read_at)) : null;
+                        return n;
+                    })
+                    var newArray = (since === 0) ? newNotifications : [...newNotifications, ...getters.notifications];
+                    newArray.sort((a, b) => b.created_at - a.created_at);
+                    commit('setNotifications', newArray);
                     commit('setLastFetch', mixins.dateFromMySql(data.clearUntil));
                 }
             })
-            .catch(error => commit('setLastFetch', new Date(0)))
+            .catch(error => {
+                console.error(error);
+                commit('setLastFetch', new Date(0));
+            })
 
     },
 };

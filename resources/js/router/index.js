@@ -44,6 +44,16 @@ const routes = [
         path: '/job', component: jobIndex
     },
     {
+        name: 'login',
+        meta: { title: 'Login' },
+        path: '/login',
+    },
+    {
+        name: 'register',
+        meta: { title: 'Register' },
+        path: '/register',
+    },
+    {
         path: '*',
         meta: { title: 'Not Found' },
         component: notFound

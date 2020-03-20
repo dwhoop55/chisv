@@ -60,6 +60,9 @@ export default {
     getRoles() {
         return axios.get("role");
     },
+    getLocales() {
+        return axios.get("locale");
+    },
     getStates() {
         return axios.get("state");
     },

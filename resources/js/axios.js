@@ -41,7 +41,7 @@ window.axios.interceptors.response.use(response => response, error => {
                 message = error.response.data.message;
             }
             type = 'is-danger';
-        } else if (status === 401 && store.getters['auth/user']) {
+        } else if (status === 401 && !store.getters['auth/user']) {
             console.log(401, 'Not logged in', error);
             return Promise.reject(error)
         } else if (status === 403) {

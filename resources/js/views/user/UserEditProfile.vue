@@ -88,9 +88,19 @@
       <b-field
         :type="{ 'is-danger': form.errors.has('timezone_id') }"
         :message="form.errors.get('timezone_id')"
-        label="All dates are converted to this timezone"
+        label="Timezone your are currently in"
       >
         <timezone-picker v-model="form.timezone_id"></timezone-picker>
+      </b-field>
+
+      <b-field
+        :type="{ 'is-danger': form.errors.has('locale_id') }"
+        :message="form.errors.get('locale_id')"
+        label="Preferred locale"
+      >
+        <b-select v-model="form.locale_id">
+          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+        </b-select>
       </b-field>
 
       <b-field grouped>
@@ -151,7 +161,8 @@ export default {
         university: this.user.university
           ? this.user.university
           : { name: this.user.university_fallback },
-        timezone_id: this.user.timezone_id
+        timezone_id: this.user.timezone_id,
+        locale_id: this.user.locale_id
       })
     };
   },
@@ -187,6 +198,9 @@ export default {
     ...mapActions("auth", { fetchAuthUser: "fetchUser" })
   },
 
-  computed: mapGetters("auth", { authUser: "user" })
+  computed: {
+    ...mapGetters("auth", { authUser: "user" }),
+    ...mapGetters("defines", ["locales"])
+  }
 };
 </script>

@@ -8,6 +8,7 @@ const state = {
 };
 
 const getters = {
+    usersLocale: state => state.user?.locale,
     usersTimezone: state => state.user?.timezone,
     user: state => state.user,
     userCan: (state, getters) => a => {

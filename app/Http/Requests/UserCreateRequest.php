@@ -36,6 +36,7 @@ class UserCreateRequest extends FormRequest
             'shirt_id' => ['required', 'integer', 'exists:shirts,id'],
 
             'timezone_id' => ['required', 'integer', 'exists:timezones,id'],
+            'locale_id' => ['required', 'integer', 'exists:locales,id'],
 
             'past_conferences' => ['nullable', 'string'],
             'past_conferences_sv' => ['nullable', 'string'],

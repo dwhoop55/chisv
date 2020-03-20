@@ -38,9 +38,8 @@ class UserUpdateRequest extends FormRequest
             'shirt_id' => ['integer', 'exists:shirts,id'],
 
             'timezone_id' => ['integer', 'exists:timezones,id'],
-            'date_format' => ['string'],
-            'time_format' => ['string'],
-            'time_sec_format' => ['string'],
+            'locale_id' => ['integer', 'exists:locales,id'],
+
 
             'past_conferences' => ['nullable', 'string'],
             'past_conferences_sv' => ['nullable', 'string'],

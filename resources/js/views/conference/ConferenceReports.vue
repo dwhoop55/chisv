@@ -59,7 +59,7 @@
     </b-field>
 
     <span v-if="data">{{ data.length }} records &nbsp; | &nbsp;</span>
-    <span v-if="updated">Last updated {{ updated | moment("from") }}</span>
+    <span v-if="updated">Last updated {{ timeFormat(updated, null, {fromNow: true}) }}</span>
 
     <b-table
       ref="table"
@@ -100,7 +100,6 @@
 
 <script>
 import api from "@/api.js";
-import moment from "moment-timezone";
 import ExportModalVue from "@/components/modals/ExportModal.vue";
 import { mapActions, mapGetters, mapMutations } from "vuex";
 

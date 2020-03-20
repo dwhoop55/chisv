@@ -5,6 +5,7 @@ use App\City;
 use App\University;
 use App\Language;
 use App\Degree;
+use App\Locale;
 use App\Shirt;
 
 use App\Timezone;
@@ -59,6 +60,10 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('/timezone', function () {
         return Timezone::all();
+    });
+
+    Route::get('/locale', function () {
+        return Locale::all();
     });
 
     Route::get('email/exists/{email}', function ($email) {

@@ -13,7 +13,7 @@
       :loading="isLoading"
       open-on-focus
       :before-adding="beforeAdd"
-      @add="afterAdd"
+      @input="onChange($event)"
     >
       <template slot-scope="props">
         <strong>{{props.option.type}}</strong>
@@ -59,20 +59,20 @@ export default {
   },
 
   methods: {
-    afterAdd() {
-      // Make sure all items are pretty objects
-      let newDestinations = this.value.map(item => {
-        if (this.isEmail(item)) {
+    onChange(tags) {
+      var allTags = tags.map(tag => {
+        if (this.isEmail(tag)) {
           return {
             type: "email",
-            email: item,
-            display: item
+            email: tag,
+            display: tag
           };
         } else {
-          return item;
+          return tag;
         }
       });
-      this.$emit("input", newDestinations);
+
+      this.$emit("input", allTags);
       this.search = "";
     },
     beforeAdd(tag) {
@@ -88,6 +88,7 @@ export default {
           message: "Choose from the list or append an email",
           type: "is-danger"
         });
+        return false;
       }
     },
     getDestinations() {

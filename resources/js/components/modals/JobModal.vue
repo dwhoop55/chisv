@@ -26,8 +26,8 @@
         <span class="has-text-weight-bold" v-html="jobStatusMessage"></span>
       </p>
       <p v-if="job.status_message">&nbsp;</p>
-      <p>Started at: {{ job.start_at | moment('lll') }}</p>
-      <p v-if="job.ended_at">Ended at: {{ job.ended_at | moment('lll') }}</p>
+      <p>Started at: {{ timeFormat(job.start_at, 'lll') }}</p>
+      <p v-if="job.ended_at">Ended at: {{ timeFormat(job.ended_at, 'lll') }}</p>
       <p v-if="formattedJobResult">
         <br />
         <strong>Result</strong>

@@ -231,7 +231,6 @@
 <script>
 import { Form } from "vform";
 import api from "@/api.js";
-import moment from "moment-timezone";
 import { parse } from "path";
 import { mapGetters } from "vuex";
 

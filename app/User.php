@@ -221,6 +221,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Permission');
     }
 
+    public function locale()
+    {
+        return $this->belongsTo('App\Locale');
+    }
+
     public function timezone()
     {
         return $this->belongsTo('App\Timezone');

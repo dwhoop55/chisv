@@ -19,7 +19,7 @@
       <b-input
         width="600"
         v-debounce.fireonempty="onSearch"
-        v-model="search"
+        :value="search"
         placeholder="Search.."
         type="search"
         icon="magnify"
@@ -217,7 +217,7 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              {{ day | moment('ll') }}
+              on {{ timeFormat(day, 'll') }}
             </p>
             <p class="has-text-danger" v-if="onlyOwnTasks">
               Only showing tasks assigned to you.
@@ -257,7 +257,6 @@ import api from "@/api.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
 import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
 import JobModalVue from "../../components/modals/JobModal.vue";
-import moment from "moment-timezone";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -271,7 +270,7 @@ export default {
 
   methods: {
     deleteAllTasks() {
-      let day = new moment(this.day).format("DD.MM.YYYY");
+      let day = this.timeFormat(this.day, "DD.MM.YYYY", { tz: true });
       this.$buefy.dialog.confirm({
         title: "Caution!",
         message: `Are you sure you want to <b>delete all tasks for this day (${day})</b>?\

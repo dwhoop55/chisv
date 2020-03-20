@@ -99,11 +99,12 @@ export const vm = new Vue({
         },
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles']),
+        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales']),
         ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
     created() {
         // This will load states as new for every page refresh
+        this.fetchLocales();
         this.fetchUser()
             .then(() => {
                 // Will resolve when a user could be fetched,

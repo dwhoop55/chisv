@@ -41,7 +41,7 @@
       <b-field
         :type="{ 'is-danger': form.errors.has('date') }"
         :message="form.errors.get('date')"
-        :label="form.date | moment('ll')"
+        label="Date"
       >
         <b-datepicker
           inline

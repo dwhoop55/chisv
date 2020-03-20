@@ -62,6 +62,16 @@
       </b-field>
 
       <b-field
+        :type="{ 'is-danger': form.errors.has('locale_id') }"
+        :message="form.errors.get('locale_id')"
+        label="Preferred locale"
+      >
+        <b-select v-model="form.locale_id">
+          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+        </b-select>
+      </b-field>
+
+      <b-field
         :type="{ 'is-danger': form.errors.has('degree_id') }"
         :message="form.errors.get('degree_id')"
         label="Degree program"
@@ -140,6 +150,7 @@
 
 <script>
 import Form from "vform";
+import { mapGetters } from "vuex";
 
 export default {
   data() {
@@ -155,7 +166,8 @@ export default {
         shirt_id: null,
         location: {},
         university: {},
-        timezone_id: null,
+        timezone_id: 291,
+        locale_id: 40,
         password: "",
         password_confirmation: ""
       }),
@@ -167,6 +179,8 @@ export default {
     save() {
       this.form.post(`register`).then(data => (this.registerSuccess = true));
     }
-  }
+  },
+
+  computed: mapGetters("defines", ["locales"])
 };
 </script>

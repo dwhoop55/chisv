@@ -5,9 +5,16 @@ import Form from "vform";
 export { methods }
 
 let methods = {
-    tzFormat(date, format, options = {}) {
-        var m = new moment(date).tz('Europe/Berlin');
-        // var m = new moment(date).tz(this.$store.getters['auth/usersTimezone']?.name);
+    timeFormat(date, format, options = {}) {
+        var locale = 'en_US';
+        var timezone = 'UTC';
+        if (options.tz && this.$store.getters['auth/usersTimezone']?.name) {
+            timezone = this.$store.getters['auth/usersTimezone']?.name;
+        }
+        if (this.$store.getters['auth/usersLocale']?.code) {
+            locale = this.$store.getters['auth/usersLocale']?.code
+        }
+        var m = new moment(date).tz(timezone).locale(locale);
         if (options.fromNow) {
             return m.fromNow(options.withoutSuffix ? true : false);
         }

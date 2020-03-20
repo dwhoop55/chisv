@@ -55,9 +55,14 @@
         </template>
         <notifications-list
           @show="showNotification($event)"
-          limit="5"
+          :limit="limit"
           :style="notifications && notifications.length>0 ? 'width: 500px' : 'width: 220px'"
         ></notifications-list>
+        <div class="has-text-dark" v-if="notifications.length > limit">
+          <b-field class="is-clickable has-padding-t-6" @click.native="showNotifications()" grouped>
+            <b-button type="is-text" expanded>{{ notifications.length - limit }} more</b-button>
+          </b-field>
+        </div>
       </b-navbar-dropdown>
       <!-- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ -->
 
@@ -86,6 +91,12 @@ import { mapGetters, mapActions } from "vuex";
 import NotificationsListModalVue from "./modals/NotificationsListModal.vue";
 
 export default {
+  data() {
+    return {
+      limit: 4
+    };
+  },
+
   computed: {
     id() {
       return this.user?.id || null;

@@ -49,7 +49,7 @@ class RegisterController extends Controller
             'lastname',
             'email',
             'timezone_id',
-            'timezone_id',
+            'locale_id',
             'degree_id',
             'shirt_id',
             'past_conferences',
