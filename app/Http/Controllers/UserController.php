@@ -115,7 +115,7 @@ class UserController extends Controller
                 'avatar',
                 'languages',
                 'permissions' => function ($query) {
-                    $query->with(['conference', 'role', 'state', 'user']);
+                    $query->with(['conference', 'conference.artwork', 'role', 'state', 'user']);
                     $query->orderBy('created_at', 'DESC');
                 },
                 'locale',
@@ -199,6 +199,7 @@ class UserController extends Controller
 
         return ["result" => $user->loadMissing([
             'avatar', 'permissions',
+            'permissions.conference.artwork',
             'permissions.conference', 'permissions.role',
             'permissions.state'
         ]), "message" => "User updated"];
