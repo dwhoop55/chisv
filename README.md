@@ -147,8 +147,14 @@ npm install
 npm run prod
 
 php artisan migrate
-php artisan up
 php artisan storage:link
 
+php artisan optimize:clear
+
+php artisan config:cache
+php artisan view:cache
+php artisan event:cache
+
 sudo supervisorctl restart laravel-worker:*
+php artisan up
 ```
