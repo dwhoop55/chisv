@@ -23,6 +23,7 @@
                   show-all-day-events="short"
                   @ready="getEvents"
                   @view-change="getEvents"
+                  :default-view="calView"
                 ></vue-cal>
               </b-field>
               <b-field grouped position="is-right">

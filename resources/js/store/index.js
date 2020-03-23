@@ -49,7 +49,7 @@ export default new Vuex.Store({
             'userIndex.sort',
             'userIndex.page',
             'reports',
-            // 'calendar',
+            'calendar',
         ]
     })]
 });
