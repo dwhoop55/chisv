@@ -15,40 +15,40 @@ $primary-invert: findColorInvert($primary);
 $colors: (
   "white": (
     $white,
-    $black
+    $black,
   ),
   "black": (
     $black,
-    $white
+    $white,
   ),
   "light": (
     $light,
-    $light-invert
+    $light-invert,
   ),
   "dark": (
     $dark,
-    $dark-invert
+    $dark-invert,
   ),
   "primary": (
     $primary,
-    $primary-invert
+    $primary-invert,
   ),
   "info": (
     $info,
-    $info-invert
+    $info-invert,
   ),
   "success": (
     $success,
-    $success-invert
+    $success-invert,
   ),
   "warning": (
     $warning,
-    $warning-invert
+    $warning-invert,
   ),
   "danger": (
     $danger,
-    $danger-invert
-  )
+    $danger-invert,
+  ),
 );
 // Links
 $link: $link-color;
@@ -209,4 +209,33 @@ h3 {
 .bid-counter-item {
   margin-left: 0.2em;
   margin-right: 0.2em;
+}
+
+.vuecal__now-line {
+  color: $primary;
+}
+
+.vuecal__conference-day {
+  background: repeating-linear-gradient(45deg, transparent, transparent 10px, #f2f2f2 10px, #f2f2f2 20px);
+  color: #999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.vuecal__assignment {
+  color: $dark;
+  font-size: smaller;
+}
+
+.vuecal__assignment-assigned {
+  background-color: $light;
+}
+
+.vuecal__assignment-checked-in {
+  background-color: $warning;
+}
+
+.vuecal__assignment-done {
+  background-color: $success;
 }

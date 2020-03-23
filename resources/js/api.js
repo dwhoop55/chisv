@@ -99,8 +99,8 @@ export default {
     getNotificationTemplates() {
         return axios.get(`notification_template`);
     },
-    getEvents(start, end) {
-        return axios.get(`event?start=${start}&end=${end}`);
+    getCalendarEvents(start, end) {
+        return axios.get(`calendar_event?start=${start}&end=${end}`);
     },
 
     createAssignment(svId, taskId) {

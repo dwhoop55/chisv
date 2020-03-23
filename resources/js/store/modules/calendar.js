@@ -1,26 +1,31 @@
 import api from "@/api";
-require("@/helpers");
 
 const state = {
-    data: null,
-    interval: { start: null, end: null }
+    events: [],
+    startDate: null,
+    endDate: null,
+    calView: "week",
 };
 
 const getters = {
-    data: state => state.data,
-    interval: state => state.interval,
+    events: state => state.events,
+    startDate: state => state.startDate,
+    endDate: state => state.endDate,
+    calView: state => state.calView
 };
 
 const actions = {
     async fetchEvents({ commit, state }) {
-        const data = await api.getEvents(state.interval.start, state.interval.end).data;
-        commit('setData', data ? data : null);
+        const data = await api.getCalendarEvents(state.startDate, state.endDate);
+        commit('setEvents', data.data ? data.data : null);
     }
 };
 
 const mutations = {
-    setData: (state, data) => state.data = data,
-    setInterval: (state, interval) => state.interval = interval,
+    setEvents: (state, events) => state.events = events,
+    setStartDate: (state, start) => state.startDate = start,
+    setEndDate: (state, end) => state.endDate = end,
+    setCalView: (state, calView) => state.calView = calView,
 };
 
 export default {

@@ -14,14 +14,15 @@ import { VueCsvImport } from 'vue-csv-import';
 import moment from "moment-timezone";
 import vueDebounce from 'vue-debounce';
 import VueShowdown from 'vue-showdown'
-import { mapActions, mapGetters } from 'vuex';
+import VueCal from 'vue-cal'
+import 'vue-cal/dist/vuecal.css'
 import pluralize from 'pluralize'
 
 import store from './store';
 import router from './router';
 import axios from './axios'
+import { mapActions, mapGetters } from 'vuex';
 import { methods as mixins } from './mixins';
-
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -41,6 +42,7 @@ Vue.component(AlertError.name, AlertError)
 Vue.component(Form.name, Form)
 Vue.component('csv-export', JsonCSV)
 Vue.component('csv-import', VueCsvImport)
+Vue.component('vue-cal', VueCal)
 
 Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right" });
 Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });

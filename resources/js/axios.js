@@ -56,6 +56,8 @@ window.axios.interceptors.response.use(response => response, error => {
             for (const [key, value] of Object.entries(error.response.data?.errors)) {
                 message += `<br>${key}: ${value}`
             }
+        } else if (status === 429) {
+            message = "To many requests. Slow down.";
         }
 
         Notification.open({

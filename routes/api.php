@@ -252,6 +252,9 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index', 'show', 'update', 'destroy'],
             'parameters' => ['notification' => 'database_notification']
         ]);
+        Route::resource('calendar_event', 'CalendarEventController', [
+            'only' => ['index'],
+        ]);
     });
     //// AUTHENTICATED ////
 
