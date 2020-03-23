@@ -217,7 +217,7 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              on {{ timeFormat(day, 'll') }}
+              on {{ formatTime(day, 'll') }}
             </p>
             <p class="has-text-danger" v-if="onlyOwnTasks">
               Only showing tasks assigned to you.
@@ -270,7 +270,7 @@ export default {
 
   methods: {
     deleteAllTasks() {
-      let day = this.timeFormat(this.day, "DD.MM.YYYY", { tz: true });
+      let day = this.formatTime(this.day, "DD.MM.YYYY", { tz: true });
       this.$buefy.dialog.confirm({
         title: "Caution!",
         message: `Are you sure you want to <b>delete all tasks for this day (${day})</b>?\

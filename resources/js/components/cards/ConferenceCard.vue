@@ -21,7 +21,7 @@
           <p class="title is-4">{{ conference.name | textlimit(70) }}</p>
           <p
             class="subtitle is-6"
-          >{{ timeFormat(conference.start_date, "ll") }} – {{ timeFormat(conference.end_date, "ll") }}</p>
+          >{{ formatTime(conference.start_date, "ll") }} – {{ formatTime(conference.end_date, "ll") }}</p>
         </div>
       </div>
 

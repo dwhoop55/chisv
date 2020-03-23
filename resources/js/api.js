@@ -99,6 +99,9 @@ export default {
     getNotificationTemplates() {
         return axios.get(`notification_template`);
     },
+    getEvents(start, end) {
+        return axios.get(`event?start=${start}&end=${end}`);
+    },
 
     createAssignment(svId, taskId) {
         return axios.post(`assignment`, { user_id: svId, task_id: taskId });

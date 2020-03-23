@@ -29,7 +29,7 @@
           field="task.date"
           label="Date"
           sortable
-        >{{ timeFormat(props.row.task.date, 'll') }}</b-table-column>
+        >{{ formatTime(props.row.task.date, 'll') }}</b-table-column>
         <b-table-column
           field="task.start_at"
           label="Start"

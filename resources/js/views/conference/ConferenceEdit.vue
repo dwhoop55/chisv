@@ -316,9 +316,7 @@ export default {
         email_chair: null,
         bidding_enabled: null,
         bidding_start: null,
-        bidding_end: null,
-        created_at: null,
-        updated_at: null
+        bidding_end: null
       }),
       isLoading: false
     };

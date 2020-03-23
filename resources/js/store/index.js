@@ -13,6 +13,7 @@ import userIndex from './modules/userIndex';
 import profile from './modules/profile';
 import reports from './modules/reports';
 import notifications from './modules/notifications';
+import calendar from './modules/calendar';
 
 Vue.use(Vuex);
 
@@ -28,7 +29,8 @@ export default new Vuex.Store({
         userIndex,
         profile,
         reports,
-        notifications
+        notifications,
+        calendar
     },
     plugins: [createPersistedState({
         paths: [
@@ -36,6 +38,8 @@ export default new Vuex.Store({
             'profile.tab',
             'conference.last',
             'conference.tab',
+            'conference.conference',
+            'conference.taskDays',
             'svs',
             'tasks',
             'assignments',
@@ -45,6 +49,7 @@ export default new Vuex.Store({
             'userIndex.sort',
             'userIndex.page',
             'reports',
+            'calendar',
         ]
     })]
 });

@@ -5,7 +5,7 @@ import Form from "vform";
 export { methods }
 
 let methods = {
-    timeFormat(date, format, options = {}) {
+    formatTime(date, format, options = {}) {
         var locale = 'en_US';
         var timezone = 'UTC';
         if (options.tz && this.$store.getters['auth/usersTimezone']?.name) {
@@ -28,6 +28,8 @@ let methods = {
         return re.test(String(email).toLowerCase());
     },
     dateFromMySql(string) {
+        if (string instanceof Date) return string;
+        if (typeof string != "string") throw "Invalid input: no string!";
         // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         let dateTimeParts = string.split(/[- :]/);
         // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one

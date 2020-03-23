@@ -22,7 +22,7 @@
             label="Date"
             sortable
             searchable
-          >{{ timeFormat(props.row.task.date, 'll') }}</b-table-column>
+          >{{ formatTime(props.row.task.date, 'll') }}</b-table-column>
           <b-table-column
             width="40"
             field="task.start_at"

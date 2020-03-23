@@ -194,7 +194,7 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              on {{ timeFormat(day, 'll') }}
+              on {{ formatTime(day, 'll') }}
             </p>
           </div>
         </section>

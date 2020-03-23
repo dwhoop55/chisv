@@ -48,7 +48,7 @@
                   <div class="level-item is-block">
                     <p
                       class="has-text-weight-medium"
-                    >{{ conference.location }} | {{ timeFormat(conference.start_date, "ll") }} – {{ timeFormat(conference.end_date, "ll") }}</p>
+                    >{{ conference.location }} | {{ formatTime(conference.start_date, "ll", {tz: true}) }} – {{ formatTime(conference.end_date, "ll", {tz: true}) }}</p>
                     <a
                       v-if="conference.email_chair"
                       class="has-text-weight-medium"
