@@ -82,6 +82,7 @@ export default {
         this.$buefy.dialog.alert({
           title: event.assignment.task.name,
           message: `Location: ${event.assignment.task.location}
+                    <br>Time: ${event.assignment.task.start_at} – ${event.assignment.task.end_at}
                     <br>Description: ${event.assignment.task.description}
                     <br>Hours: ${event.assignment.hours}
                     <br>Status: ${event.assignment.state.name}`,
