@@ -7,6 +7,7 @@
     </template>
     <template slot="start">
       <b-navbar-item tag="router-link" to="/conference">Conferences</b-navbar-item>
+      <b-navbar-item tag="router-link" to="/calendar">Calendar</b-navbar-item>
       <b-navbar-item v-if="userIs('admin') || userIs('chair')" tag="router-link" to="/user">Users</b-navbar-item>
       <b-navbar-dropdown v-if="userIs('admin') || userIs('chair')" hoverable label="System">
         <b-navbar-item tag="router-link" to="/job">Background Jobs</b-navbar-item>

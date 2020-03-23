@@ -5,6 +5,7 @@ import conference from '@/views/conference/Conference';
 import userEdit from '@/views/user/UserEdit';
 import userIndex from '@/views/user/UserIndex';
 import jobIndex from '@/views/job/JobIndex';
+import calendar from '@/views/calendar/Calendar';
 import notFound from '@/views/NotFound';
 
 Vue.use(VueRouter);
@@ -52,6 +53,11 @@ const routes = [
         name: 'register',
         meta: { title: 'Register' },
         path: '/register',
+    },
+    {
+        name: 'calendar',
+        meta: { title: 'Calendar' },
+        path: '/calendar', component: calendar
     },
     {
         path: '*',
