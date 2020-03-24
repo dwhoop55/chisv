@@ -75,10 +75,12 @@
         tag="router-link"
         :to="{name: 'user', params: { id}}"
       >My Profile</b-navbar-item>
+      <b-navbar-item class="is-hidden-desktop" @click="showPrivacyPolicy()">Privacy Policy</b-navbar-item>
       <b-navbar-item class="is-hidden-desktop" @click="logout()">Logout</b-navbar-item>
       <!-- Profile and logout for desktop -->
       <b-navbar-dropdown class="is-hidden-touch" right hoverable :label="firstname">
         <b-navbar-item v-if="id" tag="router-link" :to="{name: 'user', params: { id}}">My Profile</b-navbar-item>
+        <b-navbar-item @click.native="showPrivacyPolicy()">Privacy Policy</b-navbar-item>
         <hr v-if="id" class="navbar-divider" />
         <b-navbar-item @click="logout()">Logout</b-navbar-item>
       </b-navbar-dropdown>
@@ -90,6 +92,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import NotificationsListModalVue from "./modals/NotificationsListModal.vue";
+import PrivacyPolicyModalVue from "./modals/PrivacyPolicyModal.vue";
 
 export default {
   data() {
@@ -115,6 +118,14 @@ export default {
   },
 
   methods: {
+    showPrivacyPolicy() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: PrivacyPolicyModalVue,
+        hasModalCard: true,
+        fullScreen: true
+      });
+    },
     showNotification(id) {
       this.$buefy.modal.open({
         parent: this,
