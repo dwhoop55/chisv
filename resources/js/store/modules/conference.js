@@ -63,17 +63,6 @@ const actions = {
                 .finally(() => {
                 });
 
-
-
-            var p1 = dispatch('fetchTaskDays', key);
-            var p2 = dispatch('fetchAcceptedCount', key);
-            var p3 = dispatch('tasks/fetchTasks', key, { root: true });
-            var p4 = dispatch('svs/fetchSvs', key, { root: true });
-            var p5 = dispatch('assignments/fetchAssignments', key, { root: true });
-            Promise.all([p1, p2, p3, p4, p5]).finally(() => {
-                commit('setIsLoading', false);
-                resolve();
-            });
         });
 
         return promise;

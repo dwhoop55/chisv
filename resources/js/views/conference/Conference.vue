@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-loading :active="isLoading"></b-loading>
+    <b-loading :active="!conferenceIsLoaded"></b-loading>
     <div>
       <div
         class="is-fixed is-100hw is-100vh is-pinned-l is-pinned-t is-cover is-below is-blurred is-visible-8"
@@ -8,7 +8,7 @@
       ></div>
 
       <transition name="fade">
-        <div v-if="!isLoading && conference" class="columns is-centered">
+        <div v-if="conferenceIsLoaded && conference" class="columns is-centered">
           <div class="column is-11">
             <nav class="level">
               <div class="level-left">
@@ -124,16 +124,15 @@ import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
   data() {
-    return {};
+    return {
+      conferenceIsLoaded: false
+    };
   },
 
   created() {
     let key = this.$route.params.key;
-    this.fetchTaskDays(key);
 
-    if (!this.conference || this.conference.key !== key) {
-      this.fetchConference(key);
-    }
+    this.prepareConference(key);
   },
 
   computed: {
@@ -169,7 +168,30 @@ export default {
     ...mapGetters("auth", ["userIs"])
   },
   methods: {
+    async prepareConference(key) {
+      // this.fetchTaskDays(key);
+
+      // var p1 = dispatch("fetchTaskDays", key);
+      // var p2 = dispatch("fetchAcceptedCount", key);
+      // var p3 = dispatch("tasks/fetchTasks", key, { root: true });
+      // var p4 = dispatch("svs/fetchSvs", key, { root: true });
+      // var p5 = dispatch("assignments/fetchAssignments", key, { root: true });
+      // Promise.all([p1, p2, p3, p4, p5]).finally(() => {
+      //   commit("setIsLoading", false);
+      //   resolve();
+      // });
+
+      if (!this.conference || this.conference.key !== key) {
+        await this.fetchConference(key);
+        await this.fetchSvs(key);
+        await this.fetchTasks(key);
+      }
+
+      this.conferenceIsLoaded = true;
+    },
     ...mapActions("auth", ["fetchUser"]),
+    ...mapActions("svs", ["fetchSvs"]),
+    ...mapActions("tasks", ["fetchTasks"]),
     ...mapActions("conference", ["fetchConference", "fetchTaskDays"]),
     ...mapMutations("conference", ["setTab"])
   }
