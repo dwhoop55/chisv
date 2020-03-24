@@ -163,6 +163,10 @@ h3 {
   width: 100%;
 }
 
+.is-hoverable-overflow:hover {
+  overflow: visible;
+}
+
 .card {
   border-radius: 0.5rem;
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
@@ -224,18 +228,18 @@ h3 {
 }
 
 .vuecal__assignment {
-  color: $dark;
+  color: $dark !important;
   font-size: smaller;
 }
 
 .vuecal__assignment-assigned {
-  background-color: $light;
+  background-color: $light !important;
 }
 
 .vuecal__assignment-checked-in {
-  background-color: $warning;
+  background-color: $warning !important;
 }
 
 .vuecal__assignment-done {
-  background-color: $success;
+  background-color: $success !important;
 }

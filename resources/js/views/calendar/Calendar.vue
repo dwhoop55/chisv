@@ -11,6 +11,9 @@
           <div v-if="eventsForCalendar" class="columns is-centered">
             <div class="column card is-11 has-padding-5">
               <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+              <b-field class="is-absolute is-pinned-r has-margin-r-5" grouped position="is-right">
+                <b-button icon-left="reload" @click="fetch()"></b-button>
+              </b-field>
               <b-field>
                 <vue-cal
                   today-button
@@ -63,6 +66,10 @@ export default {
   },
 
   methods: {
+    fetch() {
+      this.isLoading = true;
+      this.fetchEvents().finally(() => (this.isLoading = false));
+    },
     getEvents(event) {
       if (
         event.view != this.calView ||
@@ -72,8 +79,7 @@ export default {
         this.setStartDate(event.startDate.toMySqlDate());
         this.setEndDate(event.endDate.toMySqlDate());
         this.setCalView(event.view);
-        this.isLoading = true;
-        this.fetchEvents().finally(() => (this.isLoading = false));
+        this.fetch();
       }
     },
     onEventClick(event) {
@@ -102,7 +108,7 @@ export default {
         return {
           start: day.date.toMySqlDate(),
           end: day.date.toMySqlDate(),
-          title: `${day.name} (Day ${day.dayNumber})`,
+          title: `${day.name} (${day.dayNumber})`,
           class: "vuecal__conference-day",
           allDay: true,
           clickable: false
@@ -123,7 +129,7 @@ export default {
             end,
             title: `${assignment.task.name}`,
             assignment,
-            class: `vuecal__assignment vuecal__assignment-${assignment.state.name}`,
+            class: `is-hoverable-overflow is-clickable vuecal__assignment vuecal__assignment-${assignment.state.name}`,
             clickable: true
           });
         });
