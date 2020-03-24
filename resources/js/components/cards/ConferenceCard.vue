@@ -1,6 +1,5 @@
 <template>
   <div @click="enterConference()" class="card is-hoverable-anim is-clickable is-100vh">
-    <b-loading :is-full-page="false" :active="isLoading" />
     <div
       class="card-image is-cover"
       :style="`height:350px;${conferenceArtworkBackground(conference)}`"
@@ -43,8 +42,6 @@ export default {
 
   methods: {
     enterConference() {
-      if (this.isLoading) return;
-      this.fetchConference(this.conference.key);
       this.$router.push({
         name: "conference",
         params: { key: this.conference.key }
@@ -88,8 +85,7 @@ export default {
           break;
       }
       return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
-    },
-    ...mapGetters("conference", ["isLoading"])
+    }
   }
 };
 </script>
