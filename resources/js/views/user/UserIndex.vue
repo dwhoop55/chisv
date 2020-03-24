@@ -139,9 +139,7 @@ export default {
   ]),
 
   mounted() {
-    if (!this.data) {
-      this.fetchUsers();
-    }
+    this.fetchUsers();
   }
 };
 </script>

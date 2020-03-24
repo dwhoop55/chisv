@@ -953,7 +953,7 @@ class ConferenceController extends Controller
                 return auth()->user()->can('view', $conference);
             });
 
-        return $conferences;
+        return $conferences->values();
     }
 
     /** 

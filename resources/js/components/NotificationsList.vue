@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: ["limit"],
 
@@ -54,10 +54,13 @@ export default {
   methods: {
     showNotification(id) {
       this.$emit("show", id);
-    }
+    },
+    ...mapActions("notifications", ["fetchNotifications"])
   },
 
   created() {
+    this.fetchNotifications();
+
     if (this.isModal) {
       const unregisterRouterGuard = this.$router.beforeEach(
         (to, from, next) => {
