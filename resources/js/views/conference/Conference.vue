@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-loading :active="!conferenceIsLoaded"></b-loading>
+    <b-loading :active="isLoading"></b-loading>
     <div>
       <div
         class="is-fixed is-100hw is-100vh is-pinned-l is-pinned-t is-cover is-below is-blurred is-visible-8"
@@ -8,7 +8,7 @@
       ></div>
 
       <transition name="fade">
-        <div v-if="conferenceIsLoaded && conference" class="columns is-centered">
+        <div v-if="!isLoading && conference" class="columns is-centered">
           <div class="column is-11">
             <nav class="level">
               <div class="level-left">
@@ -85,27 +85,27 @@
                   ></conference-overview>
                 </b-tab-item>
                 <b-tab-item label="SVs">
-                  <conference-svs v-if="canViewUsers" :conference="conference"></conference-svs>
+                  <conference-svs v-if="canViewUsers()" :conference="conference"></conference-svs>
                   <p v-else>You need to be accepted to see other SVs!</p>
                 </b-tab-item>
                 <b-tab-item label="Tasks">
-                  <conference-tasks v-if="canViewUsers" :conference="conference"></conference-tasks>
+                  <conference-tasks v-if="canViewUsers()" :conference="conference"></conference-tasks>
                   <p v-else>You need to be accepted to see tasks!</p>
                 </b-tab-item>
-                <b-tab-item v-if="canUpdateAssignment" label="Assignments">
+                <b-tab-item v-if="canUpdateAssignment()" label="Assignments">
                   <conference-assignments v-show="tab==3" :conference="conference"></conference-assignments>
                 </b-tab-item>
-                <b-tab-item v-if="canEdit" label="Conference">
+                <b-tab-item v-if="canEdit()" label="Conference">
                   <conference-edit
                     v-show="tab==4"
                     @updated="fetchConference()"
                     :conference="conference"
                   ></conference-edit>
                 </b-tab-item>
-                <b-tab-item v-if="canNotify" label="Notify">
+                <b-tab-item v-if="canNotify()" label="Notify">
                   <conference-notification v-show="tab==5" :conference="conference"></conference-notification>
                 </b-tab-item>
-                <b-tab-item v-if="canUpdateAssignment" label="Reports">
+                <b-tab-item v-if="canUpdateAssignment()" label="Reports">
                   <conference-reports v-show="tab==6" :conference="conference"></conference-reports>
                 </b-tab-item>
               </b-tabs>
@@ -125,74 +125,92 @@ import { mapActions, mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      conferenceIsLoaded: false
+      isLoading: true
     };
   },
 
   created() {
     let key = this.$route.params.key;
-
     this.prepareConference(key);
   },
 
   computed: {
-    canViewUsers() {
-      return (
-        this.userIs("admin") ||
-        this.userIs("chair", this.conference.key) ||
-        this.userIs("captain", this.conference.key) ||
-        this.userIs("sv", this.conference.key, "accepted")
-      );
-    },
-    canEdit() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
-    },
-    canUpdateEnrollment() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
-    },
-    canUpdateAssignment() {
-      return (
-        this.userIs("admin") ||
-        this.userIs("chair", this.conference.key) ||
-        this.userIs("captain", this.conference.key)
-      );
-    },
-    canNotify() {
-      return (
-        this.userIs("admin") ||
-        this.userIs("chair", this.conference.key) ||
-        this.userIs("captain", this.conference.key)
-      );
-    },
-    ...mapGetters("conference", ["conference", "tab", "isLoading"]),
+    ...mapGetters("conference", ["conference", "tab"]),
     ...mapGetters("auth", ["userIs"])
   },
   methods: {
-    async prepareConference(key) {
-      // this.fetchTaskDays(key);
+    prepareConference(key) {
+      var promises = [];
 
-      // var p1 = dispatch("fetchTaskDays", key);
-      // var p2 = dispatch("fetchAcceptedCount", key);
-      // var p3 = dispatch("tasks/fetchTasks", key, { root: true });
-      // var p4 = dispatch("svs/fetchSvs", key, { root: true });
-      // var p5 = dispatch("assignments/fetchAssignments", key, { root: true });
-      // Promise.all([p1, p2, p3, p4, p5]).finally(() => {
-      //   commit("setIsLoading", false);
-      //   resolve();
-      // });
-
-      if (!this.conference || this.conference.key !== key) {
-        await this.fetchConference(key);
-        await this.fetchSvs(key);
-        await this.fetchTasks(key);
+      if (!this.conference || this.conference.key != key) {
+        promises.push(this.fetchConference(key));
+      } else {
+        // Show UI earlier - makes it feel faster
+        this.isLoading = false;
       }
 
-      this.conferenceIsLoaded = true;
+      promises.push(this.fetchAcceptedCount(key));
+      promises.push(this.fetchTaskDays(key));
+      if (this.canViewUsers(key)) {
+        promises.push(this.fetchSvs(key));
+      }
+      if (this.canViewUsers(key)) {
+        promises.push(this.fetchTasks(key));
+      }
+      if (this.canUpdateAssignment(key)) {
+        promises.push(this.fetchAssignments(key));
+      }
+
+      Promise.all(promises)
+        .then(() => {
+          this.isLoading = false;
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    canViewUsers(key) {
+      let k = key || this.conference.key;
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", k) ||
+        this.userIs("captain", k) ||
+        this.userIs("sv", k, "accepted")
+      );
+    },
+    canEdit(key) {
+      let k = key || this.conference.key;
+      return this.userIs("admin") || this.userIs("chair", k);
+    },
+    canUpdateEnrollment(key) {
+      let k = key || this.conference.key;
+      return this.userIs("admin") || this.userIs("chair", k);
+    },
+    canUpdateAssignment(key) {
+      let k = key || this.conference.key;
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", k) ||
+        this.userIs("captain", k)
+      );
+    },
+    canNotify(key) {
+      let k = key || this.conference.key;
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", k) ||
+        this.userIs("captain", k)
+      );
     },
     ...mapActions("auth", ["fetchUser"]),
     ...mapActions("svs", ["fetchSvs"]),
     ...mapActions("tasks", ["fetchTasks"]),
-    ...mapActions("conference", ["fetchConference", "fetchTaskDays"]),
+    ...mapActions("assignments", ["fetchAssignments"]),
+    ...mapActions("conference", [
+      "fetchConference",
+      "fetchTaskDays",
+      "fetchAcceptedCount"
+    ]),
     ...mapMutations("conference", ["setTab"])
   }
 };

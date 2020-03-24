@@ -4,14 +4,12 @@ import { methods as mixins } from '@/mixins';
 const state = {
     conference: null,
     last: { key: null, name: null },
-    isLoading: false,
     tab: 0,
     taskDays: {},
     acceptedCount: null,
 };
 
 const getters = {
-    isLoading: state => state.isLoading,
     last: state => state.last,
     conference: state => state.conference,
     tab: state => state.tab,
@@ -47,30 +45,14 @@ const getters = {
 };
 
 const actions = {
-    async fetchConference({ commit, dispatch, state }, conferenceKey) {
-        var promise = new Promise((resolve, reject) => {
-            const key = conferenceKey || state.conference.key;
-            commit('setIsLoading', true);
-            api.getConference(key)
-                .then(({ data }) => {
-                    commit('setConference', data);
-                    commit('setLast', data);
-                })
-                .catch(error => {
-                    commit('setConference', null);
-                    commit('setLast', { key: null, name: null });
-                })
-                .finally(() => {
-                });
-
-        });
-
-        return promise;
+    async fetchConference({ commit, dispatch, state }, key) {
+        const response = await api.getConference(key || state.conference.key)
+        commit('setConference', response.data);
+        commit('setLast', response.data);
     },
     async fetchTaskDays({ commit, state }, key) {
         const response = await api.getConferenceTaskDays(key || state.conference.key);
         commit('setTaskDays', response.data);
-
     },
     async fetchAcceptedCount({ commit, state }, key) {
         const response = await api.getConferenceAcceptedCount(key || state.conference.key);
@@ -80,12 +62,11 @@ const actions = {
 };
 
 const mutations = {
-    setLast: (state, conference) => (state.last = { key: conference.key, name: conference.name }),
+    setLast: (state, conference) => (state.last = { key: conference?.key, name: conference?.name }),
     setConference: (state, conference) => (state.conference = conference),
     setTab: (state, tab) => (state.tab = tab),
     setTaskDays: (state, days) => (state.taskDays = days),
     setAcceptedCount: (state, count) => (state.acceptedCount = count),
-    setIsLoading: (state, bool) => (state.isLoading = bool),
 };
 
 export default {

@@ -468,11 +468,6 @@ export default {
     ...mapActions("auth", ["fetchCan"])
   },
 
-  created() {
-    this.fetchTasks();
-    this.fetchTaskDays();
-  },
-
   computed: {
     canCreateTask() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);

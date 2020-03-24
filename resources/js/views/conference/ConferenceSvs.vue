@@ -638,12 +638,6 @@ export default {
     ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),
     ...mapGetters("auth", ["userIs", "userIsAdminOrChairOrCaptain"])
-  },
-
-  created() {
-    if (!this.data?.data) {
-      this.fetchSvs();
-    }
   }
 };
 </script>

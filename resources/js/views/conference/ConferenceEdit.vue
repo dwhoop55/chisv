@@ -324,7 +324,18 @@ export default {
 
   created() {
     this.timezone = this.conference.timezone;
-    this.form.fill(this.conference);
+
+    // Register a watcher to update the form once the vuex
+    // model changes
+    this.$watch(
+      "conference",
+      function(newVal, oldVal) {
+        this.form.fill(this.conference);
+      },
+      {
+        immediate: true
+      }
+    );
   },
 
   methods: {
