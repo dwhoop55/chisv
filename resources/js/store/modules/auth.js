@@ -4,10 +4,12 @@ import { methods as mixins } from '@/mixins';
 
 const state = {
     user: null,
+    userAcceptsCookies: null,
     abilities: [],
 };
 
 const getters = {
+    userAcceptsCookies: state => state.userAcceptsCookies,
     usersLocale: state => state.user?.locale,
     usersTimezone: state => state.user?.timezone,
     user: state => state.user,
@@ -131,7 +133,8 @@ const actions = {
 };
 
 const mutations = {
-    setUser: (state, user) => (state.user = user),
+    setUserAcceptsCookies: (state, bool) => state.userAcceptsCookies = bool,
+    setUser: (state, user) => state.user = user,
     addAbility: (state, ability) => state.abilities.push(ability),
     updateAbility: (state, ability) => {
         state.abilities = state.abilities.map(a => {

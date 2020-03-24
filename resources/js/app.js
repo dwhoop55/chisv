@@ -21,7 +21,7 @@ import pluralize from 'pluralize'
 import store from './store';
 import router from './router';
 import axios from './axios'
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { methods as mixins } from './mixins';
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
@@ -94,16 +94,19 @@ export const vm = new Vue({
     el: "#app",
     store,
     router,
+    computed: mapGetters('auth', ['userAcceptsCookies']),
     methods: {
         async refreshNotifications() {
             this.fetchNotifications();
             setTimeout(this.refreshNotifications, 30000);
         },
+        ...mapMutations('auth', ['setUserAcceptsCookies']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
         ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales']),
         ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
+
     created() {
         // This will load states as new for every page refresh
         this.fetchLocales();
@@ -118,5 +121,19 @@ export const vm = new Vue({
 
             })
             .catch((error) => (console.log(error)));
+
+        // Check if cookies have been accepted
+        if (this.userAcceptsCookies === null) {
+            this.$buefy.snackbar.open({
+                message: 'This website uses cookies. See our privacy policy for more information',
+                type: 'is-info',
+                position: 'is-bottom-right',
+                actionText: 'I accept cookies',
+                indefinite: true,
+                onAction: () => {
+                    this.setUserAcceptsCookies(true);
+                }
+            })
+        }
     }
 });
