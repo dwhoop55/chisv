@@ -104,7 +104,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
             ->middleware("can:enroll,conference,user")
             ->name('conference.enroll');
-        Route::post('conference/{conference}/unenroll/{user?}', 'ConferenceController@unenroll')
+        Route::delete('conference/{conference}/enroll/{user?}', 'ConferenceController@unenroll')
             ->middleware("can:unenroll,conference,user")
             ->name('conference.unenroll');
         Route::post('conference/{conference}/auction/{day}', 'ConferenceController@runAuction')

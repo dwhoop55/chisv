@@ -287,6 +287,10 @@ class User extends Authenticatable
             ->where('conference_id', $conference->id)
             ->first();
 
+        if ($permission->enrollment_form_id) {
+            EnrollmentForm::where('id', $permission->enrollment_form_id)->delete();
+        }
+
         if ($permission) {
             try {
                 return $permission->delete();

@@ -1018,6 +1018,7 @@ class ConferenceController extends Controller
             return ["result" => null, "message" => "There was an error while creating the enrollment form"];
         }
 
+        $enrollmentForm->updateTotalWeight();
         $permission = new Permission();
         $permission->conference()->associate($conference);
         $permission->user()->associate($user);

@@ -40,7 +40,7 @@ class EnrollmentFormService
             'is_template' => false,
         ]);
 
-        return $filledForm;
+        return $this->removeWeights($filledForm);
     }
     /**
      * Extracts the weights from a form and returns them
@@ -80,15 +80,6 @@ class EnrollmentFormService
             }
         }
         return $body;
-    }
-
-    public function calculateTotalWeightFor(EnrollmentForm $form)
-    {
-        $parent = EnrollmentForm::find($form->parent_id);
-        $body = json_decode($parent->body, true);
-        foreach ($body['fields'] as $field) {
-            dd($field);
-        }
     }
 
     /** 

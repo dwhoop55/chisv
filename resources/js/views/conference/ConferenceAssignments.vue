@@ -305,7 +305,6 @@ export default {
     },
     onDayChange(day) {
       this.setDay(day);
-      console.log(day);
       this.onPageChange(1);
     },
     onSearch(search) {

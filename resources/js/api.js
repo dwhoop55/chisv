@@ -220,7 +220,7 @@ export default {
         return vform.post(`conference/${conference}/enroll`)
     },
     unenroll(conference) {
-        return axios.post(`conference/${conference}/unenroll`)
+        return axios.delete(`conference/${conference}/enroll`)
     },
     can(ability, model, id = null, onModel = null, onId = null) {
         if (onModel && onId) {
