@@ -39,7 +39,7 @@ export default new Vuex.Store({
             'profile.tab',
             'conference.last',
             'conference.tab',
-            // 'conference.conference', // DO NOT ADD. IT WILL BREAK CONFERENCE DISPLAYS ON SWITCHING!
+            // 'conference.conference', // Do not add it
             'conference.taskDays',
             'svs',
             'tasks',

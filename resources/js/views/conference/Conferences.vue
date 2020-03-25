@@ -10,9 +10,6 @@
     </div>
 
     <b-loading :is-full-page="false" :active.sync="isLoading"></b-loading>
-    <!-- <b-modal :active.sync="showCreateModal" has-modal-card>
-      <create-conference-modal @created="editConference"></create-conference-modal>
-    </b-modal>-->
   </section>
 </template>
 

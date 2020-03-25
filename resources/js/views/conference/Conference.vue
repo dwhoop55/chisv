@@ -46,9 +46,13 @@
               <nav class="level">
                 <div class="level-left">
                   <div class="level-item is-block">
-                    <p
-                      class="has-text-weight-medium"
-                    >{{ conference.location }} | {{ formatTime(conference.start_date, "ll", {tz: true}) }} – {{ formatTime(conference.end_date, "ll", {tz: true}) }}</p>
+                    <p class="has-text-weight-medium">
+                      {{ conference.location }}
+                      |
+                      {{ formatTime(conference.start_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                      –
+                      {{ formatTime(conference.end_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                    </p>
                     <a
                       v-if="conference.email_chair"
                       class="has-text-weight-medium"

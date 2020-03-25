@@ -39,9 +39,9 @@ class StatesTableSeeder extends Seeder
             ["id" => 35, "for" => "App\Bid", "name" => "unavailable", "description" => "The bid is was handled as a conflict"],
 
             // Id 41 has to be always 'assigned' (used in the migration for field default)!
-            ["id" => 41, "for" => "App\Assignment", "name" => "assigned", "description" => "The task is assigned to the SV but the SV has not started working on the task yet"],
-            ["id" => 42, "for" => "App\Assignment", "name" => "checked-in", "description" => "The SV is working on the task at the moment"],
-            ["id" => 43, "for" => "App\Assignment", "name" => "done", "description" => "The SV finished the task"],
+            ["id" => 41, "for" => "App\Assignment", "name" => "assigned", "description" => "The task is assigned but yet not being worked on"],
+            ["id" => 42, "for" => "App\Assignment", "name" => "checked-in", "description" => "SV is working on the task at the moment"],
+            ["id" => 43, "for" => "App\Assignment", "name" => "done", "description" => "Task has been completed"],
 
         ];
         DB::table('states')->insert($states);

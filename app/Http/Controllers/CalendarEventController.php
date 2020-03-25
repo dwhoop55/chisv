@@ -27,10 +27,31 @@ class CalendarEventController extends Controller
                 $query->whereBetween('date', [$start, $end]);
             })
             ->with([
-                'task:id,name,location,description,date,start_at,end_at,priority,hours',
+                'task:id,name,location,description,date,start_at,end_at,conference_id',
                 'state:id,name,description',
+                'task.conference:id,timezone_id',
+                'task.conference.timezone',
             ])
             ->get(['id', 'user_id', 'task_id', 'hours', 'state_id']);
+
+        $assignments = $assignments->map(function ($assignment) {
+            $start = $assignment->task->date;
+            $start->setTimeFrom(Carbon::create($assignment->task->start_at));
+            $end = $assignment->task->date;
+            $end->setTimeFrom(Carbon::create($assignment->task->end_at));
+            return [
+                "title" => $assignment->task->name,
+                "description" => $assignment->task->description,
+                "location" => $assignment->task->location,
+                "timezone" => $assignment->task->conference->timezone->name,
+                "start" => $start->toDateTimeString(),
+                "end" => $end->toDateTimeString(),
+                "assignment" => [
+                    'state' => $assignment->state->only(['name', 'description']),
+                    'hours' => $assignment->hours,
+                ],
+            ];
+        });
 
         return ["assignments" => $assignments];
     }

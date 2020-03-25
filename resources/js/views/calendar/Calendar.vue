@@ -30,7 +30,9 @@
                 ></vue-cal>
               </b-field>
               <b-field grouped position="is-right">
-                <b-button disabled type="is-primary" @click="onExport">Export this view</b-button>
+                <p>Events are displayed in their location's timezone</p>
+                <b-field expanded />
+                <b-button type="is-primary" @click="exportAll()">Export this view</b-button>
               </b-field>
             </div>
           </div>
@@ -42,7 +44,11 @@
 
 <script>
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import CalendarEventModalVue from "../../components/modals/CalendarEventModal.vue";
+
 export default {
+  name: "calendar",
+
   data() {
     return {
       isLoading: false
@@ -86,18 +92,37 @@ export default {
       if (!event.clickable) return;
 
       if (event.assignment) {
-        this.$buefy.dialog.alert({
-          title: event.assignment.task.name,
-          message: `Location: ${event.assignment.task.location}
-                    <br>Time: ${event.assignment.task.start_at} – ${event.assignment.task.end_at}
-                    <br>Description: ${event.assignment.task.description}
-                    <br>Hours: ${event.assignment.hours}
-                    <br>Status: ${event.assignment.state.name}`,
-          type: this.stateType(event.assignment.state)
+        this.$buefy.modal.open({
+          component: CalendarEventModalVue,
+          parent: this,
+          hasModalCard: true,
+          props: {
+            event
+          }
         });
       }
     },
-    onExport() {},
+    exportAll() {
+      var events = [];
+      this.userEvents.assignments.forEach(event => {
+        events.push(
+          this.createVEvent(
+            event.title,
+            event.timezone,
+            event.start,
+            event.end,
+            event.location,
+            event.description
+          ) // createVEvent
+        ); // push
+      }); // for each
+
+      const calendar = this.createVCalendar(events);
+      this.downloadText(
+        calendar,
+        `chisv ${this.startDate} - ${this.endDate}.ics`
+      );
+    },
     ...mapActions("calendar", ["fetchEvents"]),
     ...mapMutations("calendar", ["setStartDate", "setEndDate", "setCalView"])
   },
@@ -115,21 +140,16 @@ export default {
         };
       });
       if (this.userEvents?.assignments) {
-        this.userEvents.assignments.forEach(assignment => {
-          var start =
-            this.dateFromMySql(assignment.task.date).toMySqlDate() +
-            " " +
-            assignment.task.start_at;
-          var end =
-            this.dateFromMySql(assignment.task.date).toMySqlDate() +
-            " " +
-            assignment.task.end_at;
+        this.userEvents.assignments.forEach(event => {
           events.push({
-            start,
-            end,
-            title: `${assignment.task.name}`,
-            assignment,
-            class: `is-hoverable-overflow is-clickable vuecal__assignment vuecal__assignment-${assignment.state.name}`,
+            start: event.start,
+            end: event.end,
+            title: event.title,
+            location: event.location,
+            description: event.description,
+            assignment: event.assignment,
+            timezone: event.timezone,
+            class: `vuecal__assignment-${event.assignment.state.name} is-hoverable-overflow is-clickable vuecal__assignment`,
             clickable: true
           });
         });

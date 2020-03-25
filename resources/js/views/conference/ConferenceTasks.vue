@@ -270,7 +270,7 @@ export default {
 
   methods: {
     deleteAllTasks() {
-      let day = this.formatTime(this.day, "DD.MM.YYYY", { tz: true });
+      let day = this.formatTime(this.day, "DD.MM.YYYY", { toTz: true });
       this.$buefy.dialog.confirm({
         title: "Caution!",
         message: `Are you sure you want to <b>delete all tasks for this day (${day})</b>?\

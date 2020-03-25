@@ -5,16 +5,64 @@ import Form from "vform";
 export { methods }
 
 let methods = {
+    downloadText(text, filename) {
+        let blob = new Blob([text], { type: 'text/txt' });
+        let link = document.createElement('a');
+        link.href = window.URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    },
+    createVCalendar(events) {
+        const cal = [
+            `BEGIN:VCALENDAR`,
+            `VERSION:2.0`,
+            `CALSCALE:GREGORIAN`,
+            `${events.join("\n")}`,
+            `END:VCALENDAR`];
+        return cal.join("\n");
+    },
+    createVEvent(title, timezone, start, end, location, description) {
+        let startDate = this.dateFromMySql(start).toMySqlDate().replace(/[^\d]/gm, '');
+        let startTime = this.dateFromMySql(start).toMySqlTime().replace(/[^\d]/gm, '');
+        let endDate = this.dateFromMySql(end).toMySqlDate().replace(/[^\d]/gm, '');
+        let endTime = this.dateFromMySql(end).toMySqlTime().replace(/[^\d]/gm, '');
+        const elements = [
+            `BEGIN:VEVENT`,
+            `SUMMARY:${title}`,
+            `DTSTART;TZID=${timezone}:${startDate}T${startTime}`,
+            `DTEND;TZID=${timezone}:${endDate}T${endTime}`,
+            `LOCATION:${location.replace(',', "\,")}`,
+            `DESCRIPTION:${description.replace(',', "\,")}`,
+            `STATUS:CONFIRMED`,
+            `SEQUENCE:0`,
+            `END:VEVENT`,
+        ];
+        return elements.join("\n");
+    },
     formatTime(date, format, options = {}) {
         var locale = 'en_US';
         var timezone = 'UTC';
-        if (options.tz && this.$store.getters['auth/usersTimezone']?.name) {
+
+        // Check if we need to convert to timezone other than UTC
+        if (options.toTz !== undefined && options.toTz !== true) {
+            // options.tz is the destination tz
+            timezone = options.toTz;
+        } else if (options.toTz === true && this.$store.getters['auth/usersTimezone']?.name) {
             timezone = this.$store.getters['auth/usersTimezone']?.name;
         }
+
+        // Check for locale
         if (this.$store.getters['auth/usersLocale']?.code) {
             locale = this.$store.getters['auth/usersLocale']?.code
         }
-        var m = new moment(date).tz(timezone).locale(locale);
+
+        // Check if given date is in specific timesone other than UTC
+        if (options.fromTz) {
+            var m = new moment.tz(date, options.fromTz).tz(timezone).locale(locale);
+        } else {
+            var m = new moment(date).tz(timezone).locale(locale);
+        }
+
         if (options.fromNow) {
             return m.fromNow(options.withoutSuffix ? true : false);
         }
@@ -61,7 +109,6 @@ let methods = {
     },
     dateFromTime(time) {
         return new Date(this.dateFromMySql(`1970-01-01 ${time}`));
-        return new Date();
     },
     filterStates: function (states, filter) {
         return states.filter((value, index) => {
