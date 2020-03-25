@@ -57,8 +57,10 @@ let methods = {
         }
 
         // Check if given date is in specific timesone other than UTC
-        if (options.fromTz) {
+        if (options.fromTz && options.toTz) {
             var m = new moment.tz(date, options.fromTz).tz(timezone).locale(locale);
+        } else if (options.fromTz && !options.toTz) {
+            var m = new moment.tz(date, options.fromTz).tz(options.fromTz).locale(locale);
         } else {
             var m = new moment(date).tz(timezone).locale(locale);
         }
@@ -83,6 +85,9 @@ let methods = {
         // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one
         dateTimeParts[1]--;
         return new Date(...dateTimeParts);
+    },
+    dateTimeFromTime(time) {
+        return this.dateFromTime(time).toMySqlDateTime();
     },
     decimalFormat(decimal) {
         return parseFloat(parseFloat(decimal).toFixed(2));

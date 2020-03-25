@@ -157,18 +157,20 @@
         >
           <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
-        <b-table-column
-          field="tasks.start_at"
-          width="10"
-          sortable
-          label="Starts"
-        >{{ hoursFromTime(props.row.start_at) }}</b-table-column>
-        <b-table-column
-          field="tasks.end_at"
-          sortable
-          width="10"
-          label="Ends"
-        >{{ hoursFromTime(props.row.end_at) }}</b-table-column>
+        <b-table-column field="tasks.start_at" width="100" sortable label="Starts">
+          {{ formatTime(
+          dateTimeFromTime(props.row.start_at),
+          'LT',
+          {fromTz: conference.timezone.name}
+          ) }}
+        </b-table-column>
+        <b-table-column field="tasks.end_at" sortable width="100" label="Ends">
+          {{ formatTime(
+          dateTimeFromTime(props.row.end_at),
+          'LT',
+          {fromTz: conference.timezone.name}
+          ) }}
+        </b-table-column>
         <b-table-column
           field="tasks.hours"
           width="10"
@@ -422,7 +424,7 @@ export default {
       this.fetchTasks();
     },
     onPerPageChange(perPage) {
-      this.setPerPage(page);
+      this.setPerPage(perPage);
       this.fetchTasks();
     },
     onSort(field, direction) {

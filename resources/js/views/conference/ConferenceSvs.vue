@@ -278,7 +278,7 @@
         <div v-if="props.row.assignments">
           <div class="notification field is-floating-label">
             <label class="label">Assigned Tasks</label>
-            <sv-assignments-list v-model="props.row.assignments"></sv-assignments-list>
+            <sv-assignments-list :assignments="props.row.assignments" :conference="conference"></sv-assignments-list>
           </div>
         </div>
 

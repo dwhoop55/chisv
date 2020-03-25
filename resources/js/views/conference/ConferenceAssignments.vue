@@ -110,14 +110,26 @@
           width="10"
           sortable
           label="Starts"
-        >{{ hoursFromTime(props.row.start_at) }}</b-table-column>
+        >
+          {{ formatTime(
+          dateTimeFromTime(props.row.start_at),
+          'LT',
+          {fromTz: conference.timezone.name}
+          ) }}
+        </b-table-column>
         <b-table-column
           :visible="columns.includes('end_at')"
           field="tasks.end_at"
           sortable
           width="10"
           label="Ends"
-        >{{ hoursFromTime(props.row.end_at) }}</b-table-column>
+        >
+          {{ formatTime(
+          dateTimeFromTime(props.row.end_at),
+          'LT',
+          {fromTz: conference.timezone.name}
+          ) }}
+        </b-table-column>
         <b-table-column
           :visible="columns.includes('hours')"
           field="tasks.hours"
@@ -295,7 +307,7 @@ export default {
       this.fetchAssignments();
     },
     onPerPageChange(perPage) {
-      this.setPerPage(page);
+      this.setPerPage(perPage);
       this.fetchAssignments();
     },
     onSort(field, direction) {
