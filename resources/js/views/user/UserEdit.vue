@@ -116,7 +116,7 @@ export default {
         .getUser(this.id)
         .then(({ data }) => (this.user = data))
         .catch(error => {
-          if (error.response.status == 403) {
+          if (error.response.status == 403 || error.response.status == 404) {
             this.$buefy.notification.open({
               type: "is-danger",
               duration: 10000,

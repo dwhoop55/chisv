@@ -147,7 +147,11 @@ export default {
       var promises = [];
 
       if (!this.conference || this.conference.key != key) {
-        promises.push(this.fetchConference(key));
+        promises.push(
+          this.fetchConference(key).catch(error => {
+            this.$router.replace({ name: "conferences" });
+          })
+        );
       } else {
         // Show UI earlier - makes it feel faster
         this.isLoading = false;
