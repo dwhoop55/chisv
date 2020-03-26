@@ -47,6 +47,9 @@ window.axios.interceptors.response.use(response => response, error => {
         } else if (status === 403) {
             console.log(403, "No permission to ressource", error);
             return Promise.reject(error)
+        } else if (status === 404) {
+            console.log(404, "Not found", error);
+            return Promise.reject(error)
         } else if (status == 422) {
             // Validation error
             message = error.response.data.message
