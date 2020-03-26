@@ -1,14 +1,14 @@
 @extends('layouts.auth')
 
 @section('content')
+
 <div class="columns is-centered">
     <div class="column is-half">
         <div class="card">
-            <header class="card-header">
-                <p class="card-header-title is-block has-text-centered">
-                    Sign in to chisv
-                </p>
-            </header>
+            <conference-preview-carousel></conference-preview-carousel>
+            <p class="card-header-title is-block has-text-centered">
+                Sign in to CHISV
+            </p>
             <div class="card-content">
 
                 <div class="field">

@@ -230,6 +230,28 @@ let methods = {
                 return "is-dark";
         }
     },
+    stateBackground(state) {
+        if (!state || !state.name) {
+            return "background: grey;";
+        }
+        let start = "#3cac8a";
+        let end = "#5cceac";
+        switch (state.name) {
+            case "over":
+                start = "#BF360C";
+                end = "#D84315";
+                break;
+            case "planning":
+                start = "#FFB300";
+                end = "#FFA000";
+                break;
+            case "enrollment":
+                start = "#4ccc9a";
+                end = "#6ceebc";
+                break;
+        }
+        return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
+    },
     stateType: function (state) {
         if (!state || !state.name) return "is-light";
 

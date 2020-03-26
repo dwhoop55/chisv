@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Assignment;
 use App\Bid;
 use App\Conference;
+use App\EnrollmentForm;
 use App\Http\Requests\ConferenceCreateRequest;
 use App\Http\Requests\ConferenceUpdateRequest;
 use App\Http\Requests\EnrollRequest;
@@ -45,12 +46,24 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
+        $user = auth()->user();
         $enrollmentFormService = new EnrollmentFormService;
         $conference->loadMissing(['icon', 'artwork', 'state', 'timezone', 'enrollmentFormTemplate']);
-        if (auth()->user()->cannot('updateEnrollmentFormWeights', $conference)) {
+        if ($user->cannot('updateEnrollmentFormWeights', $conference)) {
             $conference->enrollment_form_template = $enrollmentFormService
                 ->removeWeights($conference->enrollmentFormTemplate);
         }
+
+        $enrollmentForm = EnrollmentForm
+            ::whereHas('permission', function ($query) use ($conference, $user) {
+                $query->where('conference_id', $conference->id);
+                $query->where('user_id', $user->id);
+                $query->where('role_id', Role::byName('sv')->id);
+            })
+            ->first();
+
+        $conference->enrollment_form = $enrollmentForm;
+
         return $conference;
     }
 
@@ -936,6 +949,31 @@ class ConferenceController extends Controller
         });
 
         return $paginated;
+    }
+
+
+    /**
+     * Display a preview listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function indexPreview()
+    {
+        $conferences = Conference
+            ::with([
+                'icon:owner_id,web_path',
+                'artwork:owner_id,web_path',
+                'state',
+            ])
+            ->whereHas('state', function ($query) {
+                $query->where('id', State::byName('enrollment')->id);
+                $query->orWhere('id', State::byName('running')->id);
+                $query->orWhere('id', State::byName('registration')->id);
+            })
+            ->orderBy('start_date', 'desc')
+            ->get(['id', 'name', 'location', 'state_id']);
+
+        return $conferences->values();
     }
 
     /**

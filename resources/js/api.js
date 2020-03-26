@@ -18,6 +18,9 @@ export default {
     getConferences() {
         return axios.get("conference");
     },
+    getConferencesPreview() {
+        return axios.get("conference/preview");
+    },
     getConference(key) {
         return axios.get(`conference/${key}`);
     },

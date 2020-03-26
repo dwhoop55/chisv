@@ -84,6 +84,9 @@ Route::group(['prefix' => 'v1'], function () {
         $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
         return ["branch" => $branch, "commit" => $commit];
     });
+
+    Route::get('conference/preview', 'ConferenceController@indexPreview')
+        ->name('conference.preview');
     //// GUEST ////
 
 
