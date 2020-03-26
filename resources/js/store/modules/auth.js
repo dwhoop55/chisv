@@ -107,7 +107,11 @@ const actions = {
                     }
                     resolve(data);
                 })
-                .catch(error => reject());
+                .catch(error => {
+                    commit('setUser', null);
+                    reject();
+                });
+
         })
         return p;
     },
