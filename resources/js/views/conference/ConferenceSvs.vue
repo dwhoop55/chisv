@@ -133,7 +133,7 @@
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <b-table-column
+        <!-- <b-table-column
           class="is-vertical-center-column"
           :visible="userIsAdminOrChairOrCaptain(conference.key)"
           width="130"
@@ -147,7 +147,7 @@
               :href="'mailto:' + props.row.email"
             >{{ props.row.email }}</a>
           </template>
-        </b-table-column>
+        </b-table-column>-->
         <b-table-column
           class="is-vertical-center-column"
           :visible="userIsAdminOrChairOrCaptain(conference.key)"
@@ -270,6 +270,12 @@
           <div v-if="props.row.degree">
             Study Program:
             {{ props.row.degree }}
+          </div>
+          <div v-if="props.row.email">
+            <a
+              @click="ignoreNextToggleClick=true"
+              :href="'mailto:' + props.row.email"
+            >{{ props.row.email }}</a>
           </div>
         </div>
 
