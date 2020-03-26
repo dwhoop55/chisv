@@ -18,7 +18,7 @@
             v-model="conference"
             type="artwork"
             size="128x128"
-            text="<br />Drop new artwork..<br />max 4096x4096<br /> < 1024kb"
+            text="<br />Drop new artwork..<br />max 4096x4096<br /> < 1024kb<br>Please respect copyright!"
           ></image-component>
         </b-field>
         <b-field class="has-padding-l-5">
@@ -27,7 +27,7 @@
             v-model="conference"
             type="icon"
             size="128x128"
-            text="<br />Drop new icon..<br />max 128x128<br /> < 1024kb"
+            text="<br />Drop new icon..<br />max 128x128<br /> < 1024kb<br>Please respect copyright!"
           ></image-component>
         </b-field>
         <div class="has-padding-l-5" style="flex-grow:2">
