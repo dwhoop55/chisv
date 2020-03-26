@@ -234,20 +234,20 @@ let methods = {
         if (!state || !state.name) {
             return "background: grey;";
         }
-        let start = "#3cac8a";
-        let end = "#5cceac";
+        let start = "#2d4262";
+        let end = "#316078";
         switch (state.name) {
             case "over":
-                start = "#BF360C";
-                end = "#D84315";
+                start = "#e74c3c";
+                end = "#FF3655";
                 break;
             case "planning":
-                start = "#FFB300";
-                end = "#FFA000";
+                start = "#F39C12";
+                end = "#DB8004";
                 break;
             case "enrollment":
-                start = "#4ccc9a";
-                end = "#6ceebc";
+                start = "#3ABD77";
+                end = "#37B37E";
                 break;
         }
         return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
