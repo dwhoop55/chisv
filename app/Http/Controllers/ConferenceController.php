@@ -48,7 +48,13 @@ class ConferenceController extends Controller
     {
         $user = auth()->user();
         $enrollmentFormService = new EnrollmentFormService;
-        $conference->loadMissing(['icon', 'artwork', 'state', 'timezone', 'enrollmentFormTemplate']);
+        $conference->loadMissing([
+            'icon:id,owner_id,web_path',
+            'artwork:id,owner_id,web_path',
+            'state:name,description',
+            'timezone',
+            'enrollmentFormTemplate:id,name,body'
+        ]);
         if ($user->cannot('updateEnrollmentFormWeights', $conference)) {
             $conference->enrollment_form_template = $enrollmentFormService
                 ->removeWeights($conference->enrollmentFormTemplate);
@@ -60,7 +66,7 @@ class ConferenceController extends Controller
                 $query->where('user_id', $user->id);
                 $query->where('role_id', Role::byName('sv')->id);
             })
-            ->first();
+            ->first(['id', 'body']);
 
         $conference->enrollment_form = $enrollmentForm;
 
@@ -1172,8 +1178,8 @@ class ConferenceController extends Controller
         );
 
         $result = $conference->update($data);
-        $conference->refresh()->loadMissing(['icon', 'artwork', 'state']);
-        return ["result" => $conference, "message" => "Conference updated"];
+
+        return ["result" => $result, "message" => "Conference updated"];
     }
 
     /**
