@@ -33,6 +33,7 @@
       </b-navbar-item>
       <!-- Notifications for desktop -->
       <b-navbar-dropdown
+        @mouseenter.native="fetchNotifications()"
         ref="notificationDropdown"
         class="is-hidden-touch"
         right
@@ -41,15 +42,15 @@
       >
         <template slot="label">
           <b-icon
-            class="has-margin-l-6 has-margin-r-6"
             @click.native="showNotifications"
+            class="has-margin-l-6 has-margin-r-6"
             v-if="hasUnread"
             type="is-warning"
             icon="bell-ring"
           />
           <b-icon
-            class="has-margin-l-6 has-margin-r-6"
             @click.native="showNotifications"
+            class="has-margin-l-6 has-margin-r-6"
             v-else
             icon="bell"
           />
@@ -110,11 +111,12 @@ export default {
     },
     ...mapGetters("auth", ["user", "userIs"]),
     ...mapGetters("conference", ["conference", "last"]),
-    ...mapGetters("notifications", [
-      "hasUnread",
-      "numberUnread",
-      "notifications"
-    ])
+    ...mapGetters("notifications", {
+      hasUnread: "hasUnread",
+      numberUnread: "numberUnread",
+      notifications: "notifications",
+      isLoadingNotifications: "isLoading"
+    })
   },
 
   methods: {
@@ -143,7 +145,8 @@ export default {
         hasModalCard: true
       });
     },
-    ...mapActions("auth", { logout: "logout" })
+    ...mapActions("auth", { logout: "logout" }),
+    ...mapActions("notifications", ["fetchNotifications"])
   }
 };
 </script>
