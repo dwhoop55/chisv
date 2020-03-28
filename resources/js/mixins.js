@@ -234,20 +234,21 @@ let methods = {
         if (!state || !state.name) {
             return "background: grey;";
         }
-        let start = "#2d4262";
-        let end = "#316078";
+        let start = "#3ABD77";
+        let end = "#37B37E";
         switch (state.name) {
+            case "planning":
             case "over":
                 start = "#e74c3c";
-                end = "#FF3655";
+                end = "#E84E3C";
                 break;
-            case "planning":
+            case "enrollment":
                 start = "#F39C12";
                 end = "#DB8004";
                 break;
-            case "enrollment":
-                start = "#3ABD77";
-                end = "#37B37E";
+            case "registration":
+                start = "#2d4262";
+                end = "#316078";
                 break;
         }
         return `background: linear-gradient(.31deg,${start} .7%,${end} 99.3%);`;
@@ -271,7 +272,7 @@ let methods = {
             case "enrollment":
                 return "is-warning";
             case "registration":
-                return "is-warning";
+                return "is-primary";
             case "running":
                 return "is-success";
             case "over":
