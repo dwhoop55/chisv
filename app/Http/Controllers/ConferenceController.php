@@ -1051,7 +1051,7 @@ class ConferenceController extends Controller
         $enrollmentForm = $enrollmentFormService->removeWeights($enrollmentForm);
 
         if (!$enrollmentForm->save()) {
-            return ["result" => null, "message" => "There was an error while creating the enrollment form"];
+            return ["result" => false, "message" => "There was an error while creating the enrollment form"];
         }
 
         $enrollmentForm->updateTotalWeight();
@@ -1066,18 +1066,10 @@ class ConferenceController extends Controller
         $permission->save();
 
         if (!$permission) {
-            return ["result" => null, "message" => "There was an error while granting SV permissions"];
+            return ["result" => false, "message" => "There was an error while granting SV permissions"];
         }
 
-        return ["result" => $permission, "message" => "You are now enrolled"];
-
-        // $permission->enrollmentForm()->save($enrollmentForm);
-        // // We painfully reload manually here because ->refresh on the
-        // // model does not work..
-        // // We need to reload to have the permission that we return also
-        // // carry the enrollmentForm
-        // $permission = Permission::find($permission->id);
-
+        return ["result" => true, "message" => "You are now enrolled"];
     }
 
     /** Update all enrollmentForms of a conference with new weights
