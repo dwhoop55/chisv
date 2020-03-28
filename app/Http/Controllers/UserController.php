@@ -265,7 +265,7 @@ class UserController extends Controller
                 'task:id,name,start_at,end_at,hours,date',
                 'state:id,name,description'
             ])
-            ->get(['id', 'task_id', 'state_id', 'preference', 'created_at', 'updated_at', 'preference']);
+            ->get(['id', 'task_id', 'state_id', 'preference', 'preference']);
 
         return $bids;
     }
