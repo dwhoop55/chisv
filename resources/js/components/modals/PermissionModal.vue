@@ -54,6 +54,14 @@ export default {
     user: {
       type: Object,
       default: null
+    },
+    onUpdated: {
+      type: Function,
+      default: () => console.log("onUpdated not passed as prop")
+    },
+    onCreated: {
+      type: Function,
+      default: () => console.log("onCreated not passed as prop")
     }
   },
 
@@ -102,8 +110,8 @@ export default {
           message: data.data.message,
           type: "is-success"
         });
-        this.permission ? this.$emit("updated") : this.$emit("created");
         this.$parent.close();
+        this.permission ? this.onUpdated() : this.onCreated();
       });
     },
     getUserId: function() {

@@ -13,6 +13,9 @@ class Permission extends Model
      */
     protected $casts = [
         'lottery_position' => 'integer',
+        'user_id' => 'integer',
+        'conference_id' => 'integer',
+        'enrollment_form_id' => 'integer',
     ];
 
     // protected $with = ['role', 'user', 'conference', 'state', 'enrollmentForm'];

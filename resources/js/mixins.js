@@ -121,6 +121,11 @@ let methods = {
         });
     },
     parseEnrollmentForm: function (jsonForm) {
+        if (!jsonForm) {
+            console.log('Given enrollment form is null!');
+            return;
+        }
+
         var vform = new Form();
         var meta = {};
         var header = null;
@@ -151,7 +156,7 @@ let methods = {
             }
         }
 
-        return { vform: vform, meta: meta, header: header, agreement: agreement, name: name, id: id };
+        return { vform, meta, header, agreement, name, id };
     },
     conferenceArtworkBackground: function (conference) {
         if (conference && conference.artwork) {

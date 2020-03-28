@@ -10,10 +10,7 @@
           type="is-boxed"
         >
           <b-tab-item icon="format-list-bulleted" label="Conferences">
-            <b-button v-if="canGrant" @click="showGrantModal=true" class="is-pulled-right">Grant</b-button>
-            <b-modal :active.sync="showGrantModal" has-modal-card>
-              <permission-modal @created="getUser()" :user="user"></permission-modal>
-            </b-modal>
+            <b-button v-if="canGrant" @click="showGrantModal()" class="is-pulled-right">Grant</b-button>
 
             <div class="subtitle has-margin-t-3">
               <p v-if="hasActivePermissions">Active conferences</p>
@@ -52,6 +49,7 @@
 import Form from "vform";
 import api from "@/api.js";
 import { mapGetters, mapActions, mapMutations } from "vuex";
+import PermissionModalVue from "../../components/modals/PermissionModal.vue";
 
 export default {
   computed: {
@@ -88,8 +86,7 @@ export default {
     return {
       user: null,
       id: this.$route.params.id,
-      isLoading: true,
-      showGrantModal: false
+      isLoading: true
     };
   },
 
@@ -98,6 +95,17 @@ export default {
   },
 
   methods: {
+    showGrantModal() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: PermissionModalVue,
+        props: {
+          user: this.user,
+          onCreated: this.getUser
+        },
+        hasModalCard: true
+      });
+    },
     deleteUser() {
       this.$buefy.dialog.confirm({
         message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,

@@ -35,7 +35,7 @@ window.axios.interceptors.response.use(response => response, error => {
         // The request was made and the server responded with a status code
         // that falls out of the range of 2xx
         var message = error
-        if (status >= 500) {
+        if (status >= 500 || status === 400) {
             // Server (likely PHP error)
             if (error.response.data.message) {
                 message = error.response.data.message;

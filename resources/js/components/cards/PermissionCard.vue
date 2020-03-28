@@ -19,7 +19,7 @@
             <b-button
               v-if="permission.enrollment_form"
               outlined
-              @click="showEnrollmentForm=true"
+              @click="showEnrollmentForm()"
               type="is-light"
               class="has-margin-t-7 has-margin-r-7"
             >Show Enrollment Form</b-button>
@@ -29,7 +29,7 @@
 
       <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
         <b-taglist
-          @click.native="tagClick"
+          @click.native="canRevoke ? showEditModal() : null"
           attached
           :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
         >
@@ -52,30 +52,44 @@
         </div>
       </div>
     </div>
-    <b-modal @close="$emit('updated')" :active.sync="showEditModal" has-modal-card>
-      <permission-modal @updated="$emit('updated')" :permission="permission"></permission-modal>
-    </b-modal>
-    <b-modal :active.sync="showEnrollmentForm" has-modal-card>
-      <enrollment-form-modal v-model="parsedEnrollmentForm" disabled></enrollment-form-modal>
-    </b-modal>
   </section>
 </template>
 
 <script>
 import api from "@/api.js";
 import { mapGetters } from "vuex";
+import EnrollmentFormModalVue from "../modals/EnrollmentFormModal.vue";
+import PermissionModalVue from "../modals/PermissionModal.vue";
 
 export default {
   props: ["permission"],
 
-  data() {
-    return {
-      showEditModal: false,
-      showEnrollmentForm: false
-    };
-  },
-
   methods: {
+    showEditModal() {
+      this.$buefy.modal.open({
+        component: PermissionModalVue,
+        parent: this,
+        props: {
+          permission: this.permission,
+          onUpdated: () => this.$emit("updated")
+        },
+        hasModalCard: true
+      });
+    },
+    showEnrollmentForm() {
+      if (!this.permission.enrollment_form) {
+        console.log("No enrollment form given");
+        return;
+      }
+      this.$buefy.modal.open({
+        component: EnrollmentFormModalVue,
+        parent: this,
+        props: {
+          form: this.parseEnrollmentForm(this.permission.enrollment_form)
+        },
+        hasModalCard: true
+      });
+    },
     confirmRevoke: function() {
       let message = `Are you sure you want to <b>revoke</b> ${this.permission.role.name} permissions?`;
       let extra = "";
@@ -105,23 +119,10 @@ export default {
         });
         this.$emit("revoked", this.permission);
       });
-    },
-    tagClick: function() {
-      if (this.canRevoke) {
-        this.showEditModal = true;
-      }
     }
   },
 
   computed: {
-    conferenceUrl: function() {
-      return `/conference/${this.permission.conference.key}`;
-    },
-    parsedEnrollmentForm: function() {
-      if (this.permission && this.permission.enrollment_form) {
-        return this.parseEnrollmentForm(this.permission.enrollment_form);
-      }
-    },
     canRevoke() {
       return (
         this.userIs("admin") ||

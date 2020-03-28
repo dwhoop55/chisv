@@ -12,6 +12,8 @@ use App\Shirt;
 use App\Http\Resources\Users;
 use App\Http\Requests\UserUpdateRequest;
 use App\Image;
+use App\Role;
+use App\State;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -82,15 +84,16 @@ class UserController extends Controller
      */
     public function showSelf(User $user)
     {
-        return User
+        $model = User
             ::where('id', auth()->user()->id)
             ->with([
                 'permissions' => function ($query) {
-                    $query->select(['id', 'user_id', 'conference_id', 'role_id', 'state_id']);
+                    $query->select(['id', 'user_id', 'conference_id', 'role_id', 'state_id', 'enrollment_form_id', 'lottery_position']);
                     $query->orderBy('created_at', 'desc');
                     $query->with([
                         'role:id,name,description',
                         'state:id,name,description',
+                        'enrollmentForm:id,body',
                         'conference:id,key',
                     ]);
                 },
@@ -98,7 +101,29 @@ class UserController extends Controller
                 'locale',
                 'avatar'
             ])
-            ->first();
+            ->first([
+                'id',
+                'firstname',
+                'lastname',
+                'timezone_id',
+                'locale_id',
+            ]);
+
+        // Now we remove some unneeded attributes
+        $model->permissions->transform(function ($permission) {
+            // If the user is a waitlisted SV, we need to calculate
+            // the waitlist position and append it
+            if (
+                $permission->role_id == Role::byName('sv')->id
+                && $permission->state_id == State::byName('waitlisted')->id
+            ) {
+                $permission->waitlist_position = $permission->updateWaitlistPosition();
+            }
+            return collect($permission)->except(['conference_id', 'enrollment_form_id', 'user_id', 'lottery_position']);
+        });
+        $collection = collect($model);
+
+        return $collection->except(['timezone_id', 'locale_id']);
     }
 
 
@@ -115,7 +140,18 @@ class UserController extends Controller
                 'avatar',
                 'languages',
                 'permissions' => function ($query) {
-                    $query->with(['conference', 'conference.artwork', 'role', 'state', 'user']);
+                    $query->select([
+                        'id', 'user_id', 'conference_id',
+                        'enrollment_form_id', 'state_id',
+                        'role_id'
+                    ]);
+                    $query->with([
+                        'conference:id,key,name',
+                        'conference.artwork:owner_id,web_path',
+                        'role:id,name,description',
+                        'state:id,name,description',
+                        'enrollmentForm'
+                    ]);
                     $query->orderBy('created_at', 'DESC');
                 },
                 'locale',
@@ -126,7 +162,12 @@ class UserController extends Controller
             ->first();
 
         $user->location = $user->city->location();
-        return $user;
+
+        return collect($user)->except([
+            'email_verified_at', 'created_at',
+            'updated_at', 'city_id',
+            'university_id'
+        ]);
     }
 
     /**
