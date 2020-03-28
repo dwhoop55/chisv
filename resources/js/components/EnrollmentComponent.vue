@@ -1,74 +1,65 @@
 <template>
-  <div>
+  <div class="is-relative">
     <!-- Loading -->
-    <b-notification v-if="isLoading" has-icon :closable="false">Loading enrollment status..</b-notification>
-
-    <!-- Errored -->
-    <transition name="slide-top-fade">
-      <b-notification v-if="!isLoading && errored" type="is-warning" has-icon :closable="false">
-        <p>Your enrollment status could not be loaded.</p>
-        <p>{{ errored }}</p>
-        <b-button outlined inverted type="is-warning" @click="getState()">Try again</b-button>
-      </b-notification>
-    </transition>
+    <b-loading :is-full-page="false" :active="isLoading"></b-loading>
 
     <!-- Not enrolled -->
-    <transition name="slide-top-fade">
-      <b-notification v-if="!isLoading && !permission" type="is-light" has-icon :closable="false">
-        You are not enrolled in this conference
-        <p v-if="conference.state.name != 'enrollment'">
-          The enrollment phase is
-          <b>over</b>
-        </p>
-      </b-notification>
-    </transition>
+    <div class="has-text-centered">
+      <p class="is-size-4 has-margin-b-6" v-if="!permission">You are not enrolled in this conference</p>
+      <p v-if="conference.state.name != 'enrollment'">
+        The enrollment phase is
+        <strong class="is-size-5 has-text-danger">over</strong>
+      </p>
+    </div>
 
     <!-- Enrolled, Accepted, Waitlisted or Dropped -->
-    <b-notification
-      v-if="!isLoading && permission"
-      :type="stateType(permission.state)"
-      has-icon
-      :closable="false"
-    >
-      <p>
-        You are
-        <b-tooltip
-          :type="stateType(permission.state)"
-          multilined
-          :label="permission.state.description"
-        >
-          <strong>{{ permission.state.name }}</strong>
+    <div v-if="permission" class="has-text-centered">
+      <div>
+        <div class="is-size-4 has-margin-b-6">
+          <p>
+            You are
+            <b-tooltip
+              multilined
+              :type="stateType(permission.state)"
+              :label="permission.state.description"
+            >
+              <strong :class="classForStateName">{{ permission.state.name }}</strong>
+            </b-tooltip>
+            <span
+              v-if="waitlistedWithPosition"
+            >on position {{ permission.waitlist_position.position }}</span>
+          </p>
           <p
-            v-if="permission.state.name == 'waitlisted' && permission.waitlist_position"
-          >&nbsp;on position {{ permission.waitlist_position.position }}</p>
-        </b-tooltip>
-      </p>
-      <b-button
-        v-if="!isLoading && permission && form"
-        type="is-primary"
-        class="has-margin-t-7"
-        outlined
-        icon-left="format-list-bulleted"
-        @click="showModal"
-      >Show Enrollment Form</b-button>
-      <!-- Unenroll -->
-      <b-button
-        v-if="!isLoading && canUnenroll"
-        type="is-danger"
-        class="has-margin-t-7"
-        outlined
-        icon-left="account-remove"
-        @click="confirmUnenroll"
-      >Unenroll</b-button>
+            v-if="waitlistedWithPosition"
+            class="is-size-6"
+          >{{ waitlistTotal }} other {{ waitlistTotal === 1 ? 'SV is' : 'SVs are'}} waiting</p>
+        </div>
+        <p v-if="!canUnenroll">You can no longer unenroll</p>
+      </div>
+      <div>
+        <b-button
+          v-if="permission && permission.enrollment_form"
+          class="has-margin-t-7"
+          icon-left="format-list-bulleted"
+          @click="showModal()"
+        >Show form</b-button>
 
-      <p v-if="!isLoading && !canUnenroll">You can no longer unenroll</p>
-    </b-notification>
+        <!-- Unenroll -->
+        <b-button
+          v-if="canUnenroll"
+          type="is-danger"
+          class="has-margin-t-7"
+          icon-left="account-remove"
+          @click="confirmUnenroll()"
+        >Unenroll</b-button>
+      </div>
+    </div>
 
     <!-- Enroll form -->
     <transition name="slide-top-fade">
       <b-collapse
         :open="true"
-        v-if="!isLoading && canEnroll && !permission"
+        v-if="canEnroll && !permission"
         class="card"
         aria-id="contentIdForEnrollForm"
       >
@@ -107,7 +98,7 @@
 <script>
 import api from "@/api.js";
 import Form from "vform";
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import EnrollmentFormModal from "./../components/modals/EnrollmentFormModal";
 
 export default {
@@ -116,14 +107,14 @@ export default {
   data() {
     return {
       form: null,
-      permission: null,
-      errored: null,
-      isLoading: true
+      isLoading: false
     };
   },
 
   created() {
-    this.getState();
+    this.form = this.parseEnrollmentForm(
+      this.conference.enrollment_form_template
+    );
   },
 
   methods: {
@@ -131,7 +122,9 @@ export default {
       this.$buefy.modal.open({
         parent: this,
         component: EnrollmentFormModal,
-        props: { value: this.form },
+        props: {
+          form: this.parseEnrollmentForm(this.permission.enrollment_form)
+        },
         hasModalCard: true,
         trapFocus: true
       });
@@ -158,17 +151,10 @@ export default {
       this.isLoading = true;
       api
         .unenroll(this.conference.key)
-        .then(data => {
-          this.errored = null;
-          this.permission = null;
-          this.$emit("update", "unenrolled");
-        })
-        .catch(error => {
-          this.errored = error.message;
-        })
+        .catch(error => console.log(error))
         .finally(() => {
-          this.getState();
           this.isLoading = false;
+          this.fetchUser();
         });
     },
 
@@ -176,59 +162,49 @@ export default {
       this.isLoading = true;
       api
         .enroll(this.conference.key, this.form.vform)
-        .then(data => {
-          this.permission = data.data.result;
-          this.errored = null;
-          this.$emit("update", "enrolled");
-        })
-        .catch(error => {
-          if (error.response.status != 422) {
-            this.errored = error.message;
-          }
-        })
+        .catch(error => console.log(error))
         .finally(() => {
-          this.getState();
           this.isLoading = false;
+          this.fetchUser();
         });
     },
-
-    getState: function() {
-      this.isLoading = true;
-      this.errored = null;
-      this.permission = null;
-
-      api
-        .getEnrollment(this.conference.key)
-        .then(data => {
-          let response = data.data;
-          if (response.permission) {
-            // User is enrolled
-            this.permission = response.permission;
-            // If there is an enrollment form, load it
-            if (response.permission.enrollment_form) {
-              this.form = this.parseEnrollmentForm(
-                response.permission.enrollment_form
-              );
-            } else {
-              // There is no enrollment form
-              this.form = null;
-            }
-          } else if (response.enrollment_form) {
-            // User is not enrolled (missing permission)
-            // so we got the enrollment form template
-            this.form = this.parseEnrollmentForm(response.enrollment_form);
-          }
-        })
-        .catch(error => {
-          this.errored = error.message;
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
-    }
+    ...mapActions("auth", ["fetchUser"])
   },
 
   computed: {
+    waitlistTotal() {
+      return (
+        this.permission.waitlist_position.post +
+        this.permission.waitlist_position.pre
+      );
+    },
+    waitlistedWithPosition() {
+      return (
+        this.permission.state.name == "waitlisted" &&
+        this.permission.waitlist_position
+      );
+    },
+    classForStateName() {
+      if (this.permission.state.name != "enrolled") {
+        return this.stateType(this.permission.state).replace(
+          "is-",
+          "has-text-"
+        );
+      }
+    },
+    // Get the sv permission for the given conference
+    permission() {
+      var result = null;
+      this.user.permissions.forEach(permission => {
+        if (
+          permission.conference?.id == this.conference.id &&
+          permission.role?.name == "sv"
+        ) {
+          result = permission;
+        }
+      });
+      return result;
+    },
     canEnroll() {
       if (
         !this.userIs("sv", this.conference.key) &&
@@ -249,7 +225,7 @@ export default {
         return false;
       }
     },
-    ...mapGetters("auth", ["userIs"])
+    ...mapGetters("auth", ["user", "userIs"])
   }
 };
 </script>

@@ -21,18 +21,8 @@
         >{{ value.vform[key] ? 'Yes' : 'No' }}</b-switch>
 
         <b-input
-          v-else-if="field.type == 'string' && field.maxlength <= 100"
-          :maxlength="field.maxlength"
-          :disabled="disabled"
-          class="has-margin-l-6"
-          v-model="value.vform[key]"
-          :required="field.required"
-        ></b-input>
-
-        <b-input
-          v-else-if="field.type == 'string' && field.maxlength > 100"
-          type="textarea"
-          @input="value.vform[key] = $event"
+          v-else-if="field.type == 'string'"
+          :type="(field.maxlength > 100) ? 'textarea' : ''"
           :maxlength="field.maxlength"
           :disabled="disabled"
           class="has-margin-l-6"
@@ -46,12 +36,6 @@
 
 <script>
 export default {
-  props: ["value", "disabled"],
-
-  data() {
-    return {};
-  },
-
-  created() {}
+  props: ["value", "disabled"]
 };
 </script>

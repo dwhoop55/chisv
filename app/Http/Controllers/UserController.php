@@ -93,7 +93,7 @@ class UserController extends Controller
                     $query->with([
                         'role:id,name,description',
                         'state:id,name,description',
-                        'enrollmentForm:id,body',
+                        'enrollmentForm:id,name,body',
                         'conference:id,key',
                     ]);
                 },
@@ -150,7 +150,8 @@ class UserController extends Controller
                         'conference.artwork:owner_id,web_path',
                         'role:id,name,description',
                         'state:id,name,description',
-                        'enrollmentForm'
+                        'enrollmentForm:id,name,body',
+                        'user:id',
                     ]);
                     $query->orderBy('created_at', 'DESC');
                 },

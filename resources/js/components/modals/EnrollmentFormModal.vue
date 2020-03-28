@@ -4,7 +4,7 @@
       <p class="modal-card-title">Submitted enrollment information</p>
     </header>
     <section class="modal-card-body">
-      <enrollment-form v-model="value" :disabled="true"></enrollment-form>
+      <enrollment-form :value="form" :disabled="true"></enrollment-form>
     </section>
     <footer class="modal-card-foot">
       <button class="button is-primary" type="button" @click="$parent.close()">Close</button>
@@ -14,7 +14,7 @@
 
 <script>
 export default {
-  props: ["value"],
+  props: ["form"],
 
   created() {
     const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {

@@ -55,20 +55,12 @@ class ConferenceController extends Controller
             'timezone',
             'enrollmentFormTemplate:id,name,body'
         ]);
+
+        // Remove weights if the user is just normal sv
         if ($user->cannot('updateEnrollmentFormWeights', $conference)) {
             $conference->enrollment_form_template = $enrollmentFormService
                 ->removeWeights($conference->enrollmentFormTemplate);
         }
-
-        $enrollmentForm = EnrollmentForm
-            ::whereHas('permission', function ($query) use ($conference, $user) {
-                $query->where('conference_id', $conference->id);
-                $query->where('user_id', $user->id);
-                $query->where('role_id', Role::byName('sv')->id);
-            })
-            ->first(['id', 'body']);
-
-        $conference->enrollment_form = $enrollmentForm;
 
         return $conference;
     }

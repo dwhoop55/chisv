@@ -157,6 +157,9 @@ export default {
         this.isLoading = false;
       }
 
+      // Fetch the user so that we have up to date permission
+      // with state and enrollmentForm model
+      promises.push(this.fetchUser());
       promises.push(this.fetchAcceptedCount(key));
       promises.push(this.fetchTaskDays(key));
       if (this.canViewUsers(key)) {

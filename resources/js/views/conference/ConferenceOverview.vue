@@ -1,8 +1,8 @@
 <template>
   <div>
     <div class="columns is-centered">
-      <div class="column is-two-thirds">
-        <enrollment-component @update="$emit('update',$event)" :conference="conference"></enrollment-component>
+      <div class="column is-7 section">
+        <enrollment-component :conference="conference"></enrollment-component>
       </div>
     </div>
 
