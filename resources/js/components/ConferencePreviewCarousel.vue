@@ -1,5 +1,5 @@
 <template>
-  <b-carousel :indicator="false" :pause-info="false" :arrow="false">
+  <b-carousel :indicator="false" :pause-info="false" :arrow="false" :interval="5000">
     <b-loading :is-full-page="false" :active="isLoading"></b-loading>
     <b-carousel-item v-for="(conference, index) in conferences" :key="index">
       <div class="is-100vh">
