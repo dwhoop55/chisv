@@ -44,7 +44,7 @@ let methods = {
         var timezone = 'UTC';
 
         // Check if we need to convert to timezone other than UTC
-        if (options.toTz !== undefined && options.toTz !== true) {
+        if (options.toTz !== undefined && options.toTz !== true && options.toTz !== false) {
             // options.tz is the destination tz
             timezone = options.toTz;
         } else if (options.toTz === true && this.$store.getters['auth/usersTimezone']?.name) {
@@ -58,17 +58,26 @@ let methods = {
 
         // Check if given date is in specific timesone other than UTC
         if (options.fromTz && options.toTz) {
+            // Date might be from db but is actually not in UTC but in the
+            // tz passed in the options
+            // -> used for calendar where we give the option to convert into
+            //    user's current timezone
             var m = new moment.tz(date, options.fromTz).tz(timezone).locale(locale);
         } else if (options.fromTz && !options.toTz) {
+            // like above but now dst tz give, so we use the from tz aswell
+            // -> used for task date/time
             var m = new moment.tz(date, options.fromTz).tz(options.fromTz).locale(locale);
         } else {
-            var m = new moment(date).tz(timezone).locale(locale);
+            // Date is in UTC (raw from db)
+            // -> used for notifications or timetamps like created_at (which is in UTC)
+            var m = new moment.tz(date, "UTC").tz(timezone).locale(locale);
         }
 
         if (options.fromNow) {
             return m.fromNow(options.withoutSuffix ? true : false);
+        } else {
+            return m.format(format);
         }
-        return m.format(format);
     },
     abilityString(ability, model, id = null, onModel = null, onId = null) {
         return `${ability},${model},${id},${onModel},${onId}`;
