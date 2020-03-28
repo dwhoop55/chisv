@@ -23,18 +23,20 @@
             sortable
             searchable
           >{{ formatTime(props.row.task.date, 'll') }}</b-table-column>
-          <b-table-column
-            width="40"
-            field="task.start_at"
-            label="Start"
-            sortable
-          >{{ hoursFromTime(props.row.task.start_at) }}</b-table-column>
-          <b-table-column
-            width="40"
-            field="task.end_at"
-            label="End"
-            sortable
-          >{{ hoursFromTime(props.row.task.end_at) }}</b-table-column>
+          <b-table-column width="100" field="task.start_at" label="Start" sortable>
+            {{ formatTime(
+            dateTimeFromTime(props.row.task.start_at),
+            'LT',
+            {fromTz: conference.timezone.name}
+            ) }}
+          </b-table-column>
+          <b-table-column width="100" field="task.end_at" label="End" sortable>
+            {{ formatTime(
+            dateTimeFromTime(props.row.task.end_at),
+            'LT',
+            {fromTz: conference.timezone.name}
+            ) }}
+          </b-table-column>
           <b-table-column
             width="40"
             field="task.hours"
