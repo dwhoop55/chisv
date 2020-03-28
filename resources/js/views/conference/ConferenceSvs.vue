@@ -214,9 +214,9 @@
           <template>
             <b-tooltip
               type="is-light"
-              :label="formatTime(props.row.permission.created_at, 'lll', {tz:true}) "
+              :label="formatTime(props.row.permission.created_at, 'lll', {toTz:true}) "
               multilined
-            >{{ formatTime(props.row.permission.created_at, null, {fromNow: true, tz:true}) }}</b-tooltip>
+            >{{ formatTime(props.row.permission.created_at, null, {fromNow: true}) }}</b-tooltip>
           </template>
         </b-table-column>
         <b-table-column
