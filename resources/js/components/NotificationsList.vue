@@ -59,8 +59,6 @@ export default {
   },
 
   created() {
-    this.fetchNotifications();
-
     if (this.isModal) {
       const unregisterRouterGuard = this.$router.beforeEach(
         (to, from, next) => {
