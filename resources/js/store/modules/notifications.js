@@ -4,6 +4,7 @@ import { methods as mixins } from "@/mixins"
 const state = {
     notifications: [],
     lastFetch: new Date(0),
+    isLoading: false,
 };
 
 const getters = {
@@ -12,11 +13,14 @@ const getters = {
     hasUnread: (state, getters) => (getters.unread && getters.unread?.length > 0),
     numberUnread: (state, getters) => (parseInt(getters.unread?.length)),
     lastFetch: state => state.lastFetch,
+    isLoading: state => state.isLoading,
 };
 
 const actions = {
     async fetchNotifications({ commit, rootGetters, getters, state }, since = null) {
         var timestamp = getters.lastFetch.toMySqlDateTime();
+        commit('setIsLoading', true);
+
         if (since && since instanceof Date) {
             timestamp = since.toMySqlDateTime();
         }
@@ -32,17 +36,19 @@ const actions = {
                     newArray.sort((a, b) => b.created_at - a.created_at);
                     commit('setNotifications', newArray);
                     commit('setLastFetch', mixins.dateFromMySql(data.clearUntil));
+
                 }
             })
             .catch(error => {
                 console.error(error);
                 commit('setLastFetch', new Date(0));
-            })
+            }).finally(() => commit('setIsLoading', false))
 
     },
 };
 
 const mutations = {
+    setIsLoading: (state, bool) => state.isLoading = bool,
     setNotifications: (state, notifications) => state.notifications = notifications,
     setLastFetch: (state, date) => (state.lastFetch = date),
     markRead: (state, id) => {
