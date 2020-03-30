@@ -32,8 +32,13 @@
         <span v-else>Notifications</span>
       </b-navbar-item>
       <!-- Notifications for desktop -->
+      <!-- We need to use the notificationDropdownActive 'hack' to trigger
+      an update on the notification-list below. Without the times in the
+      component are not updated and those times are relative-->
       <b-navbar-dropdown
-        @mouseenter.native="fetchNotifications()"
+        :active.sync="notificationDropdownActive"
+        @mouseenter.native="notificationDropdownActive = true; fetchNotifications()"
+        @mouseleave.native="notificationDropdownActive = false"
         ref="notificationDropdown"
         class="is-hidden-touch"
         right
@@ -56,6 +61,7 @@
           />
         </template>
         <notifications-list
+          v-if="notificationDropdownActive"
           @show="showNotification($event)"
           :limit="limit"
           :style="notifications && notifications.length>0 ? 'width: 500px' : 'width: 220px'"
@@ -98,7 +104,8 @@ import PrivacyPolicyModalVue from "./modals/PrivacyPolicyModal.vue";
 export default {
   data() {
     return {
-      limit: 4
+      limit: 4,
+      notificationDropdownActive: false
     };
   },
 
@@ -114,8 +121,7 @@ export default {
     ...mapGetters("notifications", {
       hasUnread: "hasUnread",
       numberUnread: "numberUnread",
-      notifications: "notifications",
-      isLoadingNotifications: "isLoading"
+      notifications: "notifications"
     })
   },
 
