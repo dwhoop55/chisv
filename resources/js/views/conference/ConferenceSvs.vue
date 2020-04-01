@@ -271,12 +271,38 @@
             Study Program:
             {{ props.row.degree }}
           </div>
+
           <div v-if="props.row.email">
+            E-Mail:
             <a
               @click="ignoreNextToggleClick=true"
               :href="'mailto:' + props.row.email"
             >{{ props.row.email }}</a>
           </div>
+
+          <div v-if="props.row.past_conferences">
+            Attended conferences:
+            <b-taglist>
+              <b-tag
+                type="is-light"
+                v-for="(conference, index) in props.row.past_conferences"
+                :key="index"
+              >{{ conference }}</b-tag>
+            </b-taglist>
+          </div>
+          <div v-else>Did not attend conferences yet</div>
+
+          <div v-if="props.row.past_conferences_sv">
+            Attended conferences as SV:
+            <b-taglist>
+              <b-tag
+                type="is-light"
+                v-for="(conference, index) in props.row.past_conferences_sv"
+                :key="index"
+              >{{ conference }}</b-tag>
+            </b-taglist>
+          </div>
+          <div v-else>Did not attend conferences as SV yet</div>
         </div>
 
         <b-field />

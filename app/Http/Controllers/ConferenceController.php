@@ -920,6 +920,9 @@ class ConferenceController extends Controller
                     );
                     return $safe;
                 });
+
+                $safe['past_conferences'] = $user->past_conferences;
+                $safe['past_conferences_sv'] = $user->past_conferences_sv;
             }
 
             if ($showMore) {
