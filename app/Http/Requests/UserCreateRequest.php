@@ -38,8 +38,8 @@ class UserCreateRequest extends FormRequest
             'timezone_id' => ['required', 'integer', 'exists:timezones,id'],
             'locale_id' => ['required', 'integer', 'exists:locales,id'],
 
-            'past_conferences' => ['nullable', 'string'],
-            'past_conferences_sv' => ['nullable', 'string'],
+            'past_conferences' => ['nullable', 'array'],
+            'past_conferences_sv' => ['nullable', 'array'],
 
             'password' => ['required', 'string', 'min:6', 'confirmed']
         ];

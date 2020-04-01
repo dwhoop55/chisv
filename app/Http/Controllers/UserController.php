@@ -105,6 +105,8 @@ class UserController extends Controller
                 'id',
                 'firstname',
                 'lastname',
+                'past_conferences',
+                'past_conferences_sv',
                 'timezone_id',
                 'locale_id',
             ]);

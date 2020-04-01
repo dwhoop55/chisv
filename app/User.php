@@ -38,6 +38,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'past_conferences' => 'array',
+        'past_conferences_sv' => 'array',
     ];
 
     /**

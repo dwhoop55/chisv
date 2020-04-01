@@ -110,7 +110,7 @@
           :message="form.errors.get('past_conferences')"
           label="Past conferences you have attended"
         >
-          <b-input v-model="form.past_conferences"></b-input>
+          <b-taginput icon="label" :attached="true" v-model="form.past_conferences"></b-taginput>
         </b-field>
         <b-field
           expanded
@@ -118,7 +118,7 @@
           :message="form.errors.get('past_conferences_sv')"
           label="Past conferences you have attended as SV"
         >
-          <b-input v-model="form.past_conferences_sv"></b-input>
+          <b-taginput icon="label" :attached="true" v-model="form.past_conferences_sv"></b-taginput>
         </b-field>
       </b-field>
 

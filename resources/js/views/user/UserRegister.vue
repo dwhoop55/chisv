@@ -86,7 +86,7 @@
           :message="form.errors.get('past_conferences')"
           label="Past conferences you have attended"
         >
-          <b-input v-model="form.past_conferences"></b-input>
+          <b-taginput icon="label" :attached="true" v-model="form.past_conferences"></b-taginput>
         </b-field>
         <b-field
           expanded
@@ -94,7 +94,7 @@
           :message="form.errors.get('past_conferences_sv')"
           label="Past conferences you have attended as SV"
         >
-          <b-input v-model="form.past_conferences_sv"></b-input>
+          <b-taginput icon="label" :attached="true" v-model="form.past_conferences_sv"></b-taginput>
         </b-field>
       </b-field>
 
@@ -134,15 +134,17 @@
 
     <b-loading animation :is-full-page="true" :active.sync="form.busy"></b-loading>
 
-    <b-modal :can-cancel="false" :active.sync="registerSuccess">
-      <div class="box">
-        <b-message type="is-success" has-icon>
-          <h1 class="title">Welcome on board!</h1>
-          <h2 class="subtitle">You can now see all conferences and enroll. Happy SV-ing!</h2>
-        </b-message>
-        <b-field grouped position="is-right">
-          <b-button type="is-success" size="is-large" @click="goTo('/login')">Login</b-button>
-        </b-field>
+    <b-modal :has-modal-card="true" :can-cancel="false" :active.sync="registerSuccess">
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Welcome on board!</p>
+        </header>
+        <section class="modal-card-body">
+          <p class="is-size-5">You can now see all conferences and enroll. Happy SV-ing!</p>
+        </section>
+        <footer class="modal-card-foot">
+          <b-button type="is-success" @click="goTo('/login')">Continue to login</b-button>
+        </footer>
       </div>
     </b-modal>
   </section>
@@ -161,8 +163,8 @@ export default {
         email: "",
         languages: [],
         degree_id: null,
-        past_conferences: "",
-        past_conferences_sv: "",
+        past_conferences: [],
+        past_conferences_sv: [],
         shirt_id: null,
         location: {},
         university: {},

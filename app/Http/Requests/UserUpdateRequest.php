@@ -41,8 +41,8 @@ class UserUpdateRequest extends FormRequest
             'locale_id' => ['integer', 'exists:locales,id'],
 
 
-            'past_conferences' => ['nullable', 'string'],
-            'past_conferences_sv' => ['nullable', 'string'],
+            'past_conferences' => ['nullable', 'array'],
+            'past_conferences_sv' => ['nullable', 'array'],
 
             'password' => ['string', 'min:6', 'confirmed']
         ];

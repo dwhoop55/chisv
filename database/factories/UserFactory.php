@@ -37,8 +37,8 @@ $factory->define(App\User::class, function (Faker $faker) {
         'university_fallback' => $faker->optional($weight = 0.5)->company(),
         'shirt_id' => $faker->boolean() ? $faker->numberBetween(1, 6) : $faker->numberBetween(11, 17),
         'degree_id' => $faker->numberBetween(1, 8),
-        'past_conferences' => $faker->text(30),
-        'past_conferences_sv' => $faker->text(30),
+        'past_conferences' => $faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $faker->numberBetween(1, 6)),
+        'past_conferences_sv' => $faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $faker->numberBetween(1, 6)),
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
