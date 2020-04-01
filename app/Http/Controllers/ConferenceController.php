@@ -824,7 +824,7 @@ class ConferenceController extends Controller
             ->join('users', 'permissions.user_id', '=', 'users.id')
             // We have to join enrollment_forms to make it sortable
             ->leftJoin('enrollment_forms', 'permissions.enrollment_form_id', '=', 'enrollment_forms.id')
-            // We have to join universities to make it searchable
+            // We have to join universities to make it sortable
             ->leftJoin('universities', 'users.university_id', '=', 'universities.id')
             // Stay bond to this $conference and 'sv' state
             ->where('conference_id', $conference->id)
