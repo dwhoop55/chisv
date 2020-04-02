@@ -2,6 +2,8 @@
   <div>
     <div class="is-flex" style="justify-content: flex-end;">
       <b-button
+        v-if="user.id == authUser.id"
+        class="is-absolute is-pinned-t is-pinned-r"
         size="is-small"
         type="is-danger"
         outlined
@@ -72,14 +74,14 @@
       <b-field
         :type="{ 'is-danger': form.errors.has('location') }"
         :message="form.errors.get('location')"
-        label="City (closest)"
+        label="Home Country"
       >
         <location-picker v-model="form.location"></location-picker>
       </b-field>
 
       <b-field
-        :type="{ 'is-danger': form.errors.has('university') }"
-        :message="form.errors.get('university')"
+        :type="{ 'is-danger': form.errors.has('university.name') }"
+        :message="form.errors.get('university.name')"
         label="University"
       >
         <university-picker v-model="form.university"></university-picker>
@@ -110,7 +112,12 @@
           :message="form.errors.get('past_conferences')"
           label="Past conferences you have attended"
         >
-          <b-taginput icon="label" :attached="true" v-model="form.past_conferences"></b-taginput>
+          <b-taginput
+            placeholder="Use one tag per conference"
+            icon="tag"
+            :attached="true"
+            v-model="form.past_conferences"
+          ></b-taginput>
         </b-field>
         <b-field
           expanded
@@ -118,7 +125,12 @@
           :message="form.errors.get('past_conferences_sv')"
           label="Past conferences you have attended as SV"
         >
-          <b-taginput icon="label" :attached="true" v-model="form.past_conferences_sv"></b-taginput>
+          <b-taginput
+            placeholder="Use one tag per conference"
+            icon="tag"
+            :attached="true"
+            v-model="form.past_conferences_sv"
+          ></b-taginput>
         </b-field>
       </b-field>
 
@@ -148,7 +160,6 @@ export default {
   data() {
     return {
       form: new Form({
-        id: this.user.id,
         firstname: this.user.firstname,
         lastname: this.user.lastname,
         email: this.user.email,
@@ -192,7 +203,7 @@ export default {
         type: "is-success",
         hasIcon: true
       });
-      // This will actually resetting the vuex store in memory
+      // This will actually reset the vuex store in memory
       window.location.href = "/";
     },
     ...mapActions("auth", {

@@ -4,6 +4,7 @@ const state = {
     states: null,
     roles: null,
     locales: null,
+    countries: null,
 };
 
 const getters = {
@@ -19,6 +20,7 @@ const getters = {
     states: state => state.states,
     roles: state => state.roles,
     locales: state => state.locales,
+    countries: state => state.countries,
 };
 
 const actions = {
@@ -33,6 +35,10 @@ const actions = {
     async fetchLocales({ commit }) {
         const response = await api.getLocales();
         commit('setLocales', response.data);
+    },
+    async fetchCountries({ commit }) {
+        const response = await api.getCountries();
+        commit('setCountries', response.data);
     }
 };
 
@@ -40,6 +46,7 @@ const mutations = {
     setStates: (state, states) => (state.states = states),
     setRoles: (state, roles) => (state.roles = roles),
     setLocales: (state, locales) => (state.locales = locales),
+    setCountries: (state, countries) => (state.countries = countries),
 };
 
 export default {

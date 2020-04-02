@@ -5,9 +5,9 @@
       :data="filteredTags"
       autocomplete
       field="name"
-      icon="label"
       :attached="true"
-      placeholder="Which language(s) do you speak?"
+      icon="tag"
+      placeholder="Pick your spoken languages"
       @input="$emit('input', $event)"
       v-debounce:100ms="getLanguage"
       :debounce-events="'typing'"

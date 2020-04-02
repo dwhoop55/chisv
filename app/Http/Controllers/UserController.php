@@ -164,7 +164,11 @@ class UserController extends Controller
             ])
             ->first();
 
-        $user->location = $user->city->location();
+        $user->location = [
+            "country" => $user->country ?? null,
+            "region" => $user->region ?? null,
+            "city" => $user->city ?? null,
+        ];
 
         return collect($user)->except([
             'email_verified_at', 'created_at',
@@ -205,10 +209,12 @@ class UserController extends Controller
             $data['password'] = Hash::make($data['password']);
         }
 
-        // Prepare city
-        if (isset($request->location["city"])) {
-            $data['city_id'] = $request->location["city"]["id"];
+        // Prepare location
+        if (isset($request->location["country"]["id"])) {
+            $data['country_id'] = $request->location["country"]["id"];
         }
+        $data['region_id'] = $request->location["region"]["id"] ?? null;
+        $data['city_id'] = $request->location["city"]["id"] ?? null;
 
         // Prepare university
         if (isset($request->university["id"])) {

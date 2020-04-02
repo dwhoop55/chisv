@@ -40,7 +40,7 @@
       <b-field
         :type="{ 'is-danger': form.errors.has('location') }"
         :message="form.errors.get('location')"
-        label="City (closest)"
+        label="Home Country"
       >
         <location-picker v-model="form.location"></location-picker>
       </b-field>
@@ -86,7 +86,12 @@
           :message="form.errors.get('past_conferences')"
           label="Past conferences you have attended"
         >
-          <b-taginput icon="label" :attached="true" v-model="form.past_conferences"></b-taginput>
+          <b-taginput
+            placeholder="Use one tag per conference"
+            icon="tag"
+            :attached="true"
+            v-model="form.past_conferences"
+          ></b-taginput>
         </b-field>
         <b-field
           expanded
@@ -94,7 +99,12 @@
           :message="form.errors.get('past_conferences_sv')"
           label="Past conferences you have attended as SV"
         >
-          <b-taginput icon="label" :attached="true" v-model="form.past_conferences_sv"></b-taginput>
+          <b-taginput
+            placeholder="Use one tag per conference"
+            icon="tag"
+            :attached="true"
+            v-model="form.past_conferences_sv"
+          ></b-taginput>
         </b-field>
       </b-field>
 

@@ -24,9 +24,9 @@ class UserCreateRequest extends FormRequest
             'languages.*.id' => ['required_with:languages', 'exists:languages,id'],
 
             'location' => ['required'],
-            'location.country.id' => ['required', 'exists:countries,id'],
-            'location.region.id' => ['required', 'exists:regions,id'],
-            'location.city.id' => ['required', 'exists:cities,id'],
+            'location.country.id' => ['required_with:location', 'exists:countries,id'],
+            'location.region.id' => ['nullable', 'exists:regions,id'],
+            'location.city.id' => ['nullable', 'exists:cities,id'],
 
             'university' => ['required'],
             'university.name' => ['required', 'string'],
@@ -71,7 +71,8 @@ class UserCreateRequest extends FormRequest
             'lastname.*' => 'Please type your lastname',
             'email.unique' => 'This address is taken. Do you already have an account?',
             'languages.*' => 'You need to at least choose one language',
-            'location.*' => 'Please choose the city closest to you. We extract region and country from it.',
+            'location.*' => 'Please pick your home country',
+            'location.country.id' => 'Please choose a country from the list',
             'university.*' => 'Please pick your university. If it\'s not in the list, type its name',
             'timezone.*' => 'Please pick your display timezone. Date and time will be adapted to the chosen timezone.',
             'degree_id.*' => 'Choose your current degree program.',

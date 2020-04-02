@@ -2,6 +2,7 @@
 
 use App\User;
 use App\City;
+use App\Country;
 use App\University;
 use App\Language;
 use App\Degree;
@@ -26,9 +27,43 @@ Route::group(['prefix' => 'v1'], function () {
 
     //// GUEST ////
     //// Search ////
-    Route::get('location/name/{pattern}', function ($pattern) {
+    Route::get('/country', function () {
+        return Country::all();
+    });;
+    Route::get('country/{country}/city/{pattern?}', function (Country $country, $pattern = "") {
+        $pattern = trim($pattern);
         $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
-        $matches = City::where('name', 'LIKE', $pattern . '%')->orWhere('name', 'LIKE', $unUmlautedPattern . '%')->with(['country', 'region'])->orderBy('name', 'asc')->get(['id', 'name', 'country_id', 'region_id']);
+        $matches = City
+            // Example:
+            //             where
+            //   "country_id" = 233
+            //   and (
+            //     "name" LIKE '%springs%'
+            //     and "name" LIKE '%west%'
+            //     and "name" LIKE '%baden%'
+            //     or (
+            //       "name" LIKE '%springs%'
+            //       and "name" LIKE '%west%'
+            //       and "name" LIKE '%baden%'
+            //     )
+            //   )
+            ::where('country_id', $country->id)
+            ->where(function ($query) use ($pattern, $unUmlautedPattern) {
+                $patterns = explode(' ', $pattern);
+                foreach ($patterns as $pattern) {
+                    $query->where('name', 'LIKE', '%' . $pattern . '%');
+                }
+                $query->orWhere(function ($query) use ($unUmlautedPattern) {
+                    $unUmlautedPatterns = explode(' ', $unUmlautedPattern);
+                    foreach ($unUmlautedPatterns as $unUmlautedPattern) {
+                        $query->where('name', 'LIKE', '%' . $unUmlautedPattern . '%');
+                    }
+                });
+            })
+            ->with(['country', 'region'])
+            ->orderBy('name', 'asc')
+            ->limit(1000)
+            ->get(['id', 'name', 'country_id', 'region_id']);
         $locations = collect();
         foreach ($matches as $match) {
             $locations->push($match->location());

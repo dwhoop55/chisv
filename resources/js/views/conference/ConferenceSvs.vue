@@ -266,7 +266,8 @@
           <label class="label">Person</label>
           Location:
           {{ props.row.city ? props.row.city + ", " : "" }}
-          {{ props.row.region }}, {{ props.row.country }}
+          {{ props.row.region ? props.row.region + ", " : '' }}
+          {{ props.row.country ? props.row.country : '' }}
           <div v-if="props.row.degree">
             Study Program:
             {{ props.row.degree }}

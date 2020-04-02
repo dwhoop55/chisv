@@ -66,6 +66,9 @@ export default {
     getLocales() {
         return axios.get("locale");
     },
+    getCountries() {
+        return axios.get("country");
+    },
     getStates() {
         return axios.get("state");
     },
@@ -81,8 +84,8 @@ export default {
     getLanguage(name) {
         return axios.get(`language/name/${name}`);
     },
-    getLocation(name) {
-        return axios.get(`location/name/${name}`);
+    getCityInCountry(countryId, cityName) {
+        return axios.get(`country/${countryId}/city/${cityName}`);
     },
     getUniversity(name) {
         return axios.get(`university/name/${name}`);

@@ -864,8 +864,8 @@ class ConferenceController extends Controller
             $safe['permission']->state->id = $permission->state->id;
             $safe['permission']->state->name = $permission->state->name;
             $safe['permission']->state->description = $permission->state->description;
-            $safe['country'] = $user->country->name;
-            $safe['region'] = $user->region->name;
+            $safe['country'] = $user->country ? $user->country->name : null;
+            $safe['region'] = $user->region ? $user->region->name : null;
 
             // Add statistics for chair/captain or if the user requesting
             // the data is the user which is currently processed
@@ -930,7 +930,7 @@ class ConferenceController extends Controller
                 $conference = $permission->conference;
                 $safe['email'] = $user->email;
                 $safe['degree'] = $user->degree->name;
-                $safe['city'] = $user->city ? $user->city->name : "";
+                $safe['city'] = $user->city ? $user->city->name : '';
                 $safe['permission']->id = $permission->id;
                 $safe['permission']->lottery_position = $permission->lottery_position;
                 $safe['permission']->created_at = $permission->created_at;
