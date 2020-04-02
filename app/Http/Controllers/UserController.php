@@ -48,7 +48,7 @@ class UserController extends Controller
                 'permissions.state:id,name,description',
                 'permissions.conference:id,name,key',
             ])
-            ->select(['id', 'firstname', 'lastname', 'email', 'university_id'])
+            ->select(['id', 'firstname', 'lastname', 'email', 'university_id', 'university_fallback'])
             ->orderBy(request()->sort_by, request()->sort_order);
 
         if ($universityId) {
