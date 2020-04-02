@@ -247,6 +247,12 @@ class UserController extends Controller
             }
         }
 
+        $user->location = [
+            "country" => $user->country ?? null,
+            "region" => $user->region ?? null,
+            "city" => $user->city ?? null,
+        ];
+
         return ["result" => $user->loadMissing([
             'avatar', 'permissions',
             'permissions.conference.artwork',
