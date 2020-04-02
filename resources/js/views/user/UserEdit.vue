@@ -52,6 +52,7 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import PermissionModalVue from "../../components/modals/PermissionModal.vue";
 
 export default {
+  name: "UserEdit",
   computed: {
     activePermissions: function() {
       return this.user.permissions.filter(function(permission) {
@@ -78,6 +79,9 @@ export default {
         (this.userIs("admin") || this.userIs("chair"))
       );
     },
+    routeId() {
+      return this.$route.params.id;
+    },
     ...mapGetters("profile", ["tab"]),
     ...mapGetters("auth", { userIs: "userIs", authUser: "user" })
   },
@@ -85,13 +89,21 @@ export default {
   data() {
     return {
       user: null,
-      id: this.$route.params.id,
       isLoading: true
     };
   },
 
   created() {
-    this.getUser();
+    // Register a watcher to keep the user model up to date
+    this.$watch(
+      "routeId",
+      function(newVal, oldVal) {
+        this.getUser(newVal);
+      },
+      {
+        immediate: true
+      }
+    );
   },
 
   methods: {
@@ -118,11 +130,14 @@ export default {
         }
       });
     },
-    getUser() {
+    getUser(id) {
       this.isLoading = true;
       api
-        .getUser(this.id)
-        .then(({ data }) => (this.user = data))
+        .getUser(id)
+        .then(({ data }) => {
+          this.user = data;
+          this.$forceUpdate();
+        })
         .catch(error => {
           if (error.response.status == 403) {
             this.$buefy.notification.open({

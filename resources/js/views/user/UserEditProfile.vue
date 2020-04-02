@@ -159,23 +159,35 @@ export default {
   },
   data() {
     return {
-      form: new Form({
-        firstname: this.user.firstname,
-        lastname: this.user.lastname,
-        email: this.user.email,
-        languages: this.user.languages,
-        degree_id: this.user.degree_id,
-        past_conferences: this.user.past_conferences,
-        past_conferences_sv: this.user.past_conferences_sv,
-        shirt_id: this.user.shirt_id,
-        location: this.user.location,
-        university: this.user.university
-          ? this.user.university
-          : { name: this.user.university_fallback },
-        timezone_id: this.user.timezone_id,
-        locale_id: this.user.locale_id
-      })
+      form: null
     };
+  },
+
+  created() {
+    this.$watch(
+      "user",
+      function(newVal, oldVal) {
+        this.form = new Form({
+          firstname: this.user.firstname,
+          lastname: this.user.lastname,
+          email: this.user.email,
+          languages: this.user.languages,
+          degree_id: this.user.degree_id,
+          past_conferences: this.user.past_conferences,
+          past_conferences_sv: this.user.past_conferences_sv,
+          shirt_id: this.user.shirt_id,
+          location: this.user.location,
+          university: this.user.university
+            ? this.user.university
+            : { name: this.user.university_fallback },
+          timezone_id: this.user.timezone_id,
+          locale_id: this.user.locale_id
+        });
+      },
+      {
+        immediate: true
+      }
+    );
   },
 
   methods: {
