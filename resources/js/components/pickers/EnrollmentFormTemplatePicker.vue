@@ -1,9 +1,18 @@
 <template>
   <section>
-    <p>Available types: &lt;boolean&gt;,&lt;string&gt;,&lt;integer&gt;</p>
-    <p>Contact chisv admins for a customized form</p>
+    <p>
+      Available types for all forms:
+      <strong>&lt;boolean&gt;,&lt;string&gt;,&lt;integer&gt;</strong>
+    </p>
     <div v-if="enrollmentFormTemplates.length > 0">
-      <p>Preview: {{ selectedEnrollmentFormTemplate.name }} ({{ selectedEnrollmentFormTemplate.id }})</p>
+      <p>
+        Name of form:
+        <strong>{{ selectedEnrollmentFormTemplate.name }} ({{ selectedEnrollmentFormTemplate.id }})</strong>
+      </p>
+      <p v-if="parsedEnrollmentFormTemplate.agreement">
+        Agreement rendered above 'Agree and Enroll' button:
+        <strong>{{ parsedEnrollmentFormTemplate.agreement }}</strong>
+      </p>
       <enrollment-form-summary
         class="box"
         :value="selectedEnrollmentFormTemplate"
@@ -54,6 +63,9 @@ export default {
   },
 
   computed: {
+    parsedEnrollmentFormTemplate() {
+      return this.parseEnrollmentForm(this.selectedEnrollmentFormTemplate);
+    },
     selectedEnrollmentFormTemplate() {
       for (
         let index = 0;

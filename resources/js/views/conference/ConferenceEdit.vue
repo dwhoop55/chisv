@@ -196,7 +196,7 @@
 
       <b-field
         expanded
-        label="Active Enrollment Form"
+        label="Active Enrollment Form - Contact chisv admins for a customized form"
         :type="{ 'is-danger': form.errors.has('enrollment_form_id') }"
         :message="form.errors.get('enrollment_form_id')"
       >
