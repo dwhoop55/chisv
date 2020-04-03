@@ -1,7 +1,7 @@
 <template>
   <section>
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field
           expanded
           :type="{ 'is-danger': form.errors.has('firstname') }"
@@ -29,6 +29,8 @@
         <b-input required icon="email" v-model="form.email"></b-input>
       </b-field>
 
+      <b-field expanded>&nbsp;</b-field>
+
       <b-field
         :type="{ 'is-danger': form.errors.has('languages') }"
         :message="form.errors.get('languages')"
@@ -53,33 +55,53 @@
         <university-picker v-model="form.university"></university-picker>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('timezone_id') }"
-        :message="form.errors.get('timezone_id')"
-        label="Display dates in this timezone"
-      >
-        <timezone-picker v-model="form.timezone_id"></timezone-picker>
+      <b-field expanded>&nbsp;</b-field>
+
+      <b-field grouped group-multiline>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('timezone_id') }"
+          :message="form.errors.get('timezone_id')"
+          label="Display dates in this timezone"
+        >
+          <timezone-picker v-model="form.timezone_id"></timezone-picker>
+        </b-field>
+
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('locale_id') }"
+          :message="form.errors.get('locale_id')"
+          label="Preferred locale"
+        >
+          <b-select expanded v-model="form.locale_id">
+            <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+          </b-select>
+        </b-field>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('locale_id') }"
-        :message="form.errors.get('locale_id')"
-        label="Preferred locale"
-      >
-        <b-select v-model="form.locale_id">
-          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
-        </b-select>
+      <b-field grouped group-multiline>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('degree_id') }"
+          :message="form.errors.get('degree_id')"
+          label="Degree program"
+        >
+          <degree-picker v-model="form.degree_id"></degree-picker>
+        </b-field>
+
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('shirt_id') }"
+          :message="form.errors.get('shirt_id')"
+          label="T-Shirt"
+        >
+          <shirt-picker v-model="form.shirt_id"></shirt-picker>
+        </b-field>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('degree_id') }"
-        :message="form.errors.get('degree_id')"
-        label="Degree program"
-      >
-        <degree-picker v-model="form.degree_id"></degree-picker>
-      </b-field>
+      <b-field expanded>&nbsp;</b-field>
 
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field
           expanded
           :type="{ 'is-danger': form.errors.has('past_conferences') }"
@@ -108,27 +130,21 @@
         </b-field>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('shirt_id') }"
-        :message="form.errors.get('shirt_id')"
-        label="T-Shirt"
-      >
-        <shirt-picker v-model="form.shirt_id"></shirt-picker>
-      </b-field>
+      <b-field expanded>&nbsp;</b-field>
 
-      <b-field label="Password" :message="form.errors.get('password')">
-        <b-field grouped :type="{ 'is-danger': form.errors.has('password') }">
+      <b-field grouped group-multiline>
+        <b-field expanded label="Password">
           <b-input
-            expanded
             type="password"
             v-model="form.password"
             password-reveal
             placeholder="Your password"
             required
           ></b-input>
+        </b-field>
 
+        <b-field expanded label="Confirm">
           <b-input
-            expanded
             type="password"
             v-model="form.password_confirmation"
             password-reveal
@@ -137,6 +153,9 @@
           ></b-input>
         </b-field>
       </b-field>
+
+      <b-field expanded>&nbsp;</b-field>
+
       <b-field grouped position="is-right">
         <button :disabled="form.busy" type="submit" class="button is-primary">Sign up</button>
       </b-field>

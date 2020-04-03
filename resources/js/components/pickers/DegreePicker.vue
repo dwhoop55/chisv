@@ -1,6 +1,7 @@
 // v-model safe
 <template>
   <b-select
+    expanded
     required
     :loading="isLoading"
     :value="value"

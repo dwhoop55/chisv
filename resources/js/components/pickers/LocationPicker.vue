@@ -1,7 +1,8 @@
 // v-model safe
 <template>
-  <b-field grouped>
+  <b-field grouped group-multiline>
     <b-select
+      expanded
       v-if="countries"
       @input="onCountryChange($event)"
       :value="country"
@@ -11,8 +12,8 @@
     </b-select>
 
     <b-autocomplete
+      :disabled="!country"
       expanded
-      v-if="country"
       :value="city"
       :data="rows"
       placeholder="City (optional)"

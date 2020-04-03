@@ -12,7 +12,7 @@
     </div>
 
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
-      <div class="is-flex">
+      <b-field grouped group-multiline>
         <b-field>
           <image-component
             v-if="user"
@@ -23,9 +23,10 @@
           ></image-component>
         </b-field>
 
-        <div class="has-padding-l-5" style="flex-grow:2">
-          <div class="is-block">
+        <b-field expanded class="is-block">
+          <div class="control">
             <b-field
+              class="control"
               expanded
               :type="{ 'is-danger': form.errors.has('firstname') }"
               :message="form.errors.get('firstname')"
@@ -33,7 +34,9 @@
             >
               <b-input required v-model="form.firstname"></b-input>
             </b-field>
+          </div>
 
+          <div class="control">
             <b-field
               expanded
               :type="{ 'is-danger': form.errors.has('lastname') }"
@@ -42,7 +45,9 @@
             >
               <b-input required v-model="form.lastname"></b-input>
             </b-field>
+          </div>
 
+          <div class="control">
             <b-field
               expanded
               :type="{ 'is-danger': form.errors.has('email') }"
@@ -52,8 +57,10 @@
               <b-input required v-model="form.email"></b-input>
             </b-field>
           </div>
-        </div>
-      </div>
+        </b-field>
+      </b-field>
+
+      <b-field expanded>&nbsp;</b-field>
 
       <b-field
         :type="{ 'is-danger': form.errors.has('languages') }"
@@ -63,12 +70,24 @@
         <language-picker v-model="form.languages"></language-picker>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('degree_id') }"
-        :message="form.errors.get('degree_id')"
-        label="Degree program"
-      >
-        <degree-picker v-model="form.degree_id"></degree-picker>
+      <b-field grouped group-multiline>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('degree_id') }"
+          :message="form.errors.get('degree_id')"
+          label="Degree program"
+        >
+          <degree-picker v-model="form.degree_id"></degree-picker>
+        </b-field>
+
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('shirt_id') }"
+          :message="form.errors.get('shirt_id')"
+          label="T-Shirt"
+        >
+          <shirt-picker v-model="form.shirt_id"></shirt-picker>
+        </b-field>
       </b-field>
 
       <b-field
@@ -87,25 +106,33 @@
         <university-picker v-model="form.university"></university-picker>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('timezone_id') }"
-        :message="form.errors.get('timezone_id')"
-        label="Timezone your are currently in"
-      >
-        <timezone-picker v-model="form.timezone_id"></timezone-picker>
+      <b-field expanded>&nbsp;</b-field>
+
+      <b-field grouped group-multiline>
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('timezone_id') }"
+          :message="form.errors.get('timezone_id')"
+          label="Timezone your are currently in"
+        >
+          <timezone-picker v-model="form.timezone_id"></timezone-picker>
+        </b-field>
+
+        <b-field
+          expanded
+          :type="{ 'is-danger': form.errors.has('locale_id') }"
+          :message="form.errors.get('locale_id')"
+          label="Preferred locale"
+        >
+          <b-select expanded v-model="form.locale_id">
+            <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+          </b-select>
+        </b-field>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('locale_id') }"
-        :message="form.errors.get('locale_id')"
-        label="Preferred locale"
-      >
-        <b-select v-model="form.locale_id">
-          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
-        </b-select>
-      </b-field>
+      <b-field expanded>&nbsp;</b-field>
 
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field
           expanded
           :type="{ 'is-danger': form.errors.has('past_conferences') }"
@@ -134,13 +161,7 @@
         </b-field>
       </b-field>
 
-      <b-field
-        :type="{ 'is-danger': form.errors.has('shirt_id') }"
-        :message="form.errors.get('shirt_id')"
-        label="T-Shirt"
-      >
-        <shirt-picker v-model="form.shirt_id"></shirt-picker>
-      </b-field>
+      <b-field expanded>&nbsp;</b-field>
 
       <button :disabled="form.busy" type="submit" class="button is-success is-pulled-right">Apply</button>
     </form>
