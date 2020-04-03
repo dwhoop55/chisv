@@ -64,7 +64,7 @@ class EnrollmentForm extends Model
         }
 
         foreach ($fields as $key => $field) {
-            if ($field->type == 'boolean') {
+            if ($field->type == 'boolean' || $field->type == 'integer') {
                 $value += $field->value * $weights[$key];
             }
         }

@@ -162,6 +162,9 @@ let methods = {
                 case "string":
                     vform[key] = value.value ? value.value : "";
                     break;
+                case "integer":
+                    vform[key] = value.value ? value.value : 0;
+                    break;
             }
         }
 

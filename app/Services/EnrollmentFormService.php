@@ -75,6 +75,10 @@ class EnrollmentFormService
                 case 'boolean':
                     $body['fields'][$key]['value'] = $misc->boolean();
                     break;
+                case 'integer':
+                    $body['fields'][$key]['value'] = $misc
+                        ->numberBetween($body['fields'][$key]['range'][0], $body['fields'][$key]['range'][1]);
+                    break;
                 default:
                     break;
             }

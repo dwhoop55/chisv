@@ -29,6 +29,17 @@
           v-model="value.vform[key]"
           :required="field.required"
         ></b-input>
+
+        <b-numberinput
+          v-else-if="field.type == 'integer'"
+          :min="field.range[0] !== undefined ? field.range[0] : 0"
+          :max="field.range[1] !== undefined ? field.range[1] : 999"
+          :controls="!disabled"
+          :disabled="disabled"
+          class="has-margin-l-6"
+          v-model="value.vform[key]"
+          :required="field.required"
+        />
       </b-field>
     </div>
   </section>

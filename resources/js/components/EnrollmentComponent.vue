@@ -87,7 +87,7 @@
               :disabled="form && form.vform && form.vform.busy"
               @click="enroll"
               class="card-footer-item is-success"
-            >Agree and Enroll</a>
+            >{{ form && form.agreement ? 'Agree and ' : ''}}Enroll</a>
           </footer>
         </form>
       </b-collapse>

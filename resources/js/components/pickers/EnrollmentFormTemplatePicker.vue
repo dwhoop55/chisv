@@ -1,5 +1,7 @@
 <template>
   <section>
+    <p>Available types: &lt;boolean&gt;,&lt;string&gt;,&lt;integer&gt;</p>
+    <p>Contact chisv admins for a customized form</p>
     <div v-if="enrollmentFormTemplates.length > 0">
       <p>Preview: {{ selectedEnrollmentFormTemplate.name }} ({{ selectedEnrollmentFormTemplate.id }})</p>
       <enrollment-form-summary

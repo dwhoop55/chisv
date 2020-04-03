@@ -27,17 +27,19 @@ class EnrollmentFormsTableSeeder extends Seeder
                 ),
                 'attended_before' =>
                 array(
-                    'type' => 'boolean',
-                    'description' => 'Have you attended this conference before?',
-                    'value' => true,
+                    'type' => 'integer',
+                    'range' => [0, 99],
+                    'description' => 'How many times have you attended this conference before?',
+                    'value' => 0,
                     'weight' => 0,
                     'required' => true,
                 ),
                 'sved_before' =>
                 array(
-                    'type' => 'boolean',
-                    'description' => 'Have you been an SV at this conference before?',
-                    'value' => false,
+                    'type' => 'integer',
+                    'range' => [0, 99],
+                    'description' => 'How many times have you been an SV at this conference before?',
+                    'value' => 0,
                     'weight' => 0,
                     'required' => true,
                 ),

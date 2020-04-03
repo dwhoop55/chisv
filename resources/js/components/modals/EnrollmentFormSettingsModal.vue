@@ -6,6 +6,7 @@
     <section class="modal-card-body">
       <p>These weights are sent to the backend. Next, form weights get recalculated. After that the table reloads with the new values</p>
       <p>The template these values are loaded from is not changed.</p>
+      <p>The value of a field (what the SV entered) is multiplied by the weight that you enter below. You may specify negative weights. All weights are summed up.</p>
       <br />
       <enrollment-form-weight-settings v-model="value"></enrollment-form-weight-settings>
     </section>
