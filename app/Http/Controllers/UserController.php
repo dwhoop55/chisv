@@ -257,7 +257,8 @@ class UserController extends Controller
             'avatar', 'permissions',
             'permissions.conference.artwork',
             'permissions.conference', 'permissions.role',
-            'permissions.state'
+            'permissions.state',
+            'university'
         ]), "message" => "User updated"];
     }
 
