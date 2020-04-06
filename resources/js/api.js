@@ -178,6 +178,9 @@ export default {
     updateTask(vform, id) {
         return vform.put(`task/${id}`);
     },
+    updatePastConferences(userId, array, type) {
+        return axios.put(`user/${userId}`, { [type]: array });
+    },
 
     deleteAllTasksOfConference(key, date) {
         return axios.delete(`conference/${key}/tasks/${date}`);

@@ -78,6 +78,9 @@
         <form @submit.prevent="enroll">
           <div class="card-content">
             <div class="content">
+              <p>You may adjust these fields from your profile right here</p>
+              <past-conferences-component></past-conferences-component>
+              <hr />
               <enrollment-form v-if="form" v-model="form"></enrollment-form>
               <p class="notification is-warning" v-if="form && form.agreement">{{ form.agreement }}</p>
             </div>

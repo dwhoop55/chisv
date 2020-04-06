@@ -71,6 +71,17 @@ const getters = {
 };
 
 const actions = {
+    async updatePastConferences({ commit, state }, { array, type }) {
+        return new Promise((resolve, reject) => {
+            api.updatePastConferences(state.user.id, array, type)
+                .then(({ data }) => {
+                    // Update successful, update store
+                    commit('setUser', data.result);
+                    resolve();
+                })
+                .catch(error => reject(error));
+        });
+    },
     async resetStore() {
         return new Promise((resolve, reject) => {
             if (localStorage.removeItem("vuex")) {
