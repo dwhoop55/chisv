@@ -6,7 +6,7 @@ import userEdit from '@/views/user/UserEdit';
 import userIndex from '@/views/user/UserIndex';
 import jobIndex from '@/views/job/JobIndex';
 import calendar from '@/views/calendar/Calendar';
-import faqs from '@/views/faq/Faqs';
+import faq from '@/views/faq/Faq';
 import notFound from '@/views/NotFound';
 
 Vue.use(VueRouter);
@@ -51,9 +51,9 @@ const routes = [
         path: '/calendar', component: calendar
     },
     {
-        name: 'faqs',
-        meta: { title: 'FAQs' },
-        path: '/faq', component: faqs
+        name: 'faq',
+        meta: { title: 'FAQ' },
+        path: '/faq', component: faq
     },
 
     // These routes are actually not part of vue router

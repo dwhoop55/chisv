@@ -57,7 +57,7 @@ import { mapGetters } from "vuex";
 import api from "@/api";
 
 export default {
-  name: "faqs",
+  name: "faq",
 
   data() {
     return {
