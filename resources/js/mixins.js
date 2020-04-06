@@ -332,6 +332,8 @@ let methods = {
                     return "is-dark";
                 case "captain":
                     return "is-primary";
+                case "admin":
+                    return "is-light";
             }
         }
     },
