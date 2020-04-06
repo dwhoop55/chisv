@@ -1,4 +1,10 @@
 export default {
+    getFaq(id) {
+        return axios.get(`faq/${id}`);
+    },
+    getFaqs() {
+        return axios.get(`faq`);
+    },
     getNotification(id) {
         return axios.get(`notification/${id}`);
     },

@@ -293,6 +293,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('calendar_event', 'CalendarEventController', [
             'only' => ['index'],
         ]);
+        Route::resource('faq', 'FaqController', [
+            'only' => ['index', 'show'],
+        ]);
     });
     //// AUTHENTICATED ////
 

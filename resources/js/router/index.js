@@ -6,6 +6,7 @@ import userEdit from '@/views/user/UserEdit';
 import userIndex from '@/views/user/UserIndex';
 import jobIndex from '@/views/job/JobIndex';
 import calendar from '@/views/calendar/Calendar';
+import faqs from '@/views/faq/Faqs';
 import notFound from '@/views/NotFound';
 
 Vue.use(VueRouter);
@@ -45,6 +46,20 @@ const routes = [
         path: '/job', component: jobIndex
     },
     {
+        name: 'calendar',
+        meta: { title: 'Calendar' },
+        path: '/calendar', component: calendar
+    },
+    {
+        name: 'faqs',
+        meta: { title: 'FAQs' },
+        path: '/faq', component: faqs
+    },
+
+    // These routes are actually not part of vue router
+    // But we need to include then because vue-router hooks
+    // will set the title of the page
+    {
         name: 'login',
         meta: { title: 'Login' },
         path: '/login',
@@ -55,9 +70,9 @@ const routes = [
         path: '/register',
     },
     {
-        name: 'calendar',
-        meta: { title: 'Calendar' },
-        path: '/calendar', component: calendar
+        name: 'passwordReset',
+        meta: { title: 'Password Reset' },
+        path: '/password/reset',
     },
     {
         path: '*',
