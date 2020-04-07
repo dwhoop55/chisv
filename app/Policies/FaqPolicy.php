@@ -52,7 +52,7 @@ class FaqPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->isAdmin() || $user->isChair();
     }
 
     /**
@@ -64,7 +64,7 @@ class FaqPolicy
      */
     public function update(User $user, Faq $faq)
     {
-        //
+        return $user->isAdmin() || $user->isChair();
     }
 
     /**
@@ -76,30 +76,6 @@ class FaqPolicy
      */
     public function delete(User $user, Faq $faq)
     {
-        //
-    }
-
-    /**
-     * Determine whether the user can restore the faq.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Faq  $faq
-     * @return mixed
-     */
-    public function restore(User $user, Faq $faq)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the faq.
-     *
-     * @param  \App\User  $user
-     * @param  \App\Faq  $faq
-     * @return mixed
-     */
-    public function forceDelete(User $user, Faq $faq)
-    {
-        //
+        return $user->isAdmin() || $user->isChair();
     }
 }

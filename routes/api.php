@@ -294,7 +294,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index'],
         ]);
         Route::resource('faq', 'FaqController', [
-            'only' => ['index', 'show'],
+            'only' => ['index', 'show', 'update', 'destroy', 'store'],
         ]);
     });
     //// AUTHENTICATED ////

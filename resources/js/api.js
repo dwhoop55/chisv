@@ -149,7 +149,13 @@ export default {
         let template = { name: name, data: data, conference_id: conference.id };
         return axios.post(`notification_template`, template);
     },
+    createFaq(vform) {
+        return vform.post(`faq`);
+    },
 
+    updateFaq(id, vform) {
+        return vform.put(`faq/${id}`);
+    },
     updateAssignment(id, payload) {
         return axios.put(`assignment/${id}`, payload);
     },
@@ -188,6 +194,9 @@ export default {
         return axios.put(`user/${userId}`, { [type]: array });
     },
 
+    deleteFaq(id) {
+        return axios.delete(`faq/${id}`);
+    },
     deleteAllTasksOfConference(key, date) {
         return axios.delete(`conference/${key}/tasks/${date}`);
     },

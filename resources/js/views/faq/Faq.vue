@@ -23,6 +23,9 @@
                 @typing="getFilteredTags"
               ></b-taginput>
               <hr />
+              <b-field v-if="userIs('admin') || userIs('chair')" class="has-text-right">
+                <b-button @click="add()" size="is-small">Create new</b-button>
+              </b-field>
               <b-collapse
                 class="card"
                 style="border-radius: 0px;"
@@ -40,7 +43,13 @@
                 </div>
                 <div class="card-content">
                   <div class="content">
-                    <faq-display v-if="faq.id == isOpen" :id="faq.id" />
+                    <faq-display
+                      @create="isOpen=null;getFaqs()"
+                      @delete="isOpen=null;getFaqs()"
+                      @update="faq.title = $event.title"
+                      v-if="faq.id == isOpen"
+                      :id="faq.id"
+                    />
                   </div>
                 </div>
               </b-collapse>
@@ -55,6 +64,7 @@
 <script>
 import { mapGetters } from "vuex";
 import api from "@/api";
+import FaqModalVue from "../../components/modals/FaqModal.vue";
 
 export default {
   name: "faq",
@@ -76,6 +86,18 @@ export default {
   },
 
   methods: {
+    add() {
+      this.$buefy.modal.open({
+        parent: this,
+        component: FaqModalVue,
+        props: {
+          event: event => {
+            this.isOpen = null;
+            this.getFaqs();
+          }
+        }
+      });
+    },
     getFilteredTags(text) {
       this.filteredKeywords = this.keywords.filter(keyword => {
         return keyword.toLowerCase().indexOf(text.toLowerCase()) >= 0;
@@ -94,6 +116,7 @@ export default {
       });
     },
     refreshKeywords() {
+      console.log(this.faqs);
       this.faqs.forEach(faq => {
         this.keywords = [...this.keywords, ...new Set(faq.keywords)];
         this.keywords.sort();
@@ -115,6 +138,7 @@ export default {
   },
 
   computed: {
+    ...mapGetters("auth", ["userIs"]),
     ...mapGetters("defines", ["roles"]),
     ...mapGetters("conference", {
       lastConference: "conference"
