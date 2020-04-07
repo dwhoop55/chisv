@@ -33,10 +33,10 @@
                 v-for="faq of matchedFaqs"
                 :key="faq.id"
                 :open="isOpen == faq.id"
-                @open="isOpen = faq.id"
+                @open="onOpenChange(faq.id)"
               >
                 <div slot="trigger" slot-scope="props" class="card-header" role="button">
-                  <p class="card-header-title">{{ faq.title }}</p>
+                  <p class="card-header-title">{{ faq.title }} (#{{ faq.id }})</p>
                   <a class="card-header-icon">
                     <b-icon :icon="props.open ? 'menu-down' : 'menu-up'"></b-icon>
                   </a>
@@ -76,7 +76,7 @@ export default {
       activeKeywords: [],
       filteredKeywords: [],
       isLoading: false,
-      isOpen: null,
+      isOpen: this.$route.params.id || null,
       matchedFaqs: []
     };
   },
@@ -86,6 +86,10 @@ export default {
   },
 
   methods: {
+    onOpenChange(id) {
+      this.isOpen = id;
+      this.$router.push({ name: "faq", params: { id } });
+    },
     add() {
       this.$buefy.modal.open({
         parent: this,
@@ -116,7 +120,6 @@ export default {
       });
     },
     refreshKeywords() {
-      console.log(this.faqs);
       this.faqs.forEach(faq => {
         this.keywords = [...this.keywords, ...new Set(faq.keywords)];
         this.keywords.sort();

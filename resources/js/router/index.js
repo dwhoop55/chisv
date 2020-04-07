@@ -53,7 +53,7 @@ const routes = [
     {
         name: 'faq',
         meta: { title: 'FAQ' },
-        path: '/faq', component: faq
+        path: '/faq/:id?', component: faq
     },
 
     // These routes are actually not part of vue router
