@@ -28,7 +28,10 @@
           v-for="(keyword, index) in faq.keywords"
         >{{keyword}}</b-tag>
         <b-tag type="is-light" class="has-margin-l-7 has-text-grey">{{ faq.view_count }} views</b-tag>
-        <span v-if="userIs('admin') || userIs('chair')" class="has-margin-l-7 has-text-grey">
+        <span
+          v-if="userIs('admin') || userIs('chair') || userIs('captain')"
+          class="has-margin-l-7 has-text-grey"
+        >
           <b-tag :type="roleType(faq.role)">
             Visible for
             <role-tag :role="faq.role"></role-tag>and higher
