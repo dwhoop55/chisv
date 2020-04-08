@@ -76,7 +76,7 @@ const actions = {
             api.updatePastConferences(state.user.id, array, type)
                 .then(({ data }) => {
                     // Update successful, update store
-                    commit('setUser', data.result);
+                    commit('setPastConferences', data.result);
                     resolve();
                 })
                 .catch(error => reject(error));
@@ -148,6 +148,10 @@ const actions = {
 };
 
 const mutations = {
+    setPastConferences: (state, { past_conferences, past_conferences_sv }) => {
+        state.user.past_conferences = past_conferences;
+        state.user.past_conferences_sv = past_conferences_sv;
+    },
     setUserAcceptsCookies: (state, bool) => state.userAcceptsCookies = bool,
     setUser: (state, user) => state.user = user,
     addAbility: (state, ability) => state.abilities.push(ability),
