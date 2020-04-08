@@ -26,6 +26,7 @@
               <b-field v-if="userIs('admin') || userIs('chair')" class="has-text-right">
                 <b-button @click="add()" size="is-small">Create new</b-button>
               </b-field>
+              <p v-if="!isLoading && (!faqs || faqs.length == 0)">No FAQ yet</p>
               <b-collapse
                 class="card"
                 style="border-radius: 0px;"
@@ -46,7 +47,7 @@
                     <faq-display
                       @create="isOpen=null;getFaqs()"
                       @delete="isOpen=null;getFaqs()"
-                      @update="faq.title = $event.title"
+                      @update="getFaqs()"
                       v-if="faq.id == isOpen"
                       :id="faq.id"
                     />
@@ -120,6 +121,7 @@ export default {
       });
     },
     refreshKeywords() {
+      this.keywords = [];
       this.faqs.forEach(faq => {
         this.keywords = [...this.keywords, ...new Set(faq.keywords)];
         this.keywords.sort();

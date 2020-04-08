@@ -32,6 +32,7 @@
         label="Keywords"
       >
         <b-taginput
+          @input="onKeywordsChange()"
           icon="tag"
           :attached="true"
           placeholder="Give this topic some keywords"
@@ -68,6 +69,7 @@ export default {
     return {
       isLoading: false,
       form: new Form({
+        id: null,
         title: "",
         body: "",
         keywords: [],
@@ -77,6 +79,12 @@ export default {
   },
 
   methods: {
+    onKeywordsChange() {
+      this.form.keywords = this.form.keywords.map(keyword => {
+        return keyword.charAt(0).toUpperCase() + keyword.slice(1).toLowerCase();
+      });
+      this.form.keywords = [...new Set(this.form.keywords)];
+    },
     save() {
       if (this.faq?.id) {
         // Update
