@@ -133,7 +133,7 @@ export default {
     getUser(id) {
       this.isLoading = true;
       api
-        .getUser(id)
+        .getUser(id || this.user.id)
         .then(({ data }) => {
           this.user = data;
           this.$forceUpdate();
@@ -148,7 +148,7 @@ export default {
             });
             this.$router.go(-1);
           } else if (error.response.status == 404) {
-            this.$router.replace("/");
+            this.$router.push("/");
           }
         })
         .finally(() => (this.isLoading = false));
