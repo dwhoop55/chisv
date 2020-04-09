@@ -285,7 +285,7 @@
             >{{ props.row.email }}</a>
           </div>
 
-          <div v-if="props.row.past_conferences">
+          <div v-if="props.row.past_conferences && props.row.past_conferences.length > 0">
             Attended conferences:
             <b-taglist>
               <b-tag
@@ -295,9 +295,11 @@
               >{{ conference }}</b-tag>
             </b-taglist>
           </div>
-          <div v-else>Did not attend conferences yet</div>
+          <div
+            v-else-if="props.row.past_conferences && props.row.past_conferences.length == 0"
+          >Did not attend conferences yet</div>
 
-          <div v-if="props.row.past_conferences_sv">
+          <div v-if="props.row.past_conferences_sv && props.row.past_conferences_sv.length > 0">
             Attended conferences as SV:
             <b-taglist>
               <b-tag
@@ -307,7 +309,23 @@
               >{{ conference }}</b-tag>
             </b-taglist>
           </div>
-          <div v-else>Did not attend conferences as SV yet</div>
+          <div
+            v-else-if="props.row.past_conferences_sv && props.row.past_conferences_sv.length == 0"
+          >Did not attend conferences as SV yet</div>
+
+          <div v-if="props.row.languages && props.row.languages.length > 0">
+            Spoken languages:
+            <b-taglist>
+              <b-tag
+                type="is-light"
+                v-for="(language, index) in props.row.languages"
+                :key="index"
+              >{{ language.name }}</b-tag>
+            </b-taglist>
+          </div>
+          <div
+            v-else-if="props.row.languages && props.row.languages.length == 0"
+          >No spoken languages known</div>
         </div>
 
         <b-field />

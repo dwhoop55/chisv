@@ -817,6 +817,7 @@ class ConferenceController extends Controller
                 'user.region',
                 'user.city',
                 'user.degree',
+                'user.languages',
                 'state',
                 'enrollmentForm'
             ])
@@ -923,6 +924,9 @@ class ConferenceController extends Controller
 
                 $safe['past_conferences'] = $user->past_conferences;
                 $safe['past_conferences_sv'] = $user->past_conferences_sv;
+                $safe['languages'] = $user->languages->map(function ($language) {
+                    return collect($language)->only(['id', 'name']);
+                });
             }
 
             if ($showMore) {
