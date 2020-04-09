@@ -25,7 +25,7 @@
         <nav-build-info></nav-build-info>
       </b-navbar-dropdown>
       <b-navbar-item
-        v-if="last"
+        v-if="last && last.key"
         tag="router-link"
         :to="{name: 'conference', params: { key: last.key}}"
       >{{ last.name }}</b-navbar-item>
