@@ -16,7 +16,7 @@
       </div>
     </div>
     <p>&nbsp;</p>
-    <VueShowdown v-if="!hideSalutation" :markdown="salutation" />
+    <VueShowdown v-if="salutation && !hideSalutation" :markdown="salutation" />
   </div>
 </template>
 
