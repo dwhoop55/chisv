@@ -4,10 +4,10 @@
       <b-navbar-item tag="router-link" :to="{name: 'conferences'}">
         <p class="has-text-weight-bold">chisv</p>
       </b-navbar-item>
-      <b-navbar-item>
+      <b-navbar-item class="is-hidden-desktop">
         <b-icon
           @click.native="showNotifications"
-          class="is-hidden-desktop has-margin-l-7 has-margin-r-7"
+          class="has-margin-l-7 has-margin-r-7"
           v-if="hasUnread"
           type="is-warning"
           icon="bell-ring"
