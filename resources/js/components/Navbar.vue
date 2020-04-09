@@ -4,6 +4,15 @@
       <b-navbar-item tag="router-link" :to="{name: 'conferences'}">
         <p class="has-text-weight-bold">chisv</p>
       </b-navbar-item>
+      <b-navbar-item>
+        <b-icon
+          @click.native="showNotifications"
+          class="is-hidden-desktop has-margin-l-7 has-margin-r-7"
+          v-if="hasUnread"
+          type="is-warning"
+          icon="bell-ring"
+        />
+      </b-navbar-item>
     </template>
     <template slot="start">
       <b-navbar-item tag="router-link" to="/conference">Conferences</b-navbar-item>
