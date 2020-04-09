@@ -123,9 +123,12 @@ export default {
     refreshKeywords() {
       this.keywords = [];
       this.faqs.forEach(faq => {
-        this.keywords = [...this.keywords, ...new Set(faq.keywords)];
-        this.keywords.sort();
+        // Make sure every keyword is only present once
+        this.keywords = Array.from(
+          new Set([...this.keywords, ...faq.keywords])
+        );
       });
+      this.keywords.sort();
       this.filteredKeywords = this.keywords;
     },
     getFaqs() {
