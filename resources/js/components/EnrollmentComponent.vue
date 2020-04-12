@@ -197,6 +197,9 @@ export default {
     },
     // Get the sv permission for the given conference
     permission() {
+      if (!this.user) {
+        return null;
+      }
       var result = null;
       this.user.permissions.forEach(permission => {
         if (

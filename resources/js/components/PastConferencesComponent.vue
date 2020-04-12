@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="user">
     <div class="is-relative has-margin-b-6">
       <b-loading :active="isLoading.past_conferences" :is-full-page="false" />
       <b-loading :active="isSuccess.past_conferences" :is-full-page="false">
