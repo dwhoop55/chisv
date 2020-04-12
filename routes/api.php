@@ -96,8 +96,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/assignment', 'ConferenceController@assignments')
             ->middleware("can:viewAssignments,conference")
             ->name('conference.assignments');
-        Route::get('conference/{conference}/enrollment', 'ConferenceController@enrollment')
-            ->name('conference.enrollment');
         Route::get('conference/{conference}/sv', 'ConferenceController@svs')
             ->middleware("can:viewUsers,conference")
             ->name('conference.svs');

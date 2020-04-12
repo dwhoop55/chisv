@@ -1000,42 +1000,6 @@ class ConferenceController extends Controller
     }
 
     /** 
-     * Returns the state of enrollment
-     * 
-     * @param \App\Conference conference
-     * @return \Illuminate\Http\Response
-     */
-    public function enrollment(Conference $conference)
-    {
-        $permission = Permission
-            ::with(['state'])
-            ->where('conference_id', $conference->id)
-            ->where('user_id', auth()->user()->id)
-            ->where('role_id', Role::byName('sv')->id)->first();
-
-        $enrollmentFormService = new EnrollmentFormService;
-
-        // In any case, make sure that we remove the weights before
-        // sending the form back to the user
-        if ($permission) {
-            if ($permission->enrollmentForm) {
-                // The user is associated SV and has an enrollment form
-                $form = $permission->enrollmentForm;
-                $permission->enrollment_form = $enrollmentFormService->removeWeights($form);
-            } else {
-                // The user is associated SV but has no enrollment form
-            }
-            $permission->updateWaitlistPosition();
-            return ["permission" => $permission];
-        } else {
-            // User is not associated as SV. Return the template form
-            $form = $conference->enrollmentFormTemplate;
-            $form = $enrollmentFormService->removeWeights($form)->only('is_template', 'body', 'id');
-            return ["enrollment_form" => $form];
-        }
-    }
-
-    /** 
      * Enrolls a user to be an SV for the conference
      * 
      * @param \App\Conference conference

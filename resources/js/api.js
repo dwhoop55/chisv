@@ -60,9 +60,6 @@ export default {
     getEnrollmentForm(id) {
         return axios.get(`enrollment_form/${id}`)
     },
-    getEnrollment(key) {
-        return axios.get(`conference/${key}/enrollment`)
-    },
     getVersion() {
         return axios.get(`version`)
     },
