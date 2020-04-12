@@ -10,15 +10,16 @@ use Illuminate\Http\Request;
 
 class AssignmentController extends Controller
 {
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Assignment::class);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -42,18 +43,6 @@ class AssignmentController extends Controller
 
         return ["result" => true, "message" => "Assignment created"];
     }
-
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  \App\Assignment  $assignment
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Assignment $assignment)
-    // {
-    //     //
-    // }
-
 
     /**
      * Update the specified resource in storage.
