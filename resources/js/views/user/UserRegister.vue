@@ -48,8 +48,8 @@
       </b-field>
 
       <b-field
-        :type="{ 'is-danger': form.errors.has('university') }"
-        :message="form.errors.get('university')"
+        :type="{ 'is-danger': form.errors.has('university.name') }"
+        :message="form.errors.get('university.name')"
         label="University"
       >
         <university-picker v-model="form.university"></university-picker>
