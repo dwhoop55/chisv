@@ -99,13 +99,15 @@ export const vm = new Vue({
         ...mapMutations('auth', ['setUserAcceptsCookies']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones']),
+        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones', 'fetchShirts', 'fetchDegrees']),
         ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
 
     created() {
         // This will load states as new for every page refresh
         this.fetchLocales();
+        this.fetchShirts();
+        this.fetchDegrees();
         this.fetchTimezones();
         this.fetchCountries();
         this.fetchUser()
@@ -118,7 +120,7 @@ export const vm = new Vue({
                 this.refreshNotifications();
 
             })
-            .catch((error) => (console.log(error)));
+            .catch((error) => (null));
 
         // Check if cookies have been accepted
         if (this.userAcceptsCookies === null) {

@@ -7,7 +7,7 @@
     :value="value"
     placeholder="Select your cut and size"
     icon="tshirt-crew"
-    @input="input"
+    @input="$emit('input', $event)"
   >
     <option
       v-for="shirt in shirts"
@@ -19,29 +19,24 @@
 
 <script>
 import api from "@/api";
+import { mapGetters, mapActions } from "vuex";
 export default {
   props: ["value"],
 
   data() {
     return {
-      isLoading: true,
-      shirts: []
+      isLoading: false
     };
   },
 
-  methods: {
-    input() {
-      if (Number.isInteger(event)) {
-        this.$emit("input", event);
-      }
+  created() {
+    if (!this.shirts) {
+      this.isLoading = true;
+      this.fetchShirts().then(() => (this.isLoading = false));
     }
   },
 
-  created() {
-    api
-      .getShirts()
-      .then(({ data }) => (this.shirts = data))
-      .finally(() => (this.isLoading = false));
-  }
+  computed: mapGetters("defines", ["shirts"]),
+  methods: mapActions("defines", ["fetchShirts"])
 };
 </script>

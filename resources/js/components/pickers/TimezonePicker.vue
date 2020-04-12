@@ -25,8 +25,6 @@ export default {
     };
   },
 
-  methods: {},
-
   created() {
     if (!this.timezones) {
       this.isLoading = true;
