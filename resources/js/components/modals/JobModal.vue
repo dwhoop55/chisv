@@ -140,6 +140,10 @@ export default {
       }
     },
     formattedJobResult() {
+      if (!this.job.result) {
+        return "no result (yet)";
+      }
+
       let r = JSON.parse(this.job.result);
 
       if (this.job.state.name == "successful") {
@@ -186,7 +190,7 @@ export default {
             break;
         }
       } else {
-        return JSON.parse(this.job.result);
+        return JSON.parse(this.job?.result) || "no result yet";
       }
     }
   }
