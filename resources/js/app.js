@@ -99,13 +99,14 @@ export const vm = new Vue({
         ...mapMutations('auth', ['setUserAcceptsCookies']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries']),
+        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones']),
         ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
 
     created() {
         // This will load states as new for every page refresh
         this.fetchLocales();
+        this.fetchTimezones();
         this.fetchCountries();
         this.fetchUser()
             .then(() => {

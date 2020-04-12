@@ -5,7 +5,7 @@
       placeholder="Select a timezone"
       :loading="isLoading"
       :value="value"
-      @input="input"
+      @input="$emit('input', $event)"
     >
       <option v-for="option in timezones" :value="option.id" :key="option.id">{{ option.name }}</option>
     </b-select>
@@ -14,38 +14,27 @@
 
 <script>
 import api from "@/api";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   props: ["value"],
 
   data() {
     return {
-      timezones: [],
-      isLoading: true
+      isLoading: false
     };
   },
 
-  methods: {
-    input: function(event) {
-      if (Number.isInteger(event)) {
-        this.$emit("input", event);
-        this.emitObject(event);
-      }
-    },
-    emitObject: function(id) {
-      this.timezones.forEach(timezone => {
-        if (timezone.id == id) {
-          this.$emit("timezone", timezone);
-        }
-      });
+  methods: {},
+
+  created() {
+    if (!this.timezones) {
+      this.isLoading = true;
+      this.fetchTimezones().then(() => (this.isLoading = false));
     }
   },
 
-  created() {
-    api
-      .getTimezones()
-      .then(({ data }) => (this.timezones = data))
-      .finally(() => (this.isLoading = false));
-  }
+  computed: mapGetters("defines", ["timezones"]),
+  methods: mapActions("defines", ["fetchTimezones"])
 };
 </script>
