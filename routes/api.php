@@ -119,48 +119,6 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:viewDestinations,conference")
             ->name('conference.destinations');
 
-        // // Determine if a user has s specific role
-        // Route::get('has_permission/{role}/{conference?}/{state?}', function (Role $role, Conference $conference = null, State $state = null) {
-        //     return ["result" => auth()->user()->hasPermission($role, $conference, $state)];
-        // });
-
-        // Determine if a user can perform a certain action
-        Route::get('can/{ability}/{model}/{id?}/{onModel?}/{onId?}', function ($ability, $model, $id = null, $onModel = null, $onId = null) {
-            $class = app("App\\" . $model);
-            if ($onModel) $onClass = app("App\\" . $onModel);
-            $user = auth()->user();
-
-            // These are the possible cases
-            // The if mess below has numbers
-            // from which case the rule came from
-            //1 createForConference Task    1       Conference  1
-            //2 createForConference Task    1       Conference  null
-            //3 createForConference Task    null    Conference  null
-            //4 createForConference Task    null    Conference  1
-            //5 createForConference Task    null    null        null
-            //6 createForConference Task    1       null        null
-
-            if ($model && $id > 0 && $onModel && $onModel != 'null' && $onId > 0) { // 1
-                $instance = $class::find($id);
-                $onInstance = $onClass::find($onId);
-                $result = $user->can($ability, [$instance, $onInstance]);
-            } else if ($model && $id > 0 && $onModel && $onModel != 'null' && (!$onId || $onId == 'null')) { // 2
-                $instance = $class::find($id);
-                $result = $user->can($ability, [$instance, $onClass]);
-            } else if ($model && (!$id || $id == 'null') && $onModel && $onModel != 'null' && (!$onId || $onId == 'null')) { // 3
-                $result = $user->can($ability, [$class, $onClass]);
-            } else if ($model && (!$id || $id == 'null') && $onModel && $onModel != 'null' && $onId > 0) { // 4
-                $onInstance = $onClass::find($onId);
-                $result = $user->can($ability, [$class, $onInstance]);
-            } else if ($model && (!$id || $id == 'null') && (!$onModel || $onModel == 'null') && (!$onId || $onId == 'null')) { // 5
-                $result = $user->can($ability, $class);
-            } else if ($model && $id > 0 && (!$onModel || $onModel == 'null') && (!$onId || $onId == 'null')) { // 6
-                $instance = $class::find($id);
-                $result = $user->can($ability, $instance);
-            }
-
-            return ["result" => $result];
-        });
 
         Route::resource('user', 'UserController', [
             'only' => ['index', 'show', 'update', 'destroy']

@@ -246,28 +246,6 @@ export default {
     unenroll(conference) {
         return axios.delete(`conference/${conference}/enroll`)
     },
-    can(ability, model, id = null, onModel = null, onId = null) {
-        if (onModel && onId) {
-            return axios.get(`can/${ability}/${model}/${id}/${onModel}/${onId}`);
-        } else if (onModel) {
-            return axios.get(`can/${ability}/${model}/${id}/${onModel}`);
-        } else if (id) {
-            return axios.get(`can/${ability}/${model}/${id}`);
-        } else {
-            return axios.get(`can/${ability}/${model}`);
-        }
-    },
-    hasPermission(role, conferenceKey = null, state = null) {
-        if (role && conferenceKey && state) {
-            return axios.get(`has_permission/${role}/${conferenceKey}/${state}`);
-        } else if (role && conferenceKey) {
-            return axios.get(`has_permission/${role}/${conferenceKey}`);
-        } else if (role) {
-            return axios.get(`has_permission/${role}`);
-        } else {
-            console.error("No role given");
-        }
-    },
     logout() {
         return axios.post(`logout`, undefined, { baseURL: '/', maxRedirects: 0 })
     }
