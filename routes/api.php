@@ -51,7 +51,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.postNotification')
             ->middleware("can:postNotification,conference");
         Route::post('conference/{conference}/task', 'ConferenceController@importTasks')
-            ->name('conference.importTask')
+            ->name('conference.importTasks')
             ->middleware("can:create,App\Task");
         Route::post('conference/{conference}/enroll/{user?}', 'ConferenceController@enroll')
             ->middleware("can:enroll,conference,user")
@@ -101,7 +101,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.svs');
         Route::get('conference/{conference}/sv_for_task_assignment/{task}', 'ConferenceController@svsForTaskAssignment')
             ->middleware("can:viewUsersForTaskAssignment,conference")
-            ->name('conference.svs');
+            ->name('conference.svsForTaskAssignment');
         Route::get('conference/{conference}/sv/count', 'ConferenceController@svsCount')
             ->name('conference.svCount');
         Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
@@ -135,9 +135,6 @@ Route::group(['prefix' => 'v1'], function () {
         ]);
         Route::resource('image', 'ImageController', [
             'only' => ['store', 'destroy', 'update']
-        ]);
-        Route::resource('enrollment_form', 'EnrollmentFormController', [
-            'only' => ['show']
         ]);
         Route::resource('job', 'JobController', [
             'only' => ['index', 'show']

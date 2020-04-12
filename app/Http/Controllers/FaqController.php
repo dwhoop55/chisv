@@ -8,6 +8,17 @@ use Illuminate\Http\Request;
 
 class FaqController extends Controller
 {
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Faq::class);
+    }
+
     /**
      * Display a listing of the resource.
      *
