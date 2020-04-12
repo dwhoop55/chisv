@@ -26,99 +26,16 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
 
     //// GUEST ////
-    //// Search ////
-    Route::get('/country', function () {
-        return Country::all();
-    });;
-    Route::get('country/{country}/city/{pattern?}', function (Country $country, $pattern = "") {
-        $pattern = trim($pattern);
-        $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
-        $matches = City
-            // Example:
-            //             where
-            //   "country_id" = 233
-            //   and (
-            //     "name" LIKE '%springs%'
-            //     and "name" LIKE '%west%'
-            //     and "name" LIKE '%baden%'
-            //     or (
-            //       "name" LIKE '%springs%'
-            //       and "name" LIKE '%west%'
-            //       and "name" LIKE '%baden%'
-            //     )
-            //   )
-            ::where('country_id', $country->id)
-            ->where(function ($query) use ($pattern, $unUmlautedPattern) {
-                $patterns = explode(' ', $pattern);
-                foreach ($patterns as $pattern) {
-                    $query->where('name', 'LIKE', '%' . $pattern . '%');
-                }
-                $query->orWhere(function ($query) use ($unUmlautedPattern) {
-                    $unUmlautedPatterns = explode(' ', $unUmlautedPattern);
-                    foreach ($unUmlautedPatterns as $unUmlautedPattern) {
-                        $query->where('name', 'LIKE', '%' . $unUmlautedPattern . '%');
-                    }
-                });
-            })
-            ->with(['country', 'region'])
-            ->orderBy('name', 'asc')
-            ->limit(1000)
-            ->get(['id', 'name', 'country_id', 'region_id']);
-        $locations = collect();
-        foreach ($matches as $match) {
-            $locations->push($match->location());
-        }
-        return $locations;
-    });
-    Route::get('university/name/{pattern}', function ($pattern) {
-        $patterns = preg_split("/\ |\-|,|;/", $pattern);
-        $query = University::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('url', 'LIKE', '%' . $pattern . '%');
-        foreach ($patterns as $item) {
-            $query = $query->where('name', 'LIKE', '%' . $item . '%');
-            $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
-        }
-        $matches = $query->orderBy('name', 'asc')->get();
-        return $matches;
-    });
-    Route::get('language/name/{pattern}', function ($pattern) {
-        $matches = Language::where('name', 'LIKE', '%' . $pattern . '%')->orWhere('code', 'LIKE', $pattern)->orderBy('name', 'asc')->get();
-        return $matches;
-    });
-
-    Route::get('/degree', function () {
-        return Degree::all();
-    });
-
-    Route::get('/shirt', function () {
-        return Shirt::all();
-    });
-
-    Route::get('/timezone', function () {
-        return Timezone::all();
-    });
-
-    Route::get('/locale', function () {
-        return Locale::all();
-    });
-
-    Route::get('email/exists/{email}', function ($email) {
-        $emailExists = User::where('email', $email)->get()->count() == 1;
-        if ($emailExists) {
-            return response()->json(['result' => true]);
-        } else {
-            return response()->json(['result' => false]);
-        };
-    });
-
+    Route::get('locale', 'MiscController@locales');
+    Route::get('timezone', 'MiscController@timezones');
+    Route::get('shirt', 'MiscController@shirts');
+    Route::get('degree', 'MiscController@degrees');
+    Route::get('country', 'MiscController@countries');
+    Route::get('country/{country}/city/{pattern?}', 'MiscController@locations');
+    Route::get('university/name/{pattern?}', 'MiscController@universities');
+    Route::get('language/name/{pattern?}', 'MiscController@languages');
 
     Route::post('register', 'Auth\RegisterController@create')->name('register.create');
-
-    Route::get('version', function () {
-        $currentHead = trim(substr(file_get_contents('../.git/HEAD'), 4));
-        $branch = str_replace('refs/heads/', '', $currentHead);
-        $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
-        return ["branch" => $branch, "commit" => $commit];
-    });
 
     Route::get('conference/preview', 'ConferenceController@indexPreview')
         ->name('conference.preview');
@@ -130,9 +47,6 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
 
         // Custom posts (may overwrite ressource routes from below)
-        Route::post('logout', function () {
-            return auth()->user();
-        });
         Route::post('conference/{conference}/notification', 'ConferenceController@postNotification')
             ->name('conference.postNotification')
             ->middleware("can:postNotification,conference");
@@ -169,9 +83,7 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
-        // Route::get('notification/unread', 'NotificationController@numberUnread')
-        //     ->middleware("can:viewAny,Illuminate\Notifications\DatabaseNotification")
-        //     ->name('notification.unread');
+        Route::get('version', "MiscController@version");
         Route::get('user/self', 'UserController@showSelf')
             ->middleware("can:viewSelf,App\User")
             ->name('user.self');
