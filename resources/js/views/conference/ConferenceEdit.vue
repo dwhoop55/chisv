@@ -72,7 +72,7 @@
           :message="form.errors.get('timezone_id')"
           label="Timezone the conference takes place in"
         >
-          <timezone-picker @timezone="(tz) => timezone=tz" v-model="form.timezone_id"></timezone-picker>
+          <timezone-picker v-model="form.timezone_id"></timezone-picker>
         </b-field>
         <b-field
           label="Days the conference is running"
@@ -296,9 +296,6 @@ export default {
 
   data() {
     return {
-      activeTab: 0,
-      timezone: null,
-      enrollmentFormTemplates: [],
       form: new Form({
         name: null,
         key: this.conferenceKey,
@@ -323,8 +320,6 @@ export default {
   },
 
   created() {
-    this.timezone = this.conference.timezone;
-
     // Register a watcher to update the form once the vuex
     // model changes
     this.$watch(

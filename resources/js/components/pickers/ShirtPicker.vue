@@ -30,7 +30,7 @@ export default {
   },
 
   methods: {
-    input: function(event) {
+    input() {
       if (Number.isInteger(event)) {
         this.$emit("input", event);
       }
