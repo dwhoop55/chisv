@@ -619,6 +619,7 @@ class ConferenceController extends Controller
             ->users($roleSv)
             ->where('state_id', $stateAccepted->id)
             ->with([
+                'avatar',
                 // Get the bid(s) of the user for this task
                 // There can only be one or no result
                 'bids' => function ($query) use ($task) {
@@ -677,6 +678,7 @@ class ConferenceController extends Controller
             $cleanUser['firstname'] = $sv->firstname;
             $cleanUser['lastname'] = $sv->lastname;
             $cleanUser['bid'] = $bid;
+            $cleanUser['avatar'] = collect($sv->avatar)->only(['web_path']);
 
             // Sum up all hours already done
             $hoursDone = $sv->assignments->where("state_id", $stateDone->id)->sum("hours");
