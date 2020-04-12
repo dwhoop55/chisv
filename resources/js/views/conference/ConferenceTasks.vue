@@ -466,8 +466,7 @@ export default {
       setOnlyOwnTasks: "setOnlyOwnTasks"
     }),
     ...mapActions("conference", ["fetchTaskDays"]),
-    ...mapActions("tasks", ["fetchTasks"]),
-    ...mapActions("auth", ["fetchCan"])
+    ...mapActions("tasks", ["fetchTasks"])
   },
 
   computed: {

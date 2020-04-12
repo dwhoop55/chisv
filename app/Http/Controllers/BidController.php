@@ -21,17 +21,6 @@ class BidController extends Controller
         $this->authorizeResource(Bid::class);
     }
 
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -70,17 +59,6 @@ class BidController extends Controller
         $bid['can_update'] = true;
         $bid['state'] = $bid['state']->only(['id', 'name', 'description']);
         return ["result" => $bid, "message" => "Bid created"];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Bid  $bid
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Bid $bid)
-    {
-        //
     }
 
     /**
