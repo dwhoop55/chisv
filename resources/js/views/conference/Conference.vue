@@ -97,20 +97,16 @@
                   <p v-else>You need to be accepted to see tasks!</p>
                 </b-tab-item>
                 <b-tab-item v-if="canUpdateAssignment()" label="Assignments">
-                  <conference-assignments v-show="tab==3" :conference="conference"></conference-assignments>
+                  <conference-assignments :conference="conference"></conference-assignments>
                 </b-tab-item>
                 <b-tab-item v-if="canEdit()" label="Conference">
-                  <conference-edit
-                    v-show="tab==4"
-                    @updated="fetchConference()"
-                    :conference="conference"
-                  ></conference-edit>
+                  <conference-edit @updated="fetchConference()" :conference="conference"></conference-edit>
                 </b-tab-item>
                 <b-tab-item v-if="canNotify()" label="Notify">
-                  <conference-notification v-show="tab==5" :conference="conference"></conference-notification>
+                  <conference-notification :conference="conference"></conference-notification>
                 </b-tab-item>
                 <b-tab-item v-if="canUpdateAssignment()" label="Reports">
-                  <conference-reports v-show="tab==6" :conference="conference"></conference-reports>
+                  <conference-reports :conference="conference"></conference-reports>
                 </b-tab-item>
               </b-tabs>
             </div>
