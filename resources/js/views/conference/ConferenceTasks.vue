@@ -305,7 +305,10 @@ export default {
                     hasIcon: true
                   });
                 })
-                .finally(() => this.fetchTasks());
+                .finally(() => {
+                  this.fetchTasks();
+                  this.fetchTaskDays();
+                });
             } // onConfirm 2
           });
         } // onConfirm 1
