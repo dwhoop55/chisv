@@ -17,7 +17,6 @@ use App\Http\Requests\TaskUpdateRequest;
 use App\JobParameters;
 use App\Task;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ImportTasks extends AdvancedJob implements ExecutableJob
@@ -82,6 +81,38 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
                 'date', 'start_at', 'end_at',
                 'priority', 'slots', 'hours'
             ])->toArray();
+
+            // We do some adjustment to date and hours, start_at, end_at
+            //  and priority at this point
+            // This is required to be able to import the old style
+            //  chisv csv export
+            //  We allow for a date (YYYY-MM-DD) but also the conference
+            //  day (\d) to be compatible with an csv export of the old chisv
+            // This is also true for hours, which is required to be a
+            //  numeric (float) but we also allow it to be in a (HH:MM) format
+            //  This section will convert the formats to make them compatible
+            // start_at and end_at can be in format HH:MM but we require HH:MM:SS
+            //  so we append if needed
+            // Finally we need to check the priority, and push it into the boundaries
+            if (preg_match("/^\d{1,}$/", $task['date'])) {
+                // date is in conference day format, like 1,2,3
+                $task['date'] = Carbon::create($conference->start_date)->addDay(-1)->addDay($task['date'])->toDateString();
+            }
+            $matches = null;
+            if (isset($task['hours']) && preg_match("/^(\d{1,2}):(\d{2})$/", $task['hours'], $matches)) {
+                // hours can be in format HH:MM
+                $task['hours'] = intval($matches[1]) + round(intval($matches[2]) / 60, 2);
+            }
+            if (preg_match("/^\d{2}:\d{2}$/", $task['start_at'])) {
+                $task['start_at'] = $task['start_at'] . ":00";
+            }
+            if (preg_match("/^\d{2}:\d{2}$/", $task['end_at'])) {
+                $task['end_at'] = $task['end_at'] . ":00";
+            }
+            if (isset($task['priority']) && ($task['priority'] < 1 || $task['priority'] > 3)) {
+                $task['priority'] = 1;
+            }
+
 
             if ($id) { //Update request
 
