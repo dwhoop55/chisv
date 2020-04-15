@@ -42,12 +42,17 @@
 
       <b-field
         expanded
-        required
         :type="{ 'is-danger': form.errors.has('role_id') }"
         :message="form.errors.get('role_id')"
-        label="Visible for role and higher (SV < Captain < Chair < Admin)"
+        label="Visibility restrictions"
       >
-        <role-picker v-model="form.role_id"></role-picker>
+        <b-field grouped group-multiline class="is-block">
+          <b-switch
+            v-model="restrictToRole"
+            @input="$event ? form.role_id = 10 : form.role_id = null"
+          >{{ restrictToRole ? "Requires a minimum role (SV &lt; Captain &lt; Chair &lt; Admin)" : "Everyone can see" }}</b-switch>
+          <role-picker v-if="restrictToRole" v-model="form.role_id"></role-picker>
+        </b-field>
       </b-field>
     </section>
     <section class="modal-card-foot">
@@ -68,6 +73,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      restrictToRole: false,
       form: new Form({
         id: null,
         title: "",
@@ -111,6 +117,7 @@ export default {
   created() {
     if (this.faq) {
       this.form.fill(this.faq);
+      this.restrictToRole = !!this.faq.role_id;
     }
   }
 };

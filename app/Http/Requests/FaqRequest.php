@@ -17,7 +17,7 @@ class FaqRequest extends FormRequest
             "title" => ["required", "string", "max:255"],
             "body" => ["required", "string"],
             "keywords" => ['required', 'array', 'notIn:[]'],
-            'role_id' => ['required', 'integer', 'exists:roles,id']
+            'role_id' => ['nullable', 'integer', 'exists:roles,id']
         ];
     }
 }

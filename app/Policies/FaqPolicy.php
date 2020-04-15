@@ -35,13 +35,18 @@ class FaqPolicy
      */
     public function view(User $user, Faq $faq)
     {
-        // User can see the faq when there is at least one
-        // permission with the same or higher role. The conference
-        // it's bound to is not of interest
-        return Permission
-            ::where('user_id', $user->id)
-            ->where("role_id", "<=", $faq->role->id)
-            ->exists();
+
+        // An faq can have a minimum role_id set. If
+        // so we need to test if the user has at least that
+        // role
+        if ($faq->role) {
+            return Permission
+                ::where('user_id', $user->id)
+                ->where("role_id", "<=", $faq->role->id)
+                ->exists();
+        } else {
+            return true;
+        }
     }
 
     /**

@@ -34,7 +34,10 @@
         >
           <b-tag :type="roleType(faq.role)">
             Visible for
-            <role-tag :role="faq.role"></role-tag>and higher
+            <span v-if="faq.role">
+              <role-tag :role="faq.role"></role-tag>and higher
+            </span>
+            <span v-else>everyone</span>
           </b-tag>
         </span>
       </div>
