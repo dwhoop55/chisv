@@ -82,39 +82,74 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
                 'priority', 'slots', 'hours'
             ])->toArray();
 
-            // We do some adjustment to date and hours, start_at, end_at
-            //  and priority at this point
-            // This is required to be able to import the old style
-            //  chisv csv export
-            //  We allow for a date (YYYY-MM-DD) but also the conference
-            //  day (\d) to be compatible with an csv export of the old chisv
-            // This is also true for hours, which is required to be a
-            //  numeric (float) but we also allow it to be in a (HH:MM) format
-            //  This section will convert the formats to make them compatible
-            // start_at and end_at can be in format HH:MM but we require HH:MM:SS
-            //  so we append if needed
-            // Finally we need to check the priority, and push it into the boundaries
+            // This is the section which makes imports of legacy chisv
+            // csv possible. (1) With those we have no YYYY-MM-DD date for the task
+            // but rather a conference day (1,2,..). We convert these to actual dates
+            // (2) Hours can also be in a different format, namely HH:MM instead
+            // of our normal float (e.g 3.5)
+            // (3) Start_at end end_at might be in HH:MM format rather than
+            // HH:MM:SS format which is required by the validator
+            // (4) Also priorities worked different in the old chisv:
+            //   app/models/task.rb:17
+            //   PRIORITY = {0 => 'high', 1 => 'normal', 2 => 'low'}
+            // where we would have 1 => low, 2 => normal and 3 => high
+            // NOTE: In the old chisv chairs often set all tasks to 0
+            // since it was not clear that this is the highest priority.
+            // If we import those task exports they wind up all being high.
+            // To overcome that the chair must not select priority for import
+            // in the first step. If there is no priority set it will be set
+            // to 1 => low. This fact is very important for the auction:
+            // A task with high priority will always be filled first
+
+            // Since we don't know when a priority is from the old system we only
+            // trigger this conversion if there is also the 'date' in the old format
+
+            // (1)
             if (preg_match("/^\d{1,}$/", $task['date'])) {
                 // date is in conference day format, like 1,2,3
                 $task['date'] = Carbon::create($conference->start_date)->addDay(-1)->addDay($task['date'])->toDateString();
+
+                // (4)
+                // Also convert priorities here
+                if (isset($task['priority'])) {
+                    //   PRIORITY = {0 => 'high', 1 => 'normal', 2 => 'low'}
+                    switch ($task['priority']) {
+                        case 0:
+                            $task['priority'] = 3;
+                            break;
+                        case 1:
+                            $task['priority'] = 2;
+                            break;
+                        case 2:
+                            $task['priority'] = 1;
+                            break;
+                        default:
+                            // will then be set during 'create' to 1
+                            // but will not change for 'update'
+                            unset($task['priority']);
+                            break;
+                    }
+                }
             }
+
+            // (2)
             $matches = null;
             if (isset($task['hours']) && preg_match("/^(\d{1,2}):(\d{2})$/", $task['hours'], $matches)) {
                 // hours can be in format HH:MM
                 $task['hours'] = intval($matches[1]) + round(intval($matches[2]) / 60, 2);
             }
+
+            // (3)
             if (preg_match("/^\d{2}:\d{2}$/", $task['start_at'])) {
                 $task['start_at'] = $task['start_at'] . ":00";
             }
             if (preg_match("/^\d{2}:\d{2}$/", $task['end_at'])) {
                 $task['end_at'] = $task['end_at'] . ":00";
             }
-            if (isset($task['priority']) && ($task['priority'] < 1 || $task['priority'] > 3)) {
-                $task['priority'] = 1;
-            }
 
 
-            if ($id) { //Update request
+            // If we have an 'id' set we update the task
+            if ($id) {
 
                 // Check for invalid fields first
                 $validator = Validator::make($task, $updateRules);
