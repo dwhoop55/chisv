@@ -1,16 +1,16 @@
-<template>
-  <div class="has-text-left">
-    <h3>Page not found</h3>
-    <b-button size="is-large" type="is-primary" @click="goHome">Home</b-button>
-  </div>
-</template>
+<template></template>
 
 <script>
 export default {
-  methods: {
-    goHome() {
-      this.$router.replace({ name: "conferences" });
-    }
+  created() {
+    // We get here if no conference could be matched
+    this.$buefy.notification.open({
+      duration: 10000,
+      message: `${this.$route.path} was not found`,
+      type: "is-warning",
+      hasIcon: true
+    });
+    this.$router.replace({ name: "conferences" });
   }
 };
 </script>
