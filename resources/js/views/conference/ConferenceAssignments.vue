@@ -107,7 +107,7 @@
         <b-table-column
           :visible="columns.includes('start_at')"
           field="tasks.start_at"
-          width="10"
+          width="93"
           sortable
           label="Starts"
         >
@@ -121,7 +121,7 @@
           :visible="columns.includes('end_at')"
           field="tasks.end_at"
           sortable
-          width="10"
+          width="93"
           label="Ends"
         >
           {{ formatTime(

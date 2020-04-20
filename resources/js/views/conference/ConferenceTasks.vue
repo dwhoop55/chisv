@@ -137,8 +137,8 @@
       <template slot-scope="props">
         <b-table-column
           :visible="(canCreateTask || canDeleteTask) && columns.includes('manage')"
-          width="1"
           label="Manage"
+          width="128"
         >
           <b-button
             v-if="canCreateTask"
@@ -161,7 +161,7 @@
         <b-table-column
           :visible="columns.includes('start_at')"
           field="tasks.start_at"
-          width="110"
+          width="93"
           sortable
           label="Starts"
         >
@@ -175,7 +175,7 @@
           :visible="columns.includes('end_at')"
           field="tasks.end_at"
           sortable
-          width="100"
+          width="93"
           label="Ends"
         >
           {{ formatTime(
