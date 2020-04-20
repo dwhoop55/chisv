@@ -1,7 +1,7 @@
 import api from "@/api";
 
 const state = {
-    columns: ['manage', 'location', 'slots', 'priority', 'description'],
+    columns: ['manage', 'start_at', 'end_at', 'location', 'slots', 'priority', 'description', 'hours'],
     search: "",
     sort: { field: 'start_at', direction: 'asc' },
     page: { items: 10, index: 1 },

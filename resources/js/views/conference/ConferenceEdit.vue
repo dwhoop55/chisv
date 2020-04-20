@@ -147,7 +147,7 @@
         </b-select>
       </b-field>
 
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field
           label="Enable bidding on tasks"
           :type="{ 'is-danger': form.errors.has('bidding_enabled') }"
@@ -158,7 +158,6 @@
           >{{ form.bidding_enabled ? 'Bidding open for days:' : 'Bidding closed' }}</b-switch>
         </b-field>
         <b-field
-          expanded
           v-if="form.bidding_enabled"
           label="Bidding open for these days"
           :type="{ 'is-danger': form.errors.has('bidding_start') || form.errors.has('bidding_end') }"
@@ -167,14 +166,15 @@
           <b-datepicker
             :value="biddingRange"
             @input="updateBiddingRange($event)"
-            expanded
             range
             icon="calendar-today"
           ></b-datepicker>
         </b-field>
       </b-field>
 
-      <b-field grouped>
+      <b-field />
+
+      <b-field grouped group-multiline>
         <b-field
           label="Hours volunteers should work (used by auction)"
           expanded

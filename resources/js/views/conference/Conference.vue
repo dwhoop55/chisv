@@ -9,8 +9,8 @@
 
       <transition name="fade">
         <div v-if="!isLoading && conference" class="columns is-centered">
-          <div class="column is-11">
-            <nav class="level">
+          <div class="column is-11 is-paddingless">
+            <div class="level is-mobile">
               <div class="level-left">
                 <div class="level-item">
                   <figure class="image is-48x48">
@@ -21,8 +21,17 @@
                   <p
                     class="is-size-3 has-text-black-bis has-text-weight-bold"
                   >{{ conference.name | textlimit(50) }}</p>
+                  <b-taglist attached class="has-margin-l-6 is-hidden-desktop">
+                    <b-tag
+                      rounded
+                      size="is-small"
+                      v-if="conference.bidding_enabled"
+                      type="is-success"
+                    >Bidding open</b-tag>
+                    <b-tag rounded size="is-small" v-else type="is-warning">Bidding closed</b-tag>
+                  </b-taglist>
                 </div>
-                <div class="level-item">
+                <div class="level-item is-hidden-touch">
                   <b-taglist attached>
                     <state-tag size="is-medium" :state="conference.state"></state-tag>
                     <b-tag
@@ -30,21 +39,16 @@
                       size="is-medium"
                       v-if="conference.bidding_enabled"
                       type="is-success"
-                    >Bidding now open!</b-tag>
-                    <b-tag
-                      rounded
-                      size="is-medium"
-                      v-else
-                      type="is-warning"
-                    >Bidding currently closed</b-tag>
+                    >Bidding open</b-tag>
+                    <b-tag rounded size="is-medium" v-else type="is-warning">Bidding closed</b-tag>
                   </b-taglist>
                 </div>
               </div>
-            </nav>
+            </div>
 
-            <div class="card has-padding-5">
-              <nav class="level">
-                <div class="level-left">
+            <div class="card">
+              <nav class="level has-padding-6">
+                <div class="level-left is-">
                   <div class="level-item is-block">
                     <p class="has-text-weight-medium">
                       {{ conference.location }}
@@ -58,9 +62,15 @@
                       class="has-text-weight-medium"
                       :href="'mailto:' + conference.email_chair"
                     >{{ conference.email_chair }}</a>
+                    <a
+                      class="is-hidden-desktop"
+                      target="_blank"
+                      v-if="conference.url && conference.url_name"
+                      :href="conference.url"
+                    >&nbsp;{{ conference.url_name }}</a>
                   </div>
                 </div>
-                <div class="level-right">
+                <div class="level-right is-hidden-touch">
                   <div class="level-item">
                     <div class="buttons">
                       <a

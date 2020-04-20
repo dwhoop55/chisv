@@ -7,7 +7,10 @@
       :size="size"
       type="is-danger"
       :native-value="parseInt(0)"
-    >{{ preferenceString(0) }}</b-radio-button>
+    >
+      <div class="is-hidden-desktop">X</div>
+      <div class="is-hidden-touch">{{ preferenceString(0) }}</div>
+    </b-radio-button>
     <b-radio-button
       @click.native="click(1)"
       :value="value"
@@ -23,7 +26,10 @@
       :size="size"
       type="is-warning"
       :native-value="parseInt(2)"
-    >{{ preferenceString(2) }}</b-radio-button>
+    >
+      <div class="is-hidden-desktop">{{ preferenceString(2).substr(0,3) }}</div>
+      <div class="is-hidden-touch">{{ preferenceString(2) }}</div>
+    </b-radio-button>
     <b-radio-button
       @click.native="click(3)"
       :value="value"

@@ -21,6 +21,9 @@
     <!-- WE HAVE A BID -->
     <div v-else-if="hasBid">
       <div class="is-relative" v-if="task.own_bid.can_update">
+        <b-loading :active="showSuccessIcon" :is-full-page="false">
+          <b-icon size="is-large" type="is-success" icon="check-bold"></b-icon>
+        </b-loading>
         <!-- Can update existing bid -->
         <b-loading :is-full-page="false" :active="isLoading"></b-loading>
         <task-bid-picker-radio
@@ -68,6 +71,9 @@
 
     <!-- WE HAVE NO BID AND NO ASSIGNMENT BUT CAN CREATE -->
     <div class="is-relative" v-else-if="task.can_create_bid">
+      <b-loading :active="showSuccessIcon" :is-full-page="false">
+        <b-icon size="is-large" type="is-success" icon="check-bold"></b-icon>
+      </b-loading>
       <!-- Has no bid yet but can create one -->
       <b-loading :is-full-page="false" :active="isLoading" />
       <task-bid-picker-radio
@@ -84,15 +90,6 @@
         <b-icon type="is-grey" icon="cancel" :size="size" />
         <span class="has-text-grey">Not bidable</span>
       </a>
-    </div>
-
-    <div>
-      <transition name="slide-top-fade">
-        <b-icon class="has-margin-l-7" v-if="showSuccessIcon" type="is-success" icon="check-bold"></b-icon>
-      </transition>
-      <transition name="slide-top-fade">
-        <b-icon class="has-margin-l-7" v-if="showErrorIcon" type="is-danger" icon="alert"></b-icon>
-      </transition>
     </div>
   </div>
 </template>

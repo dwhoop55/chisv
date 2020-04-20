@@ -1,7 +1,6 @@
 <template>
   <div v-if="user">
     <div class="is-relative has-margin-b-6">
-      <b-loading :active="isLoading.past_conferences" :is-full-page="false" />
       <b-loading :active="isSuccess.past_conferences" :is-full-page="false">
         <b-icon size="is-large" type="is-success" icon="check-bold"></b-icon>
       </b-loading>
@@ -18,7 +17,6 @@
     </div>
 
     <div class="is-relative">
-      <b-loading :active="isLoading.past_conferences_sv" :is-full-page="false" />
       <b-loading :active="isSuccess.past_conferences_sv" :is-full-page="false">
         <b-icon size="is-large" type="is-success" icon="check-bold"></b-icon>
       </b-loading>

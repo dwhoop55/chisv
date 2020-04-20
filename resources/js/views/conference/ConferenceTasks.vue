@@ -76,6 +76,9 @@
             aria-role="listitem"
             value="manage"
           >Manage</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
           <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
@@ -108,6 +111,7 @@
     <br />
 
     <b-table
+      narrowed
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
@@ -133,7 +137,7 @@
       <template slot-scope="props">
         <b-table-column
           :visible="(canCreateTask || canDeleteTask) && columns.includes('manage')"
-          width="150"
+          width="1"
           label="Manage"
         >
           <b-button
@@ -151,20 +155,29 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column
-          :width="conference.bidding_enabled ? 315 : 0"
-          :label="conference.bidding_enabled ? 'Preference' : 'Status'"
-        >
+        <b-table-column width="1" :label="conference.bidding_enabled ? 'Preference' : 'Status'">
           <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
         </b-table-column>
-        <b-table-column field="tasks.start_at" width="100" sortable label="Starts">
+        <b-table-column
+          :visible="columns.includes('start_at')"
+          field="tasks.start_at"
+          width="110"
+          sortable
+          label="Starts"
+        >
           {{ formatTime(
           dateTimeFromTime(props.row.start_at),
           'LT',
           {fromTz: conference.timezone.name}
           ) }}
         </b-table-column>
-        <b-table-column field="tasks.end_at" sortable width="100" label="Ends">
+        <b-table-column
+          :visible="columns.includes('end_at')"
+          field="tasks.end_at"
+          sortable
+          width="100"
+          label="Ends"
+        >
           {{ formatTime(
           dateTimeFromTime(props.row.end_at),
           'LT',
@@ -172,8 +185,9 @@
           ) }}
         </b-table-column>
         <b-table-column
+          :visible="columns.includes('hours')"
           field="tasks.hours"
-          width="10"
+          width="1"
           sortable
           label="Hours"
         >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
