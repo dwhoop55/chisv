@@ -5,7 +5,7 @@
         expanded
         v-debounce.fireonempty="onSearch"
         :value="search"
-        placeholder="Search anything..."
+        placeholder="Search.."
         type="search"
         icon="magnify"
       ></b-input>
@@ -465,7 +465,7 @@
         >Found {{ data.total }} SV{{ data.total > 1 ? 's' : '' }}</small>
       </template>
       <template slot="footer">
-        <div class="has-text-right">
+        <div class="has-text-left">
           <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>

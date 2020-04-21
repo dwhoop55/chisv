@@ -8,7 +8,7 @@
       :data="assignments"
     >
       <template slot-scope="props">
-        <b-table-column field="state.name" label="State" sortable>
+        <b-table-column field="state.name" label="State" sortable width="150">
           <div v-if="props.row.state.name == 'assigned'">
             <b-icon type="is-warning" icon="account" />
             <span>&nbsp;Scheduled</span>
@@ -29,15 +29,16 @@
           field="task.date"
           label="Date"
           sortable
+          width="120"
         >{{ formatTime(props.row.task.date, 'll') }}</b-table-column>
-        <b-table-column field="task.start_at" label="Start" sortable>
+        <b-table-column field="task.start_at" label="Start" sortable width="93">
           {{ formatTime(
           dateTimeFromTime(props.row.task.start_at),
           'LT',
           {fromTz: conference.timezone.name}
           ) }}
         </b-table-column>
-        <b-table-column field="task.end_at" label="End" sortable>
+        <b-table-column field="task.end_at" label="End" sortable width="93">
           {{ formatTime(
           dateTimeFromTime(props.row.task.end_at),
           'LT',

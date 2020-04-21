@@ -250,7 +250,7 @@
       </template>
 
       <template slot="footer">
-        <div class="has-text-right">
+        <div class="has-text-left">
           <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
@@ -261,6 +261,9 @@
             <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
             <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
             <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
+            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
+            <b-dropdown-item value="200" aria-role="listitem">200 per page</b-dropdown-item>
+            <b-dropdown-item value="300" aria-role="listitem">300 per page</b-dropdown-item>
           </b-dropdown>
         </div>
       </template>

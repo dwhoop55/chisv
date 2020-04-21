@@ -10,8 +10,8 @@
     <div v-if="bids && bids.length > 0">
       <b-table
         :default-sort="['task.date', 'desc']"
-        narrowed
         :mobile-cards="false"
+        narrowed
         sortable
         :data="bids"
       >

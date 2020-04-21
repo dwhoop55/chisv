@@ -219,7 +219,7 @@
       </template>
 
       <template slot="footer">
-        <div class="has-text-right">
+        <div class="has-text-left">
           <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
