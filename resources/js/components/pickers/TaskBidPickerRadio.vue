@@ -1,6 +1,7 @@
 <template>
   <b-field>
     <b-radio-button
+      @input="click"
       @click.native="click(0)"
       :value="value"
       :disabled="disabled"
@@ -12,6 +13,7 @@
       <div class="is-hidden-touch">{{ preferenceString(0) }}</div>
     </b-radio-button>
     <b-radio-button
+      @input="click"
       @click.native="click(1)"
       :value="value"
       :disabled="disabled"
@@ -20,6 +22,7 @@
       :native-value="parseInt(1)"
     >{{ preferenceString(1) }}</b-radio-button>
     <b-radio-button
+      @input="click"
       @click.native="click(2)"
       :value="value"
       :disabled="disabled"
@@ -31,6 +34,7 @@
       <div class="is-hidden-touch">{{ preferenceString(2) }}</div>
     </b-radio-button>
     <b-radio-button
+      @input="click"
       @click.native="click(3)"
       :value="value"
       :disabled="disabled"
