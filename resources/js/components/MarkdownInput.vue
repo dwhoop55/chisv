@@ -60,7 +60,7 @@ const preview = {
                <p class="modal-card-title">Preview</p>
            </header>
            <section class="modal-card-body">
-              <VueShowdown :markdown="markdown"/>
+              <VueShowdown class="content" :markdown="markdown"/>
            </section>
            <footer class="modal-card-foot">
                <b-button @click="$parent.close()">Close</b-button>
