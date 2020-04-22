@@ -11,7 +11,7 @@
           label="Select columns"
         >
           <br />
-          <b-field label="test" />
+          <b-field label="Method" />
           <b-field>
             <b-radio
               @input="onModeChange($event)"
@@ -25,6 +25,8 @@
               <br />If an existing task cannot be matched by id (when its not in the data you uploaded) there will be no change to the task.
             </b-radio>
           </b-field>
+          <a @click="showFaq()">Take a look at the FAQ for more info</a>
+          <br />
           <br />
           <b-field label="Columns to import" />
           <b-field v-for="field in fields" :key="field">
@@ -121,11 +123,21 @@ export default {
       ],
       requiredFields: ["id", "name", "date", "start_at", "end_at", "slots"],
       activeFields: ["name", "date", "start_at", "end_at", "slots"],
-      currentStep: 0
+      currentStep: 0,
+      unregisterRouterGuard: null
     };
   },
 
   methods: {
+    showFaq() {
+      this.$parent.close();
+      this.unregisterRouterGuard();
+      this.$router.push({
+        name: "faq",
+        params: { id: 6 }
+      });
+    },
+
     fieldDisabled(field) {
       if (
         field == "id" ||
@@ -196,7 +208,7 @@ export default {
   created() {
     this.onModeChange(true);
 
-    const unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
+    this.unregisterRouterGuard = this.$router.beforeEach((to, from, next) => {
       if (this.currentStep > 0) {
         this.currentStep--;
       } else {
@@ -206,7 +218,7 @@ export default {
     });
 
     this.$once("hook:destroyed", () => {
-      unregisterRouterGuard();
+      this.unregisterRouterGuard();
     });
   }
 };
