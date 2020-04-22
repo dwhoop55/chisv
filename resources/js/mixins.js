@@ -30,10 +30,7 @@ let methods = {
             `BEGIN:VEVENT`,
             `SUMMARY:${title}`,
             `DTSTART;TZID=${timezone}:${startDate}T${startTime}`,
-            `DTEND;TZID=${timezone}:${endDate}T${endTime}`,
-            `STATUS:CONFIRMED`,
-            `SEQUENCE:0`,
-            `END:VEVENT`,
+            `DTEND;TZID=${timezone}:${endDate}T${endTime}`
         ];
         if (location) {
             elements.push(`LOCATION:${location.replace(',', "\,")}`);
@@ -41,6 +38,9 @@ let methods = {
         if (description) {
             elements.push(`DESCRIPTION:${description.replace(',', "\,")}`);
         }
+        elements.push("STATUS:CONFIRMED");
+        elements.push("SEQUENCE:0");
+        elements.push("END:VEVENT");
         return elements.join("\n");
     },
     formatTime(date, format, options = {}) {
