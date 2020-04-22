@@ -105,7 +105,7 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
             // trigger this conversion if there is also the 'date' in the old format
 
             // (1)
-            if (preg_match("/^\d{1,}$/", $task['date'])) {
+            if (isset($task['date']) && preg_match("/^\d{1,}$/", $task['date'])) {
                 // date is in conference day format, like 1,2,3
                 $task['date'] = Carbon::create($conference->start_date)->addDay(-1)->addDay($task['date'])->toDateString();
 
@@ -140,10 +140,10 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
             }
 
             // (3)
-            if (preg_match("/^\d{2}:\d{2}$/", $task['start_at'])) {
+            if (isset($task['start_at']) && preg_match("/^\d{2}:\d{2}$/", $task['start_at'])) {
                 $task['start_at'] = $task['start_at'] . ":00";
             }
-            if (preg_match("/^\d{2}:\d{2}$/", $task['end_at'])) {
+            if (isset($task['end_at']) && preg_match("/^\d{2}:\d{2}$/", $task['end_at'])) {
                 $task['end_at'] = $task['end_at'] . ":00";
             }
 
