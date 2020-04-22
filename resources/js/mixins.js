@@ -31,12 +31,16 @@ let methods = {
             `SUMMARY:${title}`,
             `DTSTART;TZID=${timezone}:${startDate}T${startTime}`,
             `DTEND;TZID=${timezone}:${endDate}T${endTime}`,
-            `LOCATION:${location.replace(',', "\,")}`,
-            `DESCRIPTION:${description.replace(',', "\,")}`,
             `STATUS:CONFIRMED`,
             `SEQUENCE:0`,
             `END:VEVENT`,
         ];
+        if (location) {
+            elements.push(`LOCATION:${location.replace(',', "\,")}`);
+        }
+        if (description) {
+            elements.push(`DESCRIPTION:${description.replace(',', "\,")}`);
+        }
         return elements.join("\n");
     },
     formatTime(date, format, options = {}) {
