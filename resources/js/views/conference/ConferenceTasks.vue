@@ -353,7 +353,7 @@ export default {
               name: "",
               location: "",
               description: "",
-              date: new Date().toMySqlDate(),
+              date: this.dateFromMySql(this.conference.start_date),
               start_at: "09:00:00",
               end_at: "10:00:00",
               hours: 1,
