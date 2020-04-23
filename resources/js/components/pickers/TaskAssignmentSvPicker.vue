@@ -16,7 +16,7 @@
       >
       <template slot-scope="props">
         <div class="media">
-          <div class="media-left">
+          <div class="media-left image is-64x64 is-overflow-hidden">
             <img width="64" :src="userAvatar(props.option)" />
           </div>
           <div class="media-content">

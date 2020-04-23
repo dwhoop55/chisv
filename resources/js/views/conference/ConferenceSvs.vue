@@ -96,7 +96,7 @@
           <template>
             <div class="is-vertical-center">
               <figure class="media-left">
-                <p class="image is-64x64">
+                <p class="image is-overflow-hidden is-64x64">
                   <img :src="userAvatar(props.row)" />
                 </p>
               </figure>
@@ -133,25 +133,10 @@
             <p
               v-if="props.row.university"
               :title="props.row.university"
-            >{{ props.row.university | textlimit(45) }}</p>
+            >{{ props.row.university | textlimit(40) }}</p>
             <p v-else>N/A</p>
           </template>
         </b-table-column>
-        <!-- <b-table-column
-          class="is-vertical-center-column"
-          :visible="userIsAdminOrChairOrCaptain(conference.key)"
-          width="130"
-          field="email"
-          label="E-Mail"
-          sortable
-        >
-          <template>
-            <a
-              @click="ignoreNextToggleClick=true"
-              :href="'mailto:' + props.row.email"
-            >{{ props.row.email }}</a>
-          </template>
-        </b-table-column>-->
         <b-table-column
           class="is-vertical-center-column"
           :visible="userIsAdminOrChairOrCaptain(conference.key)"

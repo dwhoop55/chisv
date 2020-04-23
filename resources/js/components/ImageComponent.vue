@@ -8,7 +8,7 @@
       drag-drop
     >
       <div class="has-margin-4 has-text-centered">
-        <figure :class="`image is-${size}`">
+        <figure :class="`image is-${size} is-overflow-hidden`">
           <img :src="imageSrc" />
         </figure>
         <small v-html="text" />
