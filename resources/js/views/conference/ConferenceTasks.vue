@@ -233,7 +233,7 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              on {{ formatTime(day, 'll') }}
+              on {{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}
             </p>
             <p class="has-text-danger" v-if="onlyOwnTasks">
               Only showing tasks assigned to you.
