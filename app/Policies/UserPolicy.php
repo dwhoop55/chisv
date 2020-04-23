@@ -26,12 +26,18 @@ class UserPolicy
             return true;
         } else if (
             $user->isChair()
-            && $this->update($user, $model)
             && !$model->isAdmin()
+            && !$model->isChair()
         ) {
-            // User has to be chair and be able to view the user
-            // Also the $model must not be an admin
-            return true;
+            // User has to be chair and the target user
+            // must not be admin or chair
+
+            // Further more the auth user and the target
+            // have to share at least one common conference
+            $conferencesOfModel = $model->conferences;
+            $manageableConferences = $user->conferencesAsChairOrCaptain();
+            $conferencesTheyShare = $conferencesOfModel->intersect($manageableConferences);
+            return $conferencesTheyShare->isNotEmpty();
         } else {
             return false;
         }
