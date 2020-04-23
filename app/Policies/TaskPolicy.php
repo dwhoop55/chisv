@@ -54,7 +54,9 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        return $user->isAdmin() || $user->isChair();
+        return $user->isAdmin()
+            || $user->isChair()
+            ||  $user->isCaptain();
     }
 
     /**
@@ -67,7 +69,9 @@ class TaskPolicy
      */
     public function deleteForConference(User $user, Task $task = null, Conference $conference)
     {
-        return $user->isAdmin() || $user->isChair($conference);
+        return $user->isAdmin()
+            || $user->isChair($conference)
+            ||  $user->isCaptain($conference);;
     }
 
     /**
@@ -80,7 +84,9 @@ class TaskPolicy
      */
     public function createForConference(User $user, Task $task = null, Conference $conference)
     {
-        return $user->isAdmin() || $user->isChair($conference);
+        return $user->isAdmin()
+            || $user->isChair($conference)
+            || $user->isCaptain($conference);
     }
 
     /**
@@ -92,7 +98,9 @@ class TaskPolicy
      */
     public function createThis(User $user, Task $task)
     {
-        return $user->isAdmin() || $user->isChair($task->conference);
+        return $user->isAdmin()
+            || $user->isChair($task->conference)
+            || $user->isCaptain($task->conference);
     }
 
     /**
@@ -106,7 +114,7 @@ class TaskPolicy
     {
         if ($user->isAdmin()) {
             return true;
-        } else if ($user->isChair($task->conference)) {
+        } else if ($user->isChair($task->conference) || $user->isCaptain($task->conference)) {
             return true;
         } else {
             return false;
@@ -124,7 +132,7 @@ class TaskPolicy
     {
         if ($user->isAdmin()) {
             return true;
-        } else if ($user->isChair($task->conference)) {
+        } else if ($user->isChair($task->conference) || $user->isCaptain($task->conference)) {
             return true;
         } else {
             return false;

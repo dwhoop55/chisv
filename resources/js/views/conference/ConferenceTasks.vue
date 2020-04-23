@@ -353,7 +353,7 @@ export default {
               name: "",
               location: "",
               description: "",
-              date: this.dateFromMySql(this.conference.start_date),
+              date: this.conference.start_date,
               start_at: "09:00:00",
               end_at: "10:00:00",
               hours: 1,
@@ -491,10 +491,18 @@ export default {
 
   computed: {
     canCreateTask() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
     },
     canDeleteTask() {
-      return this.userIs("admin") || this.userIs("chair", this.conference.key);
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
     },
     calendarEvents() {
       return [...this.conferenceDays, ...this.taskDays];
