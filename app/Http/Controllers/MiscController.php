@@ -29,7 +29,7 @@ class MiscController extends Controller
                 return redirect('/');
             } else {
                 Log::critical("User (id) " . Auth::user()->id . " tried to use loginAs for " . $id . " and was not authorized!");
-                return abort(403, 'You are not authorized or the user holds higher permissions.');
+                return abort(403, 'You are not authorized or the user holds chair/admin permissions.');
             }
         } else {
             return redirect('/');
