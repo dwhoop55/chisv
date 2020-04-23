@@ -95,7 +95,7 @@ class EnrollmentFormPolicy
      */
     public function update(User $user, EnrollmentForm $enrollmentForm)
     {
-        if (false && $user->isAdmin()) {
+        if ($user->can('update', $enrollmentForm->user)) {
             return true;
         } else if (
             $enrollmentForm->user->id == $user->id

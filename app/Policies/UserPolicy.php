@@ -26,7 +26,7 @@ class UserPolicy
             return true;
         } else if (
             $user->isChair()
-            && $this->view($user, $model)
+            && $this->update($user, $model)
             && !$model->isAdmin()
         ) {
             // User has to be chair and be able to view the user
