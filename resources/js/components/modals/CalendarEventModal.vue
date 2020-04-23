@@ -7,7 +7,7 @@
       <div class="content">
         <div class="subtitle has-margin-b-4" v-if="event.title.length > 50">{{ event.title }}</div>
         <div class="has-margin-b-4" v-if="event.description">{{ event.description }}</div>
-        <b-switch v-model="eventTimezone">{{ activeTimezone }}</b-switch>
+        <b-switch v-model="eventTimezone">{{ activeTimezoneDisplay }}</b-switch>
         <ul>
           <li>
             Starts:
@@ -52,6 +52,11 @@ export default {
     },
     activeTimezone() {
       return this.eventTimezone ? this.event.timezone : this.usersTimezone.name;
+    },
+    activeTimezoneDisplay() {
+      return this.eventTimezone
+        ? `${this.activeTimezone} (conference timezone)`
+        : `${this.activeTimezone} (your configured timezone)`;
     },
     ...mapGetters("auth", ["usersTimezone"])
   },
