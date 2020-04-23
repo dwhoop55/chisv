@@ -184,7 +184,7 @@
                     :class="'button is-small ' + stateType(props.row.permission.state)"
                     slot="trigger"
                   >
-                    <span>{{ props.row.permission.state.name + (props.row.permission.waitlist_position ? " ("+props.row.permission.waitlist_position.position+")" : "") }}</span>
+                    <span>{{ props.row.permission.state.name + ( showWaitlistPosition && props.row.permission.waitlist_position ? " ("+props.row.permission.waitlist_position.position+")" : "") }}</span>
                     <b-icon icon="menu-down"></b-icon>
                   </button>
                   <b-dropdown-item
@@ -688,7 +688,8 @@ export default {
       "perPage",
       "page",
       "states",
-      "isLoading"
+      "isLoading",
+      "showWaitlistPosition"
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),

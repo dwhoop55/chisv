@@ -8,6 +8,7 @@ const state = {
     page: { items: 10, index: 1 },
     states: [],
     isLoading: false,
+    showWaitlistPosition: false,
 };
 
 const getters = {
@@ -19,6 +20,7 @@ const getters = {
     page: state => parseInt(state.page.index),
     states: state => state.states,
     isLoading: state => state.isLoading,
+    showWaitlistPosition: state => state.showWaitlistPosition,
 };
 
 const actions = {
@@ -58,6 +60,7 @@ const mutations = {
     setPage: (state, page) => (state.page.index = page),
     setStates: (state, states) => (state.states = states),
     setIsLoading: (state, bool) => (state.isLoading = bool),
+    setShowWaitlistPosition: (state, bool) => (state.showWaitlistPosition = bool),
 };
 
 export default {

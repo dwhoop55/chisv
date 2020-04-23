@@ -2,6 +2,23 @@
   <transition name="fade">
     <div v-if="user" class="columns is-centered">
       <div class="column is-two-thirds">
+        <div class="level is-mobile">
+          <div class="level-left">
+            <div class="level-item">
+              <p class="subtitle">{{ user.firstname }} {{ user.lastname }}</p>
+            </div>
+            <div class="level-">
+              <b-button
+                v-if="canDelete"
+                outlined
+                size="is-small"
+                type="is-danger"
+                @click="deleteUser()"
+              >Delete</b-button>
+            </div>
+          </div>
+        </div>
+
         <b-tabs
           :value="tab"
           @input="setTab($event)"
@@ -35,9 +52,11 @@
           <b-tab-item icon="key" label="Password">
             <user-edit-password v-model="user"></user-edit-password>
           </b-tab-item>
-        </b-tabs>
 
-        <b-button v-if="canDelete" type="is-danger" @click="deleteUser()">Delete user</b-button>
+          <b-tab-item icon="gesture-tap-button" label="UI" v-if="user.id == authUser.id">
+            <user-edit-ui></user-edit-ui>
+          </b-tab-item>
+        </b-tabs>
 
         <b-loading :is-full-page="false" :active="isLoading"></b-loading>
       </div>
@@ -136,6 +155,7 @@ export default {
         .getUser(id || this.user.id)
         .then(({ data }) => {
           this.user = data;
+          document.title = `${this.user.firstname} ${this.user.lastname} - chisv`;
           this.$forceUpdate();
         })
         .catch(error => {

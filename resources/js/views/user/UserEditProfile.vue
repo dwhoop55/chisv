@@ -1,16 +1,5 @@
 <template>
   <div>
-    <div class="is-flex" style="justify-content: flex-end;">
-      <b-button
-        v-if="user.id == authUser.id"
-        class="is-absolute is-pinned-t is-pinned-r"
-        size="is-small"
-        type="is-danger"
-        outlined
-        @click="removeUiPreferences()"
-      >Reset UI preferences</b-button>
-    </div>
-
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
       <b-field grouped group-multiline>
         <b-field>
@@ -226,22 +215,8 @@ export default {
         }
       });
     },
-    removeUiPreferences() {
-      // First we remove the persistens backup of the in-memory
-      // vuex store
-      this.resetStore();
-      this.$buefy.notification.open({
-        duration: 5000,
-        message: `Preferences reset`,
-        type: "is-success",
-        hasIcon: true
-      });
-      // This will actually reset the vuex store in memory
-      window.location.href = "/";
-    },
     ...mapActions("auth", {
-      fetchAuthUser: "fetchUser",
-      resetStore: "resetStore"
+      fetchAuthUser: "fetchUser"
     })
   },
 
