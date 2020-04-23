@@ -6,6 +6,12 @@
         @input="setShowWaitlistPosition"
       >Show waitlist position on SV state toggle in the SV view</b-switch>
     </b-field>
+    <b-field v-if="userIs('admin') || userIs('chair') || userIs('captain')">
+      <b-switch
+        :value="showAssignmentsAvatar"
+        @input="setShowAssignmentsAvatar"
+      >Show avatar for SVs on assignments view</b-switch>
+    </b-field>
     <b-field>
       <b-button type="is-danger" @click="removeUiPreferences()">Reset all UI preferences</b-button>
     </b-field>
@@ -54,11 +60,13 @@ export default {
     ...mapActions("auth", {
       resetStore: "resetStore"
     }),
-    ...mapMutations("svs", ["setShowWaitlistPosition"])
+    ...mapMutations("svs", ["setShowWaitlistPosition"]),
+    ...mapMutations("assignments", ["setShowAssignmentsAvatar"])
   },
 
   computed: {
     ...mapGetters("svs", ["showWaitlistPosition"]),
+    ...mapGetters("assignments", ["showAssignmentsAvatar"]),
     ...mapGetters("auth", ["userIs"])
   }
 };

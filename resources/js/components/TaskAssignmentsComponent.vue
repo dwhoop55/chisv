@@ -10,6 +10,14 @@
     <div v-for="assignment in task.assignments" :key="assignment.id">
       <div :class="rowStyle(assignment.state)">
         <div class="columns is-mobile is-vcentered has-padding-7">
+          <div
+            v-if="showAssignmentsAvatar && users[assignment.user.id].avatar"
+            class="column is-paddingless is-narrow column-small"
+          >
+            <div class="image is-64x64 is-overflow-hidden">
+              <img :src="userAvatar(users[assignment.user.id])" />
+            </div>
+          </div>
           <div class="column column-small">
             <b-tooltip type="is-danger" label="Task overlaps with other task" position="is-right">
               <a v-if="assignment.is_conflicting">
@@ -51,6 +59,7 @@
 
 <script>
 import api from "@/api.js";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["task", "conference", "users"],
@@ -61,6 +70,8 @@ export default {
       hoverUserId: null
     };
   },
+
+  computed: mapGetters("assignments", ["showAssignmentsAvatar"]),
 
   methods: {
     userClicked(user) {

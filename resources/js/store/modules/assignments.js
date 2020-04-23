@@ -8,6 +8,7 @@ const state = {
     day: new Date(),
     data: {},
     isLoading: false,
+    showAssignmentsAvatar: true,
 };
 
 const getters = {
@@ -23,6 +24,7 @@ const getters = {
     tasks: state => state.data?.tasks,
     totalTasks: state => state.data?.total,
     isLoading: state => state.isLoading,
+    showAssignmentsAvatar: state => state.showAssignmentsAvatar,
 };
 
 const actions = {
@@ -65,6 +67,7 @@ const mutations = {
     setPage: (state, page) => (state.page.index = page),
     setData: (state, data) => (state.data = data),
     setIsLoading: (state, bool) => (state.isLoading = bool),
+    setShowAssignmentsAvatar: (state, bool) => (state.showAssignmentsAvatar = bool),
 };
 
 export default {

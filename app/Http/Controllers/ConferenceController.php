@@ -381,6 +381,7 @@ class ConferenceController extends Controller
                         $query->where('conference_id', $conference->id);
                     });
                 },
+                'usersWithAssignment.avatar'
             ])
             // Stay bond to this $conference
             ->where('tasks.conference_id', $conference->id)
@@ -413,7 +414,10 @@ class ConferenceController extends Controller
         collect($paginator->items())->each(function ($task) use (&$users) {
             $task->usersWithAssignment->each(function ($user) use (&$users) {
                 if (!isset($users[$user->id])) {
-                    $nUser = $user->only(["firstname", "lastname"]);
+                    $nUser = $user->only(["firstname", "lastname", 'id']);
+                    if ($user->avatar) {
+                        $nUser['avatar'] = ['web_path' => $user->avatar->web_path];
+                    }
                     $nUser['hours_done'] = round($user->assignments->sum('hours'), 2);
                     $users->put($user->id, $nUser);
                 }
