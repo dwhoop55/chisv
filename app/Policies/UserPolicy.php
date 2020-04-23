@@ -13,6 +13,31 @@ class UserPolicy
 
 
     /**
+     * Determine whether the user can become the
+     * specified user (loginAs)
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @return mixed
+     */
+    public function loginAs(User $user, User $model)
+    {
+        if ($user->isAdmin()) {
+            return true;
+        } else if (
+            $user->isChair()
+            && $this->view($user, $model)
+            && !$model->isAdmin()
+        ) {
+            // User has to be chair and be able to view the user
+            // Also the $model must not be an admin
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine whether the user can view the own
      * user object
      *

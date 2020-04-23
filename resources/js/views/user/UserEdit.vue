@@ -7,14 +7,16 @@
             <div class="level-item">
               <p class="subtitle">{{ user.firstname }} {{ user.lastname }}</p>
             </div>
-            <div class="level-">
+            <div v-if="canDelete" class="level-item">
+              <b-button outlined size="is-small" type="is-danger" @click="deleteUser()">Delete</b-button>
+            </div>
+            <div v-if="canLoginAs" class="level-item">
               <b-button
-                v-if="canDelete"
                 outlined
                 size="is-small"
-                type="is-danger"
-                @click="deleteUser()"
-              >Delete</b-button>
+                type="is-info"
+                @click="onLoginAs(user.id)"
+              >Become this user</b-button>
             </div>
           </div>
         </div>
@@ -98,6 +100,12 @@ export default {
         (this.userIs("admin") || this.userIs("chair"))
       );
     },
+    canLoginAs() {
+      return (
+        this.user?.id != this.authUser?.id &&
+        (this.userIs("admin") || this.userIs("chair"))
+      );
+    },
     routeId() {
       return this.$route.params.id;
     },
@@ -126,6 +134,30 @@ export default {
   },
 
   methods: {
+    onLoginAs() {
+      this.$buefy.dialog.confirm({
+        title: `Login As`,
+        message: `Are your sure you want to login as\
+                  <b>${this.user.firstname} ${this.user.lastname}</b>?\
+                  <br>
+                  <br>
+                  If you continue this will remove your local frontend preferences, log you out\
+                  and then log you in as if you had used the SVs credentials.
+                  <br>
+                  <br>
+                  This action might fail if the user is not one of your\
+                  SVs or has additional higher permissions.\
+                  <br>
+                  <br>
+                  To get back to your own session you will have to logout and log back\
+                  in with your own credentials.
+                  `,
+        type: "is-danger",
+        onConfirm: () => {
+          this.loginAs(this.user.id);
+        }
+      });
+    },
     showGrantModal() {
       this.$buefy.modal.open({
         parent: this,

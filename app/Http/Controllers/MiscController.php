@@ -11,9 +11,26 @@ use App\Shirt;
 use App\Timezone;
 use App\University;
 use App\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MiscController extends Controller
 {
+
+    public function loginAs(Request $request)
+    {
+        if ($request->input('id')) {
+            $id = $request->input('id');
+            $ok = Auth::user()->can('loginAs', User::find($id));
+            if ($ok) {
+                Auth::logout();
+                $resp = Auth::loginUsingId($id);
+                return redirect('/');
+            } else {
+                return abort(403, 'You are not authorized or the user holds higher permissions');
+            }
+        }
+    }
 
     public function locales()
     {

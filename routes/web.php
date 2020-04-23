@@ -14,6 +14,7 @@
 // Auth routes
 Route::view('register', 'auth.register')->middleware('guest')->name('register.show');
 Auth::routes(['register' => false]);
+Route::get('loginAs', 'MiscController@loginAs');
 
 // Return our SPA
 Route::get('/{any}', function () {

@@ -5,6 +5,10 @@ import Form from "vform";
 export { methods }
 
 let methods = {
+    loginAs(id) {
+        localStorage.removeItem("vuex");
+        document.location = `/loginAs?id=${id}`;
+    },
     downloadText(text, filename) {
         let blob = new Blob([text], { type: 'text/txt' });
         let link = document.createElement('a');
