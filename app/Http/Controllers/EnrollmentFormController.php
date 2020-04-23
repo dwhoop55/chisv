@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EnrollmentForm;
+use App\Http\Requests\EnrollRequest;
 use App\Services\EnrollmentFormService;
 use Illuminate\Http\Request;
 
@@ -39,5 +40,25 @@ class EnrollmentFormController extends Controller
     public function show(EnrollmentForm $enrollmentForm)
     {
         return $enrollmentForm;
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\EnrollmentForm  $enrollmentForm
+     * @return \Illuminate\Http\Response
+     */
+    public function update(EnrollRequest $request, EnrollmentForm $enrollmentForm)
+    {
+        $service = new EnrollmentFormService;
+        $form = $service->getFilledWith($request);
+        $result = $enrollmentForm->update($form->only(['body']));
+
+        if ($result) {
+            return ["result" => true, "message" => "Form was updated!"];
+        } else {
+            return ["result" => false, "message" => "Form could not be updated"];
+        }
     }
 }

@@ -148,7 +148,8 @@ class UserController extends Controller
                         'role_id'
                     ]);
                     $query->with([
-                        'conference:id,key,name',
+                        'conference:id,key,name,state_id',
+                        'conference.state:id,name,description',
                         'conference.artwork:owner_id,web_path',
                         'role:id,name,description',
                         'state:id,name,description',
@@ -306,30 +307,5 @@ class UserController extends Controller
 
         $result = $user->delete();
         return ["success" => $result, "message" => "User deleted"];
-    }
-
-
-    // Blade view routes (web route endpoints)
-
-    /**
-     * Render the user index form
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function showIndex()
-    {
-        return view('user.index');
-    }
-
-    /**
-     * Render the user edit form
-     *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\Response
-     */
-    public function showEdit(User $user)
-    {
-        return view('user.edit', compact('user'));
     }
 }

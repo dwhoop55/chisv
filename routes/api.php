@@ -118,6 +118,9 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.destinations');
 
 
+        Route::resource('enrollment_form', 'EnrollmentFormController', [
+            'only' => ['update']
+        ]);
         Route::resource('user', 'UserController', [
             'only' => ['index', 'show', 'update', 'destroy']
         ]);

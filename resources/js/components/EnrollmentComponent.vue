@@ -42,7 +42,7 @@
           class="has-margin-t-7"
           icon-left="format-list-bulleted"
           @click="showModal()"
-        >Show form</b-button>
+        >{{ canEdit ? 'Edit form' : 'Show form' }}</b-button>
 
         <!-- Unenroll -->
         <b-button
@@ -126,6 +126,7 @@ export default {
         parent: this,
         component: EnrollmentFormModal,
         props: {
+          canEdit: this.canEdit,
           form: this.parseEnrollmentForm(this.permission.enrollment_form)
         },
         hasModalCard: true,
@@ -175,6 +176,9 @@ export default {
   },
 
   computed: {
+    canEdit() {
+      return this.conference.state.name == "enrollment";
+    },
     waitlistTotal() {
       return (
         this.permission.waitlist_position.post +

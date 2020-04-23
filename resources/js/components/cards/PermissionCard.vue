@@ -22,7 +22,7 @@
               @click="showEnrollmentForm()"
               type="is-light"
               class="has-margin-t-7 has-margin-r-7"
-            >Show Enrollment Form</b-button>
+            >{{ canEditForm ? "Edit" : "Show" }} Enrollment Form</b-button>
           </transition>
         </b-field>
       </div>
@@ -85,7 +85,9 @@ export default {
         component: EnrollmentFormModalVue,
         parent: this,
         props: {
-          form: this.parseEnrollmentForm(this.permission.enrollment_form)
+          canEdit: this.canEditForm,
+          form: this.parseEnrollmentForm(this.permission.enrollment_form),
+          onUpdated: () => this.$emit("updated")
         },
         hasModalCard: true
       });
@@ -123,6 +125,9 @@ export default {
   },
 
   computed: {
+    canEditForm() {
+      return this.permission.conference?.state?.name == "enrollment";
+    },
     canRevoke() {
       return (
         this.userIs("admin") ||

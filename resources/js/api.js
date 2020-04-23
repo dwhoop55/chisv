@@ -150,6 +150,9 @@ export default {
         return vform.post(`faq`);
     },
 
+    updateEnrollmentForm(id, vform) {
+        return vform.put(`enrollment_form/${id}`);
+    },
     updateFaq(id, vform) {
         return vform.put(`faq/${id}`);
     },

@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\EnrollmentForm;
 use App\Role;
+use App\State;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -94,7 +95,16 @@ class EnrollmentFormPolicy
      */
     public function update(User $user, EnrollmentForm $enrollmentForm)
     {
-        //
+        if (false && $user->isAdmin()) {
+            return true;
+        } else if (
+            $enrollmentForm->user->id == $user->id
+            && $enrollmentForm->permission->conference->state->id == State::byName('enrollment')->id
+        ) {
+            // We also allow when the enrollment form belongs to the auth users permission
+            // and the conference bound to that construct is still in enrollment phase
+            return true;
+        }
     }
 
     /**

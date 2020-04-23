@@ -14,7 +14,7 @@
               <b-button
                 outlined
                 size="is-small"
-                type="is-info"
+                type="is-primary"
                 @click="onLoginAs(user.id)"
               >Become this user</b-button>
             </div>
@@ -29,7 +29,11 @@
           type="is-boxed"
         >
           <b-tab-item icon="format-list-bulleted" label="Conferences">
-            <b-button v-if="canGrant" @click="showGrantModal()" class="is-pulled-right">Grant</b-button>
+            <b-button
+              v-if="canGrant"
+              @click="showGrantModal()"
+              class="is-primary is-pulled-right"
+            >Grant</b-button>
 
             <div class="subtitle has-margin-t-3">
               <p v-if="hasActivePermissions">Active conferences</p>
@@ -153,6 +157,9 @@ export default {
                   in with your own credentials.
                   `,
         type: "is-danger",
+        icon: "guy-fawkes-mask",
+        hasIcon: true,
+        confirmText: "I know what I am doing!",
         onConfirm: () => {
           this.loginAs(this.user.id);
         }
@@ -171,8 +178,13 @@ export default {
     },
     deleteUser() {
       this.$buefy.dialog.confirm({
-        message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?`,
+        message: `Are your sure you want to delete ${this.user.firstname} ${this.user.lastname}?\
+        <br><br><b>This will also delete all bids and assignments for any\
+         conference the users might have interacted with!</b>`,
         type: "is-danger",
+        icon: "emoticon-dead",
+        hasIcon: true,
+        confirmText: "PURGE!",
         onConfirm: () => {
           api.deleteUser(this.user.id).then(() => {
             this.fetchUsers();

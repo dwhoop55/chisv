@@ -13,7 +13,7 @@ class EnrollmentFormService
      * Will load the enrollmentForm from database
      * (based on the id in the body) and then fill
      * the form with the data params.
-     * The filled form is the returned
+     * The filled form is then returned
      * @param Request $request Request from the user
      * @return EnrollmentForm The filled form
      */
@@ -95,16 +95,27 @@ class EnrollmentFormService
     public function getTemplateFor(Request $request)
     {
         $data = $request->toArray();
-        if (!$data['id']) {
+        if (
+            !isset($data['id'])
+            || !$data['id']
+        ) {
             abort(400, 'No id given!');
         }
-        // Load the form from the database
-        $template = EnrollmentForm::where('is_template', true)->findOrFail($data['id']);
+
+        $formById = EnrollmentForm::findOrFail($data['id']);
+        if (!$formById->is_template) {
+            // The form is not an template but a filled form
+            // get the template for it
+            $template = EnrollmentForm::where('is_template', true)->findOrFail($formById->parent_id);
+        } else {
+            // The form is already an teamplate
+            $template = $formById;
+        }
 
         // Create a new form, because we only wanted to duplicate the body and fields
         // There should be no id or permission id connected to it - just a raw form
         $form = new EnrollmentForm([
-            'parent_id' => $data['id'],
+            'parent_id' => $template->id,
             'name' => $template->name,
             'body' => $template->body,
             'is_template' => true
