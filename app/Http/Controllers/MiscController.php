@@ -13,6 +13,7 @@ use App\University;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class MiscController extends Controller
 {
@@ -24,11 +25,14 @@ class MiscController extends Controller
             $ok = Auth::user()->can('loginAs', User::find($id));
             if ($ok) {
                 Auth::logout();
-                $resp = Auth::loginUsingId($id);
+                Auth::loginUsingId($id);
                 return redirect('/');
             } else {
-                return abort(403, 'You are not authorized or the user holds higher permissions');
+                Log::critical("User (id) " . Auth::user()->id . " tried to use loginAs for " . $id . " and was not authorized!");
+                return abort(403, 'You are not authorized or the user holds higher permissions.');
             }
+        } else {
+            return redirect('/');
         }
     }
 
