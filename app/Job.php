@@ -53,6 +53,7 @@ class Job extends Model
 {
 
     protected $with = ['state'];
+    protected $hidden = ['payload'];
     protected $guarded = [];
     protected $casts = [
         'progress' => 'int',
