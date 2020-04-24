@@ -95,7 +95,7 @@
         <b-table-column field="firstname" label="Firstname" sortable>
           <template>
             <div class="is-vertical-center">
-              <figure class="media-left">
+              <figure v-if="showSvAvatar" class="media-left">
                 <p class="image is-overflow-hidden is-64x64">
                   <img :src="userAvatar(props.row)" />
                 </p>
@@ -674,7 +674,8 @@ export default {
       "page",
       "states",
       "isLoading",
-      "showWaitlistPosition"
+      "showWaitlistPosition",
+      "showSvAvatar"
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),

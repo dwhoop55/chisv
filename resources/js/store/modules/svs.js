@@ -9,6 +9,7 @@ const state = {
     states: [],
     isLoading: false,
     showWaitlistPosition: false,
+    showSvAvatar: true,
 };
 
 const getters = {
@@ -21,6 +22,7 @@ const getters = {
     states: state => state.states,
     isLoading: state => state.isLoading,
     showWaitlistPosition: state => state.showWaitlistPosition,
+    showSvAvatar: state => state.showSvAvatar,
 };
 
 const actions = {
@@ -61,6 +63,7 @@ const mutations = {
     setStates: (state, states) => (state.states = states),
     setIsLoading: (state, bool) => (state.isLoading = bool),
     setShowWaitlistPosition: (state, bool) => (state.showWaitlistPosition = bool),
+    setShowSvAvatar: (state, bool) => (state.showSvAvatar = bool),
 };
 
 export default {

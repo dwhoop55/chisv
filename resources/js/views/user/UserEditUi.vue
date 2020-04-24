@@ -10,11 +10,14 @@
       <b-switch
         :value="showAssignmentsAvatar"
         @input="setShowAssignmentsAvatar"
-      >Show avatar for SVs on assignments view</b-switch>
+      >Show image for SVs on assignments tab</b-switch>
     </b-field>
     <b-field>
-      <b-button type="is-danger" @click="removeUiPreferences()">Reset all UI preferences</b-button>
+      <b-switch :value="showSvAvatar" @input="setShowSvAvatar">Show image for SVs on SV tab</b-switch>
     </b-field>
+    <!-- <b-field>
+      <b-button type="is-danger" @click="removeUiPreferences()">Reset all UI preferences</b-button>
+    </b-field>-->
   </div>
 </template>
 
@@ -60,12 +63,12 @@ export default {
     ...mapActions("auth", {
       resetStore: "resetStore"
     }),
-    ...mapMutations("svs", ["setShowWaitlistPosition"]),
+    ...mapMutations("svs", ["setShowWaitlistPosition", "setShowSvAvatar"]),
     ...mapMutations("assignments", ["setShowAssignmentsAvatar"])
   },
 
   computed: {
-    ...mapGetters("svs", ["showWaitlistPosition"]),
+    ...mapGetters("svs", ["showWaitlistPosition", "showSvAvatar"]),
     ...mapGetters("assignments", ["showAssignmentsAvatar"]),
     ...mapGetters("auth", ["userIs"])
   }
