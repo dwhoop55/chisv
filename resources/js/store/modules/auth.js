@@ -41,8 +41,8 @@ const getters = {
                     } else if (stateName === null &&
                         permission.stateName === null) {
                         found = true;
-                    } else if (permission.state &&
-                        stateName &&
+                    } else if (stateName &&
+                        permission.state &&
                         stateName === permission.state.name) {
                         found = true;
                     }

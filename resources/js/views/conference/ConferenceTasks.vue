@@ -28,7 +28,7 @@
       <b-dropdown
         v-if="canCreateTask"
         @input="onPrioritiesChange"
-        @active-change="($event == false) ? fetchTasks() : null"
+        @active-change="($event == false) ? reload() : null"
         :value="priorities"
         :disabled="isLoading"
         class="control"
@@ -105,7 +105,7 @@
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="fetchTasks();fetchTaskDays()" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="reload(true)" type="is-primary" icon-left="refresh">Reload</b-button>
       </b-field>
     </b-field>
     <br />
@@ -155,8 +155,21 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="1" :label="conference.bidding_enabled ? 'Preference' : 'Status'">
-          <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
+        <b-table-column width="1" :label="canBid && !onlyOwnTasks ? 'Preference' : 'Status'">
+          <template v-if="canBid && !onlyOwnTasks" slot="header">
+            <div>
+              <task-bid-picker-radio
+                v-model="multiBidValue"
+                @click-help="showBidAllHelp()"
+                @input="multiBid"
+                size="is-small"
+                :show-help="true"
+              ></task-bid-picker-radio>
+            </div>
+          </template>
+          <template>
+            <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
+          </template>
         </b-table-column>
         <b-table-column
           :visible="columns.includes('start_at')"
@@ -283,11 +296,33 @@ export default {
 
   data() {
     return {
-      allPriorities: [1, 2, 3]
+      allPriorities: [1, 2, 3],
+      multiBidValue: null
     };
   },
 
   methods: {
+    multiBid(preference) {
+      console.log(preference);
+    },
+    reload(withDays = false) {
+      this.multiBidValue = null;
+      this.fetchTasks();
+      if (withDays) this.fetchTaskDays();
+    },
+    showBidAllHelp() {
+      this.$buefy.dialog.confirm({
+        title: "Multi bidding",
+        message: `By clicking one of the preferences in the column's header you bid with the selected preference\
+                  on all tasks which are currently in the table. This also includes any tasks on the next\
+                  or previous page of the table (if any).<br><br>More details are available in the FAQ entry.`,
+        hasIcon: true,
+        icon: "checkbox-multiple-marked",
+        confirmText: "Close",
+        cancelText: "More info",
+        onCancel: () => this.$router.push({ name: "faq", params: { id: 7 } })
+      });
+    },
     deleteAllTasks() {
       let day = this.formatTime(this.day, "DD.MM.YYYY", { toTz: true });
       this.$buefy.dialog.confirm({
@@ -323,8 +358,7 @@ export default {
                   });
                 })
                 .finally(() => {
-                  this.fetchTasks();
-                  this.fetchTaskDays();
+                  this.reload(true);
                 });
             } // onConfirm 2
           });
@@ -362,8 +396,7 @@ export default {
               conference_id: this.conference.id
             },
             updated: () => {
-              this.fetchTasks();
-              this.fetchTaskDays();
+              this.reload(true);
             },
             calendarEvents: this.calendarEvents
           },
@@ -384,8 +417,7 @@ export default {
                 component: JobModalVue,
                 hasModalCard: true,
                 onCancel: () => {
-                  this.fetchTasks();
-                  this.fetchTaskDays();
+                  this.reload(true);
                 }
               });
             }
@@ -402,8 +434,7 @@ export default {
         props: {
           task: task,
           updated: () => {
-            this.fetchTasks();
-            this.fetchTaskDays();
+            this.reload(true);
           },
           calendarEvents: this.calendarEvents
         },
@@ -435,38 +466,37 @@ export default {
           type: "is-success",
           hasIcon: true
         });
-        this.fetchTasks();
-        this.fetchTaskDays();
+        this.reload(true);
       });
     },
     onPageChange(page) {
       this.setPage(page);
-      this.fetchTasks();
+      this.reload();
     },
     onPerPageChange(perPage) {
       this.setPerPage(perPage);
-      this.fetchTasks();
+      this.reload();
     },
     onSort(field, direction) {
       this.setSortField(field);
       this.setSortDirection(direction);
-      this.fetchTasks();
+      this.reload();
     },
     onPrioritiesChange(priorities) {
       this.setPriorities(priorities);
     },
     onOnlyOwnTasksChange(bool) {
       this.setOnlyOwnTasks(bool);
-      this.fetchTasks();
+      this.reload();
     },
     onSearch(search) {
       this.setSearch(search);
-      this.fetchTasks();
+      this.reload();
     },
     onDayChange(day) {
       this.setDay(day);
       this.setPage(1);
-      this.fetchTasks();
+      this.reload();
     },
     showDescription(task) {
       this.$buefy.dialog.alert({
@@ -490,6 +520,14 @@ export default {
   },
 
   computed: {
+    canBid() {
+      return (
+        this.userIs("sv", this.conference.key, "accepted") &&
+        this.conference.bidding_enabled &&
+        this.dateFromMySql(this.conference.bidding_start) < new Date() &&
+        this.dateFromMySql(this.conference.bidding_end) > new Date()
+      );
+    },
     canCreateTask() {
       return (
         this.userIs("admin") ||

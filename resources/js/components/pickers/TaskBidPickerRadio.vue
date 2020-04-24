@@ -42,12 +42,21 @@
       type="is-success"
       :native-value="parseInt(3)"
     >{{ preferenceString(3) }}</b-radio-button>
+    <b-button
+      @click="$emit('click-help')"
+      type="is-text"
+      class="is-paddingless"
+      v-if="showHelp"
+      size="is-small"
+    >
+      <b-icon class="is-marginless" size="is-small" icon="help"></b-icon>
+    </b-button>
   </b-field>
 </template>
 
 <script>
 export default {
-  props: ["value", "disabled", "size"],
+  props: ["value", "disabled", "size", "showHelp"],
 
   methods: {
     click(preference) {
