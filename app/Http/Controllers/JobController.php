@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\Jobs;
 use App\Job;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\DB;
 
@@ -71,6 +69,7 @@ class JobController extends Controller
             ->reject(function ($job) {
                 return !$job;
             });
+
         foreach ($queuedJobs as $item) {
             $jobObjects->push($item);
         }
@@ -89,19 +88,5 @@ class JobController extends Controller
     public function show(Job $job)
     {
         return $job;
-    }
-
-
-
-    // Blade views
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function showIndex()
-    {
-        return view('job.index');
     }
 }
