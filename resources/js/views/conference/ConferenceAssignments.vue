@@ -26,9 +26,9 @@
           icon="magnify"
         ></b-input>
         <p class="control">
-          <button @click="showSearchHelp()" class="button">
+          <b-button @click="showSearchHelp()">
             <b-icon type="is-primary" size="is-small" icon="help"></b-icon>
-          </button>
+          </b-button>
         </p>
       </b-field>
 
