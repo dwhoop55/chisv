@@ -27,9 +27,13 @@ class JobController extends Controller
      */
     public function index()
     {
+
+        $take = 50;
+        $total = Job::count() + DB::table('jobs_queue')->count();
+
         $jobObjects = Job
             ::orderBy('id', 'desc')
-            ->take(100)
+            ->take($take / 2)
             ->get()
             ->map(function ($job) {
                 $job->type = 'job';
@@ -39,7 +43,7 @@ class JobController extends Controller
         $queuedJobs = DB
             ::table('jobs_queue')
             ->orderBy('id', 'desc')
-            ->take(100)
+            ->take($take / 2)
             ->get()
             ->map(function ($job) {
                 $payload = json_decode($job->payload);
@@ -76,7 +80,7 @@ class JobController extends Controller
 
         $jobObjects = $jobObjects->sortByDesc('start_at');
 
-        return $jobObjects->values();
+        return ["data" => $jobObjects->values(), "total" => $total, "take" => $take];
     }
 
     /**
