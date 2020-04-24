@@ -29,7 +29,7 @@
             <div class="level">
               <div class="level-item has-text-centered">
                 <div>
-                  <p class="heading">Hours done (+today)</p>
+                  <p class="heading">Hours done (+not done)</p>
                   <div class="subtitle">
                     <small
                       :class="{
@@ -42,8 +42,8 @@
                       >{{ props.option.stats.hours_done }}</b-tooltip>
                       <b-tooltip
                         multiline
-                        label="Hours the SV will do today (assigned/checked-in)"
-                      >(+{{ props.option.stats.hours_assigned_today }})</b-tooltip>
+                        label="Hours the SV is assigned/checked-in"
+                      >(+{{ props.option.stats.hours_not_done }})</b-tooltip>
                     </small>
                   </div>
                 </div>

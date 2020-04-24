@@ -686,18 +686,17 @@ class ConferenceController extends Controller
 
             // Sum up all hours already done
             $hoursDone = $sv->assignments->where("state_id", $stateDone->id)->sum("hours");
-            // // Sum up all the hours the SV will likely do today
-            $hoursToday = $sv
+            // // Sum up all the hours the SV will likely do
+            $hoursNotDone = $sv
                 ->assignments
                 ->filter(function ($assignment) use ($task, $stateAssigned, $stateCheckedIn) {
-                    return $assignment->task->date == $task->date
-                        && ($assignment->state_id == $stateAssigned->id
-                            || $assignment->state_id == $stateCheckedIn->id);
+                    return ($assignment->state_id == $stateAssigned->id
+                        || $assignment->state_id == $stateCheckedIn->id);
                 })
                 ->sum("hours");
 
             $cleanUser['stats']['hours_done'] = round($hoursDone, 2);
-            $cleanUser['stats']['hours_assigned_today'] = round($hoursToday, 2);
+            $cleanUser['stats']['hours_not_done'] = round($hoursNotDone, 2);
 
 
             // We calculate this later when we have sorted and trimmed the collection
