@@ -155,9 +155,9 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="1" :label="canBid && !onlyOwnTasks ? 'Preference' : 'Status'">
-          <template v-if="canBid && !onlyOwnTasks" slot="header">
-            <div>
+        <b-table-column width="1">
+          <template slot="header">
+            <div v-if="canBid && !onlyOwnTasks">
               <task-bid-picker-radio
                 v-model="multiBidValue"
                 @click-help="showBidAllHelp()"
@@ -166,6 +166,7 @@
                 :show-help="true"
               ></task-bid-picker-radio>
             </div>
+            <div v-else>Status</div>
           </template>
           <template>
             <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
