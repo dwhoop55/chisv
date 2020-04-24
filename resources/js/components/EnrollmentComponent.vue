@@ -32,7 +32,7 @@
           <p
             v-if="waitlistedWithPosition"
             class="is-size-6"
-          >{{ waitlistTotal }} other {{ waitlistTotal === 1 ? 'SV is' : 'SVs are'}} waiting</p>
+          >Overall {{ waitlistTotal }} {{ waitlistTotal === 1 ? 'SV is' : 'SVs are'}} waiting</p>
         </div>
         <p v-if="!canUnenroll">You can no longer unenroll</p>
       </div>
@@ -182,7 +182,8 @@ export default {
     waitlistTotal() {
       return (
         this.permission.waitlist_position.post +
-        this.permission.waitlist_position.pre
+        this.permission.waitlist_position.pre +
+        1
       );
     },
     waitlistedWithPosition() {
