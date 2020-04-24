@@ -1,6 +1,5 @@
 <template>
   <section>
-    <p>Showing up to 200 of the last jobs</p>
     <b-field grouped position="is-right">
       <b-button :disabled="isLoading" icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
     </b-field>
@@ -16,7 +15,7 @@
       default-sort="start_at"
       default-sort-direction="desc"
     >
-      <template slot="bottom-left">Total: {{ jobs ? jobs.length : 0 }}</template>
+      <template slot="bottom-left">Showing up to {{ take }} of all {{ total }} jobs</template>
       <template slot-scope="props">
         <b-table-column sortable field="id" label="ID">{{ props.row.id ? props.row.id : 'n/a' }}</b-table-column>
         <b-table-column
@@ -61,7 +60,11 @@ export default {
   data() {
     return {
       jobs: [],
-      isLoading: true
+      total: null,
+      take: null,
+      isLoading: true,
+      timer: null,
+      timerLeft: 0
     };
   },
 
@@ -70,9 +73,13 @@ export default {
     this.autoRefresh();
   },
 
+  beforeDestroy() {
+    clearInterval(this.timer);
+  },
+
   methods: {
     autoRefresh() {
-      setTimeout(this.autoRefresh, 10000);
+      this.timer = setTimeout(this.autoRefresh, 10000);
       this.getJobs(false);
     },
     showDetail(row) {
@@ -104,7 +111,11 @@ export default {
       if (showLoading) this.isLoading = true;
       api
         .getJobs()
-        .then(({ data }) => (this.jobs = data))
+        .then(({ data }) => {
+          this.jobs = data.data;
+          this.total = data.total;
+          this.take = data.take;
+        })
         .finally(() => (this.isLoading = false));
     }
   }
