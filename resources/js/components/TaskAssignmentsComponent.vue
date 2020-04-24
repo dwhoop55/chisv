@@ -74,12 +74,7 @@ export default {
   computed: mapGetters("assignments", ["showAssignmentsAvatar"]),
 
   methods: {
-    userClicked(user) {
-      // this.$store.commit("CONFERENCE_TAB", 1);
-      // this.$store.commit("SVS_SEARCH", user.firstname);
-      // this.$store.commit("SVS_PER_PAGE", 10);
-      // this.$store.commit("SVS_PAGE", 1);
-    },
+    userClicked(user) {},
     userDetail(assignment) {
       var detail =
         "did " +

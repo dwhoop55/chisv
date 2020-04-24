@@ -72,7 +72,7 @@
       <b-field position="is-right">
         <b-button
           :disabled="isLoading"
-          @click="fetchAssignments()"
+          @click="reload()"
           type="is-primary"
           icon-left="refresh"
         >Reload</b-button>
@@ -191,7 +191,7 @@
             :task="props.row"
             :conference="conference"
             :users="users"
-            @reload="fetchAssignments()"
+            @reload="reload()"
             @updateHours="users[$event.userId].hours_done += $event.hours"
           ></task-assignments-component>
         </b-table-column>
@@ -248,10 +248,26 @@ export default {
   props: ["conference"],
 
   data() {
-    return {};
+    return {
+      isLoading: true,
+      timer: null
+    };
+  },
+
+  beforeDestroy() {
+    clearInterval(this.timer);
   },
 
   methods: {
+    reload() {
+      this.isLoading = true;
+      this.fetchAssignments().then(() => (this.isLoading = false));
+    },
+    autoRefresh() {
+      this.fetchAssignments(this.conference.key, false).then(
+        () => (this.timer = setTimeout(this.autoRefresh, 10000))
+      );
+    },
     deleteAllAssignments() {
       this.$buefy.dialog.confirm({
         title: "Caution!",
@@ -274,7 +290,7 @@ export default {
                 hasIcon: true
               });
             })
-            .finally(() => this.fetchAssignments());
+            .finally(() => this.reload());
         } // onConfirm
       });
     },
@@ -288,10 +304,10 @@ export default {
             props: { id: jobId },
             component: JobModalVue,
             hasModalCard: true,
-            onCancel: () => this.fetchAssignments()
+            onCancel: () => this.reload()
           });
         })
-        .finally(() => this.fetchAssignments());
+        .finally(() => this.reload());
     },
     showSearchHelp() {
       this.$buefy.dialog.alert(
@@ -304,16 +320,16 @@ export default {
     },
     onPageChange(page) {
       this.setPage(page);
-      this.fetchAssignments();
+      this.reload();
     },
     onPerPageChange(perPage) {
       this.setPerPage(perPage);
-      this.fetchAssignments();
+      this.reload();
     },
     onSort(field, direction) {
       this.setSortField(field);
       this.setSortDirection(direction);
-      this.fetchAssignments();
+      this.reload();
     },
     onDayChange(day) {
       this.setDay(day);
@@ -321,7 +337,7 @@ export default {
     },
     onSearch(search) {
       this.setSearch(search);
-      this.fetchAssignments();
+      this.reload();
     },
     showDescription(task) {
       this.$buefy.dialog.alert({
@@ -342,7 +358,8 @@ export default {
   },
 
   created() {
-    this.fetchAssignments(this.conference.key);
+    this.reload();
+    this.autoRefresh();
   },
 
   computed: {
@@ -363,8 +380,7 @@ export default {
       "users",
       "tasks",
       "totalTasks",
-      "data",
-      "isLoading"
+      "data"
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
     ...mapGetters("auth", ["userIs"])

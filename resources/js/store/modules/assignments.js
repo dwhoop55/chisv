@@ -29,30 +29,34 @@ const getters = {
 
 const actions = {
     async fetchAssignments({ commit, rootGetters, getters, state }, key) {
-        commit('setIsLoading', true);
-        const params = [
-            `sort_by=${getters.sortField}`,
-            `sort_order=${getters.sortDirection}`,
-            `page=${getters.page}`,
-            `per_page=${getters.perPage}`,
-            `search_string=${getters.search}`,
-            `day=${getters.day.toMySqlDate()}`,
-        ].join("&");
+        return new Promise((resolve, reject) => {
+            commit('setIsLoading', true);
+            const params = [
+                `sort_by=${getters.sortField}`,
+                `sort_order=${getters.sortDirection}`,
+                `page=${getters.page}`,
+                `per_page=${getters.perPage}`,
+                `search_string=${getters.search}`,
+                `day=${getters.day.toMySqlDate()}`,
+            ].join("&");
 
-        api.getConferenceAssignments(
-            key || rootGetters['conference/conference'].key,
-            params
-        )
-            .then(({ data }) => {
-                commit('setData', data);
-            })
-            .catch(error => {
-                commit('setData', null);
-            })
-            .finally(() => {
-                commit('setIsLoading', false);
-            })
+            api.getConferenceAssignments(
+                key || rootGetters['conference/conference'].key,
+                params
+            )
+                .then(({ data }) => {
+                    commit('setData', data);
+                    resolve(data);
+                })
+                .catch(error => {
+                    commit('setData', null);
+                    reject(error);
+                })
+                .finally(() => {
+                    commit('setIsLoading', false);
+                })
 
+        });
 
     }
 };
