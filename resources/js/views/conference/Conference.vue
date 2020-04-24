@@ -34,12 +34,15 @@
                 <div class="level-item is-hidden-touch">
                   <b-taglist attached>
                     <state-tag size="is-medium" :state="conference.state"></state-tag>
+
                     <b-tag
+                      v-if="conference.bidding_enabled"
                       rounded
                       size="is-medium"
-                      v-if="conference.bidding_enabled"
                       type="is-success"
-                    >Bidding open</b-tag>
+                    >
+                      <b-tooltip type="is-success" :label="biddingEnabledFor">Bidding open</b-tooltip>
+                    </b-tag>
                     <b-tag rounded size="is-medium" v-else type="is-warning">Bidding closed</b-tag>
                   </b-taglist>
                 </div>
@@ -145,6 +148,21 @@ export default {
   },
 
   computed: {
+    biddingEnabledFor() {
+      return (
+        this.formatTime(
+          this.dateFromMySql(this.conference.bidding_start),
+          "l",
+          {
+            fromTz: this.conference.timezone.name
+          }
+        ) +
+        " – " +
+        this.formatTime(this.dateFromMySql(this.conference.bidding_end), "l", {
+          fromTz: this.conference.timezone.name
+        })
+      );
+    },
     ...mapGetters("conference", ["conference", "tab"]),
     ...mapGetters("auth", ["userIs"])
   },
