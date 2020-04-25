@@ -355,39 +355,52 @@ export default {
       }
     },
     createMultiBid(preference) {
-      this.setIsLoading(true);
-      const params = {
-        conference_id: this.conference.id,
-        search: this.search,
-        priorities: this.priorities,
-        days: this.days.map(day => day.toMySqlDate()),
-        preference
-      };
+      let onConfirm = () => {
+        this.setIsLoading(true);
+        const params = {
+          conference_id: this.conference.id,
+          search: this.search,
+          priorities: this.priorities,
+          days: this.days.map(day => day.toMySqlDate()),
+          preference
+        };
 
-      api
-        .createMultiBid(params)
-        .then(({ data }) => {
-          this.multiBidValue = preference;
-          this.$buefy.notification.open({
-            message: `${data.created} bids have been created<br>\
+        api
+          .createMultiBid(params)
+          .then(({ data }) => {
+            this.multiBidValue = preference;
+            this.$buefy.notification.open({
+              message: `${data.created} bids have been created<br>\
              ${data.updated} bids have been updated<br>\
              ${data.untouched} were already correct<br>\
              ${data.revoked} bids have been revoked`,
-            type: "is-success",
-            duration: 10000
+              type: "is-success",
+              duration: 10000
+            });
+          })
+          .catch(error => {
+            this.$buefy.notification.open({
+              message: error.response?.data?.message || error.message,
+              duration: 5000,
+              type: "is-danger"
+            });
+          })
+          .finally(() => {
+            this.setIsLoading(false);
+            this.reload();
           });
-        })
-        .catch(error => {
-          this.$buefy.notification.open({
-            message: error.response?.data?.message || error.message,
-            duration: 5000,
-            type: "is-danger"
-          });
-        })
-        .finally(() => {
-          this.setIsLoading(false);
-          this.reload();
+      };
+
+      const limit = 200;
+      if (!this.warnBeforeMultiBid && this.totalTasks > limit) {
+        this.$buefy.dialog.confirm({
+          message: `You have more than ${limit} tasks selected<br>\
+                    Are you sure you want to continue?`,
+          onConfirm
         });
+      } else {
+        onConfirm();
+      }
     },
     reload(withDays = false) {
       this.fetchTasks();

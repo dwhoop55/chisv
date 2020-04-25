@@ -28,8 +28,9 @@
       <b-button type="is-primary" @click="confirm();$parent.close()">
         <div v-if="preference !== null">
           Bid
-          <b>{{ preferenceString(preference) }}</b>
           on {{ totalTasks }} tasks
+          with preference
+          <b>{{ preferenceString(preference) }}</b>
         </div>
         <div v-else>Revoke bid on {{ totalTasks }} tasks</div>
       </b-button>
