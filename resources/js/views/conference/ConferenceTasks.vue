@@ -161,7 +161,7 @@
               <task-bid-picker-radio
                 v-model="multiBidValue"
                 @click-help="showBidAllHelp()"
-                @input="multiBid"
+                @input="onMultiBid"
                 size="is-small"
                 :show-help="true"
               ></task-bid-picker-radio>
@@ -288,8 +288,9 @@
 <script>
 import api from "@/api.js";
 import TaskModalVue from "@/components/modals/TaskModal.vue";
-import TasksImportModalVue from "../../components/modals/TasksImportModal.vue";
-import JobModalVue from "../../components/modals/JobModal.vue";
+import TasksImportModalVue from "@/components/modals/TasksImportModal.vue";
+import JobModalVue from "@/components/modals/JobModal.vue";
+import MultiBidConfirmModalVue from "@/components/modals/MultiBidConfirmModal.vue";
 import { mapGetters, mapState, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -303,8 +304,23 @@ export default {
   },
 
   methods: {
-    multiBid(preference) {
-      console.log(preference);
+    onMultiBid(preference) {
+      if (this.warnBeforeMultiBid) {
+        this.$buefy.modal.open({
+          parent: this,
+          component: MultiBidConfirmModalVue,
+          hasModalCard: true,
+          props: {
+            preference,
+            totalTasks: this.totalTasks,
+            perPage: this.perPage,
+            page: this.page,
+            confirm: () => {
+              console.log("Auf gehts ab gehts!");
+            }
+          }
+        });
+      }
     },
     reload(withDays = false) {
       this.multiBidValue = null;
@@ -313,15 +329,15 @@ export default {
     },
     showBidAllHelp() {
       this.$buefy.dialog.confirm({
-        title: "Multi bidding",
+        title: "Multi-bid",
         message: `By clicking one of the preferences in the column's header you bid with the selected preference\
                   on all tasks which are currently in the table. This also includes any tasks on the next\
-                  or previous page of the table (if any).<br><br>More details are available in the FAQ entry.`,
+                  or previous page of the table (if any). You may filter for your desired tasks first.<br><br>More details are available in the FAQ entry.`,
         hasIcon: true,
         icon: "checkbox-multiple-marked",
-        confirmText: "Close",
-        cancelText: "More info",
-        onCancel: () => this.$router.push({ name: "faq", params: { id: 7 } })
+        confirmText: "More info",
+        cancelText: "Close",
+        onConfirm: () => this.$router.push({ name: "faq", params: { id: 7 } })
       });
     },
     deleteAllTasks() {
@@ -558,7 +574,8 @@ export default {
       "onlyOwnTasks",
       "tasks",
       "totalTasks",
-      "isLoading"
+      "isLoading",
+      "warnBeforeMultiBid"
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
     ...mapGetters("auth", ["userIs"])

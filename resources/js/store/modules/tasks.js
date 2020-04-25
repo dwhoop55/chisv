@@ -11,6 +11,7 @@ const state = {
     tasks: [],
     totalTasks: 0,
     isLoading: false,
+    warnBeforeMultiBid: true,
 };
 
 const getters = {
@@ -26,6 +27,7 @@ const getters = {
     tasks: state => state.tasks,
     totalTasks: state => state.totalTasks,
     isLoading: state => state.isLoading,
+    warnBeforeMultiBid: state => state.warnBeforeMultiBid,
 };
 
 const actions = {
@@ -73,6 +75,7 @@ const mutations = {
     setTasks: (state, tasks) => (state.tasks = tasks),
     setTotalTasks: (state, total) => (state.totalTasks = total),
     setIsLoading: (state, bool) => (state.isLoading = bool),
+    setWarnBeforeMultiBid: (state, bool) => (state.warnBeforeMultiBid = bool),
 };
 
 export default {

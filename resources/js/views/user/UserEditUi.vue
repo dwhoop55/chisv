@@ -15,6 +15,12 @@
     <b-field>
       <b-switch :value="showSvAvatar" @input="setShowSvAvatar">Show image for SVs on SV tab</b-switch>
     </b-field>
+    <b-field>
+      <b-switch
+        :value="warnBeforeMultiBid"
+        @input="setWarnBeforeMultiBid"
+      >Warn before sending off a multi-bid</b-switch>
+    </b-field>
     <!-- <b-field>
       <b-button type="is-danger" @click="removeUiPreferences()">Reset all UI preferences</b-button>
     </b-field>-->
@@ -64,12 +70,14 @@ export default {
       resetStore: "resetStore"
     }),
     ...mapMutations("svs", ["setShowWaitlistPosition", "setShowSvAvatar"]),
+    ...mapMutations("tasks", ["setWarnBeforeMultiBid"]),
     ...mapMutations("assignments", ["setShowAssignmentsAvatar"])
   },
 
   computed: {
     ...mapGetters("svs", ["showWaitlistPosition", "showSvAvatar"]),
     ...mapGetters("assignments", ["showAssignmentsAvatar"]),
+    ...mapGetters("tasks", ["warnBeforeMultiBid"]),
     ...mapGetters("auth", ["userIs"])
   }
 };
