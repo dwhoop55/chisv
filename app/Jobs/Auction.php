@@ -66,7 +66,7 @@
  *          [C, 2]
  *          [D, 1]
  *          [E, 1]
- *      Preference blocks are: [A,B,C], [C] and [D,E]
+ *      Preference blocks are: [A,B], [C] and [D,E]
  * 
 */
 
