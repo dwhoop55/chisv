@@ -8,7 +8,7 @@
         :events="calendarEvents"
         indicators="bars"
         :mobile-native="false"
-        :multiple="true"
+        multiple
       >
         <template>
           <small>Legend</small>
