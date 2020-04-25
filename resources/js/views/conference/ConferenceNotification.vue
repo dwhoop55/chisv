@@ -2,12 +2,21 @@
   <div>
     <b-loading :active="isLoading" :is-full-page="true" />
     <b-field grouped position="is-right">
-      <b-button
-        @click="openTemplates()"
-        size="is-small"
-        icon-left="package-variant-closed"
-        type="is-primary"
-      >Templates</b-button>
+      <b-field>
+        <b-button
+          @click="openTemplates()"
+          icon-left="package-variant-closed"
+          type="is-primary"
+        >Templates</b-button>
+      </b-field>
+      <b-field grouped position="is-right">
+        <b-button
+          :disabled="form.destinations.length <= 0 || form.elements.length <= 0"
+          @click="send"
+          icon-right="send"
+          type="is-primary"
+        >Send</b-button>
+      </b-field>
     </b-field>
     <b-field expanded>
       <notification-destination-picker
@@ -123,9 +132,6 @@
         </div>
       </div>
     </div>
-    <b-field grouped position="is-right">
-      <b-button @click="send" icon-right="send" type="is-primary">Send</b-button>
-    </b-field>
   </div>
 </template>
 
