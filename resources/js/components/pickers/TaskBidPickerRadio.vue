@@ -1,51 +1,44 @@
 <template>
-  <b-field>
-    <b-radio-button
-      @input="click"
-      @click.native="click(0)"
-      :value="value"
-      :disabled="disabled"
+  <b-field class>
+    <b-button
+      :class="btnClass"
+      :outlined="value !== 0"
+      @click="click(0)"
       :size="size"
-      type="is-danger"
-      :native-value="parseInt(0)"
+      :type="{ 'is-danger' : value === 0}"
     >
       <div class="is-hidden-desktop">X</div>
       <div class="is-hidden-touch">{{ preferenceString(0) }}</div>
-    </b-radio-button>
-    <b-radio-button
-      @input="click"
-      @click.native="click(1)"
-      :value="value"
-      :disabled="disabled"
+    </b-button>
+    <b-button
+      :class="btnClass"
+      :outlined="value !== 1"
+      @click="click(1)"
       :size="size"
-      type="is-info"
-      :native-value="parseInt(1)"
-    >{{ preferenceString(1) }}</b-radio-button>
-    <b-radio-button
-      @input="click"
-      @click.native="click(2)"
-      :value="value"
-      :disabled="disabled"
+      :type="{ 'is-info' : value === 1}"
+    >{{ preferenceString(1) }}</b-button>
+    <b-button
+      :class="btnClass"
+      :outlined="value !== 2"
+      @click="click(2)"
       :size="size"
-      type="is-warning"
-      :native-value="parseInt(2)"
+      :type="{ 'is-warning' : value === 2}"
     >
       <div class="is-hidden-desktop">{{ preferenceString(2).substr(0,3) }}</div>
       <div class="is-hidden-touch">{{ preferenceString(2) }}</div>
-    </b-radio-button>
-    <b-radio-button
-      @input="click"
-      @click.native="click(3)"
-      :value="value"
-      :disabled="disabled"
+    </b-button>
+    <b-button
+      :class="btnClass"
+      :outlined="value !== 3"
+      @click="click(3)"
       :size="size"
-      type="is-success"
-      :native-value="parseInt(3)"
-    >{{ preferenceString(3) }}</b-radio-button>
+      :type="{ 'is-success' : value === 3}"
+    >{{ preferenceString(3) }}</b-button>
+
     <b-button
       @click="$emit('click-help')"
       type="is-text"
-      class="is-paddingless"
+      class="control is-paddingless"
       v-if="showHelp"
       size="is-small"
     >
@@ -57,6 +50,12 @@
 <script>
 export default {
   props: ["value", "disabled", "size", "showHelp"],
+
+  computed: {
+    btnClass() {
+      return `control is-radiusless`;
+    }
+  },
 
   methods: {
     click(preference) {

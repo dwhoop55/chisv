@@ -193,7 +193,7 @@ export default {
       this.showSuccessIcon = true;
       setTimeout(() => {
         this.showSuccessIcon = false;
-      }, 800);
+      }, 500);
     },
     showError() {
       this.showErrorIcon = true;
