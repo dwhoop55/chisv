@@ -139,6 +139,9 @@ export default {
     createBid(bid) {
         return axios.post(`bid`, bid);
     },
+    createMultiBid(params) {
+        return axios.post(`bid/multi`, params);
+    },
     createTask(vform) {
         return vform.post(`task`);
     },
@@ -197,8 +200,8 @@ export default {
     deleteFaq(id) {
         return axios.delete(`faq/${id}`);
     },
-    deleteAllTasksOfConference(key, date) {
-        return axios.delete(`conference/${key}/tasks/${date}`);
+    deleteAllTasksOfConference(key, params) {
+        return axios.delete(`conference/${key}/tasks?${params}`);
     },
     deleteAllAssignmentsOfConference(key, date) {
         return axios.delete(`conference/${key}/assignments/${date}`);

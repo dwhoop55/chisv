@@ -2,11 +2,13 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        @input="onDayChange($event)"
-        :value="day"
+        @blur="reload"
+        @input="setDays"
+        :value="days"
         :events="calendarEvents"
         indicators="bars"
         :mobile-native="false"
+        :multiple="true"
       >
         <template>
           <small>Legend</small>
@@ -25,7 +27,7 @@
         icon="magnify"
       ></b-input>
 
-      <b-dropdown
+      <!-- <b-dropdown
         v-if="canCreateTask"
         @input="onPrioritiesChange"
         @active-change="($event == false) ? reload() : null"
@@ -48,7 +50,7 @@
         >
           <p>{{ priority }}</p>
         </b-dropdown-item>
-      </b-dropdown>
+      </b-dropdown>-->
 
       <b-button
         class="control"
@@ -67,7 +69,7 @@
       <b-field>
         <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
           <button class="button is-primary" slot="trigger">
-            <span>Visible columns</span>
+            <span>Columns</span>
             <b-icon icon="menu-down"></b-icon>
           </button>
 
@@ -76,6 +78,7 @@
             aria-role="listitem"
             value="manage"
           >Manage</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
@@ -91,7 +94,7 @@
           :disabled="isLoading"
           @click="deleteAllTasks()"
           type="is-danger"
-        >Delete all Tasks of this day</b-button>
+        >Delete all Tasks of the selected {{ days.length > 1 ? 'days' : 'day' }}</b-button>
       </b-field>
 
       <b-field class="is-vertical-center">
@@ -157,9 +160,9 @@
         </b-table-column>
         <b-table-column width="1">
           <template slot="header">
-            <div v-if="canBid && !onlyOwnTasks">
+            <div v-if="canBid">
               <task-bid-picker-radio
-                v-model="multiBidValue"
+                :value="multiBidValue"
                 @click-help="showBidAllHelp()"
                 @input="onMultiBid"
                 size="is-small"
@@ -171,6 +174,19 @@
           <template>
             <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
           </template>
+        </b-table-column>
+        <b-table-column
+          :visible="days.length > 1 && columns.includes('date')"
+          field="tasks.date"
+          width="93"
+          sortable
+          label="Date"
+        >
+          {{ formatTime(
+          dateFromMySql(props.row.date),
+          'l',
+          {fromTz: conference.timezone.name}
+          ) }}
         </b-table-column>
         <b-table-column
           :visible="columns.includes('start_at')"
@@ -244,11 +260,15 @@
             <p>
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
-            <p>
-              No tasks found for
-              <b v-if="search.length > 0">{{ search }}</b>
-              on {{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}
+            <p class="is-marginless">
+              No tasks found
+              <b v-if="search.length > 0">for {{ search }}</b>
+              on
             </p>
+            <div
+              v-for="(day, index) in days"
+              :key="index"
+            >{{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}</div>
             <p class="has-text-danger" v-if="onlyOwnTasks">
               Only showing tasks assigned to you.
               <br />Uncheck above to see all tasks
@@ -298,13 +318,23 @@ export default {
 
   data() {
     return {
-      allPriorities: [1, 2, 3],
       multiBidValue: null
     };
   },
 
   methods: {
+    selectAllDays(type) {
+      if (type == "conference") {
+        this.setDays(this.conferenceDays.map(day => day.date));
+      } else if ("tasks") {
+        this.setDays(this.taskDays.map(day => day.date));
+      }
+      this.reload();
+    },
     onMultiBid(preference) {
+      if (this.totalTasks == 0 || this.onlyOwnTasks) {
+        return;
+      }
       if (this.warnBeforeMultiBid) {
         this.$buefy.modal.open({
           parent: this,
@@ -316,14 +346,50 @@ export default {
             perPage: this.perPage,
             page: this.page,
             confirm: () => {
-              console.log("Auf gehts ab gehts!");
+              this.createMultiBid(preference);
             }
           }
         });
+      } else {
+        this.createMultiBid(preference);
       }
     },
+    createMultiBid(preference) {
+      this.setIsLoading(true);
+      const params = {
+        conference_id: this.conference.id,
+        search: this.search,
+        priorities: this.priorities,
+        days: this.days.map(day => day.toMySqlDate()),
+        preference
+      };
+
+      api
+        .createMultiBid(params)
+        .then(({ data }) => {
+          this.multiBidValue = preference;
+          this.$buefy.notification.open({
+            message: `${data.created} bids have been created<br>\
+             ${data.updated} bids have been updated<br>\
+             ${data.untouched} were already correct<br>\
+             ${data.revoked} bids have been revoked`,
+            type: "is-success",
+            duration: 10000
+          });
+        })
+        .catch(error => {
+          this.$buefy.notification.open({
+            message: error.response?.data?.message || error.message,
+            duration: 5000,
+            type: "is-danger"
+          });
+        })
+        .finally(() => {
+          this.setIsLoading(false);
+          this.reload();
+        });
+    },
     reload(withDays = false) {
-      this.multiBidValue = null;
       this.fetchTasks();
       if (withDays) this.fetchTaskDays();
     },
@@ -341,19 +407,27 @@ export default {
       });
     },
     deleteAllTasks() {
-      let day = this.formatTime(this.day, "DD.MM.YYYY", { toTz: true });
+      let days = this.days.map(day =>
+        this.formatTime(day, "DD.MM.YYYY", { toTz: true })
+      );
       this.$buefy.dialog.confirm({
         title: "Caution!",
-        message: `Are you sure you want to <b>delete all tasks for this day (${day})</b>?\
+        message: `Are you sure you want to <b>delete all tasks for
+         ${days.length > 1 ? "these days" : "this day"}
+         (${days.join(", ")})</b>?\
          <br/>This will also delete associated assignments and bids for the tasks.\
          This action cannot be undone.`,
-        confirmText: "Yes, delete all tasks of this day",
+        confirmText: `Yes, delete all tasks of ${
+          days.length > 1 ? "these days" : "this day"
+        }`,
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
           this.$buefy.dialog.confirm({
             title: "Really?",
-            message: `Please confirm again that you want to <b>delete all tasks for this day (${day})</b>\
+            message: `Please confirm again that you want to <b>delete all tasks for\
+            ${days.length > 1 ? "these days" : "this day"}
+         (${days.join(", ")})</b>\
          <br/><br/>This will also delete associated assignments and bids for the tasks.\
          <br/><br/><b>This action cannot be undone.</b><br/><b>This action cannot be undone.</b>`,
             confirmText: "Yes, delete!",
@@ -364,7 +438,9 @@ export default {
               api
                 .deleteAllTasksOfConference(
                   this.conference.key,
-                  this.day.toMySqlDate()
+                  `days=${JSON.stringify(
+                    this.days.map(day => day.toMySqlDate())
+                  )}`
                 )
                 .then(({ data }) => {
                   this.$buefy.notification.open({
@@ -510,8 +586,8 @@ export default {
       this.setSearch(search);
       this.reload();
     },
-    onDayChange(day) {
-      this.setDay(day);
+    onDaysChange(days) {
+      this.setDays(days);
       this.setPage(1);
       this.reload();
     },
@@ -524,13 +600,14 @@ export default {
     ...mapMutations("tasks", {
       setColumns: "setColumns",
       setSearch: "setSearch",
-      setDay: "setDay",
+      setDays: "setDays",
       setSortField: "setSortField",
       setSortDirection: "setSortDirection",
       setPerPage: "setPerPage",
       setPage: "setPage",
       setPriorities: "setPriorities",
-      setOnlyOwnTasks: "setOnlyOwnTasks"
+      setOnlyOwnTasks: "setOnlyOwnTasks",
+      setIsLoading: "setIsLoading"
     }),
     ...mapActions("conference", ["fetchTaskDays"]),
     ...mapActions("tasks", ["fetchTasks"])
@@ -565,7 +642,7 @@ export default {
     ...mapGetters("tasks", [
       "columns",
       "search",
-      "day",
+      "days",
       "sortField",
       "sortDirection",
       "perPage",
@@ -578,7 +655,8 @@ export default {
       "warnBeforeMultiBid"
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
-    ...mapGetters("auth", ["userIs"])
+    ...mapGetters("auth", ["userIs"]),
+    ...mapGetters("defines", { allPriorities: "priorities" })
   }
 };
 </script>

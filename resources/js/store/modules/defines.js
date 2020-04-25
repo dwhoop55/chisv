@@ -8,6 +8,7 @@ const state = {
     timezones: null,
     shirts: null,
     degrees: null,
+    priorities: [1, 2, 3],
 };
 
 const getters = {
@@ -27,6 +28,7 @@ const getters = {
     timezones: state => state.timezones,
     shirts: state => state.shirts,
     degrees: state => state.degrees,
+    priorities: state => state.priorities,
 };
 
 const actions = {

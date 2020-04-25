@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Bid;
+use App\Conference;
 use App\Http\Requests\BidCreateRequest;
 use App\Http\Requests\BidUpdateRequest;
+use App\Http\Requests\MultiBidRequest;
+use App\State;
 use App\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class BidController extends Controller
 {
@@ -22,9 +26,91 @@ class BidController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create new bids by params
      *
      * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function multiBid(MultiBidRequest $request)
+    {
+        $user = auth()->user();
+        $conference = Conference::findOrFail($request->conference_id);
+        abort_unless($user->isSv($conference, State::byName('accepted')), 403, "You are not an SV with state accepted for this conference");
+
+        $search = strlen($request->search) > 0 ? $request->search : null;
+        $preference = request()->preference;
+
+        $days = collect(request()->days);
+        abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
+
+        $priorities = collect(request()->priorities);
+        $onlyOwnTasks = false;
+        $perPage = null;
+        $paginate = false;
+        $sortBy = null;
+        $sortOrder = null;
+
+        $tasks = (app('App\Http\Controllers\ConferenceController')->prepareTasks(
+            $conference,
+            auth()->user(),
+            $search,
+            $days,
+            $priorities,
+            $onlyOwnTasks,
+            $sortBy,
+            $sortOrder,
+            $perPage,
+            $paginate
+        ));
+
+        $count = [
+            'created' => 0,
+            'updated' => 0,
+            'untouched' => 0,
+            'revoked' => 0,
+        ];
+
+        $bidsToCreate = collect();
+        $bidsToUpdate = collect();
+        $bidsToRevoke = collect();
+
+        foreach ($tasks as $task) {
+            if ($preference !== null) {
+                // set/update a preference
+                if (isset($task['can_create_bid']) && $task['can_create_bid']) {
+                    // create new bid
+                    $bid = [
+                        'user_id' => $user->id,
+                        'task_id' => $task['id'],
+                        'preference' => $preference,
+                        'user_created' => true,
+                    ];
+                    $bidsToCreate->push($bid);
+                    $count['created'] += 1;
+                } else if (isset($task['own_bid']) && $task['own_bid']['can_update']) {
+                    // update existing bid
+                    if ($task['own_bid']['preference'] !== $preference) {
+                        $bidsToUpdate->push($task['own_bid']['id']);
+                    } else {
+                        $count['untouched'] += 1;
+                    }
+                }
+            } else if ($preference === null && isset($task['own_bid']) && $task['own_bid']['can_update']) {
+                $bidsToRevoke->push($task['own_bid']['id']);;
+            }
+        }
+
+        DB::table('bids')->insert($bidsToCreate->toArray());
+        $count['updated'] = DB::table('bids')->whereIn('id', $bidsToUpdate)->update(['preference' => $preference]);
+        $count['revoked'] = DB::table('bids')->whereIn('id', $bidsToRevoke)->delete();
+
+        return $count;
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\BidCreateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(BidCreateRequest $request)

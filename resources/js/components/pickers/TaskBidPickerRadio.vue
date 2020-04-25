@@ -6,6 +6,7 @@
       @click="click(0)"
       :size="size"
       :type="{ 'is-danger' : value === 0}"
+      :disabled="disabled"
     >
       <div class="is-hidden-desktop">X</div>
       <div class="is-hidden-touch">{{ preferenceString(0) }}</div>
@@ -16,6 +17,7 @@
       @click="click(1)"
       :size="size"
       :type="{ 'is-info' : value === 1}"
+      :disabled="disabled"
     >{{ preferenceString(1) }}</b-button>
     <b-button
       :class="btnClass"
@@ -23,6 +25,7 @@
       @click="click(2)"
       :size="size"
       :type="{ 'is-warning' : value === 2}"
+      :disabled="disabled"
     >
       <div class="is-hidden-desktop">{{ preferenceString(2).substr(0,3) }}</div>
       <div class="is-hidden-touch">{{ preferenceString(2) }}</div>
@@ -33,6 +36,7 @@
       @click="click(3)"
       :size="size"
       :type="{ 'is-success' : value === 3}"
+      :disabled="disabled"
     >{{ preferenceString(3) }}</b-button>
 
     <b-button

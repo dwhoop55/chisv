@@ -183,36 +183,46 @@ class ConferenceController extends Controller
      * 
      * @return \Illuminate\Http\Response
      */
-    public function deleteAllTasks(Conference $conference, $date)
+    public function deleteAllTasks(Conference $conference)
     {
-        if (!$date) {
-            abort(400, "You need to specify a day in YYYY-MM-DD format!");
-        } else if (!Carbon::create($date)) {
-            abort(500, "Could not create date object");
-        }
+
+        $days = json_decode(request()->days);
+        abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
 
         $bidCount = Bid
-            ::whereHas('task', function ($query) use ($date, $conference) {
-                $query->whereDate('date', $date);
+            ::whereHas('task', function ($query) use ($days, $conference) {
                 $query->where("conference_id", $conference->id);
+                $query->where(function ($query) use ($days) {
+                    foreach ($days as $day) {
+                        $query->orWhereDate('date', $day);
+                    }
+                });
             })
             ->delete();
 
         $assignmentCount = Assignment
-            ::whereHas('task', function ($query) use ($date, $conference) {
-                $query->whereDate('date', $date);
+            ::whereHas('task', function ($query) use ($days, $conference) {
                 $query->where("conference_id", $conference->id);
+                $query->where(function ($query) use ($days) {
+                    foreach ($days as $day) {
+                        $query->orWhereDate('date', $day);
+                    }
+                });
             })
             ->delete();
 
         $taskCount = Task
-            ::whereDate('date', $date)
-            ->where("conference_id", $conference->id)
+            ::where("conference_id", $conference->id)
+            ->where(function ($query) use ($days) {
+                foreach ($days as $day) {
+                    $query->orWhereDate('date', $day);
+                }
+            })
             ->delete();
 
 
 
-        return ["result" => $taskCount, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted for this day"];
+        return ["result" => $taskCount, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted"];
     }
 
     /**
@@ -474,29 +484,30 @@ class ConferenceController extends Controller
         return ["users" => $users, "tasks" => $tasks, "total" => $paginator->total()];
     }
 
-    /**
-     * Show all tasks for a conference
-     * which match the params
-     * 
-     * @return \Illuminate\Http\Response All tasks for the requestes params
+    /** 
+     * Calculate the array with tasks
+     * for the requested params
      */
-    public function tasks(Conference $conference)
-    {
+    public function prepareTasks(
+        $conference,
+        $user,
+        $search,
+        $days,
+        $priorities,
+        $onlyOwnTasks,
+        $sortBy,
+        $sortOrder,
+        $perPage,
+        $paginate
+    ) {
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain
-        $user = auth()->user();
         $showMore = $user->isAdmin() || $user->isChair($conference) || $user->isCaptain($conference);
 
         // If the user is no admin, chair, captain or accepted SV, reject access
         if (!$showMore && !$user->isSv($conference, State::byName('accepted'))) {
             abort(403);
         }
-
-
-        $search = request()->search_string;
-        $day = request()->day;
-        $priorities = collect(explode(',', request()->priorities));
-        $onlyOwnTasks = request()->only_own_tasks;
         $userIsAccepted = $user->isSv($conference, State::byName('accepted'));
 
         $query = Task
@@ -509,15 +520,27 @@ class ConferenceController extends Controller
                 // so we eager load it and safe a few hundres queries
                 'usersWithBid',
                 'conference'
-            ])
-            // Filter for the desired priorities
-            ->whereIn('tasks.priority', $priorities)
-            // Stay bond to this $conference
-            ->where('tasks.conference_id', $conference->id)
-            ->whereDate('tasks.date', $day)
-            ->orderBy(request()->sort_by, request()->sort_order);
+            ]);
 
-        if ($onlyOwnTasks == "true") {
+        if ($priorities) {
+            // Filter for the desired priorities
+            $query->whereIn('tasks.priority', $priorities);
+        }
+
+        // Stay bound to this $conference
+        $query->where('tasks.conference_id', $conference->id);
+
+        $query->where(function ($query) use ($days) {
+            foreach ($days as $day) {
+                $query->orWhereDate('tasks.date', $day);
+            }
+        });
+
+        if ($sortBy && $sortOrder) {
+            $query->orderBy($sortBy, $sortOrder);
+        }
+
+        if ($onlyOwnTasks) {
             $query->whereHas('assignments', function ($query) use (&$user) {
                 $query->where('user_id', $user->id);
             });
@@ -531,8 +554,11 @@ class ConferenceController extends Controller
             });
         }
 
-
-        $tasks = $query->paginate(request()->per_page);
+        if ($paginate) {
+            $tasks = $query->paginate($perPage);
+        } else {
+            $tasks = $query->get();
+        }
 
         $tasks->transform(function ($task) use (&$showMore, &$user, &$userIsAccepted) {
             $safe = null;
@@ -541,7 +567,7 @@ class ConferenceController extends Controller
             if ($showMore) {
                 $safe["slots"] = $task->slots;
                 $safe["priority"] = $task->priority;
-                $safe["date"] = $task->date->toDateTimeString();
+                $safe["date"] = $task->date->toDateString();
                 $safe["conference_id"] = $task->conference->id;
             }
 
@@ -580,6 +606,40 @@ class ConferenceController extends Controller
         });
 
         return $tasks;
+    }
+
+    /**
+     * Stub method to fire off the task array
+     * calculation
+     * 
+     * @return \Illuminate\Http\Response All tasks for the requested params
+     */
+    public function tasks(Conference $conference)
+    {
+        $search = request()->search;
+        $days = collect(json_decode(request()->days));
+        abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
+
+        $priorities = collect(json_decode(request()->priorities));
+        $onlyOwnTasks = intval(request()->only_own_tasks) == 1 ? true : false;
+        $perPage = request()->per_page;
+        $paginate = true;
+        $sortBy = request()->sort_by;
+        $sortOrder = request()->sort_order;
+
+
+        return $this->prepareTasks(
+            $conference,
+            auth()->user(),
+            $search,
+            $days,
+            $priorities,
+            $onlyOwnTasks,
+            $sortBy,
+            $sortOrder,
+            $perPage,
+            $paginate
+        );
     }
 
     /**

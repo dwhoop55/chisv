@@ -47,6 +47,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::group(['middleware' => ['auth:api']], function () {
 
         // Custom posts (may overwrite ressource routes from below)
+        Route::post('bid/multi', 'BidController@multiBid')
+            ->name('bid.multiBid')
+            ->middleware("can:create,App\Bid");
         Route::post('conference/{conference}/notification', 'ConferenceController@postNotification')
             ->name('conference.postNotification')
             ->middleware("can:postNotification,conference");
@@ -78,7 +81,7 @@ Route::group(['prefix' => 'v1'], function () {
         Route::delete('conference/{conference}/assignments/{date}', 'ConferenceController@deleteAllAssignments')
             ->name('conference.deleteAllAssignments')
             ->middleware("can:deleteAssignment,conference");
-        Route::delete('conference/{conference}/tasks/{date}', 'ConferenceController@deleteAllTasks')
+        Route::delete('conference/{conference}/tasks', 'ConferenceController@deleteAllTasks')
             ->name('conference.deleteAllTasks')
             ->middleware("can:deleteTask,conference");
 

@@ -11,9 +11,9 @@
         tasks.
       </p>
       <p v-if="perPage < totalTasks">
-        Your {{ preference === null ? 'bid revocation' : "bid"}} will also be applied to all
-        {{ Math.ceil(totalTasks / perPage)}} pages of the table which are
-        currently not displayed.
+        Your {{ preference === null ? 'bid revocation' : "bid"}} will be applied to all
+        {{ Math.ceil(totalTasks / perPage)}} pages of the table and not
+        only the page ({{ page }}) you are currently on.
       </p>
       <b-field>&nbsp;</b-field>
       <b-field>
@@ -25,7 +25,7 @@
     </section>
     <section class="modal-card-foot">
       <b-button @click="$parent.close()">Cancel</b-button>
-      <b-button type="is-success" @click="confirm();$parent.close()">
+      <b-button type="is-primary" @click="confirm();$parent.close()">
         <div v-if="preference !== null">
           Bid
           <b>{{ preferenceString(preference) }}</b>
