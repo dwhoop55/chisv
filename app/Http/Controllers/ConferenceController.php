@@ -563,11 +563,11 @@ class ConferenceController extends Controller
         $tasks->transform(function ($task) use (&$showMore, &$user, &$userIsAccepted) {
             $safe = null;
             $safe = $task->only('id', 'name', 'location', 'description', 'start_at', 'end_at', 'hours');
+            $safe["date"] = $task->date->toDateString();
 
             if ($showMore) {
                 $safe["slots"] = $task->slots;
                 $safe["priority"] = $task->priority;
-                $safe["date"] = $task->date->toDateString();
                 $safe["conference_id"] = $task->conference->id;
             }
 
