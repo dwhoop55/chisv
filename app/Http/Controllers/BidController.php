@@ -44,6 +44,7 @@ class BidController extends Controller
         abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
 
         $priorities = collect(request()->priorities);
+        $interval = collect(request()->interval);
         $onlyOwnTasks = false;
         $perPage = null;
         $paginate = false;
@@ -55,6 +56,7 @@ class BidController extends Controller
             auth()->user(),
             $search,
             $days,
+            $interval,
             $priorities,
             $onlyOwnTasks,
             $sortBy,

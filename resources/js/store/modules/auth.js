@@ -100,6 +100,10 @@ const actions = {
                     if (data.timezone?.name) {
                         moment.tz.setDefault(data.timezone.name);
                     }
+                    // Same for locale
+                    if (data.locale?.code) {
+                        moment.locale(data.locale.code);
+                    }
                     resolve(data);
                 })
                 .catch(error => {

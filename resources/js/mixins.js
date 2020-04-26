@@ -47,13 +47,21 @@ let methods = {
         elements.push("END:VEVENT");
         return elements.join("\n");
     },
+    localeIsAmPm() {
+        const localizedTime = this.formatTime(new Date(), "LT") + " ";
+        if (localizedTime.includes(' AM ') || localizedTime.includes(' PM ')) {
+            return true;
+        } else {
+            return false;
+        }
+    },
     formatTime(date, format, options = {}) {
         var locale = 'en_US';
         var timezone = 'UTC';
 
         // Check if we need to convert to timezone other than UTC
         if (options.toTz !== undefined && options.toTz !== true && options.toTz !== false) {
-            // options.tz is the destination tz
+            // options.toTz is the destination tz
             timezone = options.toTz;
         } else if (options.toTz === true && this.$store.getters['auth/usersTimezone']?.name) {
             timezone = this.$store.getters['auth/usersTimezone']?.name;
@@ -96,7 +104,22 @@ let methods = {
     },
     dateFromMySql(string) {
         if (string instanceof Date) return string;
-        if (typeof string != "string") throw "Invalid input: no string!";
+
+        if (typeof string != "string") console.error("Invalid input: no string!");
+
+        if (string.match(/^\d{2}:\d{2}:\d{2}$/)) {
+            // Missing day
+            string = `0000-00-00 ${string}`;
+        } else if (string.match(/^\d{4}-\d{2}-\d{2}\ \d{2}:\d{2}$/)) {
+            // Missing seconds
+            string = `${string}:00`;
+        } else if (string.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            // Missing time
+            string = `${string} 00:00:00`;
+        } else if (!string.match(/^\d{4}-\d{2}-\d{2}\ \d{2}:\d{2}:\d{2}$/)) {
+            // Not in correct format
+            console.error("Invalid input: Not in YYYY-MM-DD HH:MM:SS format");
+        }
         // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         let dateTimeParts = string.split(/[- :]/);
         // monthIndex begins with 0 for January and ends with 11 for December so we need to decrement by one

@@ -215,7 +215,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >Found {{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }}</small>
+        >{{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }} matching criteria</small>
       </template>
 
       <template slot="footer">

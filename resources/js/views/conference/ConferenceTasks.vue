@@ -1,11 +1,20 @@
 <template>
   <div>
     <b-field grouped group-multiline>
+      <timespan-picker
+        :value="interval"
+        @input="setInterval"
+        @active-change="($event == false) ? reload() : null"
+        class="control"
+        :incrementMinutes="15"
+      ></timespan-picker>
+
       <b-datepicker
         @blur="reload"
         @input="setDays"
         :value="days"
         :events="calendarEvents"
+        placeholder="Limit days"
         indicators="bars"
         :mobile-native="false"
         multiple
@@ -19,15 +28,15 @@
       </b-datepicker>
 
       <b-input
-        width="600"
+        expanded
         v-debounce.fireonempty="onSearch"
         :value="search"
-        placeholder="Search.."
+        placeholder="Search name or location"
         type="search"
         icon="magnify"
       ></b-input>
 
-      <!-- <b-dropdown
+      <b-dropdown
         v-if="canCreateTask"
         @input="onPrioritiesChange"
         @active-change="($event == false) ? reload() : null"
@@ -50,7 +59,7 @@
         >
           <p>{{ priority }}</p>
         </b-dropdown-item>
-      </b-dropdown>-->
+      </b-dropdown>
 
       <b-button
         class="control"
@@ -66,29 +75,6 @@
         v-if="canCreateTask"
       >Import task</b-button>
 
-      <b-field>
-        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
-          <button class="button is-primary" slot="trigger">
-            <span>Columns</span>
-            <b-icon icon="menu-down"></b-icon>
-          </button>
-
-          <b-dropdown-item
-            v-if="canCreateTask || canDeleteTask"
-            aria-role="listitem"
-            value="manage"
-          >Manage</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
-          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
-        </b-dropdown>
-      </b-field>
-
       <b-field v-if="canDeleteTask">
         <b-button
           :disabled="isLoading"
@@ -97,12 +83,12 @@
         >Delete all Tasks of the selected {{ days.length > 1 ? 'days' : 'day' }}</b-button>
       </b-field>
 
-      <b-field class="is-vertical-center">
+      <b-field v-if="userIs('sv', conference.key)" class="is-vertical-center">
         <b-checkbox
           @input="onOnlyOwnTasksChange($event)"
           :value="onlyOwnTasks"
           :type="onlyOwnTasks ? 'is-danger' : 'is-primary'"
-        >Show only my assigned tasks</b-checkbox>
+        >Only my tasks</b-checkbox>
       </b-field>
 
       <b-field expanded></b-field>
@@ -137,6 +123,27 @@
       aria-page-label="Page"
       aria-current-label="Current page"
     >
+      <template slot="top-left">
+        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
+          <div slot="trigger" class="is-vertical-center is-clickable">
+            <b-icon icon="dots-vertical"></b-icon>Columns
+          </div>
+
+          <b-dropdown-item
+            v-if="canCreateTask || canDeleteTask"
+            aria-role="listitem"
+            value="manage"
+          >Manage</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
+        </b-dropdown>
+      </template>
       <template slot-scope="props">
         <b-table-column
           :visible="(canCreateTask || canDeleteTask) && columns.includes('manage')"
@@ -178,15 +185,13 @@
         <b-table-column
           :visible="days.length > 1 && columns.includes('date')"
           field="tasks.date"
-          width="93"
           sortable
           label="Date"
+          :width="days.length > 1 && columns.includes('date') ? 93 : null"
         >
           {{ formatTime(
           dateFromMySql(props.row.date),
-          'l',
-          {fromTz: conference.timezone.name}
-          ) }}
+          'l') }}
         </b-table-column>
         <b-table-column
           :visible="columns.includes('start_at')"
@@ -260,15 +265,18 @@
             <p>
               <b-icon icon="emoticon-sad" size="is-large"></b-icon>
             </p>
-            <p class="is-marginless">
-              No tasks found
-              <b v-if="search.length > 0">for {{ search }}</b>
+            <span class="is-marginless">No tasks found</span>
+
+            <b v-if="search.length > 0">for {{ search }}</b>
+
+            <span v-if="days.length > 0">
               on
-            </p>
-            <div
-              v-for="(day, index) in days"
-              :key="index"
-            >{{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}</div>
+              <div
+                v-for="(day, index) in days"
+                :key="index"
+              >{{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}</div>
+            </span>
+
             <p class="has-text-danger" v-if="onlyOwnTasks">
               Only showing tasks assigned to you.
               <br />Uncheck above to see all tasks
@@ -280,7 +288,7 @@
       <template slot="bottom-left">
         <small
           class="has-text-weight-light"
-        >Found {{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }}</small>
+        >{{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }} matching criteria</small>
       </template>
 
       <template slot="footer">
@@ -362,7 +370,8 @@ export default {
           search: this.search,
           priorities: this.priorities,
           days: this.days.map(day => day.toMySqlDate()),
-          preference
+          preference,
+          interval: this.interval
         };
 
         api
@@ -394,7 +403,7 @@ export default {
       const limit = 200;
       if (!this.warnBeforeMultiBid && this.totalTasks > limit) {
         this.$buefy.dialog.confirm({
-          message: `You have more than ${limit} tasks selected<br>\
+          message: `You have more than ${limit} tasks selected.<br>\
                     Are you sure you want to continue?`,
           onConfirm
         });
@@ -610,18 +619,19 @@ export default {
         message: task.description
       });
     },
-    ...mapMutations("tasks", {
-      setColumns: "setColumns",
-      setSearch: "setSearch",
-      setDays: "setDays",
-      setSortField: "setSortField",
-      setSortDirection: "setSortDirection",
-      setPerPage: "setPerPage",
-      setPage: "setPage",
-      setPriorities: "setPriorities",
-      setOnlyOwnTasks: "setOnlyOwnTasks",
-      setIsLoading: "setIsLoading"
-    }),
+    ...mapMutations("tasks", [
+      "setColumns",
+      "setSearch",
+      "setDays",
+      "setInterval",
+      "setSortField",
+      "setSortDirection",
+      "setPerPage",
+      "setPage",
+      "setPriorities",
+      "setOnlyOwnTasks",
+      "setIsLoading"
+    ]),
     ...mapActions("conference", ["fetchTaskDays"]),
     ...mapActions("tasks", ["fetchTasks"])
   },
@@ -656,6 +666,7 @@ export default {
       "columns",
       "search",
       "days",
+      "interval",
       "sortField",
       "sortDirection",
       "perPage",

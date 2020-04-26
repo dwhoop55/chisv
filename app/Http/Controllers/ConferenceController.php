@@ -493,6 +493,7 @@ class ConferenceController extends Controller
         $user,
         $search,
         $days,
+        $interval,
         $priorities,
         $onlyOwnTasks,
         $sortBy,
@@ -522,19 +523,31 @@ class ConferenceController extends Controller
                 'conference'
             ]);
 
-        if ($priorities) {
+        if ($priorities && $priorities->isNotEmpty()) {
             // Filter for the desired priorities
             $query->whereIn('tasks.priority', $priorities);
+        }
+
+        if ($interval && $interval->isNotEmpty()) {
+            // Filter for the desired start and end time
+            if (isset($interval[0]) && $interval[0]) {
+                $query->whereTime('tasks.start_at', '>=', $interval[0]);
+            }
+            if (isset($interval[1]) && $interval[1]) {
+                $query->whereTime('tasks.end_at', '<=', $interval[1]);
+            }
         }
 
         // Stay bound to this $conference
         $query->where('tasks.conference_id', $conference->id);
 
-        $query->where(function ($query) use ($days) {
-            foreach ($days as $day) {
-                $query->orWhereDate('tasks.date', $day);
-            }
-        });
+        if ($days && $days->isNotEmpty()) {
+            $query->where(function ($query) use ($days) {
+                foreach ($days as $day) {
+                    $query->orWhereDate('tasks.date', $day);
+                }
+            });
+        }
 
         if ($sortBy && $sortOrder) {
             $query->orderBy($sortBy, $sortOrder);
@@ -621,6 +634,7 @@ class ConferenceController extends Controller
         abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
 
         $priorities = collect(json_decode(request()->priorities));
+        $interval = collect(json_decode(request()->interval));
         $onlyOwnTasks = intval(request()->only_own_tasks) == 1 ? true : false;
         $perPage = request()->per_page;
         $paginate = true;
@@ -633,6 +647,7 @@ class ConferenceController extends Controller
             auth()->user(),
             $search,
             $days,
+            $interval,
             $priorities,
             $onlyOwnTasks,
             $sortBy,

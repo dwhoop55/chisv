@@ -19,7 +19,8 @@ class MultiBidRequest extends FormRequest
             "days" => "required|array|notIn:[]",
             'preference' => 'nullable|between:0,3',
             "search" => "string|nullable",
-            "priorities" => "array|notIn:[]"
+            "priorities" => "array|notIn:[]",
+            "interval" => "array|notIn:[]"
         ];
     }
 }
