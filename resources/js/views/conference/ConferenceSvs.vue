@@ -64,6 +64,7 @@
 
     <br />
     <b-table
+      style="overflow: auto"
       ref="table"
       v-if="data.data"
       :data="data.data"

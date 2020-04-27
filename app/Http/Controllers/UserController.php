@@ -97,7 +97,6 @@ class UserController extends Controller
                         'conference:id,key',
                     ]);
                 },
-                'timezone',
                 'locale',
                 'avatar'
             ])
@@ -107,7 +106,6 @@ class UserController extends Controller
                 'lastname',
                 'past_conferences',
                 'past_conferences_sv',
-                'timezone_id',
                 'locale_id',
             ]);
 
@@ -125,7 +123,7 @@ class UserController extends Controller
         });
         $collection = collect($model);
 
-        return $collection->except(['timezone_id', 'locale_id']);
+        return $collection->except(['locale_id']);
     }
 
 
@@ -159,7 +157,6 @@ class UserController extends Controller
                     $query->orderBy('created_at', 'DESC');
                 },
                 'locale',
-                'timezone',
                 'university',
                 'city'
             ])
@@ -192,11 +189,9 @@ class UserController extends Controller
             'firstname',
             'lastname',
             'email',
-            'timezone_id',
             'date_format',
             'time_format',
             'time_sec_format',
-            'timezone_id',
             'locale_id',
             'degree_id',
             'shirt_id',

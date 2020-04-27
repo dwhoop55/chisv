@@ -109,7 +109,7 @@
           label="Past conferences you have attended"
         >
           <b-taginput
-            placeholder="Use one tag per conference"
+            placeholder="E.g. CHI2019, UIST2020"
             icon="tag"
             :attached="true"
             v-model="form.past_conferences"
@@ -122,7 +122,7 @@
           label="Past conferences you have attended as SV"
         >
           <b-taginput
-            placeholder="Use one tag per conference"
+            placeholder="E.g. CHI2019, UIST2020"
             icon="tag"
             :attached="true"
             v-model="form.past_conferences_sv"
@@ -197,7 +197,7 @@ export default {
         shirt_id: null,
         location: {},
         university: {},
-        timezone_id: 291,
+        // timezone_id: 291,
         locale_id: 40,
         password: "",
         password_confirmation: ""

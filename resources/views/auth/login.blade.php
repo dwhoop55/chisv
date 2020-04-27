@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="columns is-centered">
-    <div class="column is-half">
+    <div class="column is-11-tablet is-8-desktop is-6-widescreen">
         <div class="card">
             <conference-preview-carousel></conference-preview-carousel>
             <p class="card-header-title is-block has-text-centered">

@@ -103,18 +103,17 @@
           label="Timezone your are currently in"
         >
           <timezone-picker v-model="form.timezone_id"></timezone-picker>
-        </b-field> -->
+      </b-field>-->
 
-        <b-field
-          expanded
-          :type="{ 'is-danger': form.errors.has('locale_id') }"
-          :message="form.errors.get('locale_id')"
-          label="Preferred locale"
-        >
-          <b-select expanded v-model="form.locale_id">
-            <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
-          </b-select>
-        </b-field>
+      <b-field
+        expanded
+        :type="{ 'is-danger': form.errors.has('locale_id') }"
+        :message="form.errors.get('locale_id')"
+        label="Preferred locale"
+      >
+        <b-select expanded v-model="form.locale_id">
+          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+        </b-select>
       </b-field>
 
       <b-field expanded>&nbsp;</b-field>
@@ -188,7 +187,7 @@ export default {
           university: this.user.university
             ? this.user.university
             : { name: this.user.university_fallback },
-          timezone_id: this.user.timezone_id,
+          // timezone_id: this.user.timezone_id,
           locale_id: this.user.locale_id
         });
       },

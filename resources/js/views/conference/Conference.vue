@@ -9,7 +9,7 @@
 
       <transition name="fade">
         <div v-if="!isLoading && conference" class="columns is-centered">
-          <div class="column is-11 is-paddingless">
+          <div class="column is-12-mobile is-12-tablet is-11-desktop is-paddingless">
             <div class="level is-mobile">
               <div class="level-left">
                 <div class="level-item">
