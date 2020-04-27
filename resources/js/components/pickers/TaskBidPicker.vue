@@ -88,7 +88,7 @@
     <div v-else>
       <a @click.prevent="showHint('disabled')">
         <b-icon type="is-grey" icon="cancel" :size="size" />
-        <span class="has-text-grey">Not bidable</span>
+        <span class="has-text-grey">Bid impossible</span>
       </a>
     </div>
   </div>

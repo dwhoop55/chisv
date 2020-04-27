@@ -63,8 +63,8 @@ class ConferenceUpdateRequest extends FormRequest
             "location.*" => "Please specify a location",
             "description.string" => "Please give a short intro into the conference",
             "enrollment_form_id.*" => "Please select an enrollment form from the list",
-            "bidding_start.*" => "Please select a day after which tasks will be bidable",
-            "bidding_end.*" => "Please select a day until (including) tasks will be bidable"
+            "bidding_start.*" => "Please select a day after which tasks will be open for bidding",
+            "bidding_end.*" => "Please select a day until (including) tasks will be open for bidding"
         ];
     }
 }
