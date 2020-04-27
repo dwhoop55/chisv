@@ -134,6 +134,7 @@
             value="manage"
           >Manage</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="bid">Bid</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
@@ -164,7 +165,7 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="1" :visible="userIs('sv', conference.key)">
+        <b-table-column width="1" :visible="columns.includes('bid')">
           <template slot="header">
             <div v-if="canBid">
               <task-bid-picker-radio
@@ -175,7 +176,7 @@
                 :show-help="true"
               ></task-bid-picker-radio>
             </div>
-            <div v-else>Status</div>
+            <div v-else>Bid status</div>
           </template>
           <template>
             <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
