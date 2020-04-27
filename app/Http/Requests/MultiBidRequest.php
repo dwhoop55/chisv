@@ -16,7 +16,7 @@ class MultiBidRequest extends FormRequest
     {
         return [
             "conference_id" => "required|exists:conferences,id",
-            "days" => "required|array|notIn:[]",
+            "days" => "array|notIn:[]",
             'preference' => 'nullable|between:0,3',
             "search" => "string|nullable",
             "priorities" => "array|notIn:[]",

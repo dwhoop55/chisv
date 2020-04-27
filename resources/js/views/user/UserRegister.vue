@@ -55,17 +55,15 @@
         <university-picker v-model="form.university"></university-picker>
       </b-field>
 
-      <b-field expanded>&nbsp;</b-field>
-
       <b-field grouped group-multiline>
-        <b-field
+        <!-- <b-field
           expanded
           :type="{ 'is-danger': form.errors.has('timezone_id') }"
           :message="form.errors.get('timezone_id')"
           label="Display dates in this timezone"
         >
           <timezone-picker v-model="form.timezone_id"></timezone-picker>
-        </b-field>
+        </b-field>-->
 
         <b-field
           expanded
@@ -78,6 +76,8 @@
           </b-select>
         </b-field>
       </b-field>
+
+      <b-field expanded>&nbsp;</b-field>
 
       <b-field grouped group-multiline>
         <b-field

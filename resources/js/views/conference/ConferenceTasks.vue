@@ -36,7 +36,7 @@
       ></b-input>
 
       <b-dropdown
-        v-if="canCreateTask"
+        v-if="canChangePriorities"
         @input="onPrioritiesChange"
         @active-change="($event == false) ? reload() : null"
         :value="priorities"
@@ -99,6 +99,7 @@
     <br />
 
     <b-table
+      style="overflow: auto"
       narrowed
       @page-change="onPageChange"
       @sort="onSort"
@@ -368,14 +369,26 @@ export default {
     createMultiBid(preference) {
       let onConfirm = () => {
         this.setIsLoading(true);
-        const params = {
+        var params = {
           conference_id: this.conference.id,
-          search: this.search,
-          priorities: this.priorities,
-          days: this.days.map(day => day.toMySqlDate()),
-          preference,
-          interval: this.interval
+          preference
         };
+
+        if (this.search) {
+          params.search = this.search;
+        }
+
+        if (this.priorities && this.canChangePriorities) {
+          params.priorities = this.priorities;
+        }
+
+        if (this.interval && (this.interval[0] || this.interval[1])) {
+          params.interval = this.interval;
+        }
+
+        if (this.days && this.days.length > 0) {
+          params.days = this.days.map(day => day.toMySqlDate());
+        }
 
         api
           .createMultiBid(params)
@@ -640,6 +653,13 @@ export default {
   },
 
   computed: {
+    canChangePriorities() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
+    },
     timezoneName() {
       return this.conference.timezone.name;
     },
