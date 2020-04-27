@@ -71,7 +71,6 @@
     <br />
 
     <b-table
-      style="overflow: auto"
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"

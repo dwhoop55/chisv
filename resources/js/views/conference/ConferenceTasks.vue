@@ -99,7 +99,6 @@
     <br />
 
     <b-table
-      style="overflow: auto"
       narrowed
       @page-change="onPageChange"
       @sort="onSort"
