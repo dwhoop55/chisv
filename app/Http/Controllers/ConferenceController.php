@@ -359,9 +359,9 @@ class ConferenceController extends Controller
          * The UI will then have to represent a consistent look where a
          * user is assigned to multiple tasks
          */
-        $search = request()->search_string;
+        $search = request()->search;
         $day = request()->day;
-        $user = auth()->user();
+        $interval = collect(json_decode(request()->interval));
         $doneState = State::byName('done', "App\Assignment");
 
         $query = Task
@@ -398,7 +398,17 @@ class ConferenceController extends Controller
             ->whereDate('tasks.date', $day)
             ->orderBy(request()->sort_by, request()->sort_order);
 
-        if (strlen($search) > 0) {
+        if ($interval && $interval->isNotEmpty()) {
+            // Filter for the desired start and end time
+            if (isset($interval[0]) && $interval[0]) {
+                $query->whereTime('tasks.start_at', '>=', $interval[0]);
+            }
+            if (isset($interval[1]) && $interval[1]) {
+                $query->whereTime('tasks.end_at', '<=', $interval[1]);
+            }
+        }
+
+        if ($search && strlen($search) > 0) {
             $query->where(function ($query) use ($search) {
                 // We can search the user
                 $query->whereHas('usersWithAssignment', function ($query) use ($search) {
@@ -692,7 +702,7 @@ class ConferenceController extends Controller
         $stateCheckedIn = State::byName('checked-in', 'App\Assignment');
         $stateAccepted = State::byName('accepted', 'App\User');
         $roleSv = Role::byName('sv');
-        $search = request()->search_string;
+        $search = request()->search;
 
         $query = $conference
             ->users($roleSv)
@@ -860,7 +870,7 @@ class ConferenceController extends Controller
             auth()->user()->isAdmin()
             || auth()->user()->isChair($conference)
             || auth()->user()->isCaptain($conference);
-        $searchString = request()->search_string;
+        $searchString = request()->search;
         $selectedStates = collect(explode(',', request()->only_states));
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';

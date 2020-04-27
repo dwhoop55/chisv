@@ -2,7 +2,7 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        @input="setDays($event);reload()"
+        @input="onDaysChange"
         :value="days"
         :events="calendarEvents"
         placeholder="Limit days"

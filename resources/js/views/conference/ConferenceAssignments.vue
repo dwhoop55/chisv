@@ -16,12 +16,20 @@
         </template>
       </b-datepicker>
 
+      <timespan-picker
+        :value="interval"
+        placeholder="Limit time"
+        @input="setInterval($event);reload()"
+        class="control"
+        :incrementMinutes="15"
+      ></timespan-picker>
+
       <b-field>
         <b-input
           width="600"
           v-debounce.fireonempty="onSearch"
           :value="search"
-          placeholder="Search.."
+          placeholder="Search name, SV or location"
           type="search"
           icon="magnify"
         ></b-input>
@@ -30,25 +38,6 @@
             <b-icon type="is-primary" size="is-small" icon="help"></b-icon>
           </b-button>
         </p>
-      </b-field>
-
-      <b-field>
-        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
-          <button :disabled="isLoading" class="button is-primary" slot="trigger">
-            <span>Visible columns</span>
-            <b-icon icon="menu-down"></b-icon>
-          </button>
-
-          <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="priority">Priority</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
-        </b-dropdown>
       </b-field>
 
       <b-field v-if="canRunAuction">
@@ -104,6 +93,23 @@
       aria-page-label="Page"
       aria-current-label="Current page"
     >
+      <template slot="top-left">
+        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
+          <div slot="trigger" class="is-vertical-center is-clickable">
+            <b-icon icon="dots-vertical"></b-icon>Columns
+          </div>
+
+          <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="priority">Priority</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
+        </b-dropdown>
+      </template>
       <template slot-scope="props">
         <b-table-column
           :visible="columns.includes('start_at')"
@@ -345,15 +351,16 @@ export default {
       });
     },
     ...mapActions("assignments", ["fetchAssignments"]),
-    ...mapMutations("assignments", {
-      setColumns: "setColumns",
-      setSearch: "setSearch",
-      setDay: "setDay",
-      setSortField: "setSortField",
-      setSortDirection: "setSortDirection",
-      setPerPage: "setPerPage",
-      setPage: "setPage"
-    })
+    ...mapMutations("assignments", [
+      "setColumns",
+      "setSearch",
+      "setDay",
+      "setInterval",
+      "setSortField",
+      "setSortDirection",
+      "setPerPage",
+      "setPage"
+    ])
   },
 
   created() {
@@ -372,6 +379,7 @@ export default {
       "columns",
       "search",
       "day",
+      "interval",
       "sortField",
       "sortDirection",
       "perPage",

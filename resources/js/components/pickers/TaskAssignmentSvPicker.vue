@@ -106,7 +106,7 @@ export default {
     getAsyncData(search) {
       this.isLoading = true;
       this.searchString = search || search == "" ? search : "";
-      const params = [`search_string=${this.searchString}`].join("&");
+      const params = `search=${this.searchString}`;
 
       api
         .getConferenceSvsForTaskAssignment(

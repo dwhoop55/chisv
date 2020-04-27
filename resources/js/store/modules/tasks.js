@@ -37,7 +37,6 @@ const actions = {
         commit('setIsLoading', true);
         const conferenceKey = key || rootGetters['conference/conference'].key;
         var params = [
-            ,
             `sort_by=${getters.sortField}`,
             `sort_order=${getters.sortDirection}`,
             `page=${getters.page}`,
@@ -72,11 +71,9 @@ const actions = {
             params.push(`only_own_tasks=${getters.onlyOwnTasks ? 1 : 0}`);
         }
 
-        params = params.join("&");
-
         api.getConferenceTasks(
             conferenceKey,
-            params
+            params.join("&")
         )
             .then(({ data }) => {
                 commit('setTasks', data.data);

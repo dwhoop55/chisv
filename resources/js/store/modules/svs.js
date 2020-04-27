@@ -33,7 +33,7 @@ const actions = {
             `sort_order=${getters.sortDirection}`,
             `page=${getters.page}`,
             `per_page=${getters.perPage}`,
-            `search_string=${getters.search}`,
+            `search=${getters.search}`,
             `only_states=${getters.states?.map(s => s.id)}`
         ].join("&");
 
