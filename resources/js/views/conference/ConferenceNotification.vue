@@ -4,6 +4,7 @@
     <b-field grouped position="is-right">
       <b-field>
         <b-button
+          v-if="userIs('admin') || userIs('chair')"
           @click="openTemplates()"
           icon-left="package-variant-closed"
           type="is-primary"
@@ -139,6 +140,7 @@
 import api from "@/api.js";
 import { Form } from "vform";
 import NotificationTemplateModalVue from "@/components/modals/NotificationTemplateModal.vue";
+import { mapGetters } from "vuex";
 
 export default {
   props: ["conference"],
@@ -312,6 +314,8 @@ export default {
       this.form.subject = event !== "" ? event : null;
       this.form.errors.clear("subject");
     }
-  }
+  },
+
+  computed: mapGetters("auth", ["userIs"])
 };
 </script>

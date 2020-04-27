@@ -24,8 +24,9 @@
         :incrementMinutes="15"
       ></timespan-picker>
 
-      <b-field>
+      <b-field expanded>
         <b-input
+          expanded
           width="600"
           v-debounce.fireonempty="onSearch"
           :value="search"
