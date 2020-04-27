@@ -57,8 +57,7 @@ export default {
   methods: {
     getDate(pos) {
       if (this.value && this.value[pos]) {
-        // console.log("GETDATE", this.dateFromMySql(this.value[pos]));
-        return this.dateFromMySql(this.value[pos]);
+        return this.momentize(this.value[pos]).toDate();
       } else if (pos === 0) {
         return this.$moment()
           .startOf("day")
@@ -83,7 +82,6 @@ export default {
       var interval = [this.get(0), this.get(1)];
       interval[pos] = date ? date.toMySqlTime() : null;
       this.$emit("input", interval);
-      //   console.log("SET", interval);
     }
   },
 
@@ -95,27 +93,16 @@ export default {
       if (!this.value || (!this.value[0] && !this.value[1])) {
         return;
       }
-      var start = this.$moment()
-        .startOf("day")
-        .format("LT");
-      var end = this.$moment()
-        .endOf("day")
-        .format("LT");
+      var start = this.momentize(this.$moment().startOf("day"), {
+        format: "LT"
+      });
+      var end = this.momentize(this.$moment().endOf("day"), { format: "LT" });
+
       if (this.value && this.value[0]) {
-        start = this.$moment(this.dateFromMySql(this.value[0])).format("LT");
-        // console.log(
-        //   "FORMAT",
-        //   0,
-        //   this.$moment(this.dateFromMySql(this.value[0])).format("LT")
-        // );
+        start = this.momentize(this.value[0], { format: "LT" });
       }
       if (this.value && this.value[1]) {
-        end = this.$moment(this.dateFromMySql(this.value[1])).format("LT");
-        // console.log(
-        //   "FORMAT",
-        //   1,
-        //   this.$moment(this.dateFromMySql(this.value[1])).format("LT")
-        // );
+        end = this.momentize(this.value[1], { format: "LT" });
       }
 
       return `${start} - ${end}`;

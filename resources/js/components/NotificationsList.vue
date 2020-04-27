@@ -18,10 +18,10 @@
             >{{ props.row.conference_key.toUpperCase() }}</p>
           </b-table-column>
           <b-table-column field="data.created_at" label="Posted" width="1">
-            <b-tooltip :label="formatTime(props.row.created_at, 'lll', {toTz: true})">
+            <b-tooltip :label="momentize(props.row.created_at, {format: 'lll', fromTz: 'UTC'})">
               <p
                 :class="{ 'has-text-weight-bold' : !props.row.read_at }"
-              >{{ formatTime(props.row.created_at, null, {fromNow: true, toTz: true}) }}</p>
+              >{{ momentize(props.row.created_at, {format: 'll', fromTz: 'UTC', fromNow: true}) }}</p>
             </b-tooltip>
           </b-table-column>
           <b-table-column field="data.subject" label="Subject" width="1">

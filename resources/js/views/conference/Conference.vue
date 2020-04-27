@@ -56,9 +56,9 @@
                     <p class="has-text-weight-medium">
                       {{ conference.location }}
                       |
-                      {{ formatTime(conference.start_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                      {{ momentize(conference.start_date, {format: 'll', fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
                       –
-                      {{ formatTime(conference.end_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                      {{ momentize(conference.end_date, {format: 'll', fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
                     </p>
                     <a
                       v-if="conference.email_chair"
@@ -150,16 +150,16 @@ export default {
   computed: {
     biddingEnabledFor() {
       return (
-        this.formatTime(
-          this.dateFromMySql(this.conference.bidding_start),
-          "l",
-          {
-            fromTz: this.conference.timezone.name
-          }
-        ) +
+        this.momentize(this.conference.bidding_start, {
+          format: "l",
+          fromTz: this.conference.timezone.name,
+          toTz: this.conference.timezone.name
+        }) +
         " – " +
-        this.formatTime(this.dateFromMySql(this.conference.bidding_end), "l", {
-          fromTz: this.conference.timezone.name
+        this.momentize(this.conference.bidding_end, {
+          format: "l",
+          fromTz: this.conference.timezone.name,
+          toTz: this.conference.timezone.name
         })
       );
     },

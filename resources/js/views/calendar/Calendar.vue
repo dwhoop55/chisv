@@ -143,7 +143,9 @@ export default {
         this.userEvents.assignments.forEach(event => {
           events.push({
             start: event.start,
+            startString: event.start,
             end: event.end,
+            endString: event.end,
             title: event.title,
             location: event.location,
             description: event.description,

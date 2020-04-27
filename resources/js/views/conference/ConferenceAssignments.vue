@@ -111,10 +111,9 @@
           sortable
           label="Starts"
         >
-          {{ formatTime(
-          dateTimeFromTime(props.row.start_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.start_at,
+          {format: 'LT', fromToTz: conference.timezone.name}
           ) }}
         </b-table-column>
         <b-table-column
@@ -124,10 +123,9 @@
           width="93"
           label="Ends"
         >
-          {{ formatTime(
-          dateTimeFromTime(props.row.end_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.end_at,
+          {format: 'LT', fromToTz: conference.timezone.name}
           ) }}
         </b-table-column>
         <b-table-column
@@ -206,7 +204,7 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              on {{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}
+              on {{ momentize(day, {format: 'll', fromToTz: conference.timezone.name}) }}
             </p>
           </div>
         </section>

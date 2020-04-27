@@ -30,19 +30,17 @@
           label="Date"
           sortable
           width="120"
-        >{{ formatTime(props.row.task.date, 'll') }}</b-table-column>
+        >{{ momentize(props.row.task.date, {format:'ll', fromToTz: conference.timezone.name}) }}</b-table-column>
         <b-table-column field="task.start_at" label="Start" sortable width="93">
-          {{ formatTime(
-          dateTimeFromTime(props.row.task.start_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.task.start_at,
+          {format:'LT', fromToTz: conference.timezone.name}
           ) }}
         </b-table-column>
         <b-table-column field="task.end_at" label="End" sortable width="93">
-          {{ formatTime(
-          dateTimeFromTime(props.row.task.end_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.task.end_at,
+          {format: 'LT', fromToTz: conference.timezone.name}
           ) }}
         </b-table-column>
         <b-table-column

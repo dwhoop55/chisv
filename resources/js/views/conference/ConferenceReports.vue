@@ -59,7 +59,7 @@
     </b-field>
 
     <span v-if="data">{{ data.length }} records &nbsp; | &nbsp;</span>
-    <span v-if="updated">Last updated {{ formatTime(updated, null, {fromNow: true}) }}</span>
+    <span v-if="updated">Last updated {{ momentize(updated, {fromNow: true}) }}</span>
 
     <b-table
       ref="table"

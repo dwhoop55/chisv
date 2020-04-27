@@ -11,11 +11,11 @@
         <ul>
           <li>
             Starts:
-            {{ formatTime(event.start, 'lll', {fromTz: event.timezone, toTz: activeTimezone}) }}
+            {{ momentize(event.startString, {format: 'lll', fromTz: event.timezone, toTz: activeTimezone}) }}
           </li>
           <li>
             Ends:
-            {{ formatTime(event.end, 'lll', {fromTz: event.timezone, toTz: activeTimezone}) }}
+            {{ momentize(event.endString, {format: 'lll', fromTz: event.timezone, toTz: activeTimezone}) }}
           </li>
           <li>Location: {{ event.location }}</li>
           <li v-if="state">
@@ -39,6 +39,7 @@
 import { mapGetters } from "vuex";
 export default {
   props: ["event"],
+  name: "CalendarEventModal",
 
   data() {
     return {
@@ -51,14 +52,15 @@ export default {
       return this.event.assignment?.state || null;
     },
     activeTimezone() {
-      return this.eventTimezone ? this.event.timezone : this.usersTimezone.name;
+      return this.eventTimezone
+        ? this.event.timezone
+        : this.$moment.tz.guess(true);
     },
     activeTimezoneDisplay() {
       return this.eventTimezone
         ? `${this.activeTimezone} (conference timezone)`
-        : `${this.activeTimezone} (your configured timezone)`;
-    },
-    ...mapGetters("auth", ["usersTimezone"])
+        : `${this.activeTimezone} (your local timezone)`;
+    }
   },
 
   methods: {

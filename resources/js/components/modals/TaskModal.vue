@@ -45,7 +45,7 @@
       >
         <b-datepicker
           inline
-          :value="dateFromMySql(form.date)"
+          :value="momentize(form.date).toDate()"
           @input="onDateChanged"
           :events="calendarEvents"
           indicators="bars"
@@ -68,7 +68,7 @@
         >
           <b-timepicker
             @input="setTime('start', $event)"
-            :value="dateFromTime(form.start_at)"
+            :value="momentize(form.start_at).toDate()"
             inline
           ></b-timepicker>
         </b-field>
@@ -77,7 +77,11 @@
           :type="{ 'is-danger': form.errors.has('end_at') }"
           :message="form.errors.get('end_at')"
         >
-          <b-timepicker @input="setTime('end', $event)" :value="dateFromTime(form.end_at)" inline></b-timepicker>
+          <b-timepicker
+            @input="setTime('end', $event)"
+            :value="momentize(form.end_at).toDate()"
+            inline
+          ></b-timepicker>
         </b-field>
         <b-field
           :type="{ 'is-danger': form.errors.has('hours') }"
@@ -232,7 +236,7 @@ export default {
       }
     },
     onDateChanged(date) {
-      this.form.date = date.toMySqlDateTime();
+      this.form.date = date.toMySqlDate();
     }
   }
 };

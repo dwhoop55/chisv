@@ -48,52 +48,44 @@ let methods = {
         return elements.join("\n");
     },
     localeIsAmPm() {
-        const localizedTime = this.formatTime(new Date(), "LT") + " ";
+        const localizedTime = this.momentize(new Date(), { format: "LT" }) + " ";
         if (localizedTime.includes(' AM ') || localizedTime.includes(' PM ')) {
             return true;
         } else {
             return false;
         }
     },
-    formatTime(date, format, options = {}) {
-        var locale = 'en_US';
-        var timezone = 'UTC';
+    momentize(date, options) {
+        var localTz = moment.tz.guess(true);
+        var fromTz = options?.fromToTz || options?.fromTz || localTz;
+        var toTz = options?.fromToTz || options?.toTz || localTz;
+        var withoutSuffix = options?.withoutSuffix ? true : false;
+        var fromNow = options?.fromNow ? true : false;
+        var format = options?.format;
 
-        // Check if we need to convert to timezone other than UTC
-        if (options.toTz !== undefined && options.toTz !== true && options.toTz !== false) {
-            // options.toTz is the destination tz
-            timezone = options.toTz;
-        } else if (options.toTz === true && this.$store.getters['auth/usersTimezone']?.name) {
-            timezone = this.$store.getters['auth/usersTimezone']?.name;
+        if (typeof date == "string" && date.match(/^\d{2}:\d{2}:\d{2}$/)) {
+            date = `2000-01-01 ${date}`;
         }
 
-        // Check for locale
-        if (this.$store.getters['auth/usersLocale']?.code) {
-            locale = this.$store.getters['auth/usersLocale']?.code
+        if (typeof options?.toTz == "string") {
+            toTz = options.toTz;
         }
 
-        // Check if given date is in specific timesone other than UTC
-        if (options.fromTz && options.toTz) {
-            // Date might be from db but is actually not in UTC but in the
-            // tz passed in the options
-            // -> used for calendar where we give the option to convert into
-            //    user's current timezone
-            var m = new moment.tz(date, options.fromTz).tz(timezone).locale(locale);
-        } else if (options.fromTz && !options.toTz) {
-            // like above but now dst tz give, so we use the from tz aswell
-            // -> used for task date/time
-            var m = new moment.tz(date, options.fromTz).tz(options.fromTz).locale(locale);
-        } else {
-            // Date is in UTC (raw from db)
-            // -> used for notifications or timetamps like created_at (which is in UTC)
-            var m = new moment.tz(date, "UTC").tz(timezone).locale(locale);
+        var m = new moment.tz(date, fromTz).tz(toTz);
+
+        try {
+            if (fromNow) {
+                var result = m.fromNow(withoutSuffix ? true : false);
+            } else if (format) {
+                var result = m.format(format);
+            } else {
+                var result = m;
+            }
+        } catch (error) {
+            console.error(error, { m, date, fromTz, toTz, format, withoutSuffix, options });
         }
 
-        if (options.fromNow) {
-            return m.fromNow(options.withoutSuffix ? true : false);
-        } else {
-            return m.format(format);
-        }
+        return result;
     },
     abilityString(ability, model, id = null, onModel = null, onId = null) {
         return `${ability},${model},${id},${onModel},${onId}`;

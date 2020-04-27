@@ -2,8 +2,7 @@
   <div>
     <b-field grouped group-multiline>
       <b-datepicker
-        @blur="reload"
-        @input="setDays"
+        @input="setDays($event);reload()"
         :value="days"
         :events="calendarEvents"
         placeholder="Limit days"
@@ -22,8 +21,7 @@
       <timespan-picker
         :value="interval"
         placeholder="Limit time"
-        @input="setInterval"
-        @active-change="($event == false) ? reload() : null"
+        @input="setInterval($event);reload()"
         class="control"
         :incrementMinutes="15"
       ></timespan-picker>
@@ -184,15 +182,14 @@
           </template>
         </b-table-column>
         <b-table-column
-          :visible="days.length > 1 && columns.includes('date')"
+          :visible="showDateColumn"
           field="tasks.date"
           sortable
           label="Date"
-          :width="days.length > 1 && columns.includes('date') ? 93 : null"
+          :width="showDateColumn ? 93 : null"
         >
-          {{ formatTime(
-          dateFromMySql(props.row.date),
-          'l') }}
+          {{ momentize(props.row.date,
+          {format: 'l', fromToTz: timezoneName}) }}
         </b-table-column>
         <b-table-column
           :visible="columns.includes('start_at')"
@@ -201,10 +198,9 @@
           sortable
           label="Starts"
         >
-          {{ formatTime(
-          dateTimeFromTime(props.row.start_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.start_at,
+          {format: 'LT', fromToTz: timezoneName}
           ) }}
         </b-table-column>
         <b-table-column
@@ -214,10 +210,9 @@
           width="93"
           label="Ends"
         >
-          {{ formatTime(
-          dateTimeFromTime(props.row.end_at),
-          'LT',
-          {fromTz: conference.timezone.name}
+          {{ momentize(
+          props.row.end_at,
+          {format: 'LT', fromToTz: timezoneName}
           ) }}
         </b-table-column>
         <b-table-column
@@ -275,7 +270,14 @@
               <div
                 v-for="(day, index) in days"
                 :key="index"
-              >{{ formatTime(day, 'll', {fromTz: conference.timezone.name}) }}</div>
+              >{{ momentize(day, {format:'ll', fromToTz: timezoneName}) }}</div>
+            </span>
+
+            <span v-if="interval[0] || interval[1]">
+              between
+              {{ interval[0] ? momentize(interval[0], {format: "LT"}) : "start of day" }}
+              and
+              {{ interval[1] ? momentize(interval[1], {format: "LT"}) : "end of day" }}
             </span>
 
             <p class="has-text-danger" v-if="onlyOwnTasks">
@@ -431,7 +433,7 @@ export default {
     },
     deleteAllTasks() {
       let days = this.days.map(day =>
-        this.formatTime(day, "DD.MM.YYYY", { toTz: true })
+        this.momentize(day, { format: "DD.MM.YYYY" })
       );
       this.$buefy.dialog.confirm({
         title: "Caution!",
@@ -638,6 +640,9 @@ export default {
   },
 
   computed: {
+    timezoneName() {
+      return this.conference.timezone.name;
+    },
     canBid() {
       return (
         this.userIs("sv", this.conference.key, "accepted") &&
@@ -662,6 +667,12 @@ export default {
     },
     calendarEvents() {
       return [...this.conferenceDays, ...this.taskDays];
+    },
+    showDateColumn() {
+      return (
+        (this.days.length > 1 || this.days.length === 0) &&
+        this.columns.includes("date")
+      );
     },
     ...mapGetters("tasks", [
       "columns",

@@ -19,9 +19,9 @@
         <div class="media-content">
           <p class="title is-4">{{ conference.name | textlimit(70) }}</p>
           <p class="subtitle is-6">
-            {{ formatTime(conference.start_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+            {{ momentize(conference.start_date, {format:"ll", fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
             –
-            {{ formatTime(conference.end_date, "ll", {fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+            {{ momentize(conference.end_date,{format:"ll", fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
           </p>
         </div>
       </div>

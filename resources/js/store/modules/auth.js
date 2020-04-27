@@ -10,7 +10,6 @@ const state = {
 const getters = {
     userAcceptsCookies: state => state.userAcceptsCookies,
     usersLocale: state => state.user?.locale,
-    usersTimezone: state => state.user?.timezone,
     user: state => state.user,
     userIs: state => (roleName, conferenceKey, stateName) => {
         var found = false;
@@ -93,13 +92,13 @@ const actions = {
                 .then(({ data }) => {
                     commit('setUser', data);
 
-                    // If the user has a timezone,
-                    // set it on our moment instance
-                    // so all moment instances will render
-                    // the correct timezone
-                    if (data.timezone?.name) {
-                        moment.tz.setDefault(data.timezone.name);
-                    }
+                    // // If the user has a timezone,
+                    // // set it on our moment instance
+                    // // so all moment instances will render
+                    // // the correct timezone
+                    // if (data.timezone?.name) {
+                    //     moment.tz.setDefault(data.timezone.name);
+                    // }
                     // Same for locale
                     if (data.locale?.code) {
                         moment.locale(data.locale.code);
