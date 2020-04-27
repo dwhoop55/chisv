@@ -1,14 +1,6 @@
 <template>
   <div>
     <b-field grouped group-multiline>
-      <timespan-picker
-        :value="interval"
-        @input="setInterval"
-        @active-change="($event == false) ? reload() : null"
-        class="control"
-        :incrementMinutes="15"
-      ></timespan-picker>
-
       <b-datepicker
         @blur="reload"
         @input="setDays"
@@ -26,6 +18,15 @@
           <b-tag rounded type="is-warning">Day with tasks</b-tag>
         </template>
       </b-datepicker>
+
+      <timespan-picker
+        :value="interval"
+        placeholder="Limit time"
+        @input="setInterval"
+        @active-change="($event == false) ? reload() : null"
+        class="control"
+        :incrementMinutes="15"
+      ></timespan-picker>
 
       <b-input
         expanded

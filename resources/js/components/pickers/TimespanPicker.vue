@@ -5,7 +5,7 @@
         <input
           type="text"
           autocomplete="off"
-          placeholder="Limit timespan"
+          :placeholder="placeholder"
           readonly
           class="input"
           :value="formatted"
@@ -29,7 +29,7 @@
           </template>
         </b-timepicker>
       </b-field>
-      <b-field label="Until" label-position="inside">
+      <b-field label="End" label-position="inside">
         <b-timepicker
           @input="set(1, $event)"
           :incrementMinutes="incrementMinutes"
@@ -52,7 +52,7 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["incrementMinutes", "incrementHours", "value"],
+  props: ["incrementMinutes", "incrementHours", "value", "placeholder"],
 
   methods: {
     getDate(pos) {
