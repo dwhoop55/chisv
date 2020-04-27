@@ -4,7 +4,7 @@
       <p class="modal-card-title">{{ form.name }}</p>
     </header>
     <section class="modal-card-body">
-      <b-field grouped>
+      <b-field grouped group-multiline>
         <b-field
           expanded
           required
@@ -130,6 +130,9 @@
             ></b-rate>
           </b-field>
         </div>
+      </b-field>
+      <b-field v-if="task.id" label="Id">
+        <b-input disabled :value="task.id"></b-input>
       </b-field>
     </section>
     <section class="modal-card-foot">

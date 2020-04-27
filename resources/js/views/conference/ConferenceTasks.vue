@@ -164,7 +164,7 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="1">
+        <b-table-column width="1" :visible="userIs('sv', conference.key)">
           <template slot="header">
             <div v-if="canBid">
               <task-bid-picker-radio

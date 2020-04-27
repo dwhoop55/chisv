@@ -67,7 +67,7 @@ const actions = {
             params.push(`search=${getters.search}`);
         }
 
-        if (getters.onlyOwnTasks) {
+        if (getters.onlyOwnTasks && rootGetters['auth/userIs']('sv', conferenceKey)) {
             params.push(`only_own_tasks=${getters.onlyOwnTasks ? 1 : 0}`);
         }
 
