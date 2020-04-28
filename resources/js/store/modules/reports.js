@@ -5,7 +5,7 @@ const state = {
     columns: null,
     updated: null,
     selected: null,
-    page: { items: 10, index: 1, paginated: false, multiSort: false },
+    page: { items: 20, index: 1, paginated: false, multiSort: false },
     isLoading: false,
 };
 

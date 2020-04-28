@@ -66,7 +66,7 @@
     <p class="is-size-7">To scroll vertical hold SHIFT while scrolling</p>
 
     <b-table
-      style="overflow: scroll"
+      style="overflow: auto"
       ref="table"
       :loading="isLoading"
       v-if="data && columns"
@@ -84,8 +84,8 @@
       :mobile-cards="false"
     >
       <template slot="footer">
-        <div v-if="paginated" class="has-text-right">
-          <b-dropdown @change="onPerPageChange($event)" :value="perPage" aria-role="list">
+        <div v-if="paginated" class="has-text-left">
+          <b-dropdown @change="setPerPage($event)" :value="perPage" aria-role="list">
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
