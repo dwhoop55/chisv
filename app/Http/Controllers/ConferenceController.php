@@ -187,7 +187,9 @@ class ConferenceController extends Controller
     {
 
         $days = json_decode(request()->days);
+
         abort_unless($days, 400, "Invalid days parameter. Requires JSON array");
+        abort_if(count($days) == 0, 400, "Invalid days array. Cannot be empty");
 
         $bidCount = Bid
             ::whereHas('task', function ($query) use ($days, $conference) {
