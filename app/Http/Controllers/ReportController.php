@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Conference;
+use App\Country;
+use App\Language;
 use App\Role;
 use App\Shirt;
 use App\State;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +22,7 @@ class ReportController extends Controller
     public function show(Conference $conference, String $name)
     {
         switch ($name) {
-            case 'shirts':
+            case 'sv_shirts':
                 return $this->shirtsReport($conference);
                 break;
             case 'sv_hours':
@@ -31,8 +34,11 @@ class ReportController extends Controller
             case 'sv_detail':
                 return $this->svDetailReport($conference);
                 break;
-            case 'sv_stats':
-                return $this->svStatsReport($conference);
+            case 'sv_demographics_country':
+                return $this->svDemoReport($conference, 'country');
+                break;
+            case 'sv_demographics_language':
+                return $this->svDemoReport($conference, 'language');
                 break;
             case 'task_overview':
                 return $this->taskOverviewReport($conference);
@@ -50,13 +56,150 @@ class ReportController extends Controller
         }
     }
 
-    public function sv_detail(Conference $conference)
+    public function svDetailReport(Conference $conference)
     {
+        $columns = collect([]);
+
+        $svs = User
+            ::whereHas('permissions', function ($query) use ($conference) {
+                $query->where('conference_id', $conference->id);
+                $query->where('role_id', Role::byName('sv')->id);
+            })
+            ->with([
+                'permissions' => function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                    $query->where('role_id', Role::byName('sv')->id);
+                },
+                'permissions.enrollmentForm',
+                'permissions.state',
+                'degree',
+                'university',
+                'country',
+                'region',
+                'city',
+                'shirt',
+                'locale',
+            ])
+            ->get();
+
+        $columns = collect();
+        $svs = $svs->map(function ($sv) use (&$columns) {
+            $additionalFields = collect();
+            $form = $sv->permissions->first()->enrollmentForm;
+            if ($form) {
+                $body = json_decode($form->body);
+                if ($body) {
+                    $additionalFields->put('sv_form_header', $body->header ?? '');
+                    $additionalFields->put('sv_form_agreement', $body->agreement ?? '');
+                    foreach ($body->fields as $key => $field) {
+                        $additionalFields->put("sv_form_value_$key", $field->value !== null ? $field->value : '');
+                    }
+                }
+            }
+
+            $sv = collect([
+                "firstname" => $sv->firstname,
+                "lastname" => $sv->lastname,
+                "email" => $sv->email,
+                "past_conferences" => implode('; ', $sv->past_conferences),
+                "past_conferences_sv" => implode('; ', $sv->past_conferences_sv),
+                "country" => $sv->country->name ?? '',
+                "region" => $sv->region->name ?? '',
+                "locale_code" => $sv->locale->code ?? '',
+                "locale" => $sv->locale->name ?? '',
+                "university_id" => $sv->university->id ?? '',
+                "university" => $sv->university->name ?? $sv->university_fallback ?? '',
+                "shirt_id" => $sv->shirt->id ?? '',
+                "shirt_cut" => $sv->shirt->cut ?? '',
+                "shirt_size" => $sv->shirt->size ?? '',
+                "degree_id" => $sv->degree->id ?? '',
+                "degree" => $sv->degree->name ?? '',
+
+                "sv_enrolled_at" => $sv->permissions->first()->created_at->format('c') ?? '',
+                "sv_state" => $sv->permissions->first()->state->name ?? '',
+                "sv_lottery_position" => $sv->permissions->first()->lottery_position ?? '',
+                "sv_form_name" => $form ? $form->name : '',
+                "sv_form_updated" => $form ? $form->updated_at->format('c') : '',
+            ]);
+            if ($form) {
+                $sv = $sv->merge($additionalFields);
+
+                // Create those columns object based on
+                // the firm enrollment form we find
+                if ($columns->isEmpty()) {
+                    foreach ($sv as $key => $value) {
+                        $columns = $columns->push(
+                            $this->buildColumn(
+                                $key,
+                                ucwords(str_replace('_', ' ', $key)),
+                                is_numeric($value),
+                                true
+                            )
+                        );
+                    }
+                }
+            }
+
+            return $sv;
+        });
+
+        return ["columns" => $columns, "data" => $svs, "updated" => Carbon::create('now'), "paginate" => true];
     }
 
 
-    public function sv_stats(Conference $conference)
+    public function svDemoReport(Conference $conference, $type)
     {
+
+        $data = collect();
+        $columns = collect([
+            $this->buildColumn('name', 'Name', false, true),
+            $this->buildColumn('code', 'Code', false, true),
+            $this->buildColumn('count_total', 'Total', true),
+        ]);
+
+        foreach (collect(['enrolled', 'accepted', 'waitlisted', 'dropped']) as $state) {
+            $columns->push($this->buildColumn("count_$state", "State " . ucwords($state), true));
+        }
+
+        if ($type == "country") {
+            $class = Country::class;
+        } else if ($type == "language") {
+            $class = Language::class;
+        }
+
+        $data = $class::with([
+            'users' => function ($query) use ($conference) {
+                $query->whereHas('permissions', function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                    $query->where('role_id', Role::byName('sv')->id);
+                });
+            },
+            'users.permissions' => function ($query)  use ($conference) {
+                $query->where('conference_id', $conference->id);
+                $query->where('role_id', Role::byName('sv')->id);
+                $query->has('state');
+            },
+            'users.permissions.state'
+        ])
+            ->get();
+
+        $data = $data->map(function ($obj) use ($type) {
+            $c = collect([
+                'name' => $obj->name,
+                'code' => $type == 'country' ? $obj->iso2 : $obj->code,
+                'count_total' => $obj->users->count()
+            ]);
+
+            foreach (collect(['enrolled', 'accepted', 'waitlisted', 'dropped']) as $state) {
+                $count = $obj->users->filter(function ($user) use ($state) {
+                    return $user->permissions->first()->state->name === $state;
+                })->count();
+                $c->put("count_$state", $count);
+            }
+            return $c;
+        });
+
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => true];
     }
 
     public function tableDump($table, Conference $conference = null)

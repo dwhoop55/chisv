@@ -7,9 +7,12 @@
         @input="onSelectChange($event)"
         placeholder="Select a report"
       >
-        <option value="shirts">T-Shirts</option>
+        <option value="sv_shirts">SV T-Shirts</option>
         <option value="sv_hours">SV Hours</option>
         <option value="sv_bids">SV Bid</option>
+        <option value="sv_detail">SV Detail 🧐</option>
+        <option value="sv_demographics_country">SV Demographics (Country)</option>
+        <option value="sv_demographics_language">SV Demographics (Language)</option>
         <option value="task_overview">Task Overview</option>
         <option value="tasks_free_slots">Tasks with free slots</option>
         <option value="tasks_table_dump">Tasks table dump (for later import)</option>
@@ -60,8 +63,10 @@
 
     <span v-if="data">{{ data.length }} records &nbsp; | &nbsp;</span>
     <span v-if="updated">Last updated {{ momentize(updated, {fromNow: true}) }}</span>
+    <p class="is-size-7">To scroll vertical hold SHIFT while scrolling</p>
 
     <b-table
+      style="overflow: scroll"
       ref="table"
       :loading="isLoading"
       v-if="data && columns"
