@@ -7,9 +7,7 @@ use App\Role;
 use App\Shirt;
 use App\State;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -30,6 +28,12 @@ class ReportController extends Controller
             case 'sv_bids':
                 return $this->svBidsReport($conference);
                 break;
+            case 'sv_detail':
+                return $this->svDetailReport($conference);
+                break;
+            case 'sv_stats':
+                return $this->svStatsReport($conference);
+                break;
             case 'task_overview':
                 return $this->taskOverviewReport($conference);
                 break;
@@ -44,6 +48,15 @@ class ReportController extends Controller
                 abort(404, "No report for $name at " . $conference->key);
                 break;
         }
+    }
+
+    public function sv_detail(Conference $conference)
+    {
+    }
+
+
+    public function sv_stats(Conference $conference)
+    {
     }
 
     public function tableDump($table, Conference $conference = null)

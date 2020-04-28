@@ -8,7 +8,7 @@
         <b-taginput
           ref="past_conferences"
           @input="onChange($event, 'past_conferences')"
-          placeholder="Use one tag per conference"
+          placeholder="E.g. CHI2019, UIST2020"
           icon="tag"
           :attached="true"
           :value="user.past_conferences"
@@ -24,7 +24,7 @@
         <b-taginput
           ref="past_conferences_sv"
           @input="onChange($event, 'past_conferences_sv')"
-          placeholder="Use one tag per conference"
+          placeholder="E.g. CHI2019, UIST2020"
           icon="tag"
           :attached="true"
           :value="user.past_conferences_sv"
