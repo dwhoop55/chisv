@@ -1,5 +1,11 @@
 <template>
-  <b-dropdown @active-change="$emit('active-change', $event);" append-to-body trap-focus>
+  <b-dropdown
+    @active-change="$emit('active-change', $event);"
+    append-to-body
+    trap-focus
+    class="is-paddingless"
+    :mobile-modal="false"
+  >
     <div slot="trigger" role="button">
       <div class="control is-clearfix">
         <input
@@ -12,9 +18,15 @@
         />
       </div>
     </div>
-    <b-dropdown-item aria-role="menu-item" :focusable="false" custom>
-      <b-field label="Start" label-position="inside">
+    <b-dropdown-item
+      class="is-flex is-marginless is-paddingless"
+      aria-role="menu-item"
+      :focusable="false"
+      custom
+    >
+      <b-field class="is-marginless" label="Start" label-position="inside">
         <b-timepicker
+          class="has-margin-7"
           @input="set(0, $event)"
           :incrementMinutes="incrementMinutes"
           :incrementHours="incrementHours"
@@ -29,8 +41,9 @@
           </template>
         </b-timepicker>
       </b-field>
-      <b-field label="End" label-position="inside">
+      <b-field class="is-marginless" label="End" label-position="inside">
         <b-timepicker
+          class="has-margin-7"
           @input="set(1, $event)"
           :incrementMinutes="incrementMinutes"
           :incrementHours="incrementHours"
