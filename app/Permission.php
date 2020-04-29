@@ -60,18 +60,16 @@ class Permission extends Model
     {
         if (!$this->lottery_position) return;
 
-        $conferenceId = $this->conference->id || $this->conference_id;
-        $pre = Permission::where('conference_id', $conferenceId)
+        $conferenceId = $this->conference_id;
+        $allOthers = Permission
+            ::where('conference_id', $conferenceId)
+            ->where('user_id', '!=', $this->user_id)
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', State::byName('waitlisted')->id)
-            ->where('lottery_position', '<', $this->lottery_position)
-            ->count();
+            ->get('lottery_position');
 
-        $post = Permission::where('conference_id', $conferenceId)
-            ->where('role_id', Role::byName('sv')->id)
-            ->where('state_id', State::byName('waitlisted')->id)
-            ->where('lottery_position', '>', $this->lottery_position)
-            ->count();
+        $pre = $allOthers->where('lottery_position', '<', $this->lottery_position)->count();
+        $post = $allOthers->where('lottery_position', '>', $this->lottery_position)->count();
 
         $pos = $pre + 1;
 
