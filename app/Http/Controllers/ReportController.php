@@ -22,6 +22,9 @@ class ReportController extends Controller
     public function show(Conference $conference, String $name)
     {
         switch ($name) {
+            case 'sv_accepted_last_hour':
+                return $this->svAcceptedLastHour($conference);
+                break;
             case 'sv_shirts':
                 return $this->shirtsReport($conference);
                 break;
@@ -54,6 +57,30 @@ class ReportController extends Controller
                 abort(404, "No report for $name at " . $conference->key);
                 break;
         }
+    }
+
+    public function svAcceptedLastHour(Conference $conference)
+    {
+        return;
+        $columns = collect([
+            $this->buildColumn('name', 'Name', false, true),
+            $this->buildColumn('email', 'E-Mail', false, true),
+        ]);
+
+        $svs = User
+            ::whereHas('permissions', function ($query) use ($conference) {
+                $query->where('conference_id', $conference->id);
+                $query->where('role_id', Role::byName('sv')->id);
+            })
+            ->with([
+                'permissions' => function ($query) use ($conference) {
+                    $query->where('conference_id', $conference->id);
+                    $query->where('role_id', Role::byName('sv')->id);
+                },
+            ])
+            ->get();
+
+        return $svs;
     }
 
     public function svDetailReport(Conference $conference)
