@@ -8,7 +8,7 @@ const state = {
     page: { items: 10, index: 1 },
     states: [],
     isLoading: false,
-    showWaitlistPosition: false,
+    showWaitlistPosition: true,
     showSvAvatar: true,
 };
 

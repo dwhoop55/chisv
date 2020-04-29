@@ -558,6 +558,7 @@ export default {
         .finally(() => {
           this.setIsLoading(false);
           this.fetchSvs();
+          this.fetchAcceptedCount();
         });
     },
     templateSettingsChanged(newSettings) {
