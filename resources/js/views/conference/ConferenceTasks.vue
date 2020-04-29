@@ -76,7 +76,7 @@
 
       <b-field v-if="canDeleteTask">
         <b-button
-          :disabled="isLoading"
+          :disabled="isLoading || totalTasks == 0 || days.length == 0"
           @click="deleteAllTasks()"
           type="is-danger"
         >Delete all Tasks of the selected {{ days.length > 1 ? 'days' : 'day' }}</b-button>

@@ -63,7 +63,7 @@
 
     <span v-if="data">{{ data.length }} records &nbsp; | &nbsp;</span>
     <span v-if="updated">Last updated {{ momentize(updated, {fromNow: true}) }}</span>
-    <p class="is-size-7">To scroll vertical hold SHIFT while scrolling</p>
+    <p class="is-size-7">To scroll horizontal hold SHIFT while scrolling</p>
 
     <b-table
       style="overflow: auto"
