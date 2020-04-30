@@ -15,6 +15,13 @@
         sortable
         :data="bids"
       >
+        <b-input
+          v-if="!props.column.numeric"
+          slot="searchable"
+          slot-scope="props"
+          v-model="props.filters[props.column.field]"
+          placeholder="Search..."
+        />
         <template slot-scope="props">
           <b-table-column
             width="120"
