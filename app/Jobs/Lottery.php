@@ -2,20 +2,35 @@
 
 /**
  * This is the lottery
- * it will change the enrollment state
- * to 'accepted' or 'waitlisted' for users.
- * First a lottery position is given out randomly
- * for every SV which is in the state 'enrolled'. 
+ * The lottery algorithm will change the enrollment state from
+ * enrolled and waitlisted to accepted or waitlisted.
+ * Who get's accepted is pure random (with regard to the
+ * waitlisted SVs which get accepted first. Yet, their position
+ * on the waitlist is fixed but has been determined randomly in
+ * a previous lottery run). The algorithm does not take any
+ * questions of the enrollment form into account.
  * 
- * We then continue to mark SVs 'accepted' as long as there
- * are free SV positions for the conference. 
- * After the max number of SVs are accepted
- * the lottery will continue to set the state
- * to 'waitlisted' for all SVs which are still
- * in the state 'enrolled'. This will put them
- * at the end of the waitlist (if there are SVs on)
+ * 1. We put a lottery-position to every SV which is in the state
+ *     enrolled. This number is one larger as the highest
+ *     lottery-position on the waitlist (max(waitlist) +1).
+ *     It is 1 if the waitlist is empty.
+ * 2. We loop over the lottery-position in ascending order
+ *     for SVs in the state waitlisted or enrolled.
+ *     2.1 (If) As long as there are slots available for SVs for
+ *         the conference we mark the SV as accepted.
+ *     2.2 (Else) If there are no slots available anymore we mark
+ *         and SV who is in the state enrolled as waitlisted.
+ *         SVs which were already in the state waitlisted are not
+ *         modified.
  * 
- * SVs in state 'dropped' are not processed at all 
+ * SVs in state dropped are not processed at all.
+ * 
+ * Outcome
+ * After the lottery has been run we know that we accepted a
+ * random subset of enrolled SVs. We also know that if there
+ * has been any SVs on the waitlist those would have been
+ * accepted first. Any SV who was enrolled is now either accepted
+ * or has been placed on the waitlist.
  */
 
 namespace App\Jobs;
