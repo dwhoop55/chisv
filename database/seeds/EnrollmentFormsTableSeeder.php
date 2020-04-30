@@ -21,7 +21,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'type' => 'boolean',
                     'description' => 'Are you local to where the conference will be this year?',
                     'hint' => 'If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.',
-                    'value' => true,
+                    'value' => false,
                     'weight' => 0,
                     'required' => true,
                 ),
@@ -59,14 +59,6 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'maxlength' => 2000,
                     'value' => '',
                     'required' => true,
-                ),
-                'other_conferences_attended' =>
-                array(
-                    'type' => 'string',
-                    'description' => 'Other conferences you attended:',
-                    'maxlength' => 100,
-                    'value' => '',
-                    'required' => false,
                 ),
             ),
         );
