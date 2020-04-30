@@ -40,6 +40,36 @@ class ConferenceController extends Controller
     }
 
     /**
+     * Return Users in requested state
+     * changed requested minutes ago
+     *
+     * @param App\Conference The conference to look at
+     * @param \App\State $state State the sv has to be in
+     * @param int $minutes look back that many minutes
+     * @return \App\User
+     */
+    public function svsInStateForMinutes(Conference $conference, State $state, int $minutes)
+    {
+
+        $filter = function ($query) use ($conference, $state, $minutes) {
+            $query->where('conference_id', $conference->id);
+            $query->where('role_id', Role::byName('sv')->id);
+            $query->where('state_id', $state->id);
+            $query->whereDate('updated_at', '>=', Carbon::now()->sub($minutes, 'minutes'));
+            $query->whereTime('updated_at', '>=', Carbon::now()->sub($minutes, 'minutes'));
+        };
+
+        $svs = User
+            ::whereHas('permissions', $filter)
+            ->with([
+                'permissions' => $filter
+            ])
+            ->get();
+
+        return $svs;
+    }
+
+    /**
      * Show a conference.
      *
      * @return \Illuminate\Http\Response

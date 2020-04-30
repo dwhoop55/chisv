@@ -116,10 +116,13 @@
                   <conference-edit @updated="fetchConference()" :conference="conference"></conference-edit>
                 </b-tab-item>
                 <b-tab-item v-if="canNotify()" label="Notify">
-                  <conference-notification :conference="conference"></conference-notification>
+                  <conference-notification ref="notify" :conference="conference"></conference-notification>
                 </b-tab-item>
                 <b-tab-item v-if="canUpdateAssignment()" label="Reports">
-                  <conference-reports :conference="conference"></conference-reports>
+                  <conference-reports
+                    @update-notify-destinations="$refs.notify.setDestinations($event)"
+                    :conference="conference"
+                  ></conference-reports>
                 </b-tab-item>
               </b-tabs>
             </div>

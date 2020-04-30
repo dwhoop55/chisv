@@ -185,6 +185,9 @@ export default {
   },
 
   methods: {
+    setDestinations(destinations) {
+      this.form.destinations = destinations;
+    },
     send() {
       this.$buefy.dialog.confirm({
         confirmText: "Send!",

@@ -99,8 +99,8 @@ export default {
     getJob(id) {
         return axios.get(`job/${id}`);
     },
-    getReport(conferenceKey, name) {
-        return axios.get(`conference/${conferenceKey}/report/${name}`);
+    getReport(conferenceKey, name, params) {
+        return axios.get(`conference/${conferenceKey}/report/${name}?${params}`);
     },
     getDestinations(conferenceKey) {
         return axios.get(`conference/${conferenceKey}/destination`);

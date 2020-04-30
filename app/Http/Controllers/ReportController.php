@@ -22,8 +22,8 @@ class ReportController extends Controller
     public function show(Conference $conference, String $name)
     {
         switch ($name) {
-            case 'sv_accepted_last_hour':
-                return $this->svAcceptedLastHour($conference);
+            case 'sv_accepted_minutes_ago':
+                return $this->svAcceptedMinutesAgo($conference, request('number', 60));
                 break;
             case 'sv_shirts':
                 return $this->shirtsReport($conference);
@@ -59,28 +59,30 @@ class ReportController extends Controller
         }
     }
 
-    public function svAcceptedLastHour(Conference $conference)
+    public function svAcceptedMinutesAgo(Conference $conference, $minutes = 60)
     {
-        return;
         $columns = collect([
-            $this->buildColumn('name', 'Name', false, true),
+            $this->buildColumn('firstname', 'Firstname', false, true),
+            $this->buildColumn('lastname', 'Lastname', false, true),
             $this->buildColumn('email', 'E-Mail', false, true),
+            $this->buildColumn('updated_at', 'Changed', true),
         ]);
 
-        $svs = User
-            ::whereHas('permissions', function ($query) use ($conference) {
-                $query->where('conference_id', $conference->id);
-                $query->where('role_id', Role::byName('sv')->id);
-            })
-            ->with([
-                'permissions' => function ($query) use ($conference) {
-                    $query->where('conference_id', $conference->id);
-                    $query->where('role_id', Role::byName('sv')->id);
-                },
-            ])
-            ->get();
+        $svs = app('App\Http\Controllers\ConferenceController')
+            ->svsInStateForMinutes($conference, State::byName('accepted'), $minutes);
 
-        return $svs;
+        $data = $svs
+            ->map(function ($sv) {
+                return [
+                    "user_id" => $sv->id,
+                    'firstname' => $sv->firstname,
+                    'lastname' => $sv->lastname,
+                    'email' => $sv->email,
+                    'updated_at' => $sv->permissions->first()->updated_at->format('c')
+                ];
+            });
+
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => $svs->count() > 10 ? true : false];
     }
 
     public function svDetailReport(Conference $conference)
@@ -125,6 +127,7 @@ class ReportController extends Controller
             }
 
             $sv = collect([
+                "user_id" => $sv->id,
                 "firstname" => $sv->firstname,
                 "lastname" => $sv->lastname,
                 "email" => $sv->email,
@@ -386,6 +389,7 @@ class ReportController extends Controller
                 $assignmentsCount = $sv->assignments->count();
 
                 return [
+                    'user_id' => $sv->id,
                     'firstname' => $sv->firstname,
                     'lastname' => $sv->lastname,
                     'hours_done' => $hoursDone,
@@ -429,6 +433,7 @@ class ReportController extends Controller
 
 
                 return [
+                    'user_id' => $sv->id,
                     'firstname' => $sv->firstname,
                     'lastname' => $sv->lastname,
                     'bids_zero' => $bidsZero,
