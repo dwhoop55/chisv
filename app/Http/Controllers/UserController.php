@@ -14,6 +14,7 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Image;
 use App\Role;
 use App\State;
+use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -256,6 +257,38 @@ class UserController extends Controller
             'permissions.state',
             'university'
         ]), "message" => "User updated"];
+    }
+
+    /** 
+     * Return all notifications of a user of a given conference
+     * 
+     * @param  \App\User  $user
+     * @param  \App\Conference $conference
+     * @return \Illuminate\Http\Response
+     */
+    public function notificationsForConference(User $user, Conference $conference)
+    {
+        // We limit to the last 20 notifications since they can be huge
+        $allNotifications = $user->notifications()->orderBy('created_at')->get();
+        $filtered = $allNotifications
+            ->filter(function ($notification) use ($conference) {
+                if (
+                    isset($notification->data['conference']) &&
+                    $notification->data['conference']['id'] == $conference->id
+                ) {
+                    return true;
+                } else {
+                    return false;
+                };
+            })
+            ->map(function ($notification) {
+                $s = collect($notification)->except(['notifiable_id', 'notifiable_type', 'updated_at']);
+                $s['data'] = collect($s['data'])->except(['conference']);
+                return $s;
+            })
+            ->values();
+
+        return ["total" => $filtered->count(), 'notifications' => $filtered->take(20)];
     }
 
     /** 

@@ -324,7 +324,7 @@
 
         <b-field />
 
-        <div v-if="props.row.canViewBids">
+        <div v-if="canViewBids(props.row.id)">
           <div class="notification field is-floating-label">
             <label class="label">Bids</label>
             {{ props.open }}
@@ -342,6 +342,30 @@
                 :user="props.row"
                 :conference="conference"
               ></sv-bids-list>
+            </b-collapse>
+          </div>
+        </div>
+
+        <b-field />
+
+        <div v-if="canViewNotifications(props.row.id)">
+          <div class="notification field is-floating-label">
+            <label class="label">Notifications</label>
+            {{ props.open }}
+            <b-collapse
+              @open="showNotificationsForUser=props.row.id"
+              @close="showNotificationsForUser=null"
+              :open="showNotificationsForUser == props.row.id"
+            >
+              <span slot="trigger" slot-scope="props">
+                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+                {{ !props.open ? 'Show' : 'Hide' }}
+              </span>
+              <sv-notifications-list
+                v-if="showNotificationsForUser == props.row.id"
+                :user="props.row"
+                :conference="conference"
+              ></sv-notifications-list>
             </b-collapse>
           </div>
         </div>
@@ -490,10 +514,12 @@ export default {
       ignoreNextToggleClick: false,
 
       // We use this as a workaround to only 'v-if' the svBidsList
+      // and the svNotificationsList
       // when the b-collapse is open
-      // It will also close the bidList of other SVs
+      // It will also close the bidList or notificationsList of other SVs
       // to make sure the DOM is kept small
-      showBidsForUser: null
+      showBidsForUser: null,
+      showNotificationsForUser: null
     };
   },
 
@@ -640,6 +666,22 @@ export default {
         }
       }
     },
+    canViewNotifications(userId) {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key) ||
+        this.user.id === userId
+      );
+    },
+    canViewBids(userId) {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key) ||
+        this.user.id === userId
+      );
+    },
     ...mapActions("svs", ["fetchSvs"]),
     ...mapActions("conference", ["fetchAcceptedCount"]),
     ...mapMutations("svs", [
@@ -680,7 +722,7 @@ export default {
     ]),
     ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),
-    ...mapGetters("auth", ["userIs", "userIsAdminOrChairOrCaptain"])
+    ...mapGetters("auth", ["user", "userIs", "userIsAdminOrChairOrCaptain"])
   }
 };
 </script>

@@ -161,7 +161,7 @@ export default {
 
   computed: {
     containsUsers() {
-      return this.data.filter(
+      return this.data?.filter(
         item => item.user_id && item.firstname && item.lastname
       ).length;
     },

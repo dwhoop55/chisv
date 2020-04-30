@@ -54,6 +54,9 @@ export default {
     getUserBidsForConference(id, conferenceKey) {
         return axios.get(`user/${id}/bid/${conferenceKey}`);
     },
+    getUserNotificationsForConference(id, conferenceKey) {
+        return axios.get(`user/${id}/notification/${conferenceKey}`);
+    },
     getEnrollmentFormTemplates() {
         return axios.get(`enrollment_form/template`)
     },

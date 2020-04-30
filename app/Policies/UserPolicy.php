@@ -90,6 +90,28 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view the user's notifications.
+     *
+     * @param  \App\User  $user
+     * @param  \App\User  $model
+     * @param  \App\Conference  $conference
+     * @return mixed
+     */
+    public function viewNotificationsForConference(User $user, User $model, Conference $conference)
+    {
+        if (
+            $user->isAdmin()
+            || $user->isChair($conference)
+            || $user->isCaptain($conference)
+            || $user->id == $model->id // User can view self
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\User  $user

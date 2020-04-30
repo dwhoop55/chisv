@@ -115,7 +115,10 @@ Route::group(['prefix' => 'v1'], function () {
             ->name('conference.reports');
         Route::get('user/{user}/bid/{conference}', 'UserController@bidsForConference')
             ->middleware("can:viewBidsForConference,user,conference")
-            ->name('user.bids');
+            ->name('user.bids.conference');
+        Route::get('user/{user}/notification/{conference}', 'UserController@notificationsForConference')
+            ->middleware("can:viewNotificationsForConference,user,conference")
+            ->name('user.notifications.conference');
         Route::get('conference/{conference}/destination', 'ConferenceController@destinations')
             ->middleware("can:viewDestinations,conference")
             ->name('conference.destinations');

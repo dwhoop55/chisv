@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Conference;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Notifications\DatabaseNotification;
@@ -33,11 +34,25 @@ class NotificationPolicy
     {
         $notifiable = $databaseNotification->notifiable;
 
+        // In case the notification is bound to a conference we
+        // load that conference to later be able to also
+        // authorize chairs
+        if (
+            isset($databaseNotification->data['conference'])
+            && $databaseNotification->data['conference']['id']
+        ) {
+            $conference = Conference::find($databaseNotification->data['conference']['id']);
+        }
+
         if (
             $user->isAdmin() ||
             ($notifiable instanceof User && $notifiable->id == $user->id)
         ) {
             return true;
+        } else if ($conference && $user->isChair($conference)) {
+            return true;
+        } else {
+            return false;
         }
     }
 
