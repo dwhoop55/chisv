@@ -71,6 +71,13 @@
           :type="currentStep >= 3 ? 'is-success' : ''"
           label="Preview"
         >
+          <p>
+            Here is a preview of the tasks you are about to upload.
+            <b>
+              Click the
+              Upload
+            </b> button at the bottom to start the upload.
+          </p>
           <b-table
             pagination-position="both"
             per-page="20"
@@ -93,6 +100,7 @@
         :disabled="!canGoNext"
         icon-right="arrow-right"
         @click="nextStep()"
+        :type="currentStep==2 ? 'is-success' : ''"
       >{{ currentStep==2 ? 'Upload' : 'Next' }}</b-button>
       <b-button v-else type="is-success" @click="close()">Finish</b-button>
     </section>
