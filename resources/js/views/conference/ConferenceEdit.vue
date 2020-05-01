@@ -127,7 +127,7 @@
         expanded
         :type="{ 'is-danger': form.errors.has('email_chair') }"
         :message="form.errors.get('email_chair')"
-        label="Email of the chair managing the conference (will be in the reply-to field of all emails)"
+        label="E-Mail of the SV Chair (will be in the reply-to field of all emails)"
       >
         <b-input required v-model="form.email_chair"></b-input>
       </b-field>

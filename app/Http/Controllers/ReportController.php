@@ -101,6 +101,7 @@ class ReportController extends Controller
                 },
                 'permissions.enrollmentForm',
                 'permissions.state',
+                'languages',
                 'degree',
                 'university',
                 'country',
@@ -144,6 +145,11 @@ class ReportController extends Controller
                 "shirt_size" => $sv->shirt->size ?? '',
                 "degree_id" => $sv->degree->id ?? '',
                 "degree" => $sv->degree->name ?? '',
+                "languages" => implode('; ', $sv->languages
+                    ->map(function ($l) {
+                        return $l->name;
+                    })
+                    ->toArray()),
 
                 "sv_enrolled_at" => $sv->permissions->first()->created_at->format('c') ?? '',
                 "sv_state" => $sv->permissions->first()->state->name ?? '',

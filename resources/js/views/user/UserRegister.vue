@@ -24,7 +24,7 @@
         expanded
         :type="{ 'is-danger': form.errors.has('email') }"
         :message="form.errors.get('email')"
-        label="E-Mail"
+        label="E-Mail (use an institutional address)"
       >
         <b-input required icon="email" v-model="form.email"></b-input>
       </b-field>
