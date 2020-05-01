@@ -29,9 +29,17 @@
               <b-icon type="is-danger" icon="clock-alert-outline"></b-icon>
               <span class="has-text-danger">{{ users[assignment.user.id].hours_done.toFixed(1) }}h</span>
             </span>
+
+            <b-icon
+              class="is-clickable"
+              @click.native="showNotes(assignment.notes)"
+              v-if="assignment.notes.length"
+              icon="message-alert-outline"
+            ></b-icon>
+
             <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
               <a
-                @click.prevent="userClicked(users[assignment.user.id])"
+                @click.prevent="userClicked(assignment)"
               >{{ users[assignment.user.id].firstname }} {{ users[assignment.user.id].lastname }}</a>
             </b-tooltip>
             <a @click.prevent="remove(assignment)">&nbsp;remove</a>
@@ -74,7 +82,10 @@ export default {
   computed: mapGetters("assignments", ["showAssignmentsAvatar"]),
 
   methods: {
-    userClicked(user) {},
+    userClicked(assignment) {
+      console.log(assignment);
+      this.addNote(assignment, "Assignment");
+    },
     userDetail(assignment) {
       var detail =
         "did " +

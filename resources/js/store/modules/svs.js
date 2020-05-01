@@ -28,18 +28,25 @@ const getters = {
 const actions = {
     async fetchSvs({ commit, rootGetters, getters }, key) {
         commit('setIsLoading', true);
-        const params = [
+        var params = [
             `sort_by=${getters.sortField}`,
             `sort_order=${getters.sortDirection}`,
             `page=${getters.page}`,
-            `per_page=${getters.perPage}`,
-            `search=${getters.search}`,
-            `only_states=${getters.states?.map(s => s.id)}`
-        ].join("&");
+            `per_page=${getters.perPage}`
+        ];
+
+        if (getters.search) {
+            params.push(`search=${getters.search}`);
+        }
+
+        if (getters.states.length > 0) {
+            params.push(`only_states=${JSON.stringify(getters.states)}`);
+        }
+
 
         api.getConferenceSvs(
             key || rootGetters['conference/conference'].key,
-            params
+            params.join("&")
         )
             .then(({ data }) => {
                 commit('setData', data);
@@ -60,7 +67,7 @@ const mutations = {
     setSortDirection: (state, direction) => (state.sort.direction = direction || 'asc'),
     setPerPage: (state, perPage) => (state.page.items = perPage),
     setPage: (state, page) => (state.page.index = page),
-    setStates: (state, states) => (state.states = states),
+    setStates: (state, states) => (state.states = [...new Set(states)]),
     setIsLoading: (state, bool) => (state.isLoading = bool),
     setShowWaitlistPosition: (state, bool) => (state.showWaitlistPosition = bool),
     setShowSvAvatar: (state, bool) => (state.showSvAvatar = bool),

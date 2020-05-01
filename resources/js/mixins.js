@@ -1,10 +1,64 @@
 import moment from "moment-timezone";
+import NotesModalVue from "@/components/modals/NotesModal"
+import api from "@/api.js"
 import Form from "vform";
 
 
 export { methods }
 
 let methods = {
+    deleteNote(id) {
+        this.$buefy.dialog.confirm({
+            message: 'Delete this note?',
+            type: 'is-danger',
+            onConfirm: (text) => {
+                api
+                    .deleteNote(id)
+                    .then(({ data }) => {
+                        this.$buefy.toast.open({
+                            message: data.message,
+                            type: 'is-success'
+                        });
+                        this.$store.dispatch('svs/fetchSvs');
+                        this.$store.dispatch('assignments/fetchAssignments');
+                    })
+                    .catch(error => { });
+            }
+        })
+
+    },
+    addNote(forObj, forType) {
+        let forName = forObj.firstname ?
+            `${forObj.firstname} ${forObj.lastname}`
+            : forObj.task?.name
+            || '';
+        this.$buefy.dialog.prompt({
+            message: `Add note to ${forType} ${forName}`,
+            inputAttrs: {
+            },
+            trapFocus: true,
+            onConfirm: (text) => {
+                api
+                    .createNote(forObj.id, `App\\${forType}`, text)
+                    .then(({ data }) => {
+                        this.$buefy.toast.open({
+                            message: data.message,
+                            type: 'is-success'
+                        });
+                        this.$store.dispatch('svs/fetchSvs');
+                        this.$store.dispatch('assignments/fetchAssignments');
+                    })
+                    .catch(error => { });
+            }
+        });
+    },
+    showNotes(notes) {
+        this.$buefy.modal.open({
+            component: NotesModalVue,
+            props: { notes },
+            hasModalCard: true,
+        })
+    },
     loginAs(id) {
         localStorage.removeItem("vuex");
         document.location = `/loginAs?id=${id}`;

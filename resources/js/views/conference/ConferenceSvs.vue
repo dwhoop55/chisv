@@ -11,15 +11,24 @@
       ></b-input>
 
       <b-field>
-        <state-picker
-          :hide-description="true"
-          :multiple="true"
-          forType="User"
-          :value="states"
-          @change="onStatesChange($event)"
-          @active-change="($event == false) ? fetchSvs() : null"
-          text="Filter by state"
-        ></state-picker>
+        <b-dropdown @input="onStatesChange($event)" :value="states" multiple aria-role="list">
+          <button class="button" type="button" slot="trigger">
+            <span v-if="states.length">States ({{ states.length }}/{{ allStates.length }})</span>
+            <span v-else>Limit by state</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
+
+          <b-dropdown-item
+            v-for="state in allStates"
+            :key="state.id"
+            :value="state.id"
+            aria-role="listitem"
+          >
+            <span
+              :class="stateType(state).replace('is-', 'has-text-')"
+            >{{ state.name | capitalize }}</span>
+          </b-dropdown-item>
+        </b-dropdown>
       </b-field>
 
       <b-field>
@@ -315,11 +324,45 @@
 
         <b-field />
 
-        <div v-if="props.row.assignments">
-          <div class="notification field is-floating-label">
-            <label class="label">Assigned Tasks</label>
-            <sv-assignments-list :assignments="props.row.assignments" :conference="conference"></sv-assignments-list>
-          </div>
+        <div v-if="canViewAssignments(props.row.id)" class="notification field is-floating-label">
+          <label class="label">Assigned Tasks</label>
+          <b-collapse v-if="props.row.assignments && props.row.assignments.length" :open="true">
+            <span slot="trigger" slot-scope="props">
+              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+              {{ !props.open ? 'Show' : 'Hide' }}
+            </span>
+            <sv-assignments-list
+              :can-view-notes="canViewNotes"
+              :assignments="props.row.assignments"
+              :conference="conference"
+            />
+          </b-collapse>
+          <span v-else>No assignments yet</span>
+        </div>
+
+        <b-field />
+
+        <div v-if="canViewNotes" class="notification field is-floating-label">
+          <label class="label">Associated notes</label>
+          <b-button
+            @click="addNote(props.row, 'User')"
+            icon-left="message-plus-outline"
+          >Add note to user</b-button>
+          <b-collapse
+            v-if="combineNotes(props.row).length"
+            :open="combineNotes(props.row).length < 7 ? true : false"
+          >
+            <span slot="trigger" slot-scope="props">
+              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+              {{ !props.open ? 'Show' : 'Hide' }}
+            </span>
+            <sv-notes-list
+              :notes="combineNotes(props.row)"
+              :conference="conference"
+              :user="props.row"
+            ></sv-notes-list>
+          </b-collapse>
+          <p v-else>No notes yet</p>
         </div>
 
         <b-field />
@@ -372,24 +415,32 @@
 
         <b-field />
 
-        <div v-if="props.row.permission.enrollment_form">
-          <div class="notification field is-floating-label">
-            <label
-              class="label"
-            >Enrollment form (Type: {{ props.row.permission.enrollment_form.name }} )</label>
-            <b-collapse :open="conference.state.name != 'running'">
-              <!-- This will hide the enrollment form when the conference is running to make the tasks better visible -->
-              <span slot="trigger" slot-scope="props">
-                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-                {{ !props.open ? 'Show' : 'Hide' }}
-              </span>
+        <div
+          v-if="userIs('admin') || userIs('chair', conference.key) || userIs('captain', conference.key)"
+          class="notification field is-floating-label"
+        >
+          <label class="label">
+            Enrollment form
+            <span
+              v-if="props.row.permission.enrollment_form"
+            >(Type: {{ props.row.permission.enrollment_form.name }} )</span>
+          </label>
+          <b-collapse
+            v-if="props.row.permission.enrollment_form"
+            :open="conference.state.name != 'running'"
+          >
+            <!-- This will hide the enrollment form when the conference is running to make the tasks better visible -->
+            <span slot="trigger" slot-scope="props">
+              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
+              {{ !props.open ? 'Show' : 'Hide' }}
+            </span>
 
-              <enrollment-form-summary
-                class="section has-padding-t-8"
-                v-model="props.row.permission.enrollment_form"
-              ></enrollment-form-summary>
-            </b-collapse>
-          </div>
+            <enrollment-form-summary
+              class="section has-padding-t-8"
+              v-model="props.row.permission.enrollment_form"
+            ></enrollment-form-summary>
+          </b-collapse>
+          <span v-else>No enrollment form</span>
         </div>
 
         <b-field />
@@ -524,6 +575,11 @@ export default {
   },
 
   methods: {
+    combineNotes(user) {
+      let assignmentNotes = [];
+      user.assignments.forEach(a => assignmentNotes.push(...a.notes));
+      return [...user.notes, ...assignmentNotes];
+    },
     showEnrollmentFormWeightsSettings() {
       this.$buefy.modal.open({
         parent: this,
@@ -654,6 +710,7 @@ export default {
     },
     onStatesChange(states) {
       this.setStates(states);
+      this.fetchSvs();
     },
     toggle: function(row) {
       if (this.ignoreNextToggleClick) {
@@ -667,14 +724,15 @@ export default {
       }
     },
     canViewNotifications(userId) {
-      return (
-        this.userIs("admin") ||
-        this.userIs("chair", this.conference.key) ||
-        this.userIs("captain", this.conference.key) ||
-        this.user.id === userId
-      );
+      return this.isChairCaptainOrSelf(userId);
     },
     canViewBids(userId) {
+      return this.isChairCaptainOrSelf(userId);
+    },
+    canViewAssignments(userId) {
+      return this.isChairCaptainOrSelf(userId);
+    },
+    isChairCaptainOrSelf(userId) {
       return (
         this.userIs("admin") ||
         this.userIs("chair", this.conference.key) ||
@@ -696,6 +754,13 @@ export default {
   },
 
   computed: {
+    canViewNotes() {
+      return (
+        this.userIs("admin") ||
+        this.userIs("chair", this.conference.key) ||
+        this.userIs("captain", this.conference.key)
+      );
+    },
     canUpdateEnrollment() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);
     },

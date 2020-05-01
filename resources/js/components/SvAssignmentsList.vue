@@ -8,7 +8,19 @@
       :data="assignments"
     >
       <template slot-scope="props">
-        <b-table-column field="state.name" label="State" sortable width="150">
+        <b-table-column class="is-flex" field="state.name" label="State" sortable width="180">
+          <b-icon
+            v-if="canViewNotes"
+            class="is-clickable"
+            @click.native="addNote(props.row, 'Assignment')"
+            icon="message-plus-outline"
+          ></b-icon>
+          <b-icon
+            v-if="canViewNotes && props.row.notes.length"
+            class="is-clickable"
+            @click.native="showNotes(props.row.notes)"
+            icon="message-alert-outline"
+          ></b-icon>
           <div v-if="props.row.state.name == 'assigned'">
             <b-icon type="is-warning" icon="account" />
             <span>&nbsp;Scheduled</span>
@@ -62,11 +74,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
-  props: ["assignments", "conference"],
-
-  data() {
-    return {};
-  }
+  name: "SvAssignmentsList",
+  props: ["assignments", "conference", "canViewNotes"]
 };
 </script>

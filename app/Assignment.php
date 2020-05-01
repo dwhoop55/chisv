@@ -14,6 +14,11 @@ class Assignment extends Model
         'state_id' => 'int',
     ];
 
+    public function notes()
+    {
+        return $this->morphMany('App\Note', 'for');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');

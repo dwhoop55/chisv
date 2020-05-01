@@ -170,6 +170,9 @@ Route::group(['prefix' => 'v1'], function () {
         Route::resource('faq', 'FaqController', [
             'only' => ['index', 'show', 'update', 'destroy', 'store'],
         ]);
+        Route::resource('note', 'NoteController', [
+            'only' => ['destroy', 'store'],
+        ]);
     });
     //// AUTHENTICATED ////
 

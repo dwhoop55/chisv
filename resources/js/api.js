@@ -115,6 +115,9 @@ export default {
         return axios.get(`calendar_event?start=${start}&end=${end}`);
     },
 
+    createNote(forId, forType, text) {
+        return axios.post(`note`, { for_id: forId, for_type: forType, text });
+    },
     createAssignment(svId, taskId) {
         return axios.post(`assignment`, { user_id: svId, task_id: taskId });
     },
@@ -200,6 +203,9 @@ export default {
         return axios.put(`user/${userId}`, { [type]: array });
     },
 
+    deleteNote(id) {
+        return axios.delete(`note/${id}`);
+    },
     deleteFaq(id) {
         return axios.delete(`faq/${id}`);
     },

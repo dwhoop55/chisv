@@ -399,6 +399,8 @@ class ConferenceController extends Controller
         $query = Task
             ::with([
                 'assignments',
+                'assignments.notes',
+                'assignments.notes.creator:id,firstname,lastname',
                 'assignments.state:id,name',
                 'assignments.user:id',
 
@@ -488,7 +490,7 @@ class ConferenceController extends Controller
             $nTask['assignments'] = $task->assignments->map(function ($assignment) use (&$task) {
                 if (isset($assignment->user)) {
 
-                    $nAssignment = $assignment->only(['id', 'hours', 'state', 'user']);
+                    $nAssignment = $assignment->only(['id', 'hours', 'state', 'user', 'notes']);
 
                     // Append a SVs bid if there is one
                     $bid = $task->bids->where('user_id', $assignment->user->id)->first();
@@ -903,7 +905,7 @@ class ConferenceController extends Controller
             || auth()->user()->isChair($conference)
             || auth()->user()->isCaptain($conference);
         $searchString = request()->search;
-        $selectedStates = collect(explode(',', request()->only_states));
+        $selectedStates = collect(json_decode(request()->only_states));
         $sortBy = request()->sort_by ?? 'lastname';
         $sortOrder = request()->sort_order ?? 'asc';
         $perPage = request()->per_page ?? '10';
@@ -924,6 +926,10 @@ class ConferenceController extends Controller
                 },
                 'user.assignments.state',
                 'user.assignments.task',
+                'user.assignments.notes',
+                'user.assignments.notes.creator:id,firstname,lastname',
+                'user.assignments.notes.for:id,task_id,hours',
+                'user.assignments.notes.for.task:id,name,hours,start_at,end_at',
                 'user.bids' => function ($query) use ($conference) {
                     $query->select(['id', 'preference', 'user_id', 'task_id', 'state_id']);
                     $query->whereHas('task', function ($query) use ($conference) {
@@ -933,6 +939,17 @@ class ConferenceController extends Controller
                 'user.bids.task' => function ($query) use ($conference) {
                     $query->where('conference_id', $conference->id);
                 },
+                'user.notes' => function ($query) use ($conference) {
+                    $query->whereHasMorph('for', [User::class], function ($query, $type) use ($conference) {
+                        if ($type === User::class) {
+                            $query->whereHas('permissions', function ($query) use ($conference) {
+                                $query->where('conference_id', $conference->id);
+                            });
+                        }
+                    });
+                },
+                'user.notes.creator:id,firstname,lastname',
+                'user.notes.for',
                 'user.university',
                 'user.avatar',
                 'user.country',
@@ -990,8 +1007,7 @@ class ConferenceController extends Controller
             $safe['country'] = $user->country ? $user->country->name : null;
             $safe['region'] = $user->region ? $user->region->name : null;
 
-            // Add statistics for chair/captain or if the user requesting
-            // the data is the user which is currently processed
+            // Add statistics for chair/captain and the requesting user
             if ($showMore || $user->id == auth()->user()->id) {
                 $bids = $user->bids->filter(function ($bid) use (&$conference) {
                     return $bid->task->conference_id = $conference->id;
@@ -1025,7 +1041,7 @@ class ConferenceController extends Controller
 
                 // Add assignments to the SVs so that Chair/Captain and SV see assigned tasks on the SV view
                 $safe['assignments'] = $user->assignments->transform(function ($assignment) {
-                    $safe = $assignment->only('id', 'hours', 'created_at');
+                    $safe = $assignment->only('id', 'hours', 'created_at', 'notes');
                     $safe['state'] = $assignment->state->only('id', 'name', 'description');
                     $safe['task'] = $assignment->task->only(
                         'id',
@@ -1049,8 +1065,9 @@ class ConferenceController extends Controller
                 });
             }
 
+
             if ($showMore) {
-                // Show more information
+                // Show more information for captain and chair only
                 $conference = $permission->conference;
                 $safe['email'] = $user->email;
                 $safe['degree'] = $user->degree->name;
@@ -1063,6 +1080,7 @@ class ConferenceController extends Controller
                 $safe['permission']->conference->id = $conference->id;
                 $safe['permission']->role = new Role();
                 $safe['permission']->role->id = $permission->role->id;
+                $safe['notes'] = $user->notes;
 
                 // This is the only function which slows down a call to @sv
                 // when n='num of svs' grow
