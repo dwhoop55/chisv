@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
@@ -56,7 +57,11 @@ class NotificationController extends Controller
     public function show(DatabaseNotification $databaseNotification)
     {
         $notification = $databaseNotification->only(['id', 'type', 'data', 'read_at', 'created_at']);
-        $databaseNotification->update(['read_at' => Carbon::create('now')]);
+        $notifiable = $databaseNotification->notifiable;
+        if ($notifiable instanceof User && $notifiable->id == auth()->user()->id) {
+            $databaseNotification->update(['read_at' => Carbon::create('now')]);
+        }
+
         return $notification;
     }
 
