@@ -146,7 +146,7 @@ export default {
                   <br>
                   <br>
                   If you continue this will remove your local frontend preferences, log you out\
-                  and then log you in as if you had used the SVs credentials.
+                  and then log you in as if you had used the SV's credentials.
                   <br>
                   <br>
                   This action might fail if the user is not one of your\
