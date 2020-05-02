@@ -18,7 +18,7 @@ class CreateNotesTable extends Migration
             $table->unsignedBigInteger('creator_id')->nullable()->index();
             $table->unsignedBigInteger('for_id')->index();
             $table->string('for_type')->index();
-            $table->text('text')->nullable(false)->index();
+            $table->text('text')->nullable(false);
             $table->timestamps();
         });
     }
