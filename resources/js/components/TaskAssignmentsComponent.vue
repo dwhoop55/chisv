@@ -39,7 +39,8 @@
 
             <b-tooltip dashed multilined :label="userDetail(assignment)" position="is-right">
               <a
-                @click.prevent="userClicked(assignment)"
+                title="Add note to this assignment"
+                @click.prevent="addNote(users[assignment.user.id], assignment)"
               >{{ users[assignment.user.id].firstname }} {{ users[assignment.user.id].lastname }}</a>
             </b-tooltip>
             <a @click.prevent="remove(assignment)">&nbsp;remove</a>
@@ -82,19 +83,41 @@ export default {
   computed: mapGetters("assignments", ["showAssignmentsAvatar"]),
 
   methods: {
-    userClicked(assignment) {
-      console.log(assignment);
-      this.addNote(assignment, "Assignment");
+    addNote(user, assignment) {
+      this.$buefy.dialog.prompt({
+        message: `Add note to Assignment for<br>
+                  <b>${user.firstname} ${user.lastname}</b> assigned to<br>
+                  <b>${this.task.name}</b>`,
+        inputAttrs: {},
+        trapFocus: true,
+        confirmText: "Add",
+        onConfirm: text => {
+          api
+            .createNote(
+              assignment.id,
+              `App\\Assignment`,
+              text,
+              this.conference.id
+            )
+            .then(({ data }) => {
+              this.$buefy.toast.open({
+                message: data.message,
+                type: "is-success"
+              });
+              this.$emit("reload");
+            })
+            .catch(error => console.error(error));
+        }
+      });
     },
     userDetail(assignment) {
-      var detail =
-        "did " +
-        this.decimalFormat(this.users[assignment.user.id].hours_done) +
-        "\n";
+      var detail = `did ${this.decimalFormat(
+        this.users[assignment.user.id].hours_done
+      )} hours `;
       let bid = assignment.bid;
 
       if (bid) {
-        detail += "- bid ";
+        detail += " | bid ";
         switch (bid.state.id) {
           case 31:
             detail += "placed";
@@ -108,7 +131,7 @@ export default {
         }
         detail += " with preference " + this.preferenceString(bid.preference);
       } else {
-        detail += "- no bid by user ";
+        detail += "- no bid by user";
       }
       if (bid && !bid.user_created) {
         detail += "*";

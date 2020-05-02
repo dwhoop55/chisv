@@ -58,7 +58,15 @@ class NotePolicy
      */
     public function create(User $user)
     {
-        return $this->view();
+        if (
+            $user->isAdmin() ||
+            ($user->isChair()) ||
+            ($user->isCaptain())
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -70,7 +78,6 @@ class NotePolicy
      */
     public function update(User $user, Note $note)
     {
-        return $this->view();
     }
 
     /**
@@ -82,7 +89,7 @@ class NotePolicy
      */
     public function delete(User $user, Note $note)
     {
-        return $this->view();
+        return $this->view($user, $note);
     }
 
     // /**

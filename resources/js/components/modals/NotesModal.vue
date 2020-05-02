@@ -15,6 +15,7 @@
           ({{ momentize(note.created_at, {format: 'l LT', fromTz: 'UTC', toTz}) }} {{ toTz }})
         </p>
       </div>
+      <small>Notes can be deleted in the SV view</small>
     </section>
     <section class="modal-card-foot">
       <b-button @click="$parent.close()">Close</b-button>

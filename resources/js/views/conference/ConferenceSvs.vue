@@ -343,11 +343,16 @@
         <b-field />
 
         <div v-if="canViewNotes" class="notification field is-floating-label">
-          <label class="label">Associated notes</label>
-          <b-button
-            @click="addNote(props.row, 'User')"
-            icon-left="message-plus-outline"
-          >Add note to user</b-button>
+          <label class="label">
+            Associated notes ({{ conference.key }})
+            <b-icon
+              title="Add note to user"
+              v-if="userIsAdminOrChairOrCaptain(conference.key)"
+              class="is-clickable"
+              @click.native="ignoreNextToggleClick=true;addNote(props.row, 'User')"
+              icon="message-plus-outline"
+            />
+          </label>
           <b-collapse
             v-if="combineNotes(props.row).length"
             :open="combineNotes(props.row).length < 7 ? true : false"
@@ -575,6 +580,25 @@ export default {
   },
 
   methods: {
+    addNote(user) {
+      this.$buefy.dialog.prompt({
+        message: `Add note to ${user.firstname} ${user.lastname} for ${this.conference.key}`,
+        inputAttrs: {},
+        trapFocus: true,
+        onConfirm: text => {
+          api
+            .createNote(user.id, `App\\User`, text, this.conference.id)
+            .then(({ data }) => {
+              this.$buefy.toast.open({
+                message: data.message,
+                type: "is-success"
+              });
+              this.fetchSvs();
+            })
+            .catch(error => console.error(error));
+        }
+      });
+    },
     combineNotes(user) {
       let assignmentNotes = [];
       user.assignments.forEach(a => assignmentNotes.push(...a.notes));

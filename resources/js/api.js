@@ -115,8 +115,13 @@ export default {
         return axios.get(`calendar_event?start=${start}&end=${end}`);
     },
 
-    createNote(forId, forType, text) {
-        return axios.post(`note`, { for_id: forId, for_type: forType, text });
+    createNote(forId, forType, text, conferenceId = null) {
+        return axios.post(`note`, {
+            for_id: forId,
+            for_type: forType,
+            text,
+            ...conferenceId && { conference_id: conferenceId }
+        });
     },
     createAssignment(svId, taskId) {
         return axios.post(`assignment`, { user_id: svId, task_id: taskId });

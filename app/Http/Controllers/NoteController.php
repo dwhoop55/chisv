@@ -9,23 +9,13 @@ use Illuminate\Http\Request;
 class NoteController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Instantiate a new controller instance.
      *
-     * @return \Illuminate\Http\Response
+     * @return void
      */
-    public function index()
+    public function __construct()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $this->authorizeResource(Note::class);
     }
 
     /**
@@ -36,7 +26,7 @@ class NoteController extends Controller
      */
     public function store(NoteRequest $request)
     {
-        $data = $request->only(['for_id', 'for_type', 'text']);
+        $data = $request->only(['for_id', 'for_type', 'text', 'conference_id']);
         $data['creator_id'] = auth()->user()->id;
         $note = new Note($data);
         if ($note->save()) {
@@ -53,17 +43,6 @@ class NoteController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Note $note)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Note  $note
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Note $note)
     {
         //
     }

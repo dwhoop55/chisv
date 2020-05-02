@@ -16,8 +16,9 @@ class NoteRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'for_id' => 'required|exclude_unless:for_type,App\User|exists:users,id',
-            // 'for_id' => 'required|exclude_unless:for_type,App\Assignment|exists:assignments,id',
+            'for_id' => 'required|exclude_if:for_type,App\Assignment|exists:users,id',
+            'for_id' => 'required|exclude_if:for_type,App\User|exists:assignments,id',
+            'conference_id' => ['required_if:for_type,App\User|exists:conferences,id'],
             'for_type' => ['required', Rule::in(['App\User', 'App\Assignment'])],
             'text' => 'required|string',
         ];

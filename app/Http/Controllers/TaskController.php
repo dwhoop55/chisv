@@ -103,6 +103,13 @@ class TaskController extends Controller
             ::where('task_id', $task->id)
             ->delete();
 
+        // Remove all notes to this task's assignments
+        $notesCount = 0;
+        foreach ($task->assignments as $assignment) {
+            $notesCount += $assignment->notes->count();
+            $assignment->notes()->delete();
+        }
+
         // Remove all assignments if there are any
         $assignmentCount = Assignment
             ::where('task_id', $task->id)
@@ -110,7 +117,7 @@ class TaskController extends Controller
 
 
         if ($task->delete()) {
-            return ["result" => true, "message" => "Task removed. $bidsCount/$assignmentCount associated bids/assignments have been deleted."];
+            return ["result" => true, "message" => "Task removed. $bidsCount/$assignmentCount/$notesCount associated bids/assignments/notes have been deleted."];
         } else {
             return ["result" => false, "message" => "Task could not be removed"];
         }

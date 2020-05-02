@@ -940,13 +940,7 @@ class ConferenceController extends Controller
                     $query->where('conference_id', $conference->id);
                 },
                 'user.notes' => function ($query) use ($conference) {
-                    $query->whereHasMorph('for', [User::class], function ($query, $type) use ($conference) {
-                        if ($type === User::class) {
-                            $query->whereHas('permissions', function ($query) use ($conference) {
-                                $query->where('conference_id', $conference->id);
-                            });
-                        }
-                    });
+                    $query->where('conference_id', $conference->id);
                 },
                 'user.notes.creator:id,firstname,lastname',
                 'user.notes.for',

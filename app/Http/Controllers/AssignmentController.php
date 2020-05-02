@@ -77,6 +77,8 @@ class AssignmentController extends Controller
             $bid->state()->associate(State::byName('placed', 'App\Bid'))->save();
         }
 
+        $assignment->notes()->delete();
+
         $assignment->delete();
         return ["result" => true, "message" => "Assignment removed"];
     }

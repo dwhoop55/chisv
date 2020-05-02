@@ -22,7 +22,7 @@
           field="created_at"
           sortable
         >{{ momentize(props.row.created_at, {format: 'l LT', fromTz: 'UTC', toTz: conference.timezone.name}) }}</b-table-column>
-        <b-table-column width="200" label="Creator">
+        <b-table-column width="200" label="Posted by">
           <span
             v-if="props.row.creator"
           >{{ props.row.creator.firstname }} {{ props.row.creator.lastname }}</span>
@@ -35,6 +35,7 @@
             <br />
             <b>{{props.row.for.task.name}}</b>
             <br />
+            {{ momentize(props.row.for.task.date, {format:"l", fromToTz: conference.timezone.name}) }}
             {{ momentize(props.row.for.task.start_at, {format:"LT", fromToTz: conference.timezone.name}) }}
             – {{ momentize(props.row.for.task.end_at, {format:"LT", fromToTz: conference.timezone.name}) }}
           </span>
