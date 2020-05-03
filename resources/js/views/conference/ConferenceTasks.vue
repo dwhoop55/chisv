@@ -268,10 +268,7 @@
 
             <span v-if="days.length > 0">
               on
-              <div
-                v-for="(day, index) in days"
-                :key="index"
-              >{{ momentize(day, {format:'ll', fromToTz: timezoneName}) }}</div>
+              <div v-for="(day, index) in days" :key="index">{{ momentize(day, {format:'ll'}) }}</div>
             </span>
 
             <span v-if="interval[0] || interval[1]">
