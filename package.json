@@ -11,7 +11,7 @@
     },
     "devDependencies": {
         "axios": "^0.19.2",
-        "buefy": "^0.8.16",
+        "buefy": "^0.8.17",
         "bulma": "^0.8.2",
         "cross-env": "^7.0.2",
         "laravel-mix": "^5.0.4",
@@ -26,13 +26,13 @@
         "moment-timezone": "^0.5.28",
         "pluralize": "^8.0.0",
         "vform": "^1.0.1",
-        "vue-cal": "^3.2.1",
+        "vue-cal": "^3.2.3",
         "vue-csv-import": "^3.1.0",
         "vue-debounce": "^2.5.3",
         "vue-json-csv": "^1.2.11",
         "vue-router": "^3.1.6",
         "vue-showdown": "^2.4.1",
-        "vuex": "^3.2.0",
+        "vuex": "^3.3.0",
         "vuex-persistedstate": "^3.0.1"
     }
 }
