@@ -99,10 +99,7 @@ export default {
       return this.userIs("admin") || this.userIs("chair");
     },
     canDelete() {
-      return (
-        this.user?.id != this.authUser?.id &&
-        (this.userIs("admin") || this.userIs("chair"))
-      );
+      return this.user?.id != this.authUser?.id && this.userIs("admin");
     },
     canLoginAs() {
       return (
