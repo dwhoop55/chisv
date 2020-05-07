@@ -41,7 +41,7 @@ class EnrollmentFormsTableSeeder extends Seeder
                     'description' => 'How many times have you been an SV at this conference before?',
                     'value' => 0,
                     'weight' => 0,
-                    'required' => true,
+                    'required' => false,
                 ),
                 'need_visa' =>
                 array(
