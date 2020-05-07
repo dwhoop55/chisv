@@ -99,6 +99,7 @@
     <br />
 
     <b-table
+      v-if="!hackHideTable"
       narrowed
       @page-change="onPageChange"
       @sort="onSort"
@@ -133,8 +134,8 @@
             aria-role="listitem"
             value="manage"
           >Manage</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="bid">Bid</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
           <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
@@ -165,7 +166,7 @@
             type="is-danger"
           >Delete</b-button>
         </b-table-column>
-        <b-table-column width="1" :visible="columns.includes('bid')">
+        <b-table-column label="Bid" width="1" :visible="columns.includes('bid')">
           <template slot="header">
             <div v-if="canBid">
               <task-bid-picker-radio
@@ -183,11 +184,11 @@
           </template>
         </b-table-column>
         <b-table-column
-          :visible="showDateColumn"
+          :visible="columns.includes('date')"
           field="tasks.date"
           sortable
           label="Date"
-          :width="showDateColumn ? 93 : null"
+          :width="columns.includes('date') ? 93 : null"
         >
           {{ momentize(props.row.date,
           {format: 'l', fromToTz: timezoneName}) }}
@@ -327,8 +328,24 @@ export default {
 
   data() {
     return {
-      multiBidValue: null
+      multiBidValue: null,
+      hackHideTable: false // This is part of the hotfix for buefy table bug
     };
+  },
+
+  created() {
+    this.$watch("tasks", function(newVal, oldVal) {
+      /* This is a workaround for the bug present in
+       * buefy 0.8.17+ (- 0.9.0) which breaks column show/hide
+       * when the table was empty once
+       * After it has been fixed in buefy remove this 'hack
+       */
+      if (oldVal?.length == 0 && newVal?.length > 1) {
+        console.log("Hotfixing buefy table");
+        this.hackHideTable = true;
+        setTimeout(() => (this.hackHideTable = false), 10);
+      }
+    });
   },
 
   methods: {
@@ -684,12 +701,6 @@ export default {
     },
     calendarEvents() {
       return [...this.conferenceDays, ...this.taskDays];
-    },
-    showDateColumn() {
-      return (
-        (this.days.length > 1 || this.days.length === 0) &&
-        this.columns.includes("date")
-      );
     },
     ...mapGetters("tasks", [
       "columns",

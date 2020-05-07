@@ -71,6 +71,7 @@
     <br />
 
     <b-table
+      v-if="!hackHideTable"
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
@@ -255,7 +256,8 @@ export default {
   data() {
     return {
       isLoading: true,
-      timer: null
+      timer: null,
+      hackHideTable: false // This is part of the hotfix for buefy table bug
     };
   },
 
@@ -364,6 +366,19 @@ export default {
   },
 
   created() {
+    this.$watch("tasks", function(newVal, oldVal) {
+      /* This is a workaround for the bug present in
+       * buefy 0.8.17+ (- 0.9.0) which breaks column show/hide
+       * when the table was empty once
+       * After it has been fixed in buefy remove this 'hack
+       */
+      if (oldVal?.length == 0 && newVal?.length > 1) {
+        console.log("Hotfixing buefy table");
+        this.hackHideTable = true;
+        setTimeout(() => (this.hackHideTable = false), 10);
+      }
+    });
+
     this.reload();
     this.autoRefresh();
   },
