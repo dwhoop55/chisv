@@ -78,7 +78,13 @@
         <form @submit.prevent="enroll">
           <div class="card-content">
             <div class="content">
-              <p>You may adjust these fields from your profile right here</p>
+              <p>
+                Please take a moment to check
+                <b>
+                  <a @click="goToOwnProfile()">your profile</a>
+                </b> if the current preferences like T-shirt size and degree are still up to date.
+              </p>
+              <p>You may adjust these two fields from your profile right here</p>
               <past-conferences-component></past-conferences-component>
               <hr />
               <enrollment-form v-if="form" v-model="form"></enrollment-form>
@@ -101,7 +107,7 @@
 <script>
 import api from "@/api.js";
 import Form from "vform";
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapMutations } from "vuex";
 import EnrollmentFormModal from "./../components/modals/EnrollmentFormModal";
 
 export default {
@@ -172,7 +178,12 @@ export default {
           this.fetchUser();
         });
     },
-    ...mapActions("auth", ["fetchUser"])
+    goToOwnProfile() {
+      this.setTab(1);
+      this.$router.push({ name: "user", params: { id: this.user.id } });
+    },
+    ...mapActions("auth", ["fetchUser"]),
+    ...mapMutations("profile", ["setTab"])
   },
 
   computed: {

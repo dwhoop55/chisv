@@ -99,10 +99,7 @@ export default {
       return this.userIs("admin") || this.userIs("chair");
     },
     canDelete() {
-      return (
-        this.user?.id != this.authUser?.id &&
-        (this.userIs("admin") || this.userIs("chair"))
-      );
+      return this.user?.id != this.authUser?.id && this.userIs("admin");
     },
     canLoginAs() {
       return (
@@ -146,7 +143,7 @@ export default {
                   <br>
                   <br>
                   If you continue this will remove your local frontend preferences, log you out\
-                  and then log you in as if you had used the SVs credentials.
+                  and then log you in as if you had used the SV's credentials.
                   <br>
                   <br>
                   This action might fail if the user is not one of your\
