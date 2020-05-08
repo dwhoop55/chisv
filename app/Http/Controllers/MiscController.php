@@ -129,21 +129,29 @@ class MiscController extends Controller
 
     public function version()
     {
-        $currentHead = trim(substr(file_get_contents('../.git/HEAD'), 4));
-        $branch = str_replace('refs/heads/', '', $currentHead);
-        $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
-
-        // Get the tag if there is one
-        $tagPath = '../.git/refs/tags/';
+        $branch = null;
+        $commit = null;
         $tag = null;
-        $tags = scandir($tagPath);
-        foreach ($tags as $curTag) {
-            if ($curTag == '.' || $curTag == "..") continue;
-            $curCommit = trim(file_get_contents($tagPath . $curTag));
-            if ($curCommit == $commit) {
-                $tag = $curTag;
+
+        try {
+            $currentHead = trim(substr(file_get_contents('../.git/HEAD'), 4));
+            $branch = str_replace('refs/heads/', '', $currentHead);
+            $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
+
+            // Get the tag if there is one
+            $tagPath = '../.git/refs/tags/';
+            $tag = null;
+            $tags = scandir($tagPath);
+            foreach ($tags as $curTag) {
+                if ($curTag == '.' || $curTag == "..") continue;
+                $curCommit = trim(file_get_contents($tagPath . $curTag));
+                if ($curCommit == $commit) {
+                    $tag = $curTag;
+                }
             }
+        } catch (\Throwable $th) {
         }
+
         return compact('branch', 'commit', 'tag');
     }
 }
