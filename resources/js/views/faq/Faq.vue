@@ -54,6 +54,23 @@
                   </div>
                 </div>
               </b-collapse>
+              <hr class="has-margin-b-7 has-margin-t-6" />
+              <small>
+                <div class="level">
+                  <div v-if="version.tag" class="level-item">
+                    Chisv version
+                    {{ version.tag }}
+                  </div>
+                  <div v-if="version.branch" class="level-item">
+                    branch
+                    {{ version.branch }}
+                  </div>
+                  <div v-if="version.commit" class="level-item">
+                    commit
+                    {{ version.commit.substr(0,7) }}
+                  </div>
+                </div>
+              </small>
             </div>
           </div>
         </div>
@@ -147,7 +164,7 @@ export default {
 
   computed: {
     ...mapGetters("auth", ["userIs"]),
-    ...mapGetters("defines", ["roles"]),
+    ...mapGetters("defines", ["roles", "version"]),
     ...mapGetters("conference", {
       lastConference: "conference"
     })

@@ -9,6 +9,7 @@ const state = {
     shirts: null,
     degrees: null,
     priorities: [1, 2, 3],
+    version: null,
 };
 
 const getters = {
@@ -29,9 +30,14 @@ const getters = {
     shirts: state => state.shirts,
     degrees: state => state.degrees,
     priorities: state => state.priorities,
+    version: state => state.version,
 };
 
 const actions = {
+    async fetchVersion({ commit }) {
+        const response = await api.getVersion();
+        commit('setVersion', response.data);
+    },
     async fetchStates({ commit }) {
         const response = await api.getStates();
         commit('setStates', response.data);
@@ -70,6 +76,7 @@ const mutations = {
     setTimezones: (state, timezones) => (state.timezones = timezones),
     setShirts: (state, shirts) => (state.shirts = shirts),
     setDegrees: (state, degrees) => (state.degrees = degrees),
+    setVersion: (state, version) => (state.version = version),
 };
 
 export default {

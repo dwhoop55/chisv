@@ -132,6 +132,18 @@ class MiscController extends Controller
         $currentHead = trim(substr(file_get_contents('../.git/HEAD'), 4));
         $branch = str_replace('refs/heads/', '', $currentHead);
         $commit = trim(file_get_contents(sprintf('../.git/%s', $currentHead)));
-        return ["branch" => $branch, "commit" => $commit];
+
+        // Get the tag if there is one
+        $tagPath = '../.git/refs/tags/';
+        $tag = null;
+        $tags = scandir($tagPath);
+        foreach ($tags as $curTag) {
+            if ($curTag == '.' || $curTag == "..") continue;
+            $curCommit = trim(file_get_contents($tagPath . $curTag));
+            if ($curCommit == $commit) {
+                $tag = $curTag;
+            }
+        }
+        return compact('branch', 'commit', 'tag');
     }
 }

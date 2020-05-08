@@ -21,7 +21,6 @@
       <b-navbar-item v-if="userIs('admin') || userIs('chair')" tag="router-link" to="/user">Users</b-navbar-item>
       <b-navbar-dropdown v-if="userIs('admin') || userIs('chair')" hoverable label="System">
         <b-navbar-item tag="router-link" to="/job">Background Jobs</b-navbar-item>
-        <b-navbar-item @click="showChisvVersion()">Chisv version</b-navbar-item>
       </b-navbar-dropdown>
       <b-navbar-item
         v-if="last && last.key"
@@ -136,17 +135,6 @@ export default {
   },
 
   methods: {
-    showChisvVersion() {
-      api.getVersion().then(({ data }) => {
-        this.$buefy.dialog.alert({
-          title: "chisv Version",
-          message: `Branch<br/><b>${data.branch}</b><br/><br/>Commit<br/><b>${data.commit}</b>`,
-          type: "is-info",
-          hasIcon: true,
-          icon: "information"
-        });
-      });
-    },
     showPrivacyPolicy() {
       this.$buefy.modal.open({
         parent: this,
