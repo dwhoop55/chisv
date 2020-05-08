@@ -1,0 +1,58 @@
+{
+    "agreement": "This agreement will be placed below the questions and above the Enroll button. When this field is set, the button will say 'Agree & Enroll'. When the field is empty it will only say 'Enroll'. You could put text like this here: Please read this carefully: SVs will work for approximately 14 hours during the conference.",
+    "fields": {
+        "did_attend_before": {
+            "description": "How many times have you attended this conference before?",
+            "range": [
+                0,
+                99
+            ],
+            "required": true,
+            "type": "integer",
+            "value": 0,
+            "weight": 0
+        },
+        "did_sv_before": {
+            "description": "How many times have you been an SV at this conference before?",
+            "hint": "You can always put a hint if you want to explain something",
+            "range": [
+                0,
+                99
+            ],
+            "required": true,
+            "type": "integer",
+            "value": 0,
+            "weight": 0
+        },
+        "are_you_local": {
+            "description": "Are you local to where the conference will be this year?",
+            "hint": "If you get selected as a volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.",
+            "required": true,
+            "type": "boolean",
+            "value": false,
+            "weight": 0
+        },
+        "do_you_need_a_visa": {
+            "description": "Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)",
+            "hint": "Choosing yes will make us send you some additional information via E-mail. This preference will not be used when the lottery is run for selecting the SVs.",
+            "required": true,
+            "type": "boolean",
+            "value": true,
+            "weight": 0
+        },
+        "why_you_want_to_be_sv": {
+            "description": "Please explain why you want to be an SV at the conference:",
+            "maxlength": 2000,
+            "required": true,
+            "type": "string",
+            "value": ""
+        },
+        "something_else": {
+            "description": "You can also make a field optional by not using the 'required' keyword",
+            "maxlength": 100,
+            "type": "string",
+            "value": "The 'value' is always the default value when the form gets show for the first time to the SV"
+        }
+    },
+    "header": "This will be above all questions. It could say: Please answer the following questions"
+}
