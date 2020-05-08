@@ -58,16 +58,22 @@
               <small>
                 <div class="level">
                   <div v-if="version.tag" class="level-item">
-                    Chisv version
-                    {{ version.tag }}
+                    <a
+                      target="_blank"
+                      :href="`https://github.com/dwhoop55/chisv/releases/tag/${version.tag}`"
+                    >Chisv version {{ version.tag }}</a>
                   </div>
                   <div v-if="version.branch" class="level-item">
-                    branch
-                    {{ version.branch }}
+                    <a
+                      target="_blank"
+                      href="https://github.com/dwhoop55/chisv"
+                    >branch {{ version.branch }}</a>
                   </div>
                   <div v-if="version.commit" class="level-item">
-                    commit
-                    {{ version.commit.substr(0,7) }}
+                    <a
+                      target="_blank"
+                      :href="`https://github.com/dwhoop55/chisv/commit/${version.commit}`"
+                    >commit {{ version.commit.substr(0,7) }}</a>
                   </div>
                 </div>
               </small>
