@@ -201,13 +201,31 @@ export default {
       // Welcome to event passing hell!
       // We could also use vuex for this, but it's
       // actually more an event than a state
-      const destinations = source
+      var destinations = [];
+      source
         .filter(item => item.user_id)
-        .map(item => ({
-          user_id: item.user_id,
-          type: "user",
-          display: `${item.firstname} ${item.lastname}`
-        }));
+        .forEach(item => {
+          if (Number.isInteger(item.user_id)) {
+            // The row is a single user with a single user
+            // id
+            destinations.push({
+              user_id: item.user_id,
+              type: "user",
+              display: `${item.firstname} ${item.lastname}`
+            });
+          } else if (Array.isArray(item.user_id)) {
+            // The row has multiple user ids
+            // Create an object for each of those id
+            // with the same username
+            item.user_id.forEach(id => {
+              destinations.push({
+                user_id: id,
+                type: "user",
+                display: `${item.firstname} ${item.lastname} (id: ${id})`
+              });
+            });
+          }
+        });
       this.$emit("update-notify-destinations", destinations);
     },
     exportData(type) {
