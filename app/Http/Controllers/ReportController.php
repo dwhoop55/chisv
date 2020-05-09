@@ -22,6 +22,9 @@ class ReportController extends Controller
     public function show(Conference $conference, String $name)
     {
         switch ($name) {
+            case 'sv_doubles':
+                return $this->svDoubles($conference);
+                break;
             case 'sv_accepted_minutes_ago':
                 return $this->svAcceptedMinutesAgo($conference, request('number', 60));
                 break;
@@ -57,6 +60,64 @@ class ReportController extends Controller
                 abort(404, "No report for $name at " . $conference->key);
                 break;
         }
+    }
+
+    public function svDoubles(Conference $conference)
+    {
+        $columns = collect([
+            $this->buildColumn('count', 'Count', true),
+            $this->buildColumn('firstname', 'Firstname', false, true),
+            $this->buildColumn('lastname', 'Lastname', false, true),
+            $this->buildColumn('emails', 'E-Mail', false, true),
+            $this->buildColumn('locations', 'Countries', false, true),
+            $this->buildColumn('states', 'SV States', false, true),
+            $this->buildColumn('universities', 'Universities', false, true),
+        ]);
+
+        $data = collect();
+        $conference
+            ->users(Role::byName('sv'))
+            ->with([
+                'permissions' => function ($query) use ($conference) {
+                    $query->where("conference_id", $conference->id);
+                    $query->where("role_id", Role::byName('sv')->id);
+                },
+                'permissions.state'
+            ])
+            ->get()
+            ->each(function ($sv) use ($data) {
+                $key = strtolower($sv->firstname . $sv->lastname);
+                if ($data->has($key)) {
+                    // dd($data[$key]["count"] + 1);
+                    $data[$key]["count"] += 1;
+                    $data[$key]["user_id"]->push($sv->id);
+                    $data[$key]["emails"]->push($sv->email);
+                    $data[$key]["locations"]->push($sv->country->name);
+                    $data[$key]["states"]->push($sv->permissions->first()->state->name);
+                    $data[$key]["universities"]->push($sv->university ? $sv->university->name : $sv->university_fallback);
+                } else {
+                    $data->put($key, collect([
+                        "user_id" => collect($sv->id),
+                        "firstname" => $sv->firstname,
+                        "lastname" => $sv->lastname,
+                        "emails" => collect($sv->email),
+                        "locations" => collect($sv->country->name),
+                        "states" => collect($sv->permissions->first()->state->name),
+                        "universities" => collect($sv->university ? $sv->university->name : $sv->university_fallback),
+                        "count" => 1,
+                    ]));
+                }
+            });
+
+
+        $data = $data
+            ->filter(function ($sv) {
+                return $sv['count'] > 1;
+            })
+            ->values();
+
+
+        return ["columns" => $columns, "data" => $data, "updated" => Carbon::create('now'), "paginate" => $data->count() > 10 ? true : false];
     }
 
     public function svAcceptedMinutesAgo(Conference $conference, $minutes = 60)

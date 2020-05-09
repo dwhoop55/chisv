@@ -11,11 +11,12 @@
         <option value="sv_hours">SV Hours</option>
         <option value="sv_bids">SV Bid</option>
         <option value="sv_detail">SV Detail 🧐</option>
+        <option value="sv_doubles">SV Doubles by name 😟</option>
         <option value="sv_accepted_minutes_ago">SVs accepted last X minutes</option>
         <option value="sv_demographics_country">SV Demographics (Country)</option>
         <option value="sv_demographics_language">SV Demographics (Language)</option>
         <option value="task_overview">Task Overview</option>
-        <option value="tasks_free_slots">Tasks with free slots</option>
+        <option value="tasks_free_slots">Tasks with free slots 😰</option>
         <option value="tasks_table_dump">Tasks table dump (for later import)</option>
       </b-select>
 
@@ -161,6 +162,8 @@ export default {
 
   computed: {
     containsUsers() {
+      if (!Array.isArray(this.data)) return;
+
       return this.data?.filter(
         item => item.user_id && item.firstname && item.lastname
       ).length;
