@@ -85,7 +85,11 @@
             narrowed
             :data="csv"
             :columns="tableColumns"
-          ></b-table>
+          >
+            <template slot="top-left">
+              <span v-if="csv && csv.length">Total: {{ csv.length }}</span>
+            </template>
+          </b-table>
         </b-step-item>
         <b-step-item :clickable="false" :type="currentStep >= 4 ? 'is-success' : ''" label="Upload">
           <b-loading :is-full-page="true" :active="true" />
