@@ -408,11 +408,17 @@ export default {
           .createMultiBid(params)
           .then(({ data }) => {
             this.multiBidValue = preference;
+            var msgs = [];
+            if (data.created)
+              msgs.push(`${data.created} bids have been created`);
+            if (data.updated)
+              msgs.push(`${data.updated} bids have been updated`);
+            if (data.untouched)
+              msgs.push(`${data.untouched} bids were already correct`);
+            if (data.revoked)
+              msgs.push(`${data.revoked} bids have been revoked`);
             this.$buefy.notification.open({
-              message: `${data.created} bids have been created<br>\
-             ${data.updated} bids have been updated<br>\
-             ${data.untouched} were already correct<br>\
-             ${data.revoked} bids have been revoked`,
+              message: msgs.join(`<br>`),
               type: "is-success",
               duration: 10000
             });
@@ -678,12 +684,7 @@ export default {
       return this.conference.timezone.name;
     },
     canBid() {
-      return (
-        this.userIs("sv", this.conference.key, "accepted") &&
-        this.conference.bidding_enabled &&
-        this.dateFromMySql(this.conference.bidding_start) < new Date() &&
-        this.dateFromMySql(this.conference.bidding_end) > new Date()
-      );
+      return this.conference.bidding_enabled;
     },
     canCreateTask() {
       return (

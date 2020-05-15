@@ -7,7 +7,7 @@
       <p>
         You are about to
         <b>{{ preference === null ? 'revoke your bid' : 'bid'}}</b>
-        on {{ totalTasks }}
+        on up to {{ totalTasks }}
         tasks.
       </p>
       <p v-if="perPage < totalTasks">
@@ -15,6 +15,8 @@
         {{ Math.ceil(totalTasks / perPage)}} pages of the table and not
         only the page ({{ page }}) you are currently on.
       </p>
+      <b-field>&nbsp;</b-field>
+      <p>Please note: Your multi-bid will only be applied to the tasks for which you can bid. These may actually be less than all {{ totalTasks }} tasks you've filtered for.</p>
       <b-field>&nbsp;</b-field>
       <b-field>
         <b-switch
@@ -28,11 +30,11 @@
       <b-button type="is-primary" @click="confirm();$parent.close()">
         <div v-if="preference !== null">
           Bid
-          on {{ totalTasks }} tasks
+          on up to {{ totalTasks }} tasks
           with preference
           <b>{{ preferenceString(preference) }}</b>
         </div>
-        <div v-else>Revoke bid on {{ totalTasks }} tasks</div>
+        <div v-else>Revoke bids</div>
       </b-button>
     </section>
   </div>
