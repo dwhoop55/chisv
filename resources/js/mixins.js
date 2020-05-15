@@ -117,8 +117,12 @@ let methods = {
         var fromNow = options?.fromNow ? true : false;
         var format = options?.format;
 
-        if (typeof date == "string" && date.match(/^\d{2}:\d{2}:\d{2}$/)) {
-            date = `2000-01-01 ${date}`;
+        if (typeof date == "string") {
+            if (date.match(/^(\d{2}:\d{2})($|:\d{2})/)) {
+                date = `2000-01-01 ${date}`;
+            } else if (date.match(/^(\d{1}:\d{2})($|:\d{2})/)) {
+                date = `2000-01-01 0${date}`;
+            }
         }
 
         if (typeof options?.toTz == "string") {

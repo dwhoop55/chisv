@@ -49,7 +49,7 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
 
         // We prepare a collection with all the existing tasks
         // for this conference. We create a key based collection
-        // so that lookung by id is efficient
+        // so that lookup by id is efficient
         $existingTasks = $this
             ->conference
             ->tasks
@@ -81,15 +81,15 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
                 'date', 'start_at', 'end_at',
                 'priority', 'slots', 'hours'
             ])->toArray();
+            $task["start_at"] = Carbon::create($task["start_at"])->toTimeString();
+            $task["end_at"] = Carbon::create($task["end_at"])->toTimeString();
 
             // This is the section which makes imports of legacy chisv
             // csv possible. (1) With those we have no YYYY-MM-DD date for the task
             // but rather a conference day (1,2,..). We convert these to actual dates
             // (2) Hours can also be in a different format, namely HH:MM instead
             // of our normal float (e.g 3.5)
-            // (3) Start_at end end_at might be in HH:MM format rather than
-            // HH:MM:SS format which is required by the validator
-            // (4) Also priorities worked different in the old chisv:
+            // (3) Also priorities worked different in the old chisv:
             //   app/models/task.rb:17
             //   PRIORITY = {0 => 'high', 1 => 'normal', 2 => 'low'}
             // where we would have 1 => low, 2 => normal and 3 => high
@@ -109,7 +109,7 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
                 // date is in conference day format, like 1,2,3
                 $task['date'] = Carbon::create($conference->start_date)->addDay(-1)->addDay($task['date'])->toDateString();
 
-                // (4)
+                // (3)
                 // Also convert priorities here
                 if (isset($task['priority'])) {
                     //   PRIORITY = {0 => 'high', 1 => 'normal', 2 => 'low'}
@@ -137,14 +137,6 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
             if (isset($task['hours']) && preg_match("/^(\d{1,2}):(\d{2})$/", $task['hours'], $matches)) {
                 // hours can be in format HH:MM
                 $task['hours'] = intval($matches[1]) + round(intval($matches[2]) / 60, 2);
-            }
-
-            // (3)
-            if (isset($task['start_at']) && preg_match("/^\d{2}:\d{2}$/", $task['start_at'])) {
-                $task['start_at'] = $task['start_at'] . ":00";
-            }
-            if (isset($task['end_at']) && preg_match("/^\d{2}:\d{2}$/", $task['end_at'])) {
-                $task['end_at'] = $task['end_at'] . ":00";
             }
 
 
