@@ -27,31 +27,6 @@ let methods = {
         })
 
     },
-    // addNote(forObj, forType, conference = null) {
-    //     let forName = forObj.firstname ?
-    //         `${forObj.firstname} ${forObj.lastname}`
-    //         : forObj.task?.name
-    //         || '';
-    //     this.$buefy.dialog.prompt({
-    //         message: `Add note to ${forType} ${forName}`,
-    //         inputAttrs: {
-    //         },
-    //         trapFocus: true,
-    //         onConfirm: (text) => {
-    //             api
-    //                 .createNote(forObj.id, `App\\${forType}`, text)
-    //                 .then(({ data }) => {
-    //                     this.$buefy.toast.open({
-    //                         message: data.message,
-    //                         type: 'is-success'
-    //                     });
-    //                     this.$store.dispatch('svs/fetchSvs');
-    //                     this.$store.dispatch('assignments/fetchAssignments');
-    //                 })
-    //                 .catch(error => { });
-    //         }
-    //     });
-    // },
     showNotes(notes) {
         this.$buefy.modal.open({
             component: NotesModalVue,
