@@ -417,6 +417,7 @@ export default {
               msgs.push(`${data.untouched} bids were already correct`);
             if (data.revoked)
               msgs.push(`${data.revoked} bids have been revoked`);
+            if (msgs.length == 0) msgs.push(`No change`);
             this.$buefy.notification.open({
               message: msgs.join(`<br>`),
               type: "is-success",
