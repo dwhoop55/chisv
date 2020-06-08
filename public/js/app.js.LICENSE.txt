@@ -5,8 +5,15 @@ https://github.com/mholt/PapaParse
 License: MIT
 */
 
+/* @license
+Papa Parse
+v5.2.0
+https://github.com/mholt/PapaParse
+License: MIT
+*/
+
 /*!
-  * vue-router v3.1.6
+  * vue-router v3.3.2
   * (c) 2020 Evan You
   * @license MIT
   */
@@ -30,6 +37,12 @@ License: MIT
  * MIT Licensed
  */
 
+/*!
+ * vuex v3.4.0
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+
 /*! showdown v 1.9.1 - 02-11-2019 */
 
 /**
@@ -39,10 +52,4 @@ License: MIT
  * Released under MIT license <https://lodash.com/license>
  * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
  * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-
-/**
- * vuex v3.3.0
- * (c) 2020 Evan You
- * @license MIT
  */
