@@ -81,8 +81,13 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
                 'date', 'start_at', 'end_at',
                 'priority', 'slots', 'hours'
             ])->toArray();
-            $task["start_at"] = Carbon::create($task["start_at"])->toTimeString();
-            $task["end_at"] = Carbon::create($task["end_at"])->toTimeString();
+
+            if (isset($task["start_at"])) {
+                $task["start_at"] = Carbon::create($task["start_at"])->toTimeString();
+            }
+            if (isset($task["end_at"])) {
+                $task["end_at"] = Carbon::create($task["end_at"])->toTimeString();
+            }
 
             // This is the section which makes imports of legacy chisv
             // csv possible. (1) With those we have no YYYY-MM-DD date for the task
@@ -103,7 +108,6 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
 
             // Since we don't know when a priority is from the old system we only
             // trigger this conversion if there is also the 'date' in the old format
-
             // (1)
             if (isset($task['date']) && preg_match("/^\d{1,}$/", $task['date'])) {
                 // date is in conference day format, like 1,2,3
@@ -142,7 +146,6 @@ class ImportTasks extends AdvancedJob implements ExecutableJob
 
             // If we have an 'id' set we update the task
             if ($id) {
-
                 // Check for invalid fields first
                 $validator = Validator::make($task, $updateRules);
 
