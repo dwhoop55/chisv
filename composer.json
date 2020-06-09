@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.2",
+        "beyondcode/laravel-er-diagram-generator": "^1.4",
         "filp/whoops": "^2.3",
         "mockery/mockery": "^1.2",
         "nunomaduro/collision": "^3.0",
