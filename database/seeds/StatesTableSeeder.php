@@ -36,7 +36,7 @@ class StatesTableSeeder extends Seeder
             ["id" => 32, "for" => "App\Bid", "name" => "successful", "description" => "The bid won the auction creating an assignment"],
             ["id" => 33, "for" => "App\Bid", "name" => "unsuccessful", "description" => "The bid did not win the auction (all slots filled)"],
             ["id" => 34, "for" => "App\Bid", "name" => "conflict", "description" => "The bid is invalid due to a task time conflict"],
-            ["id" => 35, "for" => "App\Bid", "name" => "unavailable", "description" => "The bid is was handled as a conflict"],
+            ["id" => 35, "for" => "App\Bid", "name" => "unavailable", "description" => "The bid expresses unavailability, thus blocked assignment"],
 
             // Id 41 has to be always 'assigned' (used in the migration for field default)!
             ["id" => 41, "for" => "App\Assignment", "name" => "assigned", "description" => "The task is assigned but yet not being worked on"],
