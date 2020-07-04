@@ -10,10 +10,12 @@
  * a previous lottery run). The algorithm does not take any
  * questions of the enrollment form into account.
  * 
- * 1. We put a lottery-position to every SV which is in the state
- *     enrolled. This number is one larger as the highest
+ * 1. We generate a randomly ordered list of SVs which are in the
+ *     state "enrolled". We set a lottery-position to every SV
+ *     from this list. This number is one larger as the highest
  *     lottery-position on the waitlist (max(waitlist) +1).
- *     It is 1 if the waitlist is empty.
+ *     It is 1 if the waitlist is empty. The number is incremented
+ *     after each SV.
  * 2. We loop over the lottery-position in ascending order
  *     for SVs in the state waitlisted or enrolled.
  *     2.1 (If) As long as there are slots available for SVs for

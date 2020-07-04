@@ -45,7 +45,7 @@
  * However, there might be tasks still not assigned, even when SVs have bid for them. These SVs
  * have already worked the suggested max hours for the conference. We decided to anyhow assign
  * them to a task when they bid at least 1 (>=) to make sure to minimize tasks which have no
- * or not the required amount of SVs assgined.
+ * or not the required amount of SVs assigned.
  * 
  * 2nd Phase
  *  Loop through all tasks which have not all slots filled
@@ -152,7 +152,6 @@ class Auction extends AdvancedJob implements ExecutableJob
             // Grab the preference for the current task if there is one
             // If there is none, we set it to 1 since SVs are being told
             // if they don't bid it counts like a bid with preference 1
-            // Also, this is what the UI shows when there is no bid 
             if ($sv->bids->isNotEmpty()) {
                 $new['preference'] = $sv->bids->first()->preference;
                 $new['bid_id'] = $sv->bids->first()->id;
