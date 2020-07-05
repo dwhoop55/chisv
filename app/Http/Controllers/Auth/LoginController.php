@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 
+/**
+ * @group Authentication
+ */
 class LoginController extends Controller
 {
     /*
@@ -43,6 +46,6 @@ class LoginController extends Controller
     public function logout(Request $request)
     {
         $this->performLogout($request);
-        return response("Logout successfull", 200);
+        return response("Logout successful", 200);
     }
 }

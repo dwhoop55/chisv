@@ -161,7 +161,7 @@ Route::group(['prefix' => 'v1'], function () {
             'only' => ['index', 'store', 'destroy']
         ]);
         Route::resource('notification', 'NotificationController', [
-            'only' => ['index', 'show', 'update', 'destroy'],
+            'only' => ['index', 'show'],
             'parameters' => ['notification' => 'database_notification']
         ]);
         Route::resource('calendar_event', 'CalendarEventController', [

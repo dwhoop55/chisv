@@ -15,6 +15,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * Various methods that creating a controller for would be too much
+ */
 class MiscController extends Controller
 {
 
@@ -36,31 +39,74 @@ class MiscController extends Controller
         }
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all locales
+     * 
+     * @responseFile responses/locales.get.json
+     * 
+     */
     public function locales()
     {
         return Locale::all();
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all timezones
+     * 
+     */
     public function timezones()
     {
         return Timezone::all();
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all T-Shirts
+     * 
+     */
     public function shirts()
     {
         return Shirt::all();
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all degrees
+     * 
+     */
     public function degrees()
     {
         return Degree::all();
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all countries
+     * 
+     * @responseFile responses/countries.get.json
+     * 
+     */
     public function countries()
     {
         return Country::all();
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all locations for a country by city name
+     * 
+     * @urlParam country required The country the city is in Example: 82
+     * @urlParam pattern The name of the city Example: Aachen
+     * 
+     */
     public function locations(Country $country, String $pattern = "")
     {
         $pattern = trim($pattern);
@@ -103,6 +149,14 @@ class MiscController extends Controller
         return $locations;
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all universities matching a pattern
+     * 
+     * @urlParam pattern The pattern to match Example: Aachen
+     * 
+     */
     public function universities(String $pattern = "")
     {
         $patterns = preg_split("/\ |\-|,|;/", $pattern);
@@ -117,6 +171,14 @@ class MiscController extends Controller
         return $matches;
     }
 
+    /**
+     * @group Generic Resources
+     * 
+     * Get all languages matching a pattern
+     * 
+     * @urlParam pattern string The pattern to match Example: Ger
+     * 
+     */
     public function languages(String $pattern = "")
     {
         $matches = Language
@@ -127,6 +189,17 @@ class MiscController extends Controller
         return $matches;
     }
 
+    /**
+     * @authenticated
+     * @group Generic Resources
+     * 
+     * Get CHISV version info
+     * 
+     * @response {
+     * "branch":"dev","commit":"7eb66fd398b7cf361fb688cddc5af60ed5820636","tag":null
+     * }
+     * 
+     */
     public function version()
     {
         $branch = null;

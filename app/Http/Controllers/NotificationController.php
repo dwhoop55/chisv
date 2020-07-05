@@ -64,22 +64,4 @@ class NotificationController extends Controller
 
         return $notification;
     }
-
-    // /**
-    //  * Determine how many unread database notification the user has
-    //  * since $since.
-    //  *
-    //  * @return int Number of unread notifications since $since
-    //  */
-    // public function numberUnread(Request $request)
-    // {
-    //     $user = auth()->user();
-    //     $since = $request->since ? Carbon::create($request->since) : Carbon::createFromTimestamp(0);
-    //     return DatabaseNotification
-    //         ::where('notifiable_type', 'App\User')
-    //         ->where('notifiable_id', $user->id)
-    //         ->where('created_at', '>=', $since)
-    //         ->where('read_at', null)
-    //         ->count();
-    // }
 }
