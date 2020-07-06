@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PermissionRequest;
 use App\State;
 
+/** 
+ * @authenticated
+ * @group Permission
+ */
 class PermissionController extends Controller
 {
 
@@ -21,8 +25,20 @@ class PermissionController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new permission
+     *      
+     * @bodyParam user_id int required The user's id Example: 1
+     * @bodyParam role_id int required The role of the permission by id Example: 2
+     * @bodyParam conference_id int The conference id to bind the permission to Example: 1
+     * @bodyParam state_id int The permission's state Example: 11
      *
+     * @response 200 {
+     * "result": true,"message": "Permission granted!"
+     * }
+     * 
+     * @response 400 {
+     * "message": "Permission already exists"
+     * }
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -46,8 +62,18 @@ class PermissionController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * Delete a new permission
+     *      
+     * @urlParam permission required The permission's id Example: 2
+     * 
+     * @response 200 {
+     * "success": true,"message": "Permission revoked"
+     * }
+     * 
+     * @response 404 {
+     * "message": "No query results for model [App\\Permission] 1"
+     * }
+     * 
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response
      */
@@ -58,8 +84,15 @@ class PermissionController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     *
+     * Update a permission
+     *      
+     * @urlParam permission required The permission's id Example: 2
+     * @bodyParam user_id int required The user's id Example: 1
+     * @bodyParam role_id int required The role of the permission by id Example: 2
+     * @bodyParam conference_id int The conference id to bind the permission to Example: 1
+     * @bodyParam state_id int The permission's state Example: 11
+     * 
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response

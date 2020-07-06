@@ -6,6 +6,10 @@ use App\Http\Requests\NoteRequest;
 use App\Note;
 use Illuminate\Http\Request;
 
+/**
+ * @authenticated
+ * @group Note
+ */
 class NoteController extends Controller
 {
     /**
@@ -19,7 +23,12 @@ class NoteController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new note
+     * 
+     * @bodyParam for_id int required Id for the note's associated object Example: 1
+     * @bodyParam for_type string required Class name for the note's associated object Example: App\User
+     * @bodyParam text string required The note's content Example: More than expected
+     * @bodyParam conference_id int required The conference to bind this note to (used for App\User) Example: 1
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -37,31 +46,17 @@ class NoteController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Delete a note
+     * @urlParam note required The note's id Example: 1
      *
-     * @param  \App\Note  $note
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Note $note)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Note  $note
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Note $note)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
+     * @response 200 {
+     * "result": true, "message": "Note deleted"
+     * }
+     * 
+     * @response 404 {
+     * "message": "No query results for model [App\\Note] 1"
+     * }
+     * 
      * @param  \App\Note  $note
      * @return \Illuminate\Http\Response
      */

@@ -36,7 +36,32 @@ class RegisterController extends Controller
     }
 
     /**
-     * Handle a registration request for the application.
+     * @group User
+     * Create a new user
+     * 
+     * @bodyParam firstname string required The user's first name Example: Jacob
+     * @bodyParam lastname string required The user's last name Example: Smith
+     * @bodyParam email string required The user's email Example: jacob@example.com
+     * @bodyParam languages array<[Language](#get-all-languages-matching-a-pattern)> An array of languages
+     * @bodyParam languages.*.id int required A [language's](#get-all-languages-matching-a-pattern) id Example: 23
+     * @bodyParam location [Location](#get-all-locations-for-a-country-by-city-name) required The users location by city name
+     * @bodyParam location.country.id int required The location's country id Example: 82
+     * @bodyParam location.country.name string The location's country name Example: Germany
+     * @bodyParam location.region.id int The location's region id Example: 1268
+     * @bodyParam location.region.name string The location's region name Example: Nordrhein-Westfalen
+     * @bodyParam location.city.id int The location's city id Example: 12850
+     * @bodyParam location.city.name string The location's city name Example: Aachen
+     * @bodyParam university.id int The [university's](#get-all-universities-matching-a-pattern) id Example: 4044
+     * @bodyParam university.name string The fallback university's name if no id used (see above) Example: RWTH Aachen
+     * @bodyParam degree_id int required The user's [degree](#get-all-degrees) Example: 2
+     * @bodyParam shirt_id int required The user's [shirt](#get-all-t-shirts) Example: 3
+     * @bodyParam locale_id int required The user's [locale](#get-all-locales) Example: 51
+     * @bodyParam past_conferences array<string> The user's past attended conferences as array
+     * @bodyParam past_conferences.* string A user's past attended conference Example: CHI 2019
+     * @bodyParam past_conferences_sv array<string> The user's past attended conferences as SV as array
+     * @bodyParam past_conferences_sv.* string A user's past attended conference as SV Example: CHI 2019
+     * @bodyParam password string The user's password Example: secret
+     * @bodyParam password_confirmation string The user's password Example: secret
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -48,7 +73,6 @@ class RegisterController extends Controller
             'firstname',
             'lastname',
             'email',
-            'timezone_id',
             'locale_id',
             'degree_id',
             'shirt_id',

@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Notifications\SendQueuedNotifications;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @authenticated
+ * @group Job
+ */
 class JobController extends Controller
 {
 
@@ -21,7 +25,7 @@ class JobController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get all jobs
      *
      * @return \Illuminate\Http\Response
      */
@@ -84,8 +88,9 @@ class JobController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
+     * Get a job
+     * 
+     * @urlParam job required The job's id Example: 1
      * @param  \App\Job  $job
      * @return \Illuminate\Http\Response
      */

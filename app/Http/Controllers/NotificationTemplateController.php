@@ -7,6 +7,10 @@ use App\Http\Requests\NotificationTemplateRequest;
 use App\NotificationTemplate;
 use Carbon\Carbon;
 
+/**
+ * @authenticated
+ * @group Notification
+ */
 class NotificationTemplateController extends Controller
 {
     /**
@@ -20,7 +24,7 @@ class NotificationTemplateController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get all notification templates
      *
      * @return \Illuminate\Http\Response
      */
@@ -33,9 +37,26 @@ class NotificationTemplateController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new notification template
+     * 
+     * @bodyParam name string required Give the template a unique name Example: My New Template!
+     * @bodyParam data string required The enrollment form template in JSON encoded form
+     * @bodyParam year int required YYYY formatted year Example: 2020
+     * @bodyParam conference_id int required Bind to this conference Example: 1
+     * 
+     * @bodyParam data.destinations array required Multiple destinations, see below for 3 examples
+     * @bodyParam data.destinations[0].type string Must be 'group' Example:group
+     * @bodyParam data.destinations[0].role_id int Pointing to the role by id Example: 10
+     * @bodyParam data.destinations[0].state_id int Pointing to the state by id Example: 12
+     * 
+     * @bodyParam data.elements array required Multiple elements, see below for action and markdown below
+     * @bodyParam data.elements[0].type required One of 'action', 'markdown' Example: action
+     * @bodyParam data.elements[1].type required One of 'action', 'markdown' Example: markdown
+     * @bodyParam data.elements[0].data.caption string Is required if type is 'action' Example: CHISV Website
+     * @bodyParam data.elements[0].data.url string Is required if type is 'action' Example: https://chisv.org
+     * @bodyParam data.elements[1].data string Is required if type is 'markdown' Example: !See text below
      *
-     * @param  \Illuminate\Http\NotificationPostRequest  $request
+     * @param  \Illuminate\Http\NotificationTemplateRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(NotificationTemplateRequest $request)
@@ -58,7 +79,9 @@ class NotificationTemplateController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a notification template
+     * 
+     * @urlParam notification_template required The notification template's id to delete Example: 1
      *
      * @param  \App\NotificationTemplate  $template
      * @return \Illuminate\Http\Response

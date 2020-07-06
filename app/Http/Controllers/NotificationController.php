@@ -7,6 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Notifications\DatabaseNotification;
 
+/**
+ * @authenticated
+ * @group Notification
+ */
 class NotificationController extends Controller
 {
 
@@ -20,6 +24,10 @@ class NotificationController extends Controller
         $this->authorizeResource(DatabaseNotification::class);
     }
 
+    /**
+     * Get all notifications of the authenticated user
+     * 
+     */
     public function index(Request $request)
     {
         $user = auth()->user();
@@ -50,7 +58,17 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show a notification.
+     * Get a notification
+     * 
+     * @urlParam database_notification required Notification's UUID Example: f8f02574-a9eb-408b-9836-c7408b248afb
+     * 
+     * @response {
+     * {"id":"f8f02574-a9eb-408b-9836-c7408b248afb","type":"App\\Notifications\\Announcement","data":{"elements":[{"type":"action","data":{"caption":"Click to view","url":"https://chisv.org/conference/chi20"}}],"subject":"SV Announcement","greeting":null,"salutation":"Regards,\n\nSV Chairs CHI20, Honolulu, Hawaii, USA\n\n[noreply@chisv.org](mailto:noreply@chisv.org)\n\n[ACM](https://www.acm.org/)","conference":{"id":1,"key":"chi20","name":"CHI 2020"}},"read_at":null,"created_at":"2020-07-06T18:11:53.000000Z"}
+     * }
+     * 
+     * @response 404 {
+     * "message": "No query results for model [Illuminate\\Notifications\\DatabaseNotification] fd8f02574-a9eb-408b-9836-c7408b248afb"
+     * }
      *
      * @return \Illuminate\Http\Response
      */

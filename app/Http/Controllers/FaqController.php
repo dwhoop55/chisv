@@ -6,6 +6,10 @@ use App\Faq;
 use App\Http\Requests\FaqRequest;
 use Illuminate\Http\Request;
 
+/**
+ * @authenticated
+ * @group FAQ
+ */
 class FaqController extends Controller
 {
 
@@ -20,7 +24,7 @@ class FaqController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get all FAQs
      *
      * @return \Illuminate\Http\Response
      */
@@ -39,7 +43,9 @@ class FaqController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get an FAQ entry
+     * 
+     * @urlParam faq required The FAQ's id Example:1
      *
      * @param  \App\Faq  $faq
      * @return \Illuminate\Http\Response
@@ -53,7 +59,15 @@ class FaqController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update an FAQ
+     * 
+     * @urlParam faq required The FAQ's id Example: 1
+     * @bodyParam title string required The FAQ's title Example: How to logout
+     * @bodyParam body string required The FAQ's content Example: You just click logout
+     * @bodyParam role_id int The FAQ's required minimum role to view Example: 10
+     * @bodyParam keywords array required The FAQ's keywords
+     * @bodyParam keywords[0] string A keyword Example: Authentication
+     * @bodyParam keywords[1] string A keyword Example: User
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Faq  $faq
@@ -73,7 +87,9 @@ class FaqController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove an FAQ
+     * 
+     * @urlParam faq required The FAQ's id Example: 1
      *
      * @param  \App\Faq  $faq
      * @return \Illuminate\Http\Response
@@ -88,7 +104,14 @@ class FaqController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an FAQ
+     * 
+     * @bodyParam title string required The FAQ's title Example: How to logout
+     * @bodyParam body string required The FAQ's content Example: You just click logout
+     * @bodyParam role_id int The FAQ's required minimum role to view Example: 10
+     * @bodyParam keywords array required The FAQ's keywords
+     * @bodyParam keywords[0] string A keyword Example: Authentication
+     * @bodyParam keywords[1] string A keyword Example: User
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

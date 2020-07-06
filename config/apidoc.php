@@ -9,7 +9,7 @@ return [
      * - "laravel" will generate the documentation as a Blade view,
      * so you can add routing and authentication.
      */
-    'type' => 'static',
+    'type' => 'laravel',
 
     /*
      * Static output folder: HTML documentation and assets will be generated in this folder.
@@ -24,7 +24,7 @@ return [
          * Whether to automatically create a docs endpoint for you to view your generated docs.
          * If this is false, you can still set up routing manually.
          */
-        'autoload' => false,
+        'autoload' => true,
 
         /*
          * URL path to use for the docs endpoint (if `autoload` is true).
@@ -152,7 +152,7 @@ return [
                 'headers' => [
                     'Content-Type' => 'application/json',
                     'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ey..',
+                    'Authorization' => 'Bearer ' . env("APIDOC_BEARER_TOKEN", "No token in .env set for APIDOC_BEARER_TOKEN"),
                     // 'Api-Version' => 'v2',
                 ],
 
@@ -166,7 +166,7 @@ return [
                      * API calls will be made only for routes in this group matching these HTTP methods (GET, POST, etc).
                      * List the methods here or use '*' to mean all methods. Leave empty to disable API calls.
                      */
-                    'methods' => ['GET'],
+                    'methods' => ['GET', 'POST', 'PUT', 'DELETE'],
                     // 'methods' => [],
 
                     /*

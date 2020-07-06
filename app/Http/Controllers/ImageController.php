@@ -6,6 +6,10 @@ use App\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/**
+ * @authenticated
+ * @group Image
+ */
 class ImageController extends Controller
 {
 
@@ -19,19 +23,25 @@ class ImageController extends Controller
         $this->authorizeResource(Image::class);
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        // Ask the ImagePolicy if index is allowed for that user
-        $this->authorize('index', Image::class);
-    }
+    // /**
+    //  * Display a listing of the resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function index()
+    // {
+    //     // Ask the ImagePolicy if index is allowed for that user
+    //     $this->authorize('index', Image::class);
+    // }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a new image
+     * 
+     * @bodyParam image binary-file required Binary image
+     * @bodyParam name string required Image name Example: Awesome image
+     * @bodyParam type string required Can be one of 'artwork', 'icon' or 'avatar'
+     * @bodyParam owner_id int required Reference the image to this model Example: 1
+     * @bodyParam owner_type string required Reference the image to this model class Example: App\User
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -73,7 +83,9 @@ class ImageController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Get an image
+     * 
+     * @urlParam image required The image's id Example: 1
      *
      * @param  \App\Image  $image
      * @return \Illuminate\Http\Response
@@ -84,7 +96,9 @@ class ImageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update an image
+     * 
+     * @bodyParam image binary-file required Binary image
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Image  $image
@@ -125,8 +139,14 @@ class ImageController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * Delete an image
+     * 
+     * @urlParam image required The image's id Example: 1
+     * 
+     * @response 200 {
+     * "result": null,"success": true,"message": "Image deleted!"
+     * }
+     * 
      * @param  \App\Image  $image
      * @return \Illuminate\Http\Response
      */

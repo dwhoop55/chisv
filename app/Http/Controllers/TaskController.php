@@ -8,6 +8,10 @@ use App\Http\Requests\TaskCreateRequest;
 use App\Http\Requests\TaskUpdateRequest;
 use App\Task;
 
+/**
+ * @authenticated
+ * @group Task
+ */
 class TaskController extends Controller
 {
 
@@ -21,19 +25,20 @@ class TaskController extends Controller
         $this->authorizeResource(Task::class);
     }
 
-    // /**
-    //  * Display a listing of the resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function index()
-    // {
-    //     //
-    // }
-
     /**
-     * Store a newly created resource in storage.
-     *
+     * Create a new task
+     * 
+     * @bodyParam conference_id int required Create task for this conference by id Example: 1
+     * @bodyParam name string required Task's name Example: SVing Task
+     * @bodyParam location string required Task's location Example: Main Hall
+     * @bodyParam description string required Task's description Example: Nothing to do here
+     * @bodyParam date string required Task's date Example: 2020-07-01
+     * @bodyParam start_at string required Task's start time Example: 12:00:00
+     * @bodyParam end_at string required Task's end time Example: 15:00:00
+     * @bodyParam hours int required Task's accounted hours Example: 3
+     * @bodyParam priority int required Task's priority Example: 2
+     * @bodyParam slots int required Max allowed SVs Example: 5
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -53,22 +58,23 @@ class TaskController extends Controller
         );
         $task = new Task($data);
         $task->save();
+        return $task->refresh();
     }
 
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  \App\Task  $task
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show(Task $task)
-    // {
-    //     //
-    // }
-
-
     /**
-     * Update the specified resource in storage.
+     * Update a task
+     * 
+     * @urlParam task required Task's id Example: 1
+     * @bodyParam conference_id int required Bound to this conference by id Example: 1
+     * @bodyParam name string required Task's name Example: SVing Task
+     * @bodyParam location string required Task's location Example: Main Hall
+     * @bodyParam description string required Task's description Example: Nothing to do here
+     * @bodyParam date string required Task's date Example: 2020-07-01
+     * @bodyParam start_at string required Task's start time Example: 12:00:00
+     * @bodyParam end_at string required Task's end time Example: 15:00:00
+     * @bodyParam hours int required Task's accounted hours Example: 3
+     * @bodyParam priority int required Task's priority Example: 2
+     * @bodyParam slots int required Max allowed SVs Example: 5
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Task  $task
@@ -88,11 +94,14 @@ class TaskController extends Controller
             'slots'
         );
         $task->update($data);
+        return $task->refresh();
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * Delete a task
+     * 
+     * @urlParam task required Task's id Example: 1
+     * 
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */

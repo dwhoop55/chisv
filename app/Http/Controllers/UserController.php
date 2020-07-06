@@ -17,6 +17,10 @@ use App\State;
 use Illuminate\Notifications\DatabaseNotification;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * @authenticated
+ * @group User
+ */
 class UserController extends Controller
 {
     /**
@@ -30,7 +34,19 @@ class UserController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Get all users
+     * 
+     * @queryParam university_id int Limit to university by id Example: 4044
+     * @queryParam university_fallback string Limit to university by name Example: "Aachen"
+     * @queryParam search string Search users by name Example: "Admin"
+     * @queryParam sort_by string Sort by column Example: lastname
+     * @queryParam sort_order string Sort order Example: asc
+     * @queryParam per_page int Results per page Example: 2
+     * @queryParam page int Show page Example: 1
+     * 
+     * @response {
+     * "current_page":1,"data":[{"id":1,"firstname":"ADMIN Milton","lastname":"Waddams","email":"admin@chisv.org","university_id":"4011","university_fallback":null,"university":{"id":4011,"name":"Rajasthan Technical University"},"permissions":[{"user_id":1,"conference_id":null,"role":{"id":1,"name":"admin","description":"Can do anything"},"state":null,"conference":null},{"user_id":1,"conference_id":1,"role":{"id":10,"name":"sv","description":"Is associated for conferences as SV"},"state":{"id":11,"name":"enrolled","description":"Waiting to be accepted, waitlisted or dropped"},"conference":{"id":1,"name":"CHI 2020","key":"chi20"}}]}],"first_page_url":"http:\/\/localhost:8000\/api\/v1\/user?page=1","from":1,"last_page":1,"last_page_url":"http:\/\/localhost:8000\/api\/v1\/user?page=1","next_page_url":null,"path":"http:\/\/localhost:8000\/api\/v1\/user","per_page":"25","prev_page_url":null,"to":1,"total":1
+     * }
      *
      * @return \Illuminate\Http\Response
      */
@@ -78,7 +94,7 @@ class UserController extends Controller
     }
 
     /**
-     * Show the authenticated user
+     * Get the authenticated user
      *
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
@@ -129,7 +145,9 @@ class UserController extends Controller
 
 
     /**
-     * Display the specified resource.
+     * Get a user
+     * 
+     * @urlParam user The user's id Example: 1
      *
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
@@ -177,7 +195,32 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a user
+     * 
+     * @urlParam user int required The user's id Example: 1
+     * @bodyParam firstname string required The user's first name Example: Jacob
+     * @bodyParam lastname string required The user's last name Example: Smith
+     * @bodyParam email string required The user's email Example: jacob@example.com
+     * @bodyParam languages array<[Language](#get-all-languages-matching-a-pattern)> An array of languages
+     * @bodyParam languages.*.id int required A [language's](#get-all-languages-matching-a-pattern) id Example: 23
+     * @bodyParam location [Location](#get-all-locations-for-a-country-by-city-name) required The users location by city name
+     * @bodyParam location.country.id int required The location's country id Example: 82
+     * @bodyParam location.country.name string The location's country name Example: Germany
+     * @bodyParam location.region.id int The location's region id Example: 1268
+     * @bodyParam location.region.name string The location's region name Example: Nordrhein-Westfalen
+     * @bodyParam location.city.id int The location's city id Example: 12850
+     * @bodyParam location.city.name string The location's city name Example: Aachen
+     * @bodyParam university.id int The [university's](#get-all-universities-matching-a-pattern) id Example: 4044
+     * @bodyParam university.name string The fallback university's name if no id used (see above) Example: RWTH Aachen
+     * @bodyParam degree_id int required The user's [degree](#get-all-degrees) Example: 2
+     * @bodyParam shirt_id int required The user's [shirt](#get-all-t-shirts) Example: 3
+     * @bodyParam locale_id int required The user's [locale](#get-all-locales) Example: 51
+     * @bodyParam past_conferences array<string> The user's past attended conferences as array
+     * @bodyParam past_conferences.* string A user's past attended conference Example: CHI 2019
+     * @bodyParam past_conferences_sv array<string> The user's past attended conferences as SV as array
+     * @bodyParam past_conferences_sv.* string A user's past attended conference as SV Example: CHI 2019
+     * @bodyParam password string The user's password Example: secret
+     * @bodyParam password_confirmation string The user's password Example: secret
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\User  $user
@@ -190,9 +233,6 @@ class UserController extends Controller
             'firstname',
             'lastname',
             'email',
-            'date_format',
-            'time_format',
-            'time_sec_format',
             'locale_id',
             'degree_id',
             'shirt_id',
@@ -260,7 +300,10 @@ class UserController extends Controller
     }
 
     /** 
-     * Return all notifications of a user of a given conference
+     * Get all notifications for a user of a given conference
+     * 
+     * @urlParam user required The user's id Example: 1
+     * @urlParam conference required The conference's key Example: chi20
      * 
      * @param  \App\User  $user
      * @param  \App\Conference $conference
@@ -292,7 +335,10 @@ class UserController extends Controller
     }
 
     /** 
-     * Return all bids of a user of a given conference
+     * Get all bids for a user of a given conference
+     * 
+     * @urlParam user required The user's id Example: 1
+     * @urlParam conference required The conference's key Example: chi20
      * 
      * @param  \App\User  $user
      * @param \App\Conference $conference
@@ -314,9 +360,11 @@ class UserController extends Controller
         return $bids;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
+    /** 
+     * Delete a user
+     * 
+     * @urlParam user required The user's id Example: 1
+     * 
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */

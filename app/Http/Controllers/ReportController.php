@@ -12,10 +12,30 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
+/** 
+ * @authenticated
+ * @group Report
+ */
 class ReportController extends Controller
 {
     /**
-     * Display the specified resource.
+     * Get a report by name
+     * The result will contain all important columns and pagination hint. Available reports are:
+     * 'sv_doubles',
+     * 'sv_accepted_minutes_ago',
+     * 'sv_shirts',
+     * 'sv_hours',
+     * 'sv_bids',
+     * 'sv_detail',
+     * 'sv_demographics_country',
+     * 'sv_demographics_language',
+     * 'task_overview',
+     * 'tasks_free_slots',
+     * 'tasks_table_dump'
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam name required The reports key Example: sv_hours 
+     *
      *
      * @return \Illuminate\Http\Response
      */

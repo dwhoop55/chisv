@@ -12,6 +12,10 @@ use App\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * @authenticated
+ * @group Bid
+ */
 class BidController extends Controller
 {
 
@@ -26,8 +30,30 @@ class BidController extends Controller
     }
 
     /**
-     * Create new bids by params
+     * Create multiple bids at once by params
+     * 
+     * @bodyParam conference_id required The conference's id Example: 1
+     * @bodyParam search string Search string Example: A
+     * @bodyParam days array<string> required Array of strings. Limit to array of specific days YYYY-MM-DD
+     * @bodyParam days[0] string A day Example: 2020-07-01
+     * @bodyParam days[1] string A day Example: 2020-07-02
+     * @bodyParam priorities array<int> required Array of ints. Limit to array of specific priorities
+     * @bodyParam priorities[0] int A priority Example: 1
+     * @bodyParam priorities[1] int A priority Example: 2
+     * @bodyParam priorities[2] int A priority Example: 3     * 
+     * @bodyParam interval array<string> required Array of strings. Limit the time, has two items
+     * @bodyParam interval[0] string required Start time Example: 07:00:00
+     * @bodyParam interval[1] string required End time Example: 20:15:00
+     * @bodyParam preference int Set to preference 0-3 or null/do not sent to revoke bids Example: 1
      *
+     * @response 200 {
+     *  "created": 15,"updated": 2,"untouched": 0,"revoked": 0
+     * }
+     * 
+     * @response 403 {
+     *  "message": "You are not an SV with state accepted for this conference"
+     * }
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -110,7 +136,18 @@ class BidController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create a bid (place a bid)
+     * 
+     * @bodyParam task_id int required The task to bid on by id Example: 117
+     * @bodyParam preference int required The desired preference (0-3)
+     * 
+     * @response 200 {
+     * "result":{"id":852,"preference":1,"state":{"id":31,"name":"placed","description":"The bid is waiting for the auction"},"can_update":true},"message":"Bid created"
+     * }
+     * 
+     * @response 403 {
+     * "message": "You are not authorized to create a bid for this task"
+     * }
      *
      * @param  \Illuminate\Http\BidCreateRequest  $request
      * @return \Illuminate\Http\Response
@@ -150,15 +187,26 @@ class BidController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update a bid
+     * 
+     * @urlParam bid required The bid's id Example:1
+     * @bodyParam preference int required The desired preference (0-3) Example:1
      *
+     * @response 200 { 
+     * "result":{"id":853,"preference":2,"state":{"id":31,"name":"placed","description":"The bid is waiting for the auction"},"can_update":true},"message":"Bid updated"
+     * }
+     * 
+     * @response 403 {
+     * "message": "You are not authorized to update this bid"
+     * }
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Bid  $bid
      * @return \Illuminate\Http\Response
      */
     public function update(BidUpdateRequest $request, Bid $bid)
     {
-        $data = $request->only('id', 'preference');
+        $data = $request->only('preference');
 
         // Check if the user can update this bid
         $userCanUpdate = auth()->user()->can('update', $bid);
@@ -173,7 +221,9 @@ class BidController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete a bid (revoke)
+     * 
+     * @urlParam bid required The bid's id Example:1
      *
      * @param  \App\Bid  $bid
      * @return \Illuminate\Http\Response

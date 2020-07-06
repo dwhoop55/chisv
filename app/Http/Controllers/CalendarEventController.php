@@ -6,10 +6,17 @@ use App\Assignment;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
+/**
+ * @authenticated
+ * @group Calendar
+ */
 class CalendarEventController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Get all calendar events
+     * 
+     * @queryParam start string required the start time of events Example: 2019-01-01
+     * @queryParam end string required the end time of events Example: 2024-01-01
      *
      * @return \Illuminate\Http\Response
      */

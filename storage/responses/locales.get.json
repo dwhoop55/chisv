@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "code": "af",
+    "name": "Afrikaans"
+  },
+  {
+    "id": 2,
+    "code": "sq",
+    "name": "Albanian"
+  },
+  {
+    "id": 3,
+    "code": "ar",
+    "name": "Arabic"
+  },
+  {
+    "id": 127,
+    "code": "yo",
+    "name": "Yoruba Nigeria"
+  },
+  {
+    "id": 128,
+    "code": "ss",
+    "name": "siSwati"
+  }
+]

@@ -45,9 +45,8 @@
           <b-notification type="is-info" :closable="false">
             <p>
               When you get
-              <b>SEP=</b> for mapping the file is prepended by
-              <b>SEP=,</b>
-              <br />Remove it in a text editor
+              <b>SEP=</b> You need to remove it in the CSV before uploading
+              <br />Every field on the left has to be mapped to one on the right before proceeding!
             </p>
           </b-notification>
           <csv-import
@@ -71,13 +70,14 @@
           :type="currentStep >= 3 ? 'is-success' : ''"
           label="Preview"
         >
-          <p>
+          <p v-if="csv">
             Here is a preview of the tasks you are about to upload.
             <b>
               Click the
               Upload
             </b> button at the bottom to start the upload.
           </p>
+          <p v-else>Not each field was mapped, go back.</p>
           <b-table
             pagination-position="both"
             per-page="20"
@@ -202,7 +202,7 @@ export default {
       return columns;
     },
     canGoNext() {
-      if (this.currentStep >= 4 || (!this.csv && this.currentStep == 1)) {
+      if (this.currentStep >= 4) {
         return false;
       } else {
         return true;

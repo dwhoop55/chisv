@@ -70,7 +70,11 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Show a conference.
+     * @authenticated
+     * @group Conference
+     * Get a conference by key
+     * 
+     * @urlParam conference required The conference to get by key Example: chi20
      *
      * @return \Illuminate\Http\Response
      */
@@ -97,10 +101,31 @@ class ConferenceController extends Controller
 
 
     /** 
-     * Post a notification to groups, users and email
+     * @authenticated
+     * @group Conference
+     * Create a notification for users of a conference
+     * 
+     * @urlParam conference required The conference to get by key Example: chi20
+     * @bodyParam destinations array required Multiple destinations, see below for 3 examples
+     * @bodyParam destinations[0].type string required One of 'user', 'group' or 'email' Example:user
+     * @bodyParam destinations[1].type string required One of 'user', 'group' or 'email' Example:group
+     * @bodyParam destinations[2].type string required One of 'user', 'group' or 'email' Example:email
+     * @bodyParam destinations[0].user_id int Is required if type is 'user' pointing to the user by id Example:1
+     * @bodyParam destinations[1].role_id int Is required if type is 'group' pointing to the role by id Example: 10
+     * @bodyParam destinations[1].state_id int Used if type is 'group' pointing to the state by id Example: 12
+     * @bodyParam destinations[2].email string Used if type is 'email' and is the (external) user's email Example: test@example.com
+     * @bodyParam elements array required Multiple elements, see below for action and markdown below
+     * @bodyParam elements[0].type required One of 'action', 'markdown' Example: action
+     * @bodyParam elements[1].type required One of 'action', 'markdown' Example: markdown
+     * @bodyParam elements[0].data.caption string Is required if type is 'action' Example: CHISV Website
+     * @bodyParam elements[0].data.url string Is required if type is 'action' Example: https://chisv.org
+     * @bodyParam elements[1].data string Is required if type is 'markdown' Example: !See text below
+     * @bodyParam subject string Example: Announcement
+     * @bodyParam greeting string Example: Hi!
+     * @bodyParam salutation string Example: Cheers
      * 
      * @param App\Conference
-     * @return Collection A collection with all destionations for that conference
+     * @return Collection A collection with all destinations for that conference
      */
     public function postNotification(Conference $conference, NotificationPostRequest $notification)
     {
@@ -164,8 +189,11 @@ class ConferenceController extends Controller
     }
 
     /** 
-     * Get all the possible notification destinations
-     * for a conference
+     * @authenticated
+     * @group Conference
+     * Get all the possible notification destinations for a conference
+     * 
+     * @urlParam conference required The conference to get by key Example: chi20
      * 
      * @param App\Conference
      * @return Collection A collection with all destinations for that conference
@@ -208,8 +236,13 @@ class ConferenceController extends Controller
         return ['groups' => $groups, 'users' => $users];
     }
 
-    /**
-     * Delete all tasks of a single day
+    /** 
+     * @authenticated
+     * @group Conference
+     * Delete all tasks for specified days
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @queryParam days required Array of strings of all days in JSON Example: ["2020-12-25","2020-12-26"]
      * 
      * @return \Illuminate\Http\Response
      */
@@ -257,8 +290,13 @@ class ConferenceController extends Controller
         return ["result" => $taskCount, "message" => "$taskCount tasks, $bidCount bids and $assignmentCount assignments have been deleted"];
     }
 
-    /**
-     * Delete all assignments of a single day
+    /** 
+     * @authenticated
+     * @group Conference
+     * Delete all assignments for the specified day
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam date required Date in YYYY-MM-DD format Example: 2020-12-25
      * 
      * @return \Illuminate\Http\Response
      */
@@ -291,6 +329,13 @@ class ConferenceController extends Controller
         return ["result" => $assignmentCount, "message" => "$assignmentCount assignments have been deleted. $bidCount bids have been reset to 'placed'"];
     }
 
+    /**
+     * @authenticated
+     * @group Conference
+     * Create or update multiple tasks by import
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     */
     public function importTasks(Conference $conference)
     {
         // We only checked for canCreate App\Task on the middleware, not if
@@ -311,7 +356,12 @@ class ConferenceController extends Controller
     }
 
     /**
+     * @authenticated
+     * @group Conference
      * Reset all SVs to 'enrolled' state
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * 
      * @return \Illuminate\Http\Response
      */
     public function resetEnrollmentsToEnrolled(Conference $conference)
@@ -330,7 +380,13 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Run the auction for the conference
+     * @authenticated
+     * @group Conference
+     * Run the auction
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam day required The day to run the auction for Example: 2020-07-01
+     * 
      * @return \Illuminate\Http\Response
      */
     public function runAuction(Conference $conference, $date)
@@ -352,7 +408,12 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Run the lottery for the conference
+     * @authenticated
+     * @group Conference
+     * Run the lottery
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * 
      * @return \Illuminate\Http\Response
      */
     public function runLottery(Conference $conference)
@@ -371,10 +432,20 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Show all tasks for a conference including
-     * their assignments and users which match the params
+     * @authenticated
+     * @group Conference
+     * Get all assignments and users which match the query
      * 
-     * @return \Illuminate\Http\Response All tasks for the requestes params
+     * @urlParam conference required The conference's key Example: chi20
+     * @queryParam search string Search string Example: A
+     * @queryParam day string Limit to specific day YYYY-MM-DD Example: 2020-07-01
+     * @queryParam interval array<string> Limit the time, has two items Example: ["07:00:00", "20:15:00"]
+     * @queryParam sort_by Key to sort for Example: start_at
+     * @queryParam sort_order Order to sort for Example: asc
+     * @queryParam per_page Assignments per page Example: 5
+     * @queryParam page Assignments per page Example: 1
+     * 
+     * @return \Illuminate\Http\Response All tasks for the requested params
      */
     public function assignments(Conference $conference)
     {
@@ -665,9 +736,21 @@ class ConferenceController extends Controller
         return $tasks;
     }
 
+
     /**
-     * Stub method to fire off the task array
-     * calculation
+     * @authenticated
+     * @group Conference
+     * Get all tasks which match the query
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @queryParam search string Search string Example: A
+     * @queryParam days array of strings. Limit to array of specific days YYYY-MM-DD Example: ["2020-07-01", "2020-07-03"]
+     * @queryParam priorities array of ints. Limit to array of specific priorities Example: [1,2,3]
+     * @queryParam interval array of strings. Limit the time, has two items Example: ["07:00:00", "20:15:00"]
+     * @queryParam sort_by Key to sort for Example: tasks.start_at
+     * @queryParam sort_order Order to sort for Example: asc
+     * @queryParam per_page Tasks per page Example: 5
+     * @queryParam page Page to return Example: 1
      * 
      * @return \Illuminate\Http\Response All tasks for the requested params
      */
@@ -702,8 +785,14 @@ class ConferenceController extends Controller
     }
 
     /**
+     * @authenticated
+     * @group Conference
+     * Get all days where the conference has tasks
+     * We need this for the calendar in the GUI
+     * 
+     * @urlParam conference required The conference's key Example: chi20
      * Return an Array with all days where the conference has
-     * tasks. We need this for the calendar in the GUI
+     * tasks. 
      * 
      * @return Collection<Carbon>
      */
@@ -724,8 +813,12 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Show all users which are suited to be assigned for a specific
-     * task
+     * @authenticated
+     * @group Conference
+     * Get all users which are suited to be assigned for a specific task
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam task required The task's id Example: 1
      * 
      * @return \Illuminate\Http\Response
      */
@@ -833,7 +926,7 @@ class ConferenceController extends Controller
         // and hours ascending
         $svs = $svs->sortBy(function ($sv) {
             return [
-                -$sv['bid']['preference'],
+                $sv['bid'] ? -$sv['bid']['preference'] : -1,
                 $sv['stats']['hours_done'],
             ];
         });
@@ -887,7 +980,18 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Show all users of a conference.
+     * @authenticated
+     * @group Conference
+     * Get all users of a conference matching the query
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @queryParam search string Search string Example: A
+     * @queryParam only_states array of ints. Limit to array of specific states Example: [11,12,13,14]
+     * @queryParam sort_by Key to sort for Example: lastname
+     * @queryParam sort_order Order to sort for Example: desc
+     * @queryParam per_page Users per page Example: 2
+     * @queryParam page Page to return Example: 1
+     * 
      * This code is super time critical. For around
      * 100 users it may take up to 3 seconds before we can
      * return the users. Anything you add here will slow it down
@@ -1090,7 +1194,8 @@ class ConferenceController extends Controller
 
 
     /**
-     * Display a preview listing of the resource.
+     * @group Conference
+     * Get a preview of all open conferences for public display
      *
      * @return \Illuminate\Http\Response
      */
@@ -1114,7 +1219,9 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @authenticated
+     * @group Conference
+     * Get all conferences based on user's permissions
      *
      * @return \Illuminate\Http\Response
      */
@@ -1131,8 +1238,27 @@ class ConferenceController extends Controller
         return $conferences->values();
     }
 
-    /** 
-     * Enrolls a user to be an SV for the conference
+
+    /**
+     * @authenticated
+     * @group Conference
+     * Enroll a user to be an SV for the conference with state 'enrolled'
+     * Use a dictionary of field names as keys value pairs.
+     * Use the field names from the currently active enrollment form. The
+     * fields below are just examples.
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam user The user's id. Defaults to the authenticated user when missing Example: 1
+     * @bodyParam id int required The referencing enrollment form id. Example: 1
+     * @bodyParam [fields] type required Each field of the referencing enrollment form. Can be multiple and is highly dynamic.
+     * 
+     * @response {
+     * "result":true,"message":"You are now enrolled"
+     * }
+     * 
+     * @response 422 {
+     * "message":"The given data was invalid.","errors":{"why_you_want_to_be_sv":["'Why You Want To Be Sv' has to have some text","'Why You Want To Be Sv' has to be provided"]}
+     * }
      * 
      * @param \App\Conference conference
      * @param \App\User user
@@ -1175,7 +1301,21 @@ class ConferenceController extends Controller
         return ["result" => true, "message" => "You are now enrolled"];
     }
 
-    /** Update all enrollmentForms of a conference with new weights
+    /**
+     * @authenticated
+     * @group Conference
+     * Update enrollment form weights based on submitted weights
+     * Use a dictionary of field names as keys value pairs.
+     * Use the field names from the currently active enrollment form. The
+     * fields below are just examples.
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @bodyParam attended_before int required An example field Example: 5
+     * @bodyParam know_city int required An example field Example: -15
+     * @bodyParam need_visa int required An example field Example: 0
+     * @bodyParam sved_before int required An example field Example: 30
+     * 
+     * Update all enrollmentForms of a conference with new weights
      * @param Conference conference The conference where all forms will be updated
      * @param Collection weights A key value collection where the key
      * is the fieldname and the value represents the weight
@@ -1199,8 +1339,13 @@ class ConferenceController extends Controller
         return ["result" => true, "message" => "Updated " . $total . " enrollment forms weights"];
     }
 
-    /** 
+    /**
+     * @authenticated
+     * @group Conference
      * Unenrolls a user from the conference
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @urlParam user The user's id. Defaults to the authenticated user when missing Example: 1
      * 
      * @param \App\Conference conference
      * @return \Illuminate\Http\Response
@@ -1235,8 +1380,42 @@ class ConferenceController extends Controller
 
 
     /**
-     * Update the specified resource in storage.
-     *
+     * @authenticated
+     * @group Conference
+     * Update a conference
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @bodyParam name string required Conference's name Example: CHI 2020
+     * @bodyParam key string required Conference's key Example: chi20
+     * @bodyParam location string required Conference's location Example: Hawaii
+     * @bodyParam timezone_id int required Conference's timezone Example: 366
+     * @bodyParam start_date string required First day Example: 2020-07-01
+     * @bodyParam end_date string required Last day Example: 2020-07-07
+     * @bodyParam description string required Markdown description of the conference Example: !CHI 2020
+     * @bodyParam url_name string required Caption for the button on the conference view Example: ACM
+     * @bodyParam url string required Url for the button on the conference view Example: https://acm.org
+     * @bodyParam enrollment_form_id int required Conference will use this enrollment form Example: 1
+     * @bodyParam state_id int required State by id Example: 2
+     * @bodyParam volunteer_hours int required How long SVs are expected to work Example: 20
+     * @bodyParam volunteer_max int required How many SVs should be accepted for the conference Example: 100
+     * @bodyParam email_chair string required The SV-Chairs e-mail which is used in the reply field of every e-mail Example: sv@example.com
+     * @bodyParam bidding_enabled boolean required Bidding is enabled true/false Example: true
+     * @bodyParam bidding_start string required Bidding open after this day Example: 2020-07-01
+     * @bodyParam bidding_end string required Bidding open before this day Example: 2020-07-07
+     * 
+     * @response 200 {
+     * "result": true,"message": "Conference updated"
+     * }
+     * 
+     * @response 404 {
+     * "message": "No query results for model [App\\Conference] chi404"
+     * }
+     * 
+     * @response 422 {
+     * "message":"The given data was invalid.","errors":{"description":["Please give a short intro into the conference"]}
+     * }
+     * 
+     * 
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
@@ -1253,7 +1432,6 @@ class ConferenceController extends Controller
             'description',
             'url_name',
             'url',
-            'description',
             'enrollment_form_id',
             'state_id',
             'volunteer_hours',
@@ -1270,8 +1448,12 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
+     * @authenticated
+     * @group Conference
+     * Delete a conference
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * 
      * @param  \App\Conference  $conference
      * @return \Illuminate\Http\Response
      */
