@@ -16,7 +16,7 @@
         "cross-env": "^7.0.2",
         "laravel-mix": "^5.0.4",
         "resolve-url-loader": "^3.1.1",
-        "sass": "^1.26.8",
+        "sass": "^1.26.10",
         "sass-loader": "^8.0.2",
         "vue": "^2.6.11",
         "vue-template-compiler": "^2.6.11"
@@ -26,13 +26,13 @@
         "moment-timezone": "^0.5.31",
         "pluralize": "^8.0.0",
         "vform": "^1.0.1",
-        "vue-cal": "^3.4.1",
-        "vue-csv-import": "^3.3.0",
-        "vue-debounce": "^2.5.6",
+        "vue-cal": "^3.6.3",
+        "vue-csv-import": "^3.3.2",
+        "vue-debounce": "^2.5.7",
         "vue-json-csv": "^1.2.11",
-        "vue-router": "^3.3.2",
+        "vue-router": "^3.3.4",
         "vue-showdown": "^2.4.1",
-        "vuex": "^3.4.0",
+        "vuex": "^3.5.1",
         "vuex-persistedstate": "^3.0.1"
     }
 }

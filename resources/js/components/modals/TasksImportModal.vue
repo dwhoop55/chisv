@@ -77,7 +77,9 @@
               Upload
             </b> button at the bottom to start the upload.
           </p>
-          <p v-else>Not each field was mapped, go back.</p>
+          <p
+            v-else
+          >The CSV could not be processed. Check in the previous step that every field was mapped.</p>
           <b-table
             pagination-position="both"
             per-page="20"
@@ -202,7 +204,7 @@ export default {
       return columns;
     },
     canGoNext() {
-      if (this.currentStep >= 4) {
+      if (this.currentStep >= 4 || (!this.csv && this.currentStep == 1)) {
         return false;
       } else {
         return true;
