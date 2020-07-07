@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 /**
  * @group Authentication
@@ -43,6 +45,55 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Issue a JWT token for a user
+     * Call without any existing Bearer token (remove from example). Will issue a JWT token (access_token) via the OAuth API by using the password_grant type.
+     * 
+     * @bodyParam email string required The user's email Example: admin@chisv.org
+     * @bodyParam password string required The user's password Example: secret
+     * 
+     * @response 200 {
+     * "token_type":"Bearer","expires_in":31536000,"access_token":"eyJ0eX...3vE8","refresh_token":"def50...9c2"}
+     * 
+     * @response 422 {
+     * "message":"The given data was invalid.","errors":{"email":["The email field is required."],"password":["The password field is required."]}
+     * }
+     * 
+     */
+    public function issueToken(LoginRequest $request)
+    {
+        $http = new \GuzzleHttp\Client;
+
+        if (App::environment() == "dev" || App::environment() == "development" || App::environment() == "local") {
+            $host = "localhost:8001";
+        } else {
+            $host = "localhost:80";
+        }
+
+        $headers = [
+            'cache-control' => 'no-cache',
+        ];
+        $params = [
+            'grant_type' => 'password',
+            'client_id' => env('OAUTH_CLIENT_ID'),
+            'client_secret' => env('OAUTH_CLIENT_SECRET'),
+            'username' => $request->email,
+            'password' => $request->password,
+            'scope' => ''
+        ];
+
+        $response = $http->post("http://$host/oauth/token", [
+            'headers' => $headers,
+            'form_params' => $params
+        ]);
+
+        return json_decode((string) $response->getBody(), true);
+    }
+
+    /** 
+     * Logout the user by removing the Cookie and session
+     * 
+     */
     public function logout(Request $request)
     {
         $this->performLogout($request);

@@ -39,6 +39,8 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::get('conference/preview', 'ConferenceController@indexPreview')
         ->name('conference.preview');
+
+    Route::post('login', 'Auth\LoginController@issueToken')->name('issueToken');
     //// GUEST ////
 
 
