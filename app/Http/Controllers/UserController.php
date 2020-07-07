@@ -363,7 +363,15 @@ class UserController extends Controller
     /** 
      * Delete a user
      * 
-     * @urlParam user required The user's id Example: 1
+     * @urlParam user required The user's id Example: 2
+     * 
+     * @response 200 {
+     * "success": true,"message": "User deleted"
+     * }
+     * 
+     * @response 403 {
+     * "message": "This action is unauthorized."
+     * }
      * 
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response

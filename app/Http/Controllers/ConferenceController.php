@@ -966,6 +966,14 @@ class ConferenceController extends Controller
         return ["total_matches" => $count, "returned_matches" => $limit, "svs" => $subset];
     }
 
+    /**
+     * @authenticated
+     * @group Conference
+     * Get the number of accepted SVs
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * 
+     */
     public function svsCount(Conference $conference)
     {
         return [
@@ -1364,7 +1372,12 @@ class ConferenceController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @authenticated
+     * @group Conference
+     * Create a conference
+     * 
+     * @bodyParam name string required The conference's full name Example: CHI 2021
+     * @bodyParam key string required The conference's key (part of URL). Has to be a valid in a URL Example: chi21
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response

@@ -8,6 +8,10 @@ use App\State;
 use App\Task;
 use Illuminate\Http\Request;
 
+/**
+ * @authenticated
+ * @group Assignment
+ */
 class AssignmentController extends Controller
 {
 
@@ -22,7 +26,10 @@ class AssignmentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Create an assignment
+     * 
+     * @bodyParam user_id int required The associated user by id Example: 1
+     * @bodyParam task_id int required The associated task by id Example: 1
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -45,7 +52,11 @@ class AssignmentController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update an assignment
+     * 
+     * @urlParam assignment required The assignment's id Example: 1
+     * @bodyParam hours float required The accounted hours Example: 5.5
+     * @bodyParam state_id int required The new [state](#get-all-states) by id Example: 43
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Assignment  $assignment
@@ -64,7 +75,9 @@ class AssignmentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Delete an assignment
+     * 
+     * @urlParam assignment required The assignment's id Example: 1
      *
      * @param  \App\Assignment  $assignment
      * @return \Illuminate\Http\Response

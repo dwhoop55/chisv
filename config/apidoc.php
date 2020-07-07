@@ -72,12 +72,12 @@ return [
         /*
          * The name for the exported Postman collection. Default: config('app.name')." API"
          */
-        'name' => null,
+        'name' => "CHISV API",
 
         /*
          * The description for the exported Postman collection.
          */
-        'description' => null,
+        'description' => "API descriptions with examples for CHISV API endpoints.",
 
         /*
          * The "Auth" section that should appear in the postman collection. See the schema docs for more information:
@@ -130,6 +130,10 @@ return [
              * Note that the route must be referenced by name here (wildcards are supported).
              */
             'include' => [
+                // 'password.update',
+                // 'password.email',
+                // 'passport.tokens.destroy',
+                // 'passport.token',
                 // 'users.index', 'healthcheck*'
             ],
 
@@ -246,7 +250,7 @@ return [
     /*
      * Name for the group of routes which do not have a @group set.
      */
-    'default_group' => 'general',
+    'default_group' => 'Authentication',
 
     /*
      * Example requests for each endpoint will be shown in each of these languages.

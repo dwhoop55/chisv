@@ -20,6 +20,274 @@ Welcome to the generated API reference.
 
 <!-- END_INFO -->
 
+#Assignment
+
+
+<!-- START_7a258424680b47d440023731a4e0be3e -->
+## Create an assignment
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/assignment" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"user_id":1,"task_id":1}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/assignment"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "user_id": 1,
+    "task_id": 1
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Assignment created"
+}
+```
+
+### HTTP Request
+`POST api/v1/assignment`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `user_id` | integer |  required  | The associated user by id
+        `task_id` | integer |  required  | The associated task by id
+    
+<!-- END_7a258424680b47d440023731a4e0be3e -->
+
+<!-- START_7d20a674615f823ca955430b9ac0ebe1 -->
+## Update an assignment
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X PUT \
+    "https://chisv.org/api/v1/assignment/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"hours":5.5,"state_id":43}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/assignment/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "hours": 5.5,
+    "state_id": 43
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Assignment] 1"
+}
+```
+
+### HTTP Request
+`PUT api/v1/assignment/{assignment}`
+
+`PATCH api/v1/assignment/{assignment}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `assignment` |  required  | The assignment's id
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `hours` | float |  required  | The accounted hours
+        `state_id` | integer |  required  | The new [state](#get-all-states) by id
+    
+<!-- END_7d20a674615f823ca955430b9ac0ebe1 -->
+
+<!-- START_08760017a44835569ff03aaa51b16be8 -->
+## Delete an assignment
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X DELETE \
+    "https://chisv.org/api/v1/assignment/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/assignment/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Assignment] 1"
+}
+```
+
+### HTTP Request
+`DELETE api/v1/assignment/{assignment}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `assignment` |  required  | The assignment's id
+
+<!-- END_08760017a44835569ff03aaa51b16be8 -->
+
+#Authentication
+
+
+<!-- START_8c0e48cd8efa861b308fc45872ff0837 -->
+## Issue a JWT token for a user
+Call without any existing Bearer token (remove from example). Will issue a JWT token (access_token) via the OAuth API by using the password_grant type.
+
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/login" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"email":"admin@chisv.org","password":"secret"}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/login"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "email": "admin@chisv.org",
+    "password": "secret"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "token_type": "Bearer",
+    "expires_in": 31536000,
+    "access_token": "eyJ0eX...3vE8",
+    "refresh_token": "def50...9c2"
+}
+```
+> Example response (422):
+
+```json
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "email": [
+            "The email field is required."
+        ],
+        "password": [
+            "The password field is required."
+        ]
+    }
+}
+```
+
+### HTTP Request
+`POST api/v1/login`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `email` | string |  required  | The user's email
+        `password` | string |  required  | The user's password
+    
+<!-- END_8c0e48cd8efa861b308fc45872ff0837 -->
+
 #Bid
 
 
@@ -34,7 +302,7 @@ curl -X POST \
     "https://chisv.org/api/v1/bid/multi" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"conference_id":"1","search":"A","days":["2020-07-01","2020-07-02"],"priorities":[1,2,3],"interval":["07:00:00","20:15:00"],"preference":1}'
 
 ```
@@ -47,7 +315,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -130,8 +398,8 @@ curl -X POST \
     "https://chisv.org/api/v1/bid" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"task_id":117,"preference":20}'
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"task_id":117,"preference":19}'
 
 ```
 
@@ -143,12 +411,12 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
     "task_id": 117,
-    "preference": 20
+    "preference": 19
 }
 
 fetch(url, {
@@ -208,7 +476,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/bid/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"preference":1}'
 
 ```
@@ -221,7 +489,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -291,7 +559,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/bid/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -302,7 +570,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -314,12 +582,11 @@ fetch(url, {
 ```
 
 
-> Example response (200):
+> Example response (403):
 
 ```json
 {
-    "result": true,
-    "message": "Bid removed"
+    "message": "This action is unauthorized."
 }
 ```
 
@@ -348,7 +615,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/calendar_event?start=2019-01-01&end=2024-01-01" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -366,7 +633,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -382,23 +649,7 @@ fetch(url, {
 
 ```json
 {
-    "assignments": [
-        {
-            "title": "Appliance Repairer",
-            "description": "Virtual incremental application",
-            "location": "73794 Wilber Coves Apt. 318",
-            "timezone": "Pacific\/Honolulu",
-            "start": "2020-07-01 08:00:00",
-            "end": "2020-07-01 09:00:00",
-            "assignment": {
-                "state": {
-                    "name": "assigned",
-                    "description": "The task is assigned but yet not being worked on"
-                },
-                "hours": "1.0"
-            }
-        }
-    ]
+    "assignments": []
 }
 ```
 
@@ -427,7 +678,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/preview" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -438,7 +689,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -488,7 +739,7 @@ curl -X POST \
     "https://chisv.org/api/v1/conference/chi20/notification" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"destinations":[{"type":"user","user_id":1},{"type":"group","role_id":10,"state_id":12},{"type":"email","email":"test@example.com"}],"elements":[{"type":"action","data":{"caption":"CHISV Website","url":"https:\/\/chisv.org"}},{"type":"markdown","data":"!See text below"}],"subject":"Announcement","greeting":"Hi!","salutation":"Cheers"}'
 
 ```
@@ -501,7 +752,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -553,7 +804,7 @@ fetch(url, {
 ```json
 {
     "result": true,
-    "message": "9 users will be notified via the available channels (e.g. email, web notification system). You may check 'Background Jobs'."
+    "message": "12 users will be notified via the available channels (e.g. email, web notification system). You may check 'Background Jobs'."
 }
 ```
 
@@ -599,7 +850,7 @@ curl -X POST \
     "https://chisv.org/api/v1/conference/chi20/task" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -610,7 +861,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -626,7 +877,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 4,
+    "result": 1,
     "message": "Task import for CHI 2020 has been queued as a new job"
 }
 ```
@@ -656,8 +907,8 @@ curl -X POST \
     "https://chisv.org/api/v1/conference/chi20/enroll/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"id":1,"":{"fields":"corrupti"}}'
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"id":1,"":{"fields":"perferendis"}}'
 
 ```
 
@@ -669,13 +920,13 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
     "id": 1,
     "": {
-        "fields": "corrupti"
+        "fields": "perferendis"
     }
 }
 
@@ -739,7 +990,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/conference/chi20/enroll/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -750,7 +1001,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -794,7 +1045,7 @@ curl -X POST \
     "https://chisv.org/api/v1/conference/chi20/auction/2020-07-01" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -805,7 +1056,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -821,7 +1072,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 4,
+    "result": 1,
     "message": "Auction for CHI 2020 on 2020-07-01 has been queued as a new job"
 }
 ```
@@ -849,7 +1100,7 @@ curl -X POST \
     "https://chisv.org/api/v1/conference/chi20/lottery" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -860,7 +1111,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -876,7 +1127,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 4,
+    "result": 1,
     "message": "Lottery for CHI 2020 has been queued as a new job"
 }
 ```
@@ -906,7 +1157,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/conference/chi20/update_enrollment_form_weights" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"attended_before":5,"know_city":-15,"need_visa":0,"sved_before":30}'
 
 ```
@@ -919,7 +1170,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -944,7 +1195,7 @@ fetch(url, {
 ```json
 {
     "result": true,
-    "message": "Updated 8 enrollment forms weights"
+    "message": "Updated 11 enrollment forms weights"
 }
 ```
 
@@ -977,7 +1228,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/conference/chi20/reset_enrollments_to_enrolled" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -988,7 +1239,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1004,8 +1255,8 @@ fetch(url, {
 
 ```json
 {
-    "result": 8,
-    "message": "8 SVs have been reset to state 'enrolled'"
+    "result": 11,
+    "message": "11 SVs have been reset to state 'enrolled'"
 }
 ```
 
@@ -1031,7 +1282,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/conference/chi20/assignments/2020-12-25" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1042,7 +1293,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1086,7 +1337,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/conference/chi20/tasks?days=%5B%222020-12-25%22%2C%222020-12-26%22%5D" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1103,7 +1354,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1152,7 +1403,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/task/day" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1163,7 +1414,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1179,12 +1430,12 @@ fetch(url, {
 
 ```json
 {
-    "2020-07-01": "54",
-    "2020-07-02": "41",
-    "2020-07-03": "48",
-    "2020-07-04": "41",
-    "2020-07-05": "51",
-    "2020-07-06": "45"
+    "2020-07-04": "76",
+    "2020-07-05": "84",
+    "2020-07-06": "91",
+    "2020-07-07": "83",
+    "2020-07-08": "89",
+    "2020-07-09": "77"
 }
 ```
 
@@ -1210,7 +1461,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/task?search=A&days=%5B%222020-07-01%22%2C+%222020-07-03%22%5D&priorities=%5B1%2C2%2C3%5D&interval=%5B%2207%3A00%3A00%22%2C+%2220%3A15%3A00%22%5D&sort_by=tasks.start_at&sort_order=asc&per_page=5&page=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1234,7 +1485,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1251,137 +1502,17 @@ fetch(url, {
 ```json
 {
     "current_page": 1,
-    "data": [
-        {
-            "id": 137,
-            "name": "Sketch Artist",
-            "location": "460 Morissette Mall Apt. 482",
-            "description": "Assimilated reciprocal GraphicInterface",
-            "start_at": "08:00:00",
-            "end_at": "09:00:00",
-            "hours": 1,
-            "date": "2020-07-03",
-            "slots": 1,
-            "priority": 1,
-            "conference_id": 1,
-            "own_assignment": null,
-            "can_create_bid": false,
-            "own_bid": {
-                "id": 20,
-                "preference": 2,
-                "user_created": false,
-                "state": {
-                    "id": 31,
-                    "name": "placed",
-                    "description": "The bid is waiting for the auction"
-                },
-                "can_update": true
-            }
-        },
-        {
-            "id": 156,
-            "name": "Appliance Repairer",
-            "location": "73794 Wilber Coves Apt. 318",
-            "description": "Virtual incremental application",
-            "start_at": "08:00:00",
-            "end_at": "09:00:00",
-            "hours": 1,
-            "date": "2020-07-01",
-            "slots": 4,
-            "priority": 3,
-            "conference_id": 1,
-            "own_assignment": {
-                "id": 1,
-                "hours": "1.0",
-                "state": {
-                    "id": 41,
-                    "name": "assigned",
-                    "for": "App\\Assignment",
-                    "description": "The task is assigned but yet not being worked on"
-                }
-            },
-            "can_create_bid": false,
-            "own_bid": null
-        },
-        {
-            "id": 177,
-            "name": "Respiratory Therapist",
-            "location": "7620 Carmine Branch",
-            "description": "Proactive bandwidth-monitored info-mediaries",
-            "start_at": "08:00:00",
-            "end_at": "09:30:00",
-            "hours": 1.5,
-            "date": "2020-07-03",
-            "slots": 1,
-            "priority": 1,
-            "conference_id": 1,
-            "own_assignment": null,
-            "can_create_bid": true,
-            "own_bid": null
-        },
-        {
-            "id": 214,
-            "name": "Manager of Food Preparation",
-            "location": "2797 Kenyon Islands Suite 415",
-            "description": "Centralized zeroadministration GraphicalUserInterface",
-            "start_at": "08:00:00",
-            "end_at": "10:00:00",
-            "hours": 2,
-            "date": "2020-07-01",
-            "slots": 5,
-            "priority": 3,
-            "conference_id": 1,
-            "own_assignment": null,
-            "can_create_bid": false,
-            "own_bid": {
-                "id": 32,
-                "preference": 2,
-                "user_created": false,
-                "state": {
-                    "id": 31,
-                    "name": "placed",
-                    "description": "The bid is waiting for the auction"
-                },
-                "can_update": true
-            }
-        },
-        {
-            "id": 247,
-            "name": "Special Forces Officer",
-            "location": "6515 Johns Walks",
-            "description": "Exclusive heuristic strategy",
-            "start_at": "08:00:00",
-            "end_at": "08:30:00",
-            "hours": 0.5,
-            "date": "2020-07-01",
-            "slots": 3,
-            "priority": 3,
-            "conference_id": 1,
-            "own_assignment": null,
-            "can_create_bid": false,
-            "own_bid": {
-                "id": 34,
-                "preference": 3,
-                "user_created": false,
-                "state": {
-                    "id": 31,
-                    "name": "placed",
-                    "description": "The bid is waiting for the auction"
-                },
-                "can_update": true
-            }
-        }
-    ],
+    "data": [],
     "first_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=1",
-    "from": 1,
-    "last_page": 21,
-    "last_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=21",
-    "next_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=2",
+    "from": null,
+    "last_page": 1,
+    "last_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=1",
+    "next_page_url": null,
     "path": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task",
     "per_page": "5",
     "prev_page_url": null,
-    "to": 5,
-    "total": 101
+    "to": null,
+    "total": 0
 }
 ```
 
@@ -1419,7 +1550,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/assignment?search=A&day=2020-07-01&interval=%5B%2207%3A00%3A00%22%2C+%2220%3A15%3A00%22%5D&sort_by=start_at&sort_order=asc&per_page=5&page=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1442,7 +1573,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1458,92 +1589,9 @@ fetch(url, {
 
 ```json
 {
-    "users": {
-        "1": {
-            "firstname": "ADMIN Milton",
-            "lastname": "Waddams",
-            "id": 1,
-            "hours_done": 0
-        }
-    },
-    "tasks": [
-        {
-            "id": 156,
-            "name": "Appliance Repairer",
-            "start_at": "08:00:00",
-            "end_at": "09:00:00",
-            "hours": 1,
-            "location": "73794 Wilber Coves Apt. 318",
-            "description": "Virtual incremental application",
-            "slots": 4,
-            "priority": 3,
-            "assignments": [
-                {
-                    "id": 1,
-                    "hours": "1.0",
-                    "state": {
-                        "id": 41,
-                        "name": "assigned"
-                    },
-                    "user": {
-                        "id": 1
-                    },
-                    "notes": [],
-                    "bid": null,
-                    "is_conflicting": false
-                }
-            ]
-        },
-        {
-            "id": 214,
-            "name": "Manager of Food Preparation",
-            "start_at": "08:00:00",
-            "end_at": "10:00:00",
-            "hours": 2,
-            "location": "2797 Kenyon Islands Suite 415",
-            "description": "Centralized zeroadministration GraphicalUserInterface",
-            "slots": 5,
-            "priority": 3,
-            "assignments": []
-        },
-        {
-            "id": 247,
-            "name": "Special Forces Officer",
-            "start_at": "08:00:00",
-            "end_at": "08:30:00",
-            "hours": 0.5,
-            "location": "6515 Johns Walks",
-            "description": "Exclusive heuristic strategy",
-            "slots": 3,
-            "priority": 3,
-            "assignments": []
-        },
-        {
-            "id": 364,
-            "name": "Computer Hardware Engineer",
-            "start_at": "08:00:00",
-            "end_at": "08:45:00",
-            "hours": 0.75,
-            "location": "77746 Zaria Brooks Apt. 387",
-            "description": "Diverse scalable installation",
-            "slots": 3,
-            "priority": 3,
-            "assignments": []
-        },
-        {
-            "id": 481,
-            "name": "Transportation Equipment Painters",
-            "start_at": "08:00:00",
-            "end_at": "08:15:00",
-            "hours": 0.25,
-            "location": "37036 Furman Crescent",
-            "description": "Reduced bi-directional interface",
-            "slots": 2,
-            "priority": 1,
-            "assignments": []
-        }
-    ],
-    "total": 54
+    "users": [],
+    "tasks": [],
+    "total": 0
 }
 ```
 
@@ -1580,7 +1628,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/sv?search=A&only_states=%5B11%2C12%2C13%2C14%5D&sort_by=lastname&sort_order=desc&per_page=2&page=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1602,7 +1650,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1621,7 +1669,87 @@ fetch(url, {
     "current_page": 1,
     "data": [
         {
-            "firstname": "ADMIN Milton",
+            "firstname": "Dortha",
+            "lastname": "Waters",
+            "id": 2,
+            "avatar": null,
+            "university": "All India Institute of Medical Sciences",
+            "permission": {
+                "state": {
+                    "id": 12,
+                    "name": "accepted",
+                    "description": "Accepted to the conference as SV"
+                },
+                "id": 2,
+                "lottery_position": null,
+                "created_at": "2020-07-07 14:53:12",
+                "enrollment_form": {
+                    "name": "Default",
+                    "id": 3,
+                    "parent_id": 1,
+                    "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":30,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":23,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Omnis excepturi explicabo fuga. Vel facilis in nesciunt repudiandae qui quaerat minus. Ab amet nisi ea ipsa. Quas sit nihil assumenda optio quae.\",\"required\":true}}}",
+                    "total_weight": 0
+                },
+                "conference": {
+                    "id": 1
+                },
+                "role": {
+                    "id": 10
+                }
+            },
+            "country": "Azerbaijan",
+            "region": "Bethlehem",
+            "stats": {
+                "assignments": {
+                    "count": 0,
+                    "done": 0
+                },
+                "hours_done": 0,
+                "bids_placed": {
+                    "unavailable": 2,
+                    "low": 57,
+                    "medium": 60,
+                    "high": 41
+                },
+                "bids_successful": {
+                    "low": 0,
+                    "medium": 0,
+                    "high": 0
+                },
+                "bids_conflict": {
+                    "low": 0,
+                    "medium": 0,
+                    "high": 0
+                }
+            },
+            "assignments": [],
+            "past_conferences": [
+                "UIST2020",
+                "DIS 2014",
+                "CHI19"
+            ],
+            "past_conferences_sv": [
+                "UIST2020",
+                "MobileHCI",
+                "CHI19"
+            ],
+            "languages": [
+                {
+                    "id": 12,
+                    "name": "Bulgarian"
+                },
+                {
+                    "id": 123,
+                    "name": "Tsonga"
+                }
+            ],
+            "email": "tgleason@example.org",
+            "degree": "PhD - 3rd year",
+            "city": "Kemise",
+            "notes": []
+        },
+        {
+            "firstname": "Milton",
             "lastname": "Waddams",
             "id": 1,
             "avatar": null,
@@ -1632,14 +1760,14 @@ fetch(url, {
                     "name": "accepted",
                     "description": "Accepted to the conference as SV"
                 },
-                "id": 14,
+                "id": 1,
                 "lottery_position": null,
-                "created_at": "2020-07-06 17:17:10",
+                "created_at": "2020-07-07 14:53:12",
                 "enrollment_form": {
                     "name": "Default",
-                    "id": 14,
+                    "id": 2,
                     "parent_id": 1,
-                    "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":false,\"weight\":0,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":0,\"weight\":0,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":2,\"weight\":0,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":true,\"weight\":0,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"sd\",\"required\":true}}}",
+                    "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":14,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":26,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Error sint qui vel ipsam. Sequi optio rerum et praesentium asperiores sequi non. Et voluptatem est odit totam voluptatem culpa accusantium.\",\"required\":true}}}",
                     "total_weight": 0
                 },
                 "conference": {
@@ -1653,15 +1781,15 @@ fetch(url, {
             "region": "North Rhine-Westphalia",
             "stats": {
                 "assignments": {
-                    "count": 1,
+                    "count": 0,
                     "done": 0
                 },
                 "hours_done": 0,
                 "bids_placed": {
-                    "unavailable": 2,
-                    "low": 17,
-                    "medium": 24,
-                    "high": 27
+                    "unavailable": 3,
+                    "low": 51,
+                    "medium": 47,
+                    "high": 37
                 },
                 "bids_successful": {
                     "low": 0,
@@ -1674,31 +1802,7 @@ fetch(url, {
                     "high": 0
                 }
             },
-            "assignments": [
-                {
-                    "id": 1,
-                    "hours": "1.0",
-                    "created_at": "2020-07-06T16:44:00.000000Z",
-                    "notes": [],
-                    "state": {
-                        "id": 41,
-                        "name": "assigned",
-                        "description": "The task is assigned but yet not being worked on"
-                    },
-                    "task": {
-                        "id": 156,
-                        "name": "Appliance Repairer",
-                        "description": "Virtual incremental application",
-                        "location": "73794 Wilber Coves Apt. 318",
-                        "date": "2020-07-01T00:00:00.000000Z",
-                        "start_at": "08:00:00",
-                        "end_at": "09:00:00",
-                        "priority": 3,
-                        "slots": 4,
-                        "hours": 1
-                    }
-                }
-            ],
+            "assignments": [],
             "past_conferences": null,
             "past_conferences_sv": null,
             "languages": [
@@ -1715,99 +1819,18 @@ fetch(url, {
             "degree": "Master",
             "city": "Aachen",
             "notes": []
-        },
-        {
-            "firstname": "Alessandro",
-            "lastname": "Sanford",
-            "id": 2,
-            "avatar": null,
-            "university": "Abrar University",
-            "permission": {
-                "state": {
-                    "id": 12,
-                    "name": "accepted",
-                    "description": "Accepted to the conference as SV"
-                },
-                "id": 2,
-                "lottery_position": null,
-                "created_at": "2020-07-04 14:12:31",
-                "enrollment_form": {
-                    "name": "Default",
-                    "id": 3,
-                    "parent_id": 1,
-                    "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":44,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":21,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Qui et quo ut ut. Iure quaerat repellendus harum in aliquid. Qui aut corporis iure ab culpa nobis ut. Autem in repudiandae non fugit voluptates fugit.\",\"required\":true}}}",
-                    "total_weight": 0
-                },
-                "conference": {
-                    "id": 1
-                },
-                "role": {
-                    "id": 10
-                }
-            },
-            "country": "South Sudan",
-            "region": "Satun",
-            "stats": {
-                "assignments": {
-                    "count": 0,
-                    "done": 0
-                },
-                "hours_done": 0,
-                "bids_placed": {
-                    "unavailable": 5,
-                    "low": 34,
-                    "medium": 29,
-                    "high": 23
-                },
-                "bids_successful": {
-                    "low": 0,
-                    "medium": 0,
-                    "high": 0
-                },
-                "bids_conflict": {
-                    "low": 0,
-                    "medium": 0,
-                    "high": 0
-                }
-            },
-            "assignments": [],
-            "past_conferences": [
-                "CHI2020",
-                "UIST2020",
-                "NordiCHI 2012",
-                "DIS 2014",
-                "CHI19"
-            ],
-            "past_conferences_sv": [
-                "MobileHCI",
-                "UIST2020"
-            ],
-            "languages": [
-                {
-                    "id": 16,
-                    "name": "Tibetan"
-                },
-                {
-                    "id": 114,
-                    "name": "Telugu"
-                }
-            ],
-            "email": "dashawn19@example.org",
-            "degree": "PhD - >5 years",
-            "city": "East Grand Rapids",
-            "notes": []
         }
     ],
     "first_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/sv?page=1",
     "from": 1,
-    "last_page": 4,
-    "last_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/sv?page=4",
+    "last_page": 6,
+    "last_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/sv?page=6",
     "next_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/sv?page=2",
     "path": "http:\/\/localhost\/api\/v1\/conference\/chi20\/sv",
     "per_page": "2",
     "prev_page_url": null,
     "to": 2,
-    "total": 8
+    "total": 11
 }
 ```
 
@@ -1843,7 +1866,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/sv_for_task_assignment/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -1854,7 +1877,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -1870,117 +1893,114 @@ fetch(url, {
 
 ```json
 {
-    "total_matches": 8,
+    "total_matches": 11,
     "returned_matches": 10,
     "svs": [
         {
-            "id": 2,
-            "firstname": "Alessandro",
-            "lastname": "Sanford",
-            "bid": null,
-            "avatar": [],
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 5,
-                    "low": 34,
-                    "medium": 29,
-                    "high": 23
-                }
-            }
-        },
-        {
-            "id": 3,
-            "firstname": "River",
-            "lastname": "Leannon",
-            "bid": null,
-            "avatar": [],
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 5,
-                    "low": 29,
-                    "medium": 19,
-                    "high": 23
-                }
-            }
-        },
-        {
-            "id": 4,
-            "firstname": "Mara",
-            "lastname": "Bergstrom",
-            "bid": null,
-            "avatar": {
-                "web_path": "\/storage\/images\/xUwneYexqYjiVFhyRNr3SjBJfkRQ3vuTUFasTTp5.png"
-            },
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 2,
-                    "low": 31,
-                    "medium": 30,
-                    "high": 25
-                }
-            }
-        },
-        {
             "id": 7,
-            "firstname": "Tom",
-            "lastname": "Mante",
-            "bid": null,
+            "firstname": "Remington",
+            "lastname": "Volkman",
+            "bid": {
+                "id": 911,
+                "preference": 3,
+                "user_created": false
+            },
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 5,
+                    "low": 50,
+                    "medium": 46,
+                    "high": 55
+                }
+            }
+        },
+        {
+            "id": 8,
+            "firstname": "Hollis",
+            "lastname": "Haag",
+            "bid": {
+                "id": 1067,
+                "preference": 2,
+                "user_created": false
+            },
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 5,
+                    "low": 44,
+                    "medium": 47,
+                    "high": 45
+                }
+            }
+        },
+        {
+            "id": 10,
+            "firstname": "Pauline",
+            "lastname": "Effertz",
+            "bid": {
+                "id": 1339,
+                "preference": 2,
+                "user_created": false
+            },
             "avatar": [],
             "stats": {
                 "hours_done": 0,
                 "hours_not_done": 0,
                 "bids_placed": {
                     "unavailable": 1,
-                    "low": 26,
-                    "medium": 24,
-                    "high": 31
-                }
-            }
-        },
-        {
-            "id": 8,
-            "firstname": "Tito",
-            "lastname": "Kuphal",
-            "bid": null,
-            "avatar": [],
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 4,
-                    "low": 27,
-                    "medium": 34,
-                    "high": 20
-                }
-            }
-        },
-        {
-            "id": 9,
-            "firstname": "Jade",
-            "lastname": "Jerde",
-            "bid": null,
-            "avatar": [],
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 2,
-                    "low": 21,
-                    "medium": 22,
-                    "high": 31
+                    "low": 52,
+                    "medium": 41,
+                    "high": 42
                 }
             }
         },
         {
             "id": 11,
-            "firstname": "Meagan",
-            "lastname": "Runolfsdottir",
+            "firstname": "Ayla",
+            "lastname": "Bergnaum",
+            "bid": {
+                "id": 1475,
+                "preference": 2,
+                "user_created": false
+            },
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 1,
+                    "low": 52,
+                    "medium": 34,
+                    "high": 46
+                }
+            }
+        },
+        {
+            "id": 1,
+            "firstname": "Milton",
+            "lastname": "Waddams",
+            "bid": null,
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 3,
+                    "low": 51,
+                    "medium": 47,
+                    "high": 37
+                }
+            }
+        },
+        {
+            "id": 2,
+            "firstname": "Dortha",
+            "lastname": "Waters",
             "bid": null,
             "avatar": [],
             "stats": {
@@ -1988,26 +2008,81 @@ fetch(url, {
                 "hours_not_done": 0,
                 "bids_placed": {
                     "unavailable": 2,
-                    "low": 26,
-                    "medium": 28,
-                    "high": 27
+                    "low": 57,
+                    "medium": 60,
+                    "high": 41
                 }
             }
         },
         {
-            "id": 1,
-            "firstname": "ADMIN Milton",
-            "lastname": "Waddams",
+            "id": 3,
+            "firstname": "Jevon",
+            "lastname": "Ortiz",
             "bid": null,
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 1,
+                "hours_not_done": 0,
                 "bids_placed": {
-                    "unavailable": 2,
-                    "low": 17,
-                    "medium": 24,
-                    "high": 27
+                    "unavailable": 3,
+                    "low": 44,
+                    "medium": 45,
+                    "high": 58
+                }
+            }
+        },
+        {
+            "id": 4,
+            "firstname": "Noelia",
+            "lastname": "Kassulke",
+            "bid": null,
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 5,
+                    "low": 45,
+                    "medium": 54,
+                    "high": 48
+                }
+            }
+        },
+        {
+            "id": 5,
+            "firstname": "Elva",
+            "lastname": "Gaylord",
+            "bid": null,
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 0,
+                    "low": 56,
+                    "medium": 49,
+                    "high": 40
+                }
+            }
+        },
+        {
+            "id": 6,
+            "firstname": "Hosea",
+            "lastname": "Macejkovic",
+            "bid": {
+                "id": 746,
+                "preference": 1,
+                "user_created": false
+            },
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 0,
+                "bids_placed": {
+                    "unavailable": 5,
+                    "low": 61,
+                    "medium": 51,
+                    "high": 48
                 }
             }
         }
@@ -2027,6 +2102,60 @@ Parameter | Status | Description
 
 <!-- END_7ade2e103f429985475bfd7e5f3e1d32 -->
 
+<!-- START_4fd9bbcd39c117c54c591475d46e0cec -->
+## Get the number of accepted SVs
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/conference/chi20/sv/count" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/conference/chi20/sv/count"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": 11,
+    "message": null
+}
+```
+
+### HTTP Request
+`GET api/v1/conference/{conference}/sv/count`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `conference` |  required  | The conference's key
+
+<!-- END_4fd9bbcd39c117c54c591475d46e0cec -->
+
 <!-- START_d452bf9aacc3231cbeca5271a88f7359 -->
 ## Get all the possible notification destinations for a conference
 
@@ -2038,7 +2167,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20/destination" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2049,7 +2178,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2091,44 +2220,59 @@ fetch(url, {
     ],
     "users": [
         {
+            "user_id": 1,
+            "type": "user",
+            "display": "Milton Waddams"
+        },
+        {
             "user_id": 2,
             "type": "user",
-            "display": "Alessandro Sanford"
+            "display": "Dortha Waters"
         },
         {
             "user_id": 3,
             "type": "user",
-            "display": "River Leannon"
+            "display": "Jevon Ortiz"
         },
         {
             "user_id": 4,
             "type": "user",
-            "display": "Mara Bergstrom"
+            "display": "Noelia Kassulke"
+        },
+        {
+            "user_id": 5,
+            "type": "user",
+            "display": "Elva Gaylord"
+        },
+        {
+            "user_id": 6,
+            "type": "user",
+            "display": "Hosea Macejkovic"
         },
         {
             "user_id": 7,
             "type": "user",
-            "display": "Tom Mante"
+            "display": "Remington Volkman"
         },
         {
             "user_id": 8,
             "type": "user",
-            "display": "Tito Kuphal"
+            "display": "Hollis Haag"
         },
         {
             "user_id": 9,
             "type": "user",
-            "display": "Jade Jerde"
+            "display": "Claire Beier"
+        },
+        {
+            "user_id": 10,
+            "type": "user",
+            "display": "Pauline Effertz"
         },
         {
             "user_id": 11,
             "type": "user",
-            "display": "Meagan Runolfsdottir"
-        },
-        {
-            "user_id": 1,
-            "type": "user",
-            "display": "ADMIN Milton Waddams"
+            "display": "Ayla Bergnaum"
         }
     ]
 }
@@ -2156,7 +2300,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2167,7 +2311,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2189,20 +2333,20 @@ fetch(url, {
         "key": "chi20",
         "location": "Honolulu, Hawaiʻi, USA",
         "timezone_id": 366,
-        "start_date": "2020-07-01",
-        "end_date": "2020-07-07",
+        "start_date": "2020-07-04",
+        "end_date": "2020-07-10",
         "description": "##Aloha!\n\nThe ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. __CHI__ – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology.\n\n###From April 25th to 30th\nCHI will, for the first time, take place in beautiful __Honolulu__, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs [generalchairs@chi2020.acm.org](mailto:generalchairs@chi2020.acm.org)",
         "enrollment_form_id": 1,
         "state_id": 4,
         "url": "https:\/\/www.acm.org\/",
         "url_name": "ACM",
-        "created_at": "2020-07-04 14:12:29",
-        "updated_at": "2020-07-06 20:38:18",
+        "created_at": "2020-07-07 14:53:10",
+        "updated_at": "2020-07-07 14:53:10",
         "volunteer_hours": 20,
         "volunteer_max": 100,
         "email_chair": "noreply@chisv.org",
-        "bidding_start": "2020-07-01",
-        "bidding_end": "2020-07-23",
+        "bidding_start": "2020-07-07 14:53:10",
+        "bidding_end": "2020-07-10 00:00:00",
         "bidding_enabled": true,
         "icon": null,
         "artwork": null,
@@ -2216,40 +2360,6 @@ fetch(url, {
             "id": 366,
             "name": "Pacific\/Honolulu"
         }
-    },
-    {
-        "id": 2,
-        "name": "DIS 2019",
-        "key": "dis19",
-        "location": "Torino",
-        "timezone_id": 297,
-        "start_date": "2019-06-20",
-        "end_date": "2019-06-28",
-        "description": "Awesome people doing awesome things",
-        "enrollment_form_id": 1,
-        "state_id": 5,
-        "url": "https:\/\/www.acm.org\/",
-        "url_name": "ACM",
-        "created_at": "2020-07-04 14:12:29",
-        "updated_at": "2020-07-04 14:12:29",
-        "volunteer_hours": 20,
-        "volunteer_max": 100,
-        "email_chair": "noreply@chisv.org",
-        "bidding_start": "2020-07-04 14:12:29",
-        "bidding_end": "2020-07-07 00:00:00",
-        "bidding_enabled": true,
-        "icon": null,
-        "artwork": null,
-        "state": {
-            "id": 5,
-            "name": "over",
-            "for": "App\\Conference",
-            "description": "The conference is over"
-        },
-        "timezone": {
-            "id": 297,
-            "name": "Europe\/Berlin"
-        }
     }
 ]
 ```
@@ -2259,6 +2369,76 @@ fetch(url, {
 
 
 <!-- END_d047bd6fd41efadb6c04fb272d06f398 -->
+
+<!-- START_f3a734edd078d86bac9e759001b1131b -->
+## Create a conference
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/conference" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"name":"CHI 2021","key":"chi21"}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/conference"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "name": "CHI 2021",
+    "key": "chi21"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "success": {
+        "name": "CHI 2021",
+        "key": "chi21",
+        "start_date": "2020-07-07",
+        "end_date": "2020-07-08",
+        "updated_at": "2020-07-07 14:57:09",
+        "created_at": "2020-07-07 14:57:09",
+        "id": 2
+    },
+    "message": "Conference created"
+}
+```
+
+### HTTP Request
+`POST api/v1/conference`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `name` | string |  required  | The conference's full name
+        `key` | string |  required  | The conference's key (part of URL). Has to be a valid in a URL
+    
+<!-- END_f3a734edd078d86bac9e759001b1131b -->
 
 <!-- START_c508f5b8d74ec7e81d1746d1c00e2167 -->
 ## Get a conference by key
@@ -2271,7 +2451,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/conference/chi20" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2282,7 +2462,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2303,20 +2483,20 @@ fetch(url, {
     "key": "chi20",
     "location": "Honolulu, Hawaiʻi, USA",
     "timezone_id": 366,
-    "start_date": "2020-07-01",
-    "end_date": "2020-07-07",
+    "start_date": "2020-07-04",
+    "end_date": "2020-07-10",
     "description": "##Aloha!\n\nThe ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. __CHI__ – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology.\n\n###From April 25th to 30th\nCHI will, for the first time, take place in beautiful __Honolulu__, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs [generalchairs@chi2020.acm.org](mailto:generalchairs@chi2020.acm.org)",
     "enrollment_form_id": 1,
     "state_id": 4,
     "url": "https:\/\/www.acm.org\/",
     "url_name": "ACM",
-    "created_at": "2020-07-04 14:12:29",
-    "updated_at": "2020-07-06 20:38:18",
+    "created_at": "2020-07-07 14:53:10",
+    "updated_at": "2020-07-07 14:53:10",
     "volunteer_hours": 20,
     "volunteer_max": 100,
     "email_chair": "noreply@chisv.org",
-    "bidding_start": "2020-07-01",
-    "bidding_end": "2020-07-23",
+    "bidding_start": "2020-07-07 14:53:10",
+    "bidding_end": "2020-07-10 00:00:00",
     "bidding_enabled": true,
     "state": {
         "id": 4,
@@ -2360,7 +2540,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/conference/chi20" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"name":"CHI 2020","key":"chi20","location":"Hawaii","timezone_id":366,"start_date":"2020-07-01","end_date":"2020-07-07","description":"!CHI 2020","url_name":"ACM","url":"https:\/\/acm.org","enrollment_form_id":1,"state_id":2,"volunteer_hours":20,"volunteer_max":100,"email_chair":"sv@example.com","bidding_enabled":true,"bidding_start":"2020-07-01","bidding_end":"2020-07-07"}'
 
 ```
@@ -2373,7 +2553,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -2478,7 +2658,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/conference/chi20" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2489,7 +2669,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2535,7 +2715,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/enrollment_form/template" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2546,7 +2726,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2593,27 +2773,27 @@ fields below are just examples.
 
 ```bash
 curl -X PUT \
-    "https://chisv.org/api/v1/enrollment_form/14" \
+    "https://chisv.org/api/v1/enrollment_form/5" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"id":14,"attended_before":5,"know_city":0,"need_visa":0,"sved_before":2,"why_you_want_to_be_sv":"Like the cake"}'
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"id":5,"attended_before":5,"know_city":0,"need_visa":0,"sved_before":2,"why_you_want_to_be_sv":"Like the cake"}'
 
 ```
 
 ```javascript
 const url = new URL(
-    "https://chisv.org/api/v1/enrollment_form/14"
+    "https://chisv.org/api/v1/enrollment_form/5"
 );
 
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
-    "id": 14,
+    "id": 5,
     "attended_before": 5,
     "know_city": 0,
     "need_visa": 0,
@@ -2676,7 +2856,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/faq" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2687,7 +2867,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2705,9 +2885,10 @@ fetch(url, {
 [
     {
         "id": 1,
-        "title": "dsfdsf",
+        "title": "How to log out?",
         "keywords": [
-            "Fdf"
+            "User",
+            "Session"
         ],
         "view_count": 0
     }
@@ -2731,7 +2912,7 @@ curl -X POST \
     "https://chisv.org/api/v1/faq" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"title":"How to logout","body":"You just click logout","role_id":10,"keywords":["Authentication","User"]}'
 
 ```
@@ -2744,7 +2925,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -2812,7 +2993,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/faq/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2823,7 +3004,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -2840,11 +3021,12 @@ fetch(url, {
 ```json
 {
     "id": 1,
-    "title": "dsfdsf",
+    "title": "How to log out?",
     "keywords": [
-        "Fdf"
+        "User",
+        "Session"
     ],
-    "body": "fd",
+    "body": "You just press the logout button.",
     "view_count": 1,
     "role_id": null,
     "role": null
@@ -2873,7 +3055,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/faq/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"title":"How to logout","body":"You just click logout","role_id":10,"keywords":["Authentication","User"]}'
 
 ```
@@ -2886,7 +3068,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -2966,7 +3148,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/faq/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -2977,7 +3159,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -3022,7 +3204,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/locale" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -3033,7 +3215,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -3093,7 +3275,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/timezone" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -3104,7 +3286,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -4687,7 +4869,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/shirt" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -4698,7 +4880,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -4798,7 +4980,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/degree" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -4809,7 +4991,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -4876,7 +5058,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/country" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -4887,7 +5069,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -5910,7 +6092,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/country/82/city/Aachen" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -5921,7 +6103,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -5976,7 +6158,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/university/name/Aachen" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -5987,7 +6169,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -6037,7 +6219,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/language/name/Ger" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -6048,7 +6230,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -6094,7 +6276,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/version" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -6105,7 +6287,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -6133,1274 +6315,6 @@ fetch(url, {
 
 <!-- END_e35103caa1f21125175c80eb8a96cc65 -->
 
-#Image
-
-
-<!-- START_b10924faa610eedbd59487bb46359ef0 -->
-## Create a new image
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/image" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"image":"vitae","name":"Awesome image","type":"veniam","owner_id":1,"owner_type":"App\\User"}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/image"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "image": "vitae",
-    "name": "Awesome image",
-    "type": "veniam",
-    "owner_id": 1,
-    "owner_type": "App\\User"
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (422):
-
-```json
-{
-    "message": "The given data was invalid.",
-    "errors": {
-        "image": [
-            "The image must be an image.",
-            "The image must be a file of type: jpeg, png, jpg, gif.",
-            "The image has invalid image dimensions."
-        ],
-        "type": [
-            "The selected type is invalid."
-        ]
-    }
-}
-```
-
-### HTTP Request
-`POST api/v1/image`
-
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `image` | binary-file |  required  | Binary image
-        `name` | string |  required  | Image name
-        `type` | string |  required  | Can be one of 'artwork', 'icon' or 'avatar'
-        `owner_id` | integer |  required  | Reference the image to this model
-        `owner_type` | string |  required  | Reference the image to this model class
-    
-<!-- END_b10924faa610eedbd59487bb46359ef0 -->
-
-<!-- START_a98e5b4669ac3fa3f0c1e821129382e7 -->
-## Update an image
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://chisv.org/api/v1/image/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"image":"ea"}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/image/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "image": "ea"
-}
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (422):
-
-```json
-{
-    "message": "The given data was invalid.",
-    "errors": {
-        "image": [
-            "The image must be an image.",
-            "The image must be a file of type: jpeg, png, jpg, gif.",
-            "The image has invalid image dimensions."
-        ]
-    }
-}
-```
-
-### HTTP Request
-`PUT api/v1/image/{image}`
-
-`PATCH api/v1/image/{image}`
-
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `image` | binary-file |  required  | Binary image
-    
-<!-- END_a98e5b4669ac3fa3f0c1e821129382e7 -->
-
-<!-- START_bd133915229a369312c0c49c19e18d2c -->
-## Delete an image
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://chisv.org/api/v1/image/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/image/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": null,
-    "success": true,
-    "message": "Image deleted!"
-}
-```
-
-### HTTP Request
-`DELETE api/v1/image/{image}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `image` |  required  | The image's id
-
-<!-- END_bd133915229a369312c0c49c19e18d2c -->
-
-#Job
-
-
-<!-- START_d6e16153e2ff68200766fc9789db9920 -->
-## Get all jobs
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/job" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/job"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "data": [
-        {
-            "id": 3,
-            "name": "Task import for dis19",
-            "handler": "App\\Jobs\\ImportTasks",
-            "result": "{\"create_success\":[null],\"create_fail\":[],\"update_success\":[],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
-            "progress": 100,
-            "status_message": null,
-            "state_id": 23,
-            "ended_at": "2020-07-06 18:40:14",
-            "start_at": "2020-07-06 18:40:14",
-            "created_at": "2020-07-06 18:40:14",
-            "updated_at": "2020-07-06 18:40:14",
-            "type": "job",
-            "state": {
-                "id": 23,
-                "name": "successful",
-                "for": "App\\Job",
-                "description": "The job finished successfully"
-            }
-        },
-        {
-            "id": 2,
-            "name": "Task import for dis19",
-            "handler": "App\\Jobs\\ImportTasks",
-            "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
-            "progress": 100,
-            "status_message": null,
-            "state_id": 23,
-            "ended_at": "2020-07-06 18:39:56",
-            "start_at": "2020-07-06 18:39:56",
-            "created_at": "2020-07-06 18:39:56",
-            "updated_at": "2020-07-06 18:39:56",
-            "type": "job",
-            "state": {
-                "id": 23,
-                "name": "successful",
-                "for": "App\\Job",
-                "description": "The job finished successfully"
-            }
-        },
-        {
-            "id": 1,
-            "name": "Task import for dis19",
-            "handler": "App\\Jobs\\ImportTasks",
-            "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
-            "progress": 100,
-            "status_message": null,
-            "state_id": 23,
-            "ended_at": "2020-07-06 18:39:44",
-            "start_at": "2020-07-06 18:39:37",
-            "created_at": "2020-07-06 18:39:37",
-            "updated_at": "2020-07-06 18:39:44",
-            "type": "job",
-            "state": {
-                "id": 23,
-                "name": "successful",
-                "for": "App\\Job",
-                "description": "The job finished successfully"
-            }
-        }
-    ],
-    "total": 3,
-    "take": 50
-}
-```
-
-### HTTP Request
-`GET api/v1/job`
-
-
-<!-- END_d6e16153e2ff68200766fc9789db9920 -->
-
-<!-- START_f0ecf6516bb0e1824e6db6d15f4731a1 -->
-## Get a job
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/job/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/job/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "id": 1,
-    "name": "Task import for dis19",
-    "handler": "App\\Jobs\\ImportTasks",
-    "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
-    "progress": 100,
-    "status_message": null,
-    "state_id": 23,
-    "ended_at": "2020-07-06 18:39:44",
-    "start_at": "2020-07-06 18:39:37",
-    "created_at": "2020-07-06 18:39:37",
-    "updated_at": "2020-07-06 18:39:44",
-    "state": {
-        "id": 23,
-        "name": "successful",
-        "for": "App\\Job",
-        "description": "The job finished successfully"
-    }
-}
-```
-
-### HTTP Request
-`GET api/v1/job/{job}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `job` |  required  | The job's id
-
-<!-- END_f0ecf6516bb0e1824e6db6d15f4731a1 -->
-
-#Note
-
-
-<!-- START_a6fe630930e6174d987c43d406b17684 -->
-## Create a new note
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/note" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"for_id":1,"for_type":"App\\User","text":"More than expected","conference_id":1}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/note"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "for_id": 1,
-    "for_type": "App\\User",
-    "text": "More than expected",
-    "conference_id": 1
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": {
-        "id": 2,
-        "creator_id": 1,
-        "for_id": 1,
-        "for_type": "App\\User",
-        "text": "More than expected",
-        "created_at": "2020-07-06 20:52:32",
-        "updated_at": "2020-07-06 20:52:32",
-        "conference_id": "1"
-    },
-    "message": "Note created"
-}
-```
-
-### HTTP Request
-`POST api/v1/note`
-
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `for_id` | integer |  required  | Id for the note's associated object
-        `for_type` | string |  required  | Class name for the note's associated object
-        `text` | string |  required  | The note's content
-        `conference_id` | integer |  required  | The conference to bind this note to (used for App\User)
-    
-<!-- END_a6fe630930e6174d987c43d406b17684 -->
-
-<!-- START_e72a2bf06aae44bb29232368172c7ba6 -->
-## Delete a note
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://chisv.org/api/v1/note/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/note/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": true,
-    "message": "Note deleted"
-}
-```
-> Example response (404):
-
-```json
-{
-    "message": "No query results for model [App\\Note] 1"
-}
-```
-
-### HTTP Request
-`DELETE api/v1/note/{note}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `note` |  required  | The note's id
-
-<!-- END_e72a2bf06aae44bb29232368172c7ba6 -->
-
-#Notification
-
-
-<!-- START_9810cba1aeb488235eda9984b2fca3e1 -->
-## Get all notification templates
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/notification_template" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/notification_template"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-[
-    {
-        "id": 1,
-        "name": "chi19 Let's get registered",
-        "conference_id": "1",
-        "data": "{\"destinations\":[{\"role_id\":10,\"state_id\":12,\"type\":\"group\",\"display\":\"Accepted SVs\"}],\"elements\":[{\"type\":\"markdown\",\"data\":\"As you might have noticed, the CHI 20## registration site is live. Now we can step right into the next phase of the SV program! This email contains info about:\\n\\n- The SV contract\\n- Registration info (deadline: ###### ##nd, 20##)\\n- Visa support letters\\n- Slack Channel\\n- Housing\\n\\n\\n#THE SV CONTRACT\\n\\nPlease take the time to read this carefully. We want to make sure that everybody is on the same page when they arrive in Glasgow and knows what is expected of them. Being an SV at CHI can be a wonderful experience, but it's less wonderful when you are working extra hours, because a fellow SV didn't step up and work their hours.\\n\\n##You agree to\\n\\n1. Volunteer a _minimum_ of __20 hours__ at the conference as a student volunteer.\\n\\n2. Arrive in Glasgow on or before Sunday, __May 5th__, and stay through the end of the conference on Thursday, May 9th (or Friday, May 10th, if you plan to attend the SV Party).\\n\\n3. Attend one of the three SV orientations. The orientation times are __Saturday, May 4th at 6pm__ and __Sunday, May 5th at 11am and 6pm__.\\n\\n##We agree to\\n\\n1. Waive your registration fees and give you a conference reception ticket (you must pay workshop\\\\\\\\\/course fees, if you want to attend any).\\n\\n2. Provide you with breakfast and lunch daily (food details are still being worked out).\\n\\n\\n#LET'S GET REGISTERED\\n\\nRegistration is now open! Here's the process for registering for CHI 2019 as a student volunteer. (Note: you must register for the conference by February 22nd, 2019 to maintain your SV spot. If you know that you can't attend, please let us know as soon as possible so we can give your spot to someone on the waitlist).\\n\\n1. Go to [this website](http:\/\/www.cvent.com).\\n__ATTENTION: This link can ONLY be used by accepted Student Volunteers.__\\n\\n\\n##Important additional details\\nIf we haven't heard from you in any way by February 22nd, 2018, 12:00 EST, we will assume you are no longer interested in volunteering, and will remove you from the SV accepted list.\\n\\nPlease let us know if you have any issues, we are happy to work things out with you!\\n\\n\\n#VISA SUPPORT LETTERS\\n\\nYou need to download the request form as part of the registration process and follow the instructions described in that form.\\n\\n\\n#SLACK CHANNEL\\n\\nWe will invite you to our Slack Channel as soon as you are registered for the conference. Slack is a good place for you to introduce yourselves to your fellow SVs, or to coordinate sharing a hotel room. It also provides us with a much faster channel to reach you (and vice versa) during the conference, so please accept the invitation as soon as you receive it.\\n\\n\\n## HOUSING\\nYou can find information about housing at [chi2019.acm.org\/for-attendees\/hotels](https:\/\/chi2019.acm.org\/for-attendees\/hotels\/) - the estimated rates are included below. To reduce your accommodation costs, you can share rooms with fellow SVs. You can talk to your fellow SVs via Slack and find someone to share a room with. Use the #housing channel. However, there are a couple of things that you should keep in mind before booking a hotel room together:\\n\\n##CONFERENCE HOTEL RATES\\nHere are the conference hotel rates for your reference. They are also available on the conference website. Most of these are for a single or double room.\\n\\n\\nThat's it for now - if you have any other questions: just email us and we will do our best to help you with any questions as quickly as we can.\"}],\"greeting\":null,\"subject\":\"LET'S GET REGISTERED -- DEADLINES INSIDE\",\"salutation\":\"Regards,\\n\\nSV Chairs CHI20, Honolulu, Hawai\\u02bbi, USA\\n\\n[noreply@chisv.org](mailto:noreply@chisv.org)\\n\\n[ACM](https:\/\/www.acm.org\/)\"}",
-        "year": "2020",
-        "created_at": null,
-        "updated_at": null,
-        "conference": {
-            "id": 1,
-            "key": "chi20"
-        }
-    }
-]
-```
-
-### HTTP Request
-`GET api/v1/notification_template`
-
-
-<!-- END_9810cba1aeb488235eda9984b2fca3e1 -->
-
-<!-- START_3437a4c594338a2408235c8bd5cea113 -->
-## Create a new notification template
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/notification_template" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"name":"My New Template!","data":{"destinations":[{"type":"group","role_id":10,"state_id":12}],"elements":[{"type":"action","data":{"caption":"CHISV Website","url":"https:\/\/chisv.org"}},{"type":"markdown","data":"!See text below"}]},"year":2020,"conference_id":1}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/notification_template"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "name": "My New Template!",
-    "data": {
-        "destinations": [
-            {
-                "type": "group",
-                "role_id": 10,
-                "state_id": 12
-            }
-        ],
-        "elements": [
-            {
-                "type": "action",
-                "data": {
-                    "caption": "CHISV Website",
-                    "url": "https:\/\/chisv.org"
-                }
-            },
-            {
-                "type": "markdown",
-                "data": "!See text below"
-            }
-        ]
-    },
-    "year": 2020,
-    "conference_id": 1
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": true,
-    "message": "Template created"
-}
-```
-
-### HTTP Request
-`POST api/v1/notification_template`
-
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `name` | string |  required  | Give the template a unique name
-        `data` | string |  required  | The enrollment form template in JSON encoded form
-        `year` | integer |  required  | YYYY formatted year
-        `conference_id` | integer |  required  | Bind to this conference
-        `data.destinations` | array |  required  | Multiple destinations, see below for 3 examples
-        `data.destinations[0].type` | string |  optional  | Must be 'group'
-        `data.destinations[0].role_id` | integer |  optional  | Pointing to the role by id
-        `data.destinations[0].state_id` | integer |  optional  | Pointing to the state by id
-        `data.elements` | array |  required  | Multiple elements, see below for action and markdown below
-        `data.elements[0].type` | required |  optional  | One of 'action', 'markdown'
-        `data.elements[1].type` | required |  optional  | One of 'action', 'markdown'
-        `data.elements[0].data.caption` | string |  optional  | Is required if type is 'action'
-        `data.elements[0].data.url` | string |  optional  | Is required if type is 'action'
-        `data.elements[1].data` | string |  optional  | Is required if type is 'markdown'
-    
-<!-- END_3437a4c594338a2408235c8bd5cea113 -->
-
-<!-- START_9a71c195bef487ee5f5fcae091218d61 -->
-## Delete a notification template
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://chisv.org/api/v1/notification_template/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/notification_template/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": true,
-    "message": "Template deleted"
-}
-```
-
-### HTTP Request
-`DELETE api/v1/notification_template/{notification_template}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `notification_template` |  required  | The notification template's id to delete
-
-<!-- END_9a71c195bef487ee5f5fcae091218d61 -->
-
-<!-- START_dab1dd2c6a2e20ca5a7543c7bb923357 -->
-## Get all notifications of the authenticated user
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/notification" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/notification"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "data": [
-        {
-            "id": "f8f02574-a9eb-408b-9836-c7408b248afb",
-            "type": "App\\Notifications\\Announcement",
-            "read_at": null,
-            "created_at": "2020-07-06T18:11:53.000000Z",
-            "subject": "SV Announcement",
-            "conference_key": "chi20"
-        },
-        {
-            "id": "05f4e434-6efb-4559-9081-d67ecdd0bc8b",
-            "type": "App\\Notifications\\Announcement",
-            "read_at": null,
-            "created_at": "2020-07-06T18:11:53.000000Z",
-            "subject": "SV Announcement",
-            "conference_key": "chi20"
-        }
-    ],
-    "clearUntil": "2020-07-06 20:52:32"
-}
-```
-
-### HTTP Request
-`GET api/v1/notification`
-
-
-<!-- END_dab1dd2c6a2e20ca5a7543c7bb923357 -->
-
-<!-- START_aae6a7590ad399556c68f3f43d3b8180 -->
-## Get a notification
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/notification/f8f02574-a9eb-408b-9836-c7408b248afb" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/notification/f8f02574-a9eb-408b-9836-c7408b248afb"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-null
-```
-> Example response (404):
-
-```json
-{
-    "message": "No query results for model [Illuminate\\Notifications\\DatabaseNotification] fd8f02574-a9eb-408b-9836-c7408b248afb"
-}
-```
-
-### HTTP Request
-`GET api/v1/notification/{database_notification}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `database_notification` |  required  | Notification's UUID
-
-<!-- END_aae6a7590ad399556c68f3f43d3b8180 -->
-
-#Permission
-
-
-<!-- START_7ae99daa4c685955a0bb1957dc7c7125 -->
-## Create a new permission
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/permission" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"user_id":1,"role_id":2,"conference_id":1,"state_id":11}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/permission"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "user_id": 1,
-    "role_id": 2,
-    "conference_id": 1,
-    "state_id": 11
-}
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": true,
-    "message": "Permission granted!"
-}
-```
-> Example response (400):
-
-```json
-{
-    "message": "Permission already exists"
-}
-```
-
-### HTTP Request
-`POST api/v1/permission`
-
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `user_id` | integer |  required  | The user's id
-        `role_id` | integer |  required  | The role of the permission by id
-        `conference_id` | integer |  optional  | The conference id to bind the permission to
-        `state_id` | integer |  optional  | The permission's state
-    
-<!-- END_7ae99daa4c685955a0bb1957dc7c7125 -->
-
-<!-- START_02593a89d7299e12fbe17b2a19fbeac2 -->
-## Update a permission
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://chisv.org/api/v1/permission/2" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
-    -d '{"user_id":1,"role_id":2,"conference_id":1,"state_id":11}'
-
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/permission/2"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-let body = {
-    "user_id": 1,
-    "role_id": 2,
-    "conference_id": 1,
-    "state_id": 11
-}
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-    body: body
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": {
-        "id": 2,
-        "user_id": 2,
-        "conference_id": 1,
-        "created_at": "2020-07-04 14:12:31",
-        "updated_at": "2020-07-06 20:52:32",
-        "enrollment_form_id": 3,
-        "lottery_position": null,
-        "conference": {
-            "id": 1,
-            "name": "CHI 2020",
-            "key": "chi20",
-            "location": "Honolulu, Hawaiʻi, USA",
-            "timezone_id": 366,
-            "start_date": "2020-07-01",
-            "end_date": "2020-07-07",
-            "description": "##Aloha!\n\nThe ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. __CHI__ – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology.\n\n###From April 25th to 30th\nCHI will, for the first time, take place in beautiful __Honolulu__, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs [generalchairs@chi2020.acm.org](mailto:generalchairs@chi2020.acm.org)",
-            "enrollment_form_id": 1,
-            "state_id": 4,
-            "url": "https:\/\/www.acm.org\/",
-            "url_name": "ACM",
-            "created_at": "2020-07-04 14:12:29",
-            "updated_at": "2020-07-06 20:38:18",
-            "volunteer_hours": 20,
-            "volunteer_max": 100,
-            "email_chair": "noreply@chisv.org",
-            "bidding_start": "2020-07-01",
-            "bidding_end": "2020-07-23",
-            "bidding_enabled": true
-        }
-    },
-    "message": "Permission updated!"
-}
-```
-
-### HTTP Request
-`PUT api/v1/permission/{permission}`
-
-`PATCH api/v1/permission/{permission}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `permission` |  required  | The permission's id
-#### Body Parameters
-Parameter | Type | Status | Description
---------- | ------- | ------- | ------- | -----------
-    `user_id` | integer |  required  | The user's id
-        `role_id` | integer |  required  | The role of the permission by id
-        `conference_id` | integer |  optional  | The conference id to bind the permission to
-        `state_id` | integer |  optional  | The permission's state
-    
-<!-- END_02593a89d7299e12fbe17b2a19fbeac2 -->
-
-<!-- START_44ad155ad0de0418e9d1794951e82dfc -->
-## Delete a new permission
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://chisv.org/api/v1/permission/2" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/permission/2"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "success": true,
-    "message": "Permission revoked"
-}
-```
-> Example response (404):
-
-```json
-{
-    "message": "No query results for model [App\\Permission] 1"
-}
-```
-
-### HTTP Request
-`DELETE api/v1/permission/{permission}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `permission` |  required  | The permission's id
-
-<!-- END_44ad155ad0de0418e9d1794951e82dfc -->
-
-#Report
-
-
-<!-- START_e367f5d326b0f2aa81935f2faf023e9d -->
-## Get a report by name
-The result will contain all important columns and pagination hint. Available reports are:
-&#039;sv_doubles&#039;,
-&#039;sv_accepted_minutes_ago&#039;,
-&#039;sv_shirts&#039;,
-&#039;sv_hours&#039;,
-&#039;sv_bids&#039;,
-&#039;sv_detail&#039;,
-&#039;sv_demographics_country&#039;,
-&#039;sv_demographics_language&#039;,
-&#039;task_overview&#039;,
-&#039;tasks_free_slots&#039;,
-&#039;tasks_table_dump&#039;
-
-<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/conference/chi20/report/sv_hours" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/conference/chi20/report/sv_hours"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "columns": [
-        {
-            "field": "firstname",
-            "label": "Firstname",
-            "width": null,
-            "numeric": false,
-            "sortable": true,
-            "searchable": true
-        },
-        {
-            "field": "lastname",
-            "label": "Lastname",
-            "width": null,
-            "numeric": false,
-            "sortable": true,
-            "searchable": true
-        },
-        {
-            "field": "hours_done",
-            "label": "Hours Done",
-            "width": null,
-            "numeric": true,
-            "sortable": true,
-            "searchable": false
-        },
-        {
-            "field": "assignments_count",
-            "label": "Assignments",
-            "width": null,
-            "numeric": true,
-            "sortable": true,
-            "searchable": false
-        }
-    ],
-    "data": [
-        {
-            "user_id": 2,
-            "firstname": "Alessandro",
-            "lastname": "Sanford",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 3,
-            "firstname": "River",
-            "lastname": "Leannon",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 4,
-            "firstname": "Mara",
-            "lastname": "Bergstrom",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 7,
-            "firstname": "Tom",
-            "lastname": "Mante",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 8,
-            "firstname": "Tito",
-            "lastname": "Kuphal",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 9,
-            "firstname": "Jade",
-            "lastname": "Jerde",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 11,
-            "firstname": "Meagan",
-            "lastname": "Runolfsdottir",
-            "hours_done": 0,
-            "assignments_count": 0
-        },
-        {
-            "user_id": 1,
-            "firstname": "ADMIN Milton",
-            "lastname": "Waddams",
-            "hours_done": 0,
-            "assignments_count": 1
-        }
-    ],
-    "updated": "2020-07-06T20:52:29.653315Z",
-    "paginate": true
-}
-```
-
-### HTTP Request
-`GET api/v1/conference/{conference}/report/{name}`
-
-#### URL Parameters
-
-Parameter | Status | Description
---------- | ------- | ------- | -------
-    `conference` |  required  | The conference's key
-    `name` |  required  | The reports key
-
-<!-- END_e367f5d326b0f2aa81935f2faf023e9d -->
-
-#Role
-
-
 <!-- START_e7e28d5abb6f2e2aebbd819249e3df74 -->
 ## Get all roles
 
@@ -7412,7 +6326,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/role" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -7423,7 +6337,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -7468,9 +6382,6 @@ fetch(url, {
 
 <!-- END_e7e28d5abb6f2e2aebbd819249e3df74 -->
 
-#State
-
-
 <!-- START_0732eddb955a8a3d8ab42725aabda922 -->
 ## Get all states
 
@@ -7482,7 +6393,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/state" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -7493,7 +6404,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -7650,6 +6561,1191 @@ fetch(url, {
 
 <!-- END_0732eddb955a8a3d8ab42725aabda922 -->
 
+#Image
+
+
+<!-- START_b10924faa610eedbd59487bb46359ef0 -->
+## Create a new image
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/image" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"image":"ab","name":"Awesome image","type":"fugit","owner_id":1,"owner_type":"App\\User"}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/image"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "image": "ab",
+    "name": "Awesome image",
+    "type": "fugit",
+    "owner_id": 1,
+    "owner_type": "App\\User"
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (422):
+
+```json
+{
+    "message": "The given data was invalid.",
+    "errors": {
+        "image": [
+            "The image must be an image.",
+            "The image must be a file of type: jpeg, png, jpg, gif.",
+            "The image has invalid image dimensions."
+        ],
+        "type": [
+            "The selected type is invalid."
+        ]
+    }
+}
+```
+
+### HTTP Request
+`POST api/v1/image`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `image` | binary-file |  required  | Binary image
+        `name` | string |  required  | Image name
+        `type` | string |  required  | Can be one of 'artwork', 'icon' or 'avatar'
+        `owner_id` | integer |  required  | Reference the image to this model
+        `owner_type` | string |  required  | Reference the image to this model class
+    
+<!-- END_b10924faa610eedbd59487bb46359ef0 -->
+
+<!-- START_a98e5b4669ac3fa3f0c1e821129382e7 -->
+## Update an image
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X PUT \
+    "https://chisv.org/api/v1/image/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"image":"quos"}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/image/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "image": "quos"
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Image] 1"
+}
+```
+
+### HTTP Request
+`PUT api/v1/image/{image}`
+
+`PATCH api/v1/image/{image}`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `image` | binary-file |  required  | Binary image
+    
+<!-- END_a98e5b4669ac3fa3f0c1e821129382e7 -->
+
+<!-- START_bd133915229a369312c0c49c19e18d2c -->
+## Delete an image
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X DELETE \
+    "https://chisv.org/api/v1/image/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/image/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": null,
+    "success": true,
+    "message": "Image deleted!"
+}
+```
+
+### HTTP Request
+`DELETE api/v1/image/{image}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `image` |  required  | The image's id
+
+<!-- END_bd133915229a369312c0c49c19e18d2c -->
+
+#Job
+
+
+<!-- START_d6e16153e2ff68200766fc9789db9920 -->
+## Get all jobs
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/job" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/job"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "data": [],
+    "total": 0,
+    "take": 50
+}
+```
+
+### HTTP Request
+`GET api/v1/job`
+
+
+<!-- END_d6e16153e2ff68200766fc9789db9920 -->
+
+<!-- START_f0ecf6516bb0e1824e6db6d15f4731a1 -->
+## Get a job
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/job/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/job/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Job] 1"
+}
+```
+
+### HTTP Request
+`GET api/v1/job/{job}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `job` |  required  | The job's id
+
+<!-- END_f0ecf6516bb0e1824e6db6d15f4731a1 -->
+
+#Note
+
+
+<!-- START_a6fe630930e6174d987c43d406b17684 -->
+## Create a new note
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/note" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"for_id":1,"for_type":"App\\User","text":"More than expected","conference_id":1}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/note"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "for_id": 1,
+    "for_type": "App\\User",
+    "text": "More than expected",
+    "conference_id": 1
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": {
+        "id": 1,
+        "creator_id": 1,
+        "for_id": 1,
+        "for_type": "App\\User",
+        "text": "More than expected",
+        "created_at": "2020-07-07 14:57:15",
+        "updated_at": "2020-07-07 14:57:15",
+        "conference_id": "1"
+    },
+    "message": "Note created"
+}
+```
+
+### HTTP Request
+`POST api/v1/note`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `for_id` | integer |  required  | Id for the note's associated object
+        `for_type` | string |  required  | Class name for the note's associated object
+        `text` | string |  required  | The note's content
+        `conference_id` | integer |  required  | The conference to bind this note to (used for App\User)
+    
+<!-- END_a6fe630930e6174d987c43d406b17684 -->
+
+<!-- START_e72a2bf06aae44bb29232368172c7ba6 -->
+## Delete a note
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X DELETE \
+    "https://chisv.org/api/v1/note/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/note/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Note deleted"
+}
+```
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Note] 1"
+}
+```
+
+### HTTP Request
+`DELETE api/v1/note/{note}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `note` |  required  | The note's id
+
+<!-- END_e72a2bf06aae44bb29232368172c7ba6 -->
+
+#Notification
+
+
+<!-- START_9810cba1aeb488235eda9984b2fca3e1 -->
+## Get all notification templates
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/notification_template" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/notification_template"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+[
+    {
+        "id": 1,
+        "name": "chi19 Let's get registered",
+        "conference_id": "1",
+        "data": "{\"destinations\":[{\"role_id\":10,\"state_id\":12,\"type\":\"group\",\"display\":\"Accepted SVs\"}],\"elements\":[{\"type\":\"markdown\",\"data\":\"As you might have noticed, the CHI 20## registration site is live. Now we can step right into the next phase of the SV program! This email contains info about:\\n\\n- The SV contract\\n- Registration info (deadline: ###### ##nd, 20##)\\n- Visa support letters\\n- Slack Channel\\n- Housing\\n\\n\\n#THE SV CONTRACT\\n\\nPlease take the time to read this carefully. We want to make sure that everybody is on the same page when they arrive in Glasgow and knows what is expected of them. Being an SV at CHI can be a wonderful experience, but it's less wonderful when you are working extra hours, because a fellow SV didn't step up and work their hours.\\n\\n##You agree to\\n\\n1. Volunteer a _minimum_ of __20 hours__ at the conference as a student volunteer.\\n\\n2. Arrive in Glasgow on or before Sunday, __May 5th__, and stay through the end of the conference on Thursday, May 9th (or Friday, May 10th, if you plan to attend the SV Party).\\n\\n3. Attend one of the three SV orientations. The orientation times are __Saturday, May 4th at 6pm__ and __Sunday, May 5th at 11am and 6pm__.\\n\\n##We agree to\\n\\n1. Waive your registration fees and give you a conference reception ticket (you must pay workshop\\\\\\\\\/course fees, if you want to attend any).\\n\\n2. Provide you with breakfast and lunch daily (food details are still being worked out).\\n\\n\\n#LET'S GET REGISTERED\\n\\nRegistration is now open! Here's the process for registering for CHI 2019 as a student volunteer. (Note: you must register for the conference by February 22nd, 2019 to maintain your SV spot. If you know that you can't attend, please let us know as soon as possible so we can give your spot to someone on the waitlist).\\n\\n1. Go to [this website](http:\/\/www.cvent.com).\\n__ATTENTION: This link can ONLY be used by accepted Student Volunteers.__\\n\\n\\n##Important additional details\\nIf we haven't heard from you in any way by February 22nd, 2018, 12:00 EST, we will assume you are no longer interested in volunteering, and will remove you from the SV accepted list.\\n\\nPlease let us know if you have any issues, we are happy to work things out with you!\\n\\n\\n#VISA SUPPORT LETTERS\\n\\nYou need to download the request form as part of the registration process and follow the instructions described in that form.\\n\\n\\n#SLACK CHANNEL\\n\\nWe will invite you to our Slack Channel as soon as you are registered for the conference. Slack is a good place for you to introduce yourselves to your fellow SVs, or to coordinate sharing a hotel room. It also provides us with a much faster channel to reach you (and vice versa) during the conference, so please accept the invitation as soon as you receive it.\\n\\n\\n## HOUSING\\nYou can find information about housing at [chi2019.acm.org\/for-attendees\/hotels](https:\/\/chi2019.acm.org\/for-attendees\/hotels\/) - the estimated rates are included below. To reduce your accommodation costs, you can share rooms with fellow SVs. You can talk to your fellow SVs via Slack and find someone to share a room with. Use the #housing channel. However, there are a couple of things that you should keep in mind before booking a hotel room together:\\n\\n##CONFERENCE HOTEL RATES\\nHere are the conference hotel rates for your reference. They are also available on the conference website. Most of these are for a single or double room.\\n\\n\\nThat's it for now - if you have any other questions: just email us and we will do our best to help you with any questions as quickly as we can.\"}],\"greeting\":null,\"subject\":\"LET'S GET REGISTERED -- DEADLINES INSIDE\",\"salutation\":\"Regards,\\n\\nSV Chairs CHI20, Honolulu, Hawai\\u02bbi, USA\\n\\n[noreply@chisv.org](mailto:noreply@chisv.org)\\n\\n[ACM](https:\/\/www.acm.org\/)\"}",
+        "year": "2020",
+        "created_at": null,
+        "updated_at": null,
+        "conference": {
+            "id": 1,
+            "key": "chi20"
+        }
+    }
+]
+```
+
+### HTTP Request
+`GET api/v1/notification_template`
+
+
+<!-- END_9810cba1aeb488235eda9984b2fca3e1 -->
+
+<!-- START_3437a4c594338a2408235c8bd5cea113 -->
+## Create a new notification template
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/notification_template" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"name":"My New Template!","data":{"destinations":[{"type":"group","role_id":10,"state_id":12}],"elements":[{"type":"action","data":{"caption":"CHISV Website","url":"https:\/\/chisv.org"}},{"type":"markdown","data":"!See text below"}]},"year":2020,"conference_id":1}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/notification_template"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "name": "My New Template!",
+    "data": {
+        "destinations": [
+            {
+                "type": "group",
+                "role_id": 10,
+                "state_id": 12
+            }
+        ],
+        "elements": [
+            {
+                "type": "action",
+                "data": {
+                    "caption": "CHISV Website",
+                    "url": "https:\/\/chisv.org"
+                }
+            },
+            {
+                "type": "markdown",
+                "data": "!See text below"
+            }
+        ]
+    },
+    "year": 2020,
+    "conference_id": 1
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Template created"
+}
+```
+
+### HTTP Request
+`POST api/v1/notification_template`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `name` | string |  required  | Give the template a unique name
+        `data` | string |  required  | The enrollment form template in JSON encoded form
+        `year` | integer |  required  | YYYY formatted year
+        `conference_id` | integer |  required  | Bind to this conference
+        `data.destinations` | array |  required  | Multiple destinations, see below for 3 examples
+        `data.destinations[0].type` | string |  optional  | Must be 'group'
+        `data.destinations[0].role_id` | integer |  optional  | Pointing to the role by id
+        `data.destinations[0].state_id` | integer |  optional  | Pointing to the state by id
+        `data.elements` | array |  required  | Multiple elements, see below for action and markdown below
+        `data.elements[0].type` | required |  optional  | One of 'action', 'markdown'
+        `data.elements[1].type` | required |  optional  | One of 'action', 'markdown'
+        `data.elements[0].data.caption` | string |  optional  | Is required if type is 'action'
+        `data.elements[0].data.url` | string |  optional  | Is required if type is 'action'
+        `data.elements[1].data` | string |  optional  | Is required if type is 'markdown'
+    
+<!-- END_3437a4c594338a2408235c8bd5cea113 -->
+
+<!-- START_9a71c195bef487ee5f5fcae091218d61 -->
+## Delete a notification template
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X DELETE \
+    "https://chisv.org/api/v1/notification_template/1" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/notification_template/1"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Template deleted"
+}
+```
+
+### HTTP Request
+`DELETE api/v1/notification_template/{notification_template}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `notification_template` |  required  | The notification template's id to delete
+
+<!-- END_9a71c195bef487ee5f5fcae091218d61 -->
+
+<!-- START_dab1dd2c6a2e20ca5a7543c7bb923357 -->
+## Get all notifications of the authenticated user
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/notification" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/notification"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "data": [],
+    "clearUntil": "2020-07-07 14:57:15"
+}
+```
+
+### HTTP Request
+`GET api/v1/notification`
+
+
+<!-- END_dab1dd2c6a2e20ca5a7543c7bb923357 -->
+
+<!-- START_aae6a7590ad399556c68f3f43d3b8180 -->
+## Get a notification
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/notification/f8f02574-a9eb-408b-9836-c7408b248afb" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/notification/f8f02574-a9eb-408b-9836-c7408b248afb"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+null
+```
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [Illuminate\\Notifications\\DatabaseNotification] fd8f02574-a9eb-408b-9836-c7408b248afb"
+}
+```
+
+### HTTP Request
+`GET api/v1/notification/{database_notification}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `database_notification` |  required  | Notification's UUID
+
+<!-- END_aae6a7590ad399556c68f3f43d3b8180 -->
+
+#Permission
+
+
+<!-- START_7ae99daa4c685955a0bb1957dc7c7125 -->
+## Create a new permission
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X POST \
+    "https://chisv.org/api/v1/permission" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"user_id":1,"role_id":2,"conference_id":1,"state_id":11}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/permission"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "user_id": 1,
+    "role_id": 2,
+    "conference_id": 1,
+    "state_id": 11
+}
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Permission granted!"
+}
+```
+> Example response (400):
+
+```json
+{
+    "message": "Permission already exists"
+}
+```
+
+### HTTP Request
+`POST api/v1/permission`
+
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `user_id` | integer |  required  | The user's id
+        `role_id` | integer |  required  | The role of the permission by id
+        `conference_id` | integer |  optional  | The conference id to bind the permission to
+        `state_id` | integer |  optional  | The permission's state
+    
+<!-- END_7ae99daa4c685955a0bb1957dc7c7125 -->
+
+<!-- START_02593a89d7299e12fbe17b2a19fbeac2 -->
+## Update a permission
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X PUT \
+    "https://chisv.org/api/v1/permission/2" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
+    -d '{"user_id":1,"role_id":2,"conference_id":1,"state_id":11}'
+
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/permission/2"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+let body = {
+    "user_id": 1,
+    "role_id": 2,
+    "conference_id": 1,
+    "state_id": 11
+}
+
+fetch(url, {
+    method: "PUT",
+    headers: headers,
+    body: body
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "result": {
+        "id": 2,
+        "user_id": 2,
+        "conference_id": 1,
+        "created_at": "2020-07-07 14:53:12",
+        "updated_at": "2020-07-07 14:57:15",
+        "enrollment_form_id": 3,
+        "lottery_position": null,
+        "conference": {
+            "id": 1,
+            "name": "CHI 2020",
+            "key": "chi20",
+            "location": "Honolulu, Hawaiʻi, USA",
+            "timezone_id": 366,
+            "start_date": "2020-07-04",
+            "end_date": "2020-07-10",
+            "description": "##Aloha!\n\nThe ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. __CHI__ – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology.\n\n###From April 25th to 30th\nCHI will, for the first time, take place in beautiful __Honolulu__, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs [generalchairs@chi2020.acm.org](mailto:generalchairs@chi2020.acm.org)",
+            "enrollment_form_id": 1,
+            "state_id": 4,
+            "url": "https:\/\/www.acm.org\/",
+            "url_name": "ACM",
+            "created_at": "2020-07-07 14:53:10",
+            "updated_at": "2020-07-07 14:53:10",
+            "volunteer_hours": 20,
+            "volunteer_max": 100,
+            "email_chair": "noreply@chisv.org",
+            "bidding_start": "2020-07-07 14:53:10",
+            "bidding_end": "2020-07-10 00:00:00",
+            "bidding_enabled": true
+        }
+    },
+    "message": "Permission updated!"
+}
+```
+
+### HTTP Request
+`PUT api/v1/permission/{permission}`
+
+`PATCH api/v1/permission/{permission}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `permission` |  required  | The permission's id
+#### Body Parameters
+Parameter | Type | Status | Description
+--------- | ------- | ------- | ------- | -----------
+    `user_id` | integer |  required  | The user's id
+        `role_id` | integer |  required  | The role of the permission by id
+        `conference_id` | integer |  optional  | The conference id to bind the permission to
+        `state_id` | integer |  optional  | The permission's state
+    
+<!-- END_02593a89d7299e12fbe17b2a19fbeac2 -->
+
+<!-- START_44ad155ad0de0418e9d1794951e82dfc -->
+## Delete a new permission
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X DELETE \
+    "https://chisv.org/api/v1/permission/2" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/permission/2"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "DELETE",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "success": true,
+    "message": "Permission revoked"
+}
+```
+> Example response (404):
+
+```json
+{
+    "message": "No query results for model [App\\Permission] 1"
+}
+```
+
+### HTTP Request
+`DELETE api/v1/permission/{permission}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `permission` |  required  | The permission's id
+
+<!-- END_44ad155ad0de0418e9d1794951e82dfc -->
+
+#Report
+
+
+<!-- START_e367f5d326b0f2aa81935f2faf023e9d -->
+## Get a report by name
+The result will contain all important columns and pagination hint. Available reports are:
+&#039;sv_doubles&#039;,
+&#039;sv_accepted_minutes_ago&#039;,
+&#039;sv_shirts&#039;,
+&#039;sv_hours&#039;,
+&#039;sv_bids&#039;,
+&#039;sv_detail&#039;,
+&#039;sv_demographics_country&#039;,
+&#039;sv_demographics_language&#039;,
+&#039;task_overview&#039;,
+&#039;tasks_free_slots&#039;,
+&#039;tasks_table_dump&#039;
+
+<br><small style="padding: 1px 9px 2px;font-weight: bold;white-space: nowrap;color: #ffffff;-webkit-border-radius: 9px;-moz-border-radius: 9px;border-radius: 9px;background-color: #3a87ad;">Requires authentication</small>
+> Example request:
+
+```bash
+curl -X GET \
+    -G "https://chisv.org/api/v1/conference/chi20/report/sv_hours" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
+```
+
+```javascript
+const url = new URL(
+    "https://chisv.org/api/v1/conference/chi20/report/sv_hours"
+);
+
+let headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
+};
+
+fetch(url, {
+    method: "GET",
+    headers: headers,
+})
+    .then(response => response.json())
+    .then(json => console.log(json));
+```
+
+
+> Example response (200):
+
+```json
+{
+    "columns": [
+        {
+            "field": "firstname",
+            "label": "Firstname",
+            "width": null,
+            "numeric": false,
+            "sortable": true,
+            "searchable": true
+        },
+        {
+            "field": "lastname",
+            "label": "Lastname",
+            "width": null,
+            "numeric": false,
+            "sortable": true,
+            "searchable": true
+        },
+        {
+            "field": "hours_done",
+            "label": "Hours Done",
+            "width": null,
+            "numeric": true,
+            "sortable": true,
+            "searchable": false
+        },
+        {
+            "field": "assignments_count",
+            "label": "Assignments",
+            "width": null,
+            "numeric": true,
+            "sortable": true,
+            "searchable": false
+        }
+    ],
+    "data": [
+        {
+            "user_id": 1,
+            "firstname": "Milton",
+            "lastname": "Waddams",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 2,
+            "firstname": "Dortha",
+            "lastname": "Waters",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 3,
+            "firstname": "Jevon",
+            "lastname": "Ortiz",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 4,
+            "firstname": "Noelia",
+            "lastname": "Kassulke",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 5,
+            "firstname": "Elva",
+            "lastname": "Gaylord",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 6,
+            "firstname": "Hosea",
+            "lastname": "Macejkovic",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 7,
+            "firstname": "Remington",
+            "lastname": "Volkman",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 8,
+            "firstname": "Hollis",
+            "lastname": "Haag",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 9,
+            "firstname": "Claire",
+            "lastname": "Beier",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 10,
+            "firstname": "Pauline",
+            "lastname": "Effertz",
+            "hours_done": 0,
+            "assignments_count": 0
+        },
+        {
+            "user_id": 11,
+            "firstname": "Ayla",
+            "lastname": "Bergnaum",
+            "hours_done": 0,
+            "assignments_count": 0
+        }
+    ],
+    "updated": "2020-07-07T14:57:09.612340Z",
+    "paginate": true
+}
+```
+
+### HTTP Request
+`GET api/v1/conference/{conference}/report/{name}`
+
+#### URL Parameters
+
+Parameter | Status | Description
+--------- | ------- | ------- | -------
+    `conference` |  required  | The conference's key
+    `name` |  required  | The reports key
+
+<!-- END_e367f5d326b0f2aa81935f2faf023e9d -->
+
 #Task
 
 
@@ -7664,7 +7760,7 @@ curl -X POST \
     "https://chisv.org/api/v1/task" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"conference_id":1,"name":"SVing Task","location":"Main Hall","description":"Nothing to do here","date":"2020-07-01","start_at":"12:00:00","end_at":"15:00:00","hours":3,"priority":2,"slots":5}'
 
 ```
@@ -7677,7 +7773,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -7707,7 +7803,7 @@ fetch(url, {
 
 ```json
 {
-    "id": 504,
+    "id": 501,
     "conference_id": "1",
     "name": "SVing Task",
     "description": "Nothing to do here",
@@ -7751,7 +7847,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/task/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"conference_id":1,"name":"SVing Task","location":"Main Hall","description":"Nothing to do here","date":"2020-07-01","start_at":"12:00:00","end_at":"15:00:00","hours":3,"priority":2,"slots":5}'
 
 ```
@@ -7764,7 +7860,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -7795,7 +7891,7 @@ fetch(url, {
 ```json
 {
     "id": 1,
-    "conference_id": "2",
+    "conference_id": "1",
     "name": "SVing Task",
     "description": "Nothing to do here",
     "location": "Main Hall",
@@ -7845,7 +7941,7 @@ curl -X DELETE \
     "https://chisv.org/api/v1/task/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -7856,7 +7952,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -7873,7 +7969,7 @@ fetch(url, {
 ```json
 {
     "result": true,
-    "message": "Task removed. 0\/0\/0 associated bids\/assignments\/notes have been deleted."
+    "message": "Task removed. 5\/0\/0 associated bids\/assignments\/notes have been deleted."
 }
 ```
 
@@ -7901,7 +7997,7 @@ curl -X POST \
     "https://chisv.org/api/v1/register" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"firstname":"Jacob","lastname":"Smith","email":"jacob@example.com","languages":[{"id":23}],"location":{"country":{"id":82,"name":"Germany"},"region":{"id":1268,"name":"Nordrhein-Westfalen"},"city":{"id":12850,"name":"Aachen"}},"university":{"id":4044,"name":"RWTH Aachen"},"degree_id":2,"shirt_id":3,"locale_id":51,"past_conferences":["CHI 2019"],"past_conferences_sv":["CHI 2019"],"password":"secret","password_confirmation":"secret"}'
 
 ```
@@ -7914,7 +8010,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -7988,8 +8084,8 @@ fetch(url, {
         "region_id": 1268,
         "city_id": 12850,
         "university_id": 4044,
-        "updated_at": "2020-07-06 20:52:29",
-        "created_at": "2020-07-06 20:52:29",
+        "updated_at": "2020-07-07 14:57:09",
+        "created_at": "2020-07-07 14:57:09",
         "id": 12
     },
     "error": null
@@ -8039,7 +8135,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/user/self" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -8050,7 +8146,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -8067,13 +8163,13 @@ fetch(url, {
 ```json
 {
     "id": 1,
-    "firstname": "ADMIN Milton",
+    "firstname": "Milton",
     "lastname": "Waddams",
     "past_conferences": null,
     "past_conferences_sv": null,
     "permissions": [
         {
-            "id": 14,
+            "id": 1,
             "role": {
                 "id": 10,
                 "name": "sv",
@@ -8085,9 +8181,9 @@ fetch(url, {
                 "description": "Accepted to the conference as SV"
             },
             "enrollment_form": {
-                "id": 14,
+                "id": 2,
                 "name": "Default",
-                "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":false,\"weight\":0,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":0,\"weight\":0,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":2,\"weight\":0,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":true,\"weight\":0,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"sd\",\"required\":true}}}"
+                "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":14,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":26,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Error sint qui vel ipsam. Sequi optio rerum et praesentium asperiores sequi non. Et voluptatem est odit totam voluptatem culpa accusantium.\",\"required\":true}}}"
             },
             "conference": {
                 "id": 1,
@@ -8132,7 +8228,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/user/1/bid/chi20" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -8143,7 +8239,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -8161,16 +8257,16 @@ fetch(url, {
 [
     {
         "id": 1,
-        "task_id": 8,
+        "task_id": 4,
         "state_id": 31,
-        "preference": 3,
+        "preference": 2,
         "task": {
-            "id": 8,
-            "name": "Offset Lithographic Press Operator",
-            "start_at": "13:45:00",
-            "end_at": "14:15:00",
-            "hours": 0.5,
-            "date": "2020-07-02 00:00:00"
+            "id": 4,
+            "name": "Metal Molding Operator",
+            "start_at": "17:30:00",
+            "end_at": "18:30:00",
+            "hours": 1,
+            "date": "2020-07-05 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8180,16 +8276,16 @@ fetch(url, {
     },
     {
         "id": 2,
-        "task_id": 12,
+        "task_id": 6,
         "state_id": 31,
-        "preference": 2,
+        "preference": 1,
         "task": {
-            "id": 12,
-            "name": "Stock Broker",
-            "start_at": "08:45:00",
-            "end_at": "10:30:00",
-            "hours": 1.75,
-            "date": "2020-07-05 00:00:00"
+            "id": 6,
+            "name": "Animal Control Worker",
+            "start_at": "14:15:00",
+            "end_at": "15:30:00",
+            "hours": 1.25,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8199,16 +8295,16 @@ fetch(url, {
     },
     {
         "id": 3,
-        "task_id": 18,
+        "task_id": 9,
         "state_id": 31,
-        "preference": 1,
+        "preference": 3,
         "task": {
-            "id": 18,
-            "name": "Director Of Talent Acquisition",
-            "start_at": "17:45:00",
-            "end_at": "18:30:00",
+            "id": 9,
+            "name": "Assessor",
+            "start_at": "11:15:00",
+            "end_at": "12:00:00",
             "hours": 0.75,
-            "date": "2020-07-05 00:00:00"
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8218,16 +8314,16 @@ fetch(url, {
     },
     {
         "id": 4,
-        "task_id": 33,
+        "task_id": 12,
         "state_id": 31,
-        "preference": 0,
+        "preference": 2,
         "task": {
-            "id": 33,
-            "name": "Grinding Machine Operator",
-            "start_at": "10:00:00",
-            "end_at": "11:45:00",
+            "id": 12,
+            "name": "Utility Meter Reader",
+            "start_at": "17:15:00",
+            "end_at": "19:00:00",
             "hours": 1.75,
-            "date": "2020-07-05 00:00:00"
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8237,186 +8333,15 @@ fetch(url, {
     },
     {
         "id": 5,
-        "task_id": 35,
-        "state_id": 31,
-        "preference": 1,
-        "task": {
-            "id": 35,
-            "name": "Central Office and PBX Installers",
-            "start_at": "10:00:00",
-            "end_at": "11:00:00",
-            "hours": 1,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 6,
-        "task_id": 49,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 49,
-            "name": "Logging Tractor Operator",
-            "start_at": "16:15:00",
-            "end_at": "18:30:00",
-            "hours": 2.25,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 7,
-        "task_id": 56,
-        "state_id": 31,
-        "preference": 0,
-        "task": {
-            "id": 56,
-            "name": "Paving Equipment Operator",
-            "start_at": "15:30:00",
-            "end_at": "17:15:00",
-            "hours": 1.75,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 8,
-        "task_id": 57,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 57,
-            "name": "Media and Communication Worker",
-            "start_at": "13:30:00",
-            "end_at": "15:15:00",
-            "hours": 1.75,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 9,
-        "task_id": 61,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 61,
-            "name": "Atmospheric and Space Scientist",
-            "start_at": "11:15:00",
-            "end_at": "12:30:00",
-            "hours": 1.25,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 10,
-        "task_id": 62,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 62,
-            "name": "Oil and gas Operator",
-            "start_at": "16:45:00",
-            "end_at": "17:45:00",
-            "hours": 1,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 11,
-        "task_id": 64,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 64,
-            "name": "Sawing Machine Operator",
-            "start_at": "17:30:00",
-            "end_at": "17:45:00",
-            "hours": 0.25,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 12,
-        "task_id": 66,
-        "state_id": 31,
-        "preference": 1,
-        "task": {
-            "id": 66,
-            "name": "Health Technologist",
-            "start_at": "16:30:00",
-            "end_at": "18:30:00",
-            "hours": 2,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 13,
-        "task_id": 74,
+        "task_id": 15,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 74,
-            "name": "Umpire and Referee",
-            "start_at": "16:45:00",
-            "end_at": "18:15:00",
-            "hours": 1.5,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 14,
-        "task_id": 84,
-        "state_id": 31,
-        "preference": 1,
-        "task": {
-            "id": 84,
-            "name": "Postal Service Mail Sorter",
-            "start_at": "12:45:00",
-            "end_at": "14:30:00",
-            "hours": 1.75,
+            "id": 15,
+            "name": "Occupational Therapist",
+            "start_at": "08:45:00",
+            "end_at": "09:45:00",
+            "hours": 1,
             "date": "2020-07-05 00:00:00"
         },
         "state": {
@@ -8426,17 +8351,188 @@ fetch(url, {
         }
     },
     {
-        "id": 15,
-        "task_id": 85,
+        "id": 6,
+        "task_id": 17,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 17,
+            "name": "Assessor",
+            "start_at": "08:30:00",
+            "end_at": "08:45:00",
+            "hours": 0.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 7,
+        "task_id": 19,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 19,
+            "name": "Cement Mason and Concrete Finisher",
+            "start_at": "15:45:00",
+            "end_at": "18:00:00",
+            "hours": 2.25,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 8,
+        "task_id": 20,
         "state_id": 31,
         "preference": 3,
         "task": {
-            "id": 85,
-            "name": "Radiation Therapist",
-            "start_at": "09:45:00",
+            "id": 20,
+            "name": "Forensic Investigator",
+            "start_at": "10:00:00",
             "end_at": "11:15:00",
+            "hours": 1.25,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 9,
+        "task_id": 23,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 23,
+            "name": "Etcher",
+            "start_at": "13:45:00",
+            "end_at": "14:45:00",
+            "hours": 1,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 10,
+        "task_id": 28,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 28,
+            "name": "Industrial-Organizational Psychologist",
+            "start_at": "17:30:00",
+            "end_at": "19:00:00",
             "hours": 1.5,
             "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 11,
+        "task_id": 33,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 33,
+            "name": "University",
+            "start_at": "08:45:00",
+            "end_at": "10:30:00",
+            "hours": 1.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 12,
+        "task_id": 38,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 38,
+            "name": "Customer Service Representative",
+            "start_at": "17:00:00",
+            "end_at": "17:30:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 13,
+        "task_id": 39,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 39,
+            "name": "Welding Machine Operator",
+            "start_at": "10:45:00",
+            "end_at": "12:00:00",
+            "hours": 1.25,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 14,
+        "task_id": 43,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 43,
+            "name": "Clinical Psychologist",
+            "start_at": "16:15:00",
+            "end_at": "17:45:00",
+            "hours": 1.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 15,
+        "task_id": 44,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 44,
+            "name": "Patrol Officer",
+            "start_at": "14:15:00",
+            "end_at": "15:30:00",
+            "hours": 1.25,
+            "date": "2020-07-05 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8446,16 +8542,16 @@ fetch(url, {
     },
     {
         "id": 16,
-        "task_id": 92,
+        "task_id": 45,
         "state_id": 31,
-        "preference": 1,
+        "preference": 3,
         "task": {
-            "id": 92,
-            "name": "Tank Car",
-            "start_at": "15:45:00",
-            "end_at": "16:15:00",
-            "hours": 0.5,
-            "date": "2020-07-01 00:00:00"
+            "id": 45,
+            "name": "Physical Therapist Assistant",
+            "start_at": "10:00:00",
+            "end_at": "10:45:00",
+            "hours": 0.75,
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8465,16 +8561,16 @@ fetch(url, {
     },
     {
         "id": 17,
-        "task_id": 116,
+        "task_id": 51,
         "state_id": 31,
         "preference": 1,
         "task": {
-            "id": 116,
-            "name": "Sewing Machine Operator",
-            "start_at": "14:00:00",
-            "end_at": "15:30:00",
-            "hours": 1.5,
-            "date": "2020-07-06 00:00:00"
+            "id": 51,
+            "name": "Pipelaying Fitter",
+            "start_at": "14:15:00",
+            "end_at": "15:00:00",
+            "hours": 0.75,
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8484,15 +8580,15 @@ fetch(url, {
     },
     {
         "id": 18,
-        "task_id": 123,
+        "task_id": 56,
         "state_id": 31,
-        "preference": 2,
+        "preference": 1,
         "task": {
-            "id": 123,
-            "name": "Offset Lithographic Press Operator",
-            "start_at": "11:45:00",
-            "end_at": "12:30:00",
-            "hours": 0.75,
+            "id": 56,
+            "name": "Wellhead Pumper",
+            "start_at": "12:45:00",
+            "end_at": "15:00:00",
+            "hours": 2.25,
             "date": "2020-07-05 00:00:00"
         },
         "state": {
@@ -8503,16 +8599,16 @@ fetch(url, {
     },
     {
         "id": 19,
-        "task_id": 129,
+        "task_id": 59,
         "state_id": 31,
-        "preference": 1,
+        "preference": 0,
         "task": {
-            "id": 129,
-            "name": "Umpire and Referee",
-            "start_at": "17:45:00",
-            "end_at": "18:30:00",
+            "id": 59,
+            "name": "Heating and Air Conditioning Mechanic",
+            "start_at": "08:15:00",
+            "end_at": "09:00:00",
             "hours": 0.75,
-            "date": "2020-07-05 00:00:00"
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8522,34 +8618,15 @@ fetch(url, {
     },
     {
         "id": 20,
-        "task_id": 137,
+        "task_id": 78,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 137,
-            "name": "Sketch Artist",
-            "start_at": "08:00:00",
-            "end_at": "09:00:00",
-            "hours": 1,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 21,
-        "task_id": 146,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 146,
-            "name": "House Cleaner",
-            "start_at": "10:30:00",
-            "end_at": "11:15:00",
-            "hours": 0.75,
+            "id": 78,
+            "name": "Credit Checker",
+            "start_at": "17:15:00",
+            "end_at": "18:30:00",
+            "hours": 1.25,
             "date": "2020-07-05 00:00:00"
         },
         "state": {
@@ -8559,16 +8636,16 @@ fetch(url, {
         }
     },
     {
-        "id": 22,
-        "task_id": 147,
+        "id": 21,
+        "task_id": 84,
         "state_id": 31,
-        "preference": 1,
+        "preference": 2,
         "task": {
-            "id": 147,
-            "name": "Food Preparation",
-            "start_at": "16:45:00",
-            "end_at": "17:15:00",
-            "hours": 0.5,
+            "id": 84,
+            "name": "Forest Fire Fighter",
+            "start_at": "13:00:00",
+            "end_at": "14:30:00",
+            "hours": 1.5,
             "date": "2020-07-04 00:00:00"
         },
         "state": {
@@ -8578,17 +8655,36 @@ fetch(url, {
         }
     },
     {
-        "id": 23,
-        "task_id": 151,
+        "id": 22,
+        "task_id": 89,
         "state_id": 31,
-        "preference": 2,
+        "preference": 3,
         "task": {
-            "id": 151,
-            "name": "Paste-Up Worker",
-            "start_at": "13:15:00",
-            "end_at": "13:30:00",
-            "hours": 0.25,
-            "date": "2020-07-03 00:00:00"
+            "id": 89,
+            "name": "Military Officer",
+            "start_at": "11:15:00",
+            "end_at": "12:45:00",
+            "hours": 1.5,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 23,
+        "task_id": 92,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 92,
+            "name": "Food Science Technician",
+            "start_at": "11:00:00",
+            "end_at": "12:00:00",
+            "hours": 1,
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8598,16 +8694,16 @@ fetch(url, {
     },
     {
         "id": 24,
-        "task_id": 155,
+        "task_id": 94,
         "state_id": 31,
-        "preference": 1,
+        "preference": 2,
         "task": {
-            "id": 155,
-            "name": "Production Worker",
-            "start_at": "10:15:00",
-            "end_at": "10:45:00",
-            "hours": 0.5,
-            "date": "2020-07-06 00:00:00"
+            "id": 94,
+            "name": "Buffing and Polishing Operator",
+            "start_at": "17:30:00",
+            "end_at": "17:45:00",
+            "hours": 0.25,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8617,16 +8713,16 @@ fetch(url, {
     },
     {
         "id": 25,
-        "task_id": 158,
+        "task_id": 96,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 158,
-            "name": "Rough Carpenter",
-            "start_at": "14:30:00",
-            "end_at": "15:45:00",
+            "id": 96,
+            "name": "Office Machine and Cash Register Servicer",
+            "start_at": "11:15:00",
+            "end_at": "12:30:00",
             "hours": 1.25,
-            "date": "2020-07-06 00:00:00"
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8636,16 +8732,16 @@ fetch(url, {
     },
     {
         "id": 26,
-        "task_id": 167,
+        "task_id": 97,
         "state_id": 31,
-        "preference": 3,
+        "preference": 2,
         "task": {
-            "id": 167,
-            "name": "Bellhop",
-            "start_at": "17:45:00",
-            "end_at": "18:15:00",
-            "hours": 0.5,
-            "date": "2020-07-03 00:00:00"
+            "id": 97,
+            "name": "Lathe Operator",
+            "start_at": "11:15:00",
+            "end_at": "13:15:00",
+            "hours": 2,
+            "date": "2020-07-07 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8655,16 +8751,16 @@ fetch(url, {
     },
     {
         "id": 27,
-        "task_id": 168,
+        "task_id": 105,
         "state_id": 31,
-        "preference": 3,
+        "preference": 1,
         "task": {
-            "id": 168,
-            "name": "Retail Sales person",
-            "start_at": "08:00:00",
-            "end_at": "09:00:00",
+            "id": 105,
+            "name": "Artist",
+            "start_at": "13:15:00",
+            "end_at": "14:15:00",
             "hours": 1,
-            "date": "2020-07-06 00:00:00"
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8674,16 +8770,16 @@ fetch(url, {
     },
     {
         "id": 28,
-        "task_id": 174,
+        "task_id": 107,
         "state_id": 31,
-        "preference": 3,
+        "preference": 2,
         "task": {
-            "id": 174,
-            "name": "Municipal Fire Fighting Supervisor",
-            "start_at": "14:45:00",
-            "end_at": "15:15:00",
-            "hours": 0.5,
-            "date": "2020-07-03 00:00:00"
+            "id": 107,
+            "name": "Precision Lens Grinders and Polisher",
+            "start_at": "17:30:00",
+            "end_at": "19:45:00",
+            "hours": 2.25,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8693,15 +8789,15 @@ fetch(url, {
     },
     {
         "id": 29,
-        "task_id": 182,
+        "task_id": 113,
         "state_id": 31,
         "preference": 1,
         "task": {
-            "id": 182,
-            "name": "Police Identification OR Records Officer",
-            "start_at": "09:00:00",
-            "end_at": "10:15:00",
-            "hours": 1.25,
+            "id": 113,
+            "name": "Radio Operator",
+            "start_at": "11:15:00",
+            "end_at": "13:00:00",
+            "hours": 1.75,
             "date": "2020-07-04 00:00:00"
         },
         "state": {
@@ -8712,16 +8808,16 @@ fetch(url, {
     },
     {
         "id": 30,
-        "task_id": 185,
+        "task_id": 120,
         "state_id": 31,
-        "preference": 2,
+        "preference": 3,
         "task": {
-            "id": 185,
-            "name": "Social Worker",
-            "start_at": "16:00:00",
-            "end_at": "18:00:00",
-            "hours": 2,
-            "date": "2020-07-03 00:00:00"
+            "id": 120,
+            "name": "Irradiated-Fuel Handler",
+            "start_at": "11:15:00",
+            "end_at": "12:00:00",
+            "hours": 0.75,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8731,16 +8827,16 @@ fetch(url, {
     },
     {
         "id": 31,
-        "task_id": 187,
+        "task_id": 124,
         "state_id": 31,
         "preference": 3,
         "task": {
-            "id": 187,
-            "name": "Cement Mason and Concrete Finisher",
-            "start_at": "10:30:00",
-            "end_at": "12:15:00",
-            "hours": 1.75,
-            "date": "2020-07-01 00:00:00"
+            "id": 124,
+            "name": "Brazing Machine Operator",
+            "start_at": "09:15:00",
+            "end_at": "09:30:00",
+            "hours": 0.25,
+            "date": "2020-07-05 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8750,71 +8846,14 @@ fetch(url, {
     },
     {
         "id": 32,
-        "task_id": 214,
+        "task_id": 126,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 214,
-            "name": "Manager of Food Preparation",
-            "start_at": "08:00:00",
-            "end_at": "10:00:00",
-            "hours": 2,
-            "date": "2020-07-01 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 33,
-        "task_id": 236,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 236,
-            "name": "Copy Machine Operator",
-            "start_at": "13:00:00",
-            "end_at": "15:00:00",
-            "hours": 2,
-            "date": "2020-07-04 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 34,
-        "task_id": 247,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 247,
-            "name": "Special Forces Officer",
-            "start_at": "08:00:00",
-            "end_at": "08:30:00",
-            "hours": 0.5,
-            "date": "2020-07-01 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 35,
-        "task_id": 278,
-        "state_id": 31,
-        "preference": 2,
-        "task": {
-            "id": 278,
-            "name": "Healthcare Practitioner",
-            "start_at": "17:00:00",
-            "end_at": "18:15:00",
+            "id": 126,
+            "name": "Typesetter",
+            "start_at": "16:00:00",
+            "end_at": "17:15:00",
             "hours": 1.25,
             "date": "2020-07-05 00:00:00"
         },
@@ -8825,17 +8864,74 @@ fetch(url, {
         }
     },
     {
-        "id": 36,
-        "task_id": 284,
+        "id": 33,
+        "task_id": 132,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 132,
+            "name": "Home",
+            "start_at": "16:00:00",
+            "end_at": "16:30:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 34,
+        "task_id": 133,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 284,
-            "name": "Photoengraver",
-            "start_at": "15:15:00",
-            "end_at": "15:45:00",
-            "hours": 0.5,
-            "date": "2020-07-05 00:00:00"
+            "id": 133,
+            "name": "Biochemist",
+            "start_at": "13:45:00",
+            "end_at": "15:15:00",
+            "hours": 1.5,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 35,
+        "task_id": 134,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 134,
+            "name": "Photographic Developer",
+            "start_at": "09:15:00",
+            "end_at": "10:00:00",
+            "hours": 0.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 36,
+        "task_id": 139,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 139,
+            "name": "Night Shift",
+            "start_at": "11:30:00",
+            "end_at": "11:45:00",
+            "hours": 0.25,
+            "date": "2020-07-07 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8845,14 +8941,90 @@ fetch(url, {
     },
     {
         "id": 37,
-        "task_id": 288,
+        "task_id": 140,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 140,
+            "name": "Electrician",
+            "start_at": "11:15:00",
+            "end_at": "12:00:00",
+            "hours": 0.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 38,
+        "task_id": 141,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 288,
-            "name": "Business Manager",
-            "start_at": "14:30:00",
-            "end_at": "16:15:00",
+            "id": 141,
+            "name": "Compliance Officers",
+            "start_at": "14:45:00",
+            "end_at": "17:00:00",
+            "hours": 2.25,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 39,
+        "task_id": 142,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 142,
+            "name": "Anthropology Teacher",
+            "start_at": "13:45:00",
+            "end_at": "15:30:00",
+            "hours": 1.75,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 40,
+        "task_id": 144,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 144,
+            "name": "Lifeguard",
+            "start_at": "09:45:00",
+            "end_at": "11:15:00",
+            "hours": 1.5,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 41,
+        "task_id": 149,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 149,
+            "name": "Gaming Service Worker",
+            "start_at": "15:45:00",
+            "end_at": "17:30:00",
             "hours": 1.75,
             "date": "2020-07-04 00:00:00"
         },
@@ -8863,93 +9035,17 @@ fetch(url, {
         }
     },
     {
-        "id": 38,
-        "task_id": 290,
-        "state_id": 31,
-        "preference": 2,
-        "task": {
-            "id": 290,
-            "name": "Transit Police OR Railroad Police",
-            "start_at": "10:00:00",
-            "end_at": "11:00:00",
-            "hours": 1,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 39,
-        "task_id": 312,
-        "state_id": 31,
-        "preference": 2,
-        "task": {
-            "id": 312,
-            "name": "Library Worker",
-            "start_at": "08:45:00",
-            "end_at": "09:45:00",
-            "hours": 1,
-            "date": "2020-07-04 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 40,
-        "task_id": 313,
-        "state_id": 31,
-        "preference": 1,
-        "task": {
-            "id": 313,
-            "name": "Lawyer",
-            "start_at": "16:15:00",
-            "end_at": "17:45:00",
-            "hours": 1.5,
-            "date": "2020-07-03 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 41,
-        "task_id": 315,
-        "state_id": 31,
-        "preference": 1,
-        "task": {
-            "id": 315,
-            "name": "University",
-            "start_at": "08:00:00",
-            "end_at": "09:15:00",
-            "hours": 1.25,
-            "date": "2020-07-02 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
         "id": 42,
-        "task_id": 316,
+        "task_id": 152,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 316,
-            "name": "Secondary School Teacher",
-            "start_at": "13:00:00",
-            "end_at": "14:00:00",
-            "hours": 1,
-            "date": "2020-07-02 00:00:00"
+            "id": 152,
+            "name": "Electrical Power-Line Installer",
+            "start_at": "12:45:00",
+            "end_at": "13:15:00",
+            "hours": 0.5,
+            "date": "2020-07-06 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8959,16 +9055,16 @@ fetch(url, {
     },
     {
         "id": 43,
-        "task_id": 321,
+        "task_id": 153,
         "state_id": 31,
         "preference": 1,
         "task": {
-            "id": 321,
-            "name": "Photographic Restorer",
-            "start_at": "17:15:00",
-            "end_at": "17:45:00",
-            "hours": 0.5,
-            "date": "2020-07-01 00:00:00"
+            "id": 153,
+            "name": "Molding and Casting Worker",
+            "start_at": "17:45:00",
+            "end_at": "19:45:00",
+            "hours": 2,
+            "date": "2020-07-07 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8978,16 +9074,16 @@ fetch(url, {
     },
     {
         "id": 44,
-        "task_id": 351,
+        "task_id": 154,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 351,
-            "name": "Counselor",
-            "start_at": "08:00:00",
-            "end_at": "08:45:00",
-            "hours": 0.75,
-            "date": "2020-07-06 00:00:00"
+            "id": 154,
+            "name": "Correctional Officer",
+            "start_at": "12:30:00",
+            "end_at": "13:45:00",
+            "hours": 1.25,
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -8997,16 +9093,16 @@ fetch(url, {
     },
     {
         "id": 45,
-        "task_id": 360,
+        "task_id": 157,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 360,
-            "name": "Heavy Equipment Mechanic",
-            "start_at": "15:45:00",
-            "end_at": "16:30:00",
-            "hours": 0.75,
-            "date": "2020-07-02 00:00:00"
+            "id": 157,
+            "name": "Central Office",
+            "start_at": "17:00:00",
+            "end_at": "18:30:00",
+            "hours": 1.5,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9016,16 +9112,16 @@ fetch(url, {
     },
     {
         "id": 46,
-        "task_id": 362,
+        "task_id": 165,
         "state_id": 31,
-        "preference": 3,
+        "preference": 1,
         "task": {
-            "id": 362,
-            "name": "Military Officer",
-            "start_at": "09:00:00",
-            "end_at": "11:00:00",
-            "hours": 2,
-            "date": "2020-07-01 00:00:00"
+            "id": 165,
+            "name": "Purchasing Agent",
+            "start_at": "16:30:00",
+            "end_at": "17:15:00",
+            "hours": 0.75,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9035,16 +9131,16 @@ fetch(url, {
     },
     {
         "id": 47,
-        "task_id": 365,
+        "task_id": 166,
         "state_id": 31,
-        "preference": 2,
+        "preference": 0,
         "task": {
-            "id": 365,
-            "name": "Fashion Designer",
-            "start_at": "08:00:00",
-            "end_at": "09:30:00",
-            "hours": 1.5,
-            "date": "2020-07-05 00:00:00"
+            "id": 166,
+            "name": "Claims Examiner",
+            "start_at": "16:45:00",
+            "end_at": "18:45:00",
+            "hours": 2,
+            "date": "2020-07-07 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9054,16 +9150,16 @@ fetch(url, {
     },
     {
         "id": 48,
-        "task_id": 373,
+        "task_id": 168,
         "state_id": 31,
-        "preference": 3,
+        "preference": 1,
         "task": {
-            "id": 373,
-            "name": "Plate Finisher",
-            "start_at": "12:15:00",
-            "end_at": "13:30:00",
-            "hours": 1.25,
-            "date": "2020-07-01 00:00:00"
+            "id": 168,
+            "name": "Valve Repairer OR Regulator Repairer",
+            "start_at": "14:45:00",
+            "end_at": "15:30:00",
+            "hours": 0.75,
+            "date": "2020-07-04 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9073,16 +9169,16 @@ fetch(url, {
     },
     {
         "id": 49,
-        "task_id": 381,
+        "task_id": 170,
         "state_id": 31,
-        "preference": 2,
+        "preference": 1,
         "task": {
-            "id": 381,
-            "name": "Electronics Engineering Technician",
-            "start_at": "16:45:00",
-            "end_at": "18:00:00",
+            "id": 170,
+            "name": "Electrical Engineering Technician",
+            "start_at": "08:30:00",
+            "end_at": "09:45:00",
             "hours": 1.25,
-            "date": "2020-07-01 00:00:00"
+            "date": "2020-07-06 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9092,16 +9188,16 @@ fetch(url, {
     },
     {
         "id": 50,
-        "task_id": 405,
+        "task_id": 174,
         "state_id": 31,
-        "preference": 1,
+        "preference": 2,
         "task": {
-            "id": 405,
-            "name": "Log Grader and Scaler",
-            "start_at": "11:00:00",
-            "end_at": "11:15:00",
-            "hours": 0.25,
-            "date": "2020-07-01 00:00:00"
+            "id": 174,
+            "name": "Petroleum Technician",
+            "start_at": "15:45:00",
+            "end_at": "17:45:00",
+            "hours": 2,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9111,16 +9207,16 @@ fetch(url, {
     },
     {
         "id": 51,
-        "task_id": 407,
+        "task_id": 175,
         "state_id": 31,
-        "preference": 3,
+        "preference": 1,
         "task": {
-            "id": 407,
-            "name": "Recyclable Material Collector",
-            "start_at": "08:15:00",
-            "end_at": "09:00:00",
-            "hours": 0.75,
-            "date": "2020-07-06 00:00:00"
+            "id": 175,
+            "name": "Insurance Investigator",
+            "start_at": "17:30:00",
+            "end_at": "18:00:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9130,34 +9226,15 @@ fetch(url, {
     },
     {
         "id": 52,
-        "task_id": 409,
+        "task_id": 179,
         "state_id": 31,
-        "preference": 1,
+        "preference": 2,
         "task": {
-            "id": 409,
-            "name": "Home Entertainment Equipment Installer",
-            "start_at": "13:15:00",
-            "end_at": "13:30:00",
-            "hours": 0.25,
-            "date": "2020-07-06 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 53,
-        "task_id": 423,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 423,
-            "name": "Paving Equipment Operator",
-            "start_at": "10:00:00",
-            "end_at": "11:00:00",
-            "hours": 1,
+            "id": 179,
+            "name": "Infantry Officer",
+            "start_at": "12:00:00",
+            "end_at": "14:15:00",
+            "hours": 2.25,
             "date": "2020-07-05 00:00:00"
         },
         "state": {
@@ -9167,16 +9244,35 @@ fetch(url, {
         }
     },
     {
+        "id": 53,
+        "task_id": 183,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 183,
+            "name": "Automotive Technician",
+            "start_at": "15:00:00",
+            "end_at": "17:00:00",
+            "hours": 2,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
         "id": 54,
-        "task_id": 426,
+        "task_id": 189,
         "state_id": 31,
         "preference": 2,
         "task": {
-            "id": 426,
-            "name": "Conveyor Operator",
-            "start_at": "08:45:00",
-            "end_at": "10:15:00",
-            "hours": 1.5,
+            "id": 189,
+            "name": "Occupational Health Safety Specialist",
+            "start_at": "10:45:00",
+            "end_at": "11:00:00",
+            "hours": 0.25,
             "date": "2020-07-05 00:00:00"
         },
         "state": {
@@ -9187,16 +9283,16 @@ fetch(url, {
     },
     {
         "id": 55,
-        "task_id": 439,
+        "task_id": 190,
         "state_id": 31,
-        "preference": 2,
+        "preference": 1,
         "task": {
-            "id": 439,
-            "name": "Forest Fire Inspector",
-            "start_at": "11:15:00",
-            "end_at": "13:15:00",
-            "hours": 2,
-            "date": "2020-07-05 00:00:00"
+            "id": 190,
+            "name": "Supervisor Correctional Officer",
+            "start_at": "17:00:00",
+            "end_at": "17:45:00",
+            "hours": 0.75,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9206,16 +9302,16 @@ fetch(url, {
     },
     {
         "id": 56,
-        "task_id": 441,
+        "task_id": 191,
         "state_id": 31,
-        "preference": 2,
+        "preference": 1,
         "task": {
-            "id": 441,
-            "name": "Petroleum Pump Operator",
-            "start_at": "10:30:00",
-            "end_at": "12:30:00",
-            "hours": 2,
-            "date": "2020-07-05 00:00:00"
+            "id": 191,
+            "name": "Lifeguard",
+            "start_at": "10:00:00",
+            "end_at": "10:15:00",
+            "hours": 0.25,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9225,14 +9321,109 @@ fetch(url, {
     },
     {
         "id": 57,
-        "task_id": 444,
+        "task_id": 196,
         "state_id": 31,
         "preference": 1,
         "task": {
-            "id": 444,
-            "name": "Industrial Equipment Maintenance",
-            "start_at": "08:15:00",
-            "end_at": "09:15:00",
+            "id": 196,
+            "name": "Agricultural Inspector",
+            "start_at": "11:15:00",
+            "end_at": "11:45:00",
+            "hours": 0.5,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 58,
+        "task_id": 199,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 199,
+            "name": "Agricultural Worker",
+            "start_at": "14:15:00",
+            "end_at": "15:15:00",
+            "hours": 1,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 59,
+        "task_id": 200,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 200,
+            "name": "Buffing and Polishing Operator",
+            "start_at": "13:15:00",
+            "end_at": "15:30:00",
+            "hours": 2.25,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 60,
+        "task_id": 208,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 208,
+            "name": "Chemical Plant Operator",
+            "start_at": "08:45:00",
+            "end_at": "10:45:00",
+            "hours": 2,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 61,
+        "task_id": 213,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 213,
+            "name": "Electronic Equipment Assembler",
+            "start_at": "12:15:00",
+            "end_at": "12:45:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 62,
+        "task_id": 217,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 217,
+            "name": "Job Printer",
+            "start_at": "12:45:00",
+            "end_at": "13:45:00",
             "hours": 1,
             "date": "2020-07-05 00:00:00"
         },
@@ -9243,111 +9434,16 @@ fetch(url, {
         }
     },
     {
-        "id": 58,
-        "task_id": 445,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 445,
-            "name": "Extruding Machine Operator",
-            "start_at": "11:15:00",
-            "end_at": "12:00:00",
-            "hours": 0.75,
-            "date": "2020-07-04 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 59,
-        "task_id": 446,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 446,
-            "name": "Heaters",
-            "start_at": "15:45:00",
-            "end_at": "17:15:00",
-            "hours": 1.5,
-            "date": "2020-07-04 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 60,
-        "task_id": 451,
-        "state_id": 31,
-        "preference": 2,
-        "task": {
-            "id": 451,
-            "name": "Waitress",
-            "start_at": "17:00:00",
-            "end_at": "18:45:00",
-            "hours": 1.75,
-            "date": "2020-07-04 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 61,
-        "task_id": 457,
-        "state_id": 31,
-        "preference": 3,
-        "task": {
-            "id": 457,
-            "name": "HVAC Mechanic",
-            "start_at": "13:00:00",
-            "end_at": "14:30:00",
-            "hours": 1.5,
-            "date": "2020-07-05 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
-        "id": 62,
-        "task_id": 463,
-        "state_id": 31,
-        "preference": 2,
-        "task": {
-            "id": 463,
-            "name": "Vending Machine Servicer",
-            "start_at": "17:00:00",
-            "end_at": "18:15:00",
-            "hours": 1.25,
-            "date": "2020-07-06 00:00:00"
-        },
-        "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
-        }
-    },
-    {
         "id": 63,
-        "task_id": 465,
+        "task_id": 222,
         "state_id": 31,
         "preference": 3,
         "task": {
-            "id": 465,
-            "name": "Photoengraver",
-            "start_at": "12:15:00",
-            "end_at": "13:45:00",
-            "hours": 1.5,
+            "id": 222,
+            "name": "Claims Adjuster",
+            "start_at": "08:15:00",
+            "end_at": "08:30:00",
+            "hours": 0.25,
             "date": "2020-07-06 00:00:00"
         },
         "state": {
@@ -9358,16 +9454,16 @@ fetch(url, {
     },
     {
         "id": 64,
-        "task_id": 473,
+        "task_id": 226,
         "state_id": 31,
         "preference": 3,
         "task": {
-            "id": 473,
-            "name": "Auditor",
-            "start_at": "08:30:00",
-            "end_at": "09:30:00",
-            "hours": 1,
-            "date": "2020-07-05 00:00:00"
+            "id": 226,
+            "name": "Bridge Tender OR Lock Tender",
+            "start_at": "12:45:00",
+            "end_at": "14:30:00",
+            "hours": 1.75,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9377,16 +9473,16 @@ fetch(url, {
     },
     {
         "id": 65,
-        "task_id": 476,
+        "task_id": 231,
         "state_id": 31,
         "preference": 3,
         "task": {
-            "id": 476,
-            "name": "Health Specialties Teacher",
-            "start_at": "16:00:00",
-            "end_at": "17:00:00",
-            "hours": 1,
-            "date": "2020-07-02 00:00:00"
+            "id": 231,
+            "name": "Food Cooking Machine Operators",
+            "start_at": "10:00:00",
+            "end_at": "12:00:00",
+            "hours": 2,
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9396,16 +9492,16 @@ fetch(url, {
     },
     {
         "id": 66,
-        "task_id": 481,
+        "task_id": 232,
         "state_id": 31,
-        "preference": 3,
+        "preference": 1,
         "task": {
-            "id": 481,
-            "name": "Transportation Equipment Painters",
-            "start_at": "08:00:00",
-            "end_at": "08:15:00",
-            "hours": 0.25,
-            "date": "2020-07-01 00:00:00"
+            "id": 232,
+            "name": "Public Transportation Inspector",
+            "start_at": "08:15:00",
+            "end_at": "09:45:00",
+            "hours": 1.5,
+            "date": "2020-07-09 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9415,16 +9511,16 @@ fetch(url, {
     },
     {
         "id": 67,
-        "task_id": 485,
+        "task_id": 246,
         "state_id": 31,
-        "preference": 3,
+        "preference": 2,
         "task": {
-            "id": 485,
-            "name": "Electronic Drafter",
-            "start_at": "08:15:00",
-            "end_at": "10:00:00",
-            "hours": 1.75,
-            "date": "2020-07-02 00:00:00"
+            "id": 246,
+            "name": "Recreational Therapist",
+            "start_at": "10:30:00",
+            "end_at": "11:30:00",
+            "hours": 1,
+            "date": "2020-07-06 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9434,16 +9530,16 @@ fetch(url, {
     },
     {
         "id": 68,
-        "task_id": 488,
+        "task_id": 248,
         "state_id": 31,
-        "preference": 3,
+        "preference": 2,
         "task": {
-            "id": 488,
-            "name": "Statistical Assistant",
-            "start_at": "15:00:00",
-            "end_at": "16:15:00",
-            "hours": 1.25,
-            "date": "2020-07-03 00:00:00"
+            "id": 248,
+            "name": "Cashier",
+            "start_at": "11:00:00",
+            "end_at": "12:00:00",
+            "hours": 1,
+            "date": "2020-07-07 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9453,14 +9549,1306 @@ fetch(url, {
     },
     {
         "id": 69,
-        "task_id": 490,
+        "task_id": 251,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 251,
+            "name": "Bailiff",
+            "start_at": "10:00:00",
+            "end_at": "11:45:00",
+            "hours": 1.75,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 70,
+        "task_id": 252,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 252,
+            "name": "Architecture Teacher",
+            "start_at": "12:45:00",
+            "end_at": "13:45:00",
+            "hours": 1,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 71,
+        "task_id": 254,
         "state_id": 31,
         "preference": 1,
         "task": {
-            "id": 490,
-            "name": "Social Scientists",
+            "id": 254,
+            "name": "Medical Appliance Technician",
+            "start_at": "10:30:00",
+            "end_at": "12:15:00",
+            "hours": 1.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 72,
+        "task_id": 255,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 255,
+            "name": "Chemical Equipment Operator",
+            "start_at": "17:00:00",
+            "end_at": "17:15:00",
+            "hours": 0.25,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 73,
+        "task_id": 262,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 262,
+            "name": "Distribution Manager",
+            "start_at": "17:30:00",
+            "end_at": "18:30:00",
+            "hours": 1,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 74,
+        "task_id": 266,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 266,
+            "name": "Communications Teacher",
+            "start_at": "14:30:00",
+            "end_at": "15:45:00",
+            "hours": 1.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 75,
+        "task_id": 279,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 279,
+            "name": "Business Development Manager",
+            "start_at": "15:15:00",
+            "end_at": "16:45:00",
+            "hours": 1.5,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 76,
+        "task_id": 281,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 281,
+            "name": "Healthcare Practitioner",
+            "start_at": "16:30:00",
+            "end_at": "17:00:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 77,
+        "task_id": 283,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 283,
+            "name": "Music Arranger and Orchestrator",
+            "start_at": "15:45:00",
+            "end_at": "17:30:00",
+            "hours": 1.75,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 78,
+        "task_id": 286,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 286,
+            "name": "Algorithm Developer",
+            "start_at": "15:15:00",
+            "end_at": "16:30:00",
+            "hours": 1.25,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 79,
+        "task_id": 292,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 292,
+            "name": "Sheriff",
+            "start_at": "12:30:00",
+            "end_at": "13:00:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 80,
+        "task_id": 295,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 295,
+            "name": "Security Guard",
+            "start_at": "14:45:00",
+            "end_at": "16:00:00",
+            "hours": 1.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 81,
+        "task_id": 299,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 299,
+            "name": "Tour Guide",
+            "start_at": "14:15:00",
+            "end_at": "16:30:00",
+            "hours": 2.25,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 82,
+        "task_id": 301,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 301,
+            "name": "Traffic Technician",
+            "start_at": "17:00:00",
+            "end_at": "18:15:00",
+            "hours": 1.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 83,
+        "task_id": 304,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 304,
+            "name": "Purchasing Agent",
+            "start_at": "15:30:00",
+            "end_at": "15:45:00",
+            "hours": 0.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 84,
+        "task_id": 306,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 306,
+            "name": "Elementary School Teacher",
+            "start_at": "08:30:00",
+            "end_at": "09:30:00",
+            "hours": 1,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 85,
+        "task_id": 311,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 311,
+            "name": "General Farmworker",
+            "start_at": "14:15:00",
+            "end_at": "15:15:00",
+            "hours": 1,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 86,
+        "task_id": 313,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 313,
+            "name": "PR Manager",
+            "start_at": "15:45:00",
+            "end_at": "17:45:00",
+            "hours": 2,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 87,
+        "task_id": 314,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 314,
+            "name": "Operating Engineer",
+            "start_at": "17:30:00",
+            "end_at": "17:45:00",
+            "hours": 0.25,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 88,
+        "task_id": 316,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 316,
+            "name": "Electronic Engineering Technician",
+            "start_at": "10:30:00",
+            "end_at": "11:15:00",
+            "hours": 0.75,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 89,
+        "task_id": 317,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 317,
+            "name": "Licensing Examiner and Inspector",
+            "start_at": "17:15:00",
+            "end_at": "19:15:00",
+            "hours": 2,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 90,
+        "task_id": 318,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 318,
+            "name": "Forest and Conservation Technician",
+            "start_at": "17:15:00",
+            "end_at": "19:00:00",
+            "hours": 1.75,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 91,
+        "task_id": 321,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 321,
+            "name": "Social Worker",
+            "start_at": "15:00:00",
+            "end_at": "17:00:00",
+            "hours": 2,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 92,
+        "task_id": 328,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 328,
+            "name": "CSI",
+            "start_at": "11:15:00",
+            "end_at": "12:00:00",
+            "hours": 0.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 93,
+        "task_id": 334,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 334,
+            "name": "Telecommunications Line Installer",
+            "start_at": "14:00:00",
+            "end_at": "16:00:00",
+            "hours": 2,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 94,
+        "task_id": 351,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 351,
+            "name": "Economics Teacher",
+            "start_at": "10:45:00",
+            "end_at": "12:15:00",
+            "hours": 1.5,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 95,
+        "task_id": 353,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 353,
+            "name": "Boat Builder and Shipwright",
             "start_at": "13:45:00",
+            "end_at": "15:15:00",
+            "hours": 1.5,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 96,
+        "task_id": 358,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 358,
+            "name": "Art Director",
+            "start_at": "11:30:00",
+            "end_at": "11:45:00",
+            "hours": 0.25,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 97,
+        "task_id": 359,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 359,
+            "name": "Engineering Teacher",
+            "start_at": "16:45:00",
+            "end_at": "18:45:00",
+            "hours": 2,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 98,
+        "task_id": 362,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 362,
+            "name": "Gaming Surveillance Officer",
+            "start_at": "17:30:00",
+            "end_at": "18:00:00",
+            "hours": 0.5,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 99,
+        "task_id": 363,
+        "state_id": 31,
+        "preference": 0,
+        "task": {
+            "id": 363,
+            "name": "Dental Assistant",
+            "start_at": "09:45:00",
+            "end_at": "10:45:00",
+            "hours": 1,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 100,
+        "task_id": 365,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 365,
+            "name": "Security Systems Installer OR Fire Alarm Systems Installer",
+            "start_at": "09:30:00",
+            "end_at": "10:15:00",
+            "hours": 0.75,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 101,
+        "task_id": 369,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 369,
+            "name": "MARCOM Director",
+            "start_at": "15:45:00",
+            "end_at": "16:30:00",
+            "hours": 0.75,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 102,
+        "task_id": 372,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 372,
+            "name": "Numerical Control Machine Tool Operator",
+            "start_at": "11:15:00",
+            "end_at": "12:30:00",
+            "hours": 1.25,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 103,
+        "task_id": 373,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 373,
+            "name": "Telemarketer",
+            "start_at": "14:15:00",
+            "end_at": "14:45:00",
+            "hours": 0.5,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 104,
+        "task_id": 384,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 384,
+            "name": "Architectural Drafter",
+            "start_at": "10:00:00",
+            "end_at": "12:15:00",
+            "hours": 2.25,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 105,
+        "task_id": 391,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 391,
+            "name": "Precision Mold and Pattern Caster",
+            "start_at": "12:00:00",
+            "end_at": "14:00:00",
+            "hours": 2,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 106,
+        "task_id": 394,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 394,
+            "name": "Chemist",
+            "start_at": "13:00:00",
+            "end_at": "13:30:00",
+            "hours": 0.5,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 107,
+        "task_id": 395,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 395,
+            "name": "Electronic Masking System Operator",
+            "start_at": "09:45:00",
+            "end_at": "10:45:00",
+            "hours": 1,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 108,
+        "task_id": 396,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 396,
+            "name": "Extraction Worker",
+            "start_at": "13:30:00",
+            "end_at": "15:45:00",
+            "hours": 2.25,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 109,
+        "task_id": 398,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 398,
+            "name": "Clerk",
+            "start_at": "12:30:00",
+            "end_at": "13:45:00",
+            "hours": 1.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 110,
+        "task_id": 399,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 399,
+            "name": "Fabric Pressers",
+            "start_at": "11:45:00",
+            "end_at": "12:30:00",
+            "hours": 0.75,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 111,
+        "task_id": 406,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 406,
+            "name": "Anthropologist OR Archeologist",
+            "start_at": "12:15:00",
             "end_at": "14:15:00",
+            "hours": 2,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 112,
+        "task_id": 415,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 415,
+            "name": "Computer Software Engineer",
+            "start_at": "10:30:00",
+            "end_at": "11:15:00",
+            "hours": 0.75,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 113,
+        "task_id": 417,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 417,
+            "name": "Stone Sawyer",
+            "start_at": "16:30:00",
+            "end_at": "16:45:00",
+            "hours": 0.25,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 114,
+        "task_id": 426,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 426,
+            "name": "Upholsterer",
+            "start_at": "17:00:00",
+            "end_at": "18:45:00",
+            "hours": 1.75,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 115,
+        "task_id": 428,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 428,
+            "name": "Highway Maintenance Worker",
+            "start_at": "09:45:00",
+            "end_at": "11:30:00",
+            "hours": 1.75,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 116,
+        "task_id": 440,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 440,
+            "name": "Social Scientists",
+            "start_at": "08:00:00",
+            "end_at": "08:15:00",
+            "hours": 0.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 117,
+        "task_id": 443,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 443,
+            "name": "Brickmason",
+            "start_at": "12:00:00",
+            "end_at": "12:45:00",
+            "hours": 0.75,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 118,
+        "task_id": 447,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 447,
+            "name": "Cafeteria Cook",
+            "start_at": "17:15:00",
+            "end_at": "19:00:00",
+            "hours": 1.75,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 119,
+        "task_id": 451,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 451,
+            "name": "Photographic Restorer",
+            "start_at": "08:45:00",
+            "end_at": "10:30:00",
+            "hours": 1.75,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 120,
+        "task_id": 455,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 455,
+            "name": "Occupational Therapist Aide",
+            "start_at": "16:45:00",
+            "end_at": "18:30:00",
+            "hours": 1.75,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 121,
+        "task_id": 456,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 456,
+            "name": "Forming Machine Operator",
+            "start_at": "18:00:00",
+            "end_at": "20:00:00",
+            "hours": 2,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 122,
+        "task_id": 457,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 457,
+            "name": "Drilling and Boring Machine Tool Setter",
+            "start_at": "18:00:00",
+            "end_at": "19:45:00",
+            "hours": 1.75,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 123,
+        "task_id": 458,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 458,
+            "name": "Product Specialist",
+            "start_at": "15:30:00",
+            "end_at": "17:45:00",
+            "hours": 2.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 124,
+        "task_id": 461,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 461,
+            "name": "Title Searcher",
+            "start_at": "10:30:00",
+            "end_at": "12:30:00",
+            "hours": 2,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 125,
+        "task_id": 463,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 463,
+            "name": "Radiation Therapist",
+            "start_at": "08:15:00",
+            "end_at": "09:30:00",
+            "hours": 1.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 126,
+        "task_id": 467,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 467,
+            "name": "Conservation Scientist",
+            "start_at": "08:30:00",
+            "end_at": "09:15:00",
+            "hours": 0.75,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 127,
+        "task_id": 468,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 468,
+            "name": "Air Crew Member",
+            "start_at": "09:00:00",
+            "end_at": "11:15:00",
+            "hours": 2.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 128,
+        "task_id": 469,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 469,
+            "name": "Engineering",
+            "start_at": "11:15:00",
+            "end_at": "13:15:00",
+            "hours": 2,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 129,
+        "task_id": 473,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 473,
+            "name": "Housekeeping Supervisor",
+            "start_at": "09:30:00",
+            "end_at": "11:00:00",
+            "hours": 1.5,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 130,
+        "task_id": 474,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 474,
+            "name": "Legal Support Worker",
+            "start_at": "12:15:00",
+            "end_at": "12:30:00",
+            "hours": 0.25,
+            "date": "2020-07-08 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 131,
+        "task_id": 483,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 483,
+            "name": "Precision Pattern and Die Caster",
+            "start_at": "16:00:00",
+            "end_at": "16:15:00",
+            "hours": 0.25,
+            "date": "2020-07-07 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 132,
+        "task_id": 488,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 488,
+            "name": "Directory Assistance Operator",
+            "start_at": "13:45:00",
+            "end_at": "15:00:00",
+            "hours": 1.25,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 133,
+        "task_id": 492,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 492,
+            "name": "Mathematical Scientist",
+            "start_at": "10:15:00",
+            "end_at": "12:00:00",
+            "hours": 1.75,
+            "date": "2020-07-05 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 134,
+        "task_id": 494,
+        "state_id": 31,
+        "preference": 3,
+        "task": {
+            "id": 494,
+            "name": "Sawing Machine Tool Setter",
+            "start_at": "14:30:00",
+            "end_at": "16:30:00",
+            "hours": 2,
+            "date": "2020-07-04 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 135,
+        "task_id": 495,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 495,
+            "name": "Anesthesiologist",
+            "start_at": "18:00:00",
+            "end_at": "20:15:00",
+            "hours": 2.25,
+            "date": "2020-07-06 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 136,
+        "task_id": 498,
+        "state_id": 31,
+        "preference": 1,
+        "task": {
+            "id": 498,
+            "name": "Electrical Sales Representative",
+            "start_at": "09:30:00",
+            "end_at": "11:45:00",
+            "hours": 2.25,
+            "date": "2020-07-09 00:00:00"
+        },
+        "state": {
+            "id": 31,
+            "name": "placed",
+            "description": "The bid is waiting for the auction"
+        }
+    },
+    {
+        "id": 137,
+        "task_id": 499,
+        "state_id": 31,
+        "preference": 2,
+        "task": {
+            "id": 499,
+            "name": "Refrigeration Mechanic",
+            "start_at": "10:45:00",
+            "end_at": "11:15:00",
             "hours": 0.5,
             "date": "2020-07-04 00:00:00"
         },
@@ -9471,17 +10859,17 @@ fetch(url, {
         }
     },
     {
-        "id": 853,
-        "task_id": 117,
+        "id": 138,
+        "task_id": 500,
         "state_id": 31,
-        "preference": 2,
+        "preference": 3,
         "task": {
-            "id": 117,
-            "name": "Landscape Artist",
-            "start_at": "09:30:00",
-            "end_at": "09:45:00",
+            "id": 500,
+            "name": "Entertainer and Performer",
+            "start_at": "08:45:00",
+            "end_at": "09:00:00",
             "hours": 0.25,
-            "date": "2020-07-01 00:00:00"
+            "date": "2020-07-08 00:00:00"
         },
         "state": {
             "id": 31,
@@ -9515,7 +10903,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/user/1/notification/chi20" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -9526,7 +10914,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -9542,49 +10930,8 @@ fetch(url, {
 
 ```json
 {
-    "total": 2,
-    "notifications": [
-        {
-            "id": "f8f02574-a9eb-408b-9836-c7408b248afb",
-            "type": "App\\Notifications\\Announcement",
-            "data": {
-                "elements": [
-                    {
-                        "type": "action",
-                        "data": {
-                            "caption": "Click to view",
-                            "url": "https:\/\/chisv.org\/conference\/chi20"
-                        }
-                    }
-                ],
-                "subject": "SV Announcement",
-                "greeting": null,
-                "salutation": "Regards,\n\nSV Chairs CHI20, Honolulu, Hawaiʻi, USA\n\n[noreply@chisv.org](mailto:noreply@chisv.org)\n\n[ACM](https:\/\/www.acm.org\/)"
-            },
-            "read_at": null,
-            "created_at": "2020-07-06 18:11:53"
-        },
-        {
-            "id": "05f4e434-6efb-4559-9081-d67ecdd0bc8b",
-            "type": "App\\Notifications\\Announcement",
-            "data": {
-                "elements": [
-                    {
-                        "type": "action",
-                        "data": {
-                            "caption": "Click to view",
-                            "url": "https:\/\/chisv.org\/conference\/chi20"
-                        }
-                    }
-                ],
-                "subject": "SV Announcement",
-                "greeting": null,
-                "salutation": "Regards,\n\nSV Chairs CHI20, Honolulu, Hawaiʻi, USA\n\n[noreply@chisv.org](mailto:noreply@chisv.org)\n\n[ACM](https:\/\/www.acm.org\/)"
-            },
-            "read_at": null,
-            "created_at": "2020-07-06 18:11:53"
-        }
-    ]
+    "total": 0,
+    "notifications": []
 }
 ```
 
@@ -9611,7 +10958,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/user?university_id=4044&university_fallback=%22Aachen%22&search=%22Admin%22&sort_by=lastname&sort_order=asc&per_page=2&page=1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -9634,7 +10981,7 @@ Object.keys(params)
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -9738,7 +11085,7 @@ curl -X GET \
     -G "https://chisv.org/api/v1/user/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
@@ -9749,7 +11096,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -9766,7 +11113,7 @@ fetch(url, {
 ```json
 {
     "id": 1,
-    "firstname": "ADMIN Milton",
+    "firstname": "Milton",
     "lastname": "Waddams",
     "country_id": "82",
     "university_fallback": null,
@@ -9814,10 +11161,10 @@ fetch(url, {
     ],
     "permissions": [
         {
-            "id": 14,
+            "id": 1,
             "user_id": 1,
             "conference_id": 1,
-            "enrollment_form_id": 14,
+            "enrollment_form_id": 2,
             "conference": {
                 "id": 1,
                 "key": "chi20",
@@ -9841,9 +11188,9 @@ fetch(url, {
                 "description": "Accepted to the conference as SV"
             },
             "enrollment_form": {
-                "id": 14,
+                "id": 2,
                 "name": "Default",
-                "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":false,\"weight\":0,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":0,\"weight\":0,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":2,\"weight\":0,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":true,\"weight\":0,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"sd\",\"required\":true}}}"
+                "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":14,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":26,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Error sint qui vel ipsam. Sequi optio rerum et praesentium asperiores sequi non. Et voluptatem est odit totam voluptatem culpa accusantium.\",\"required\":true}}}"
             },
             "user": {
                 "id": 1
@@ -9914,7 +11261,7 @@ curl -X PUT \
     "https://chisv.org/api/v1/user/1" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do" \
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
     -d '{"firstname":"Jacob","lastname":"Smith","email":"jacob@example.com","languages":[{"id":23}],"location":{"country":{"id":82,"name":"Germany"},"region":{"id":1268,"name":"Nordrhein-Westfalen"},"city":{"id":12850,"name":"Aachen"}},"university":{"id":4044,"name":"RWTH Aachen"},"degree_id":2,"shirt_id":3,"locale_id":51,"past_conferences":["CHI 2019"],"past_conferences_sv":["CHI 2019"],"password":"secret","password_confirmation":"secret"}'
 
 ```
@@ -9927,7 +11274,7 @@ const url = new URL(
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 let body = {
@@ -9994,10 +11341,10 @@ fetch(url, {
         "shirt_id": 3,
         "degree_id": 2,
         "email": "jacob@example.com",
-        "email_verified_at": "2020-07-04 14:12:30",
+        "email_verified_at": "2020-07-07 14:53:12",
         "locale_id": 51,
-        "created_at": "2020-07-04 14:12:30",
-        "updated_at": "2020-07-06 20:52:29",
+        "created_at": "2020-07-07 14:53:12",
+        "updated_at": "2020-07-07 14:57:09",
         "past_conferences": [
             "CHI 2019"
         ],
@@ -10055,28 +11402,12 @@ fetch(url, {
         "avatar": null,
         "permissions": [
             {
-                "id": 12,
-                "user_id": 1,
-                "conference_id": null,
-                "created_at": "2020-07-04 14:12:31",
-                "updated_at": "2020-07-04 14:12:31",
-                "enrollment_form_id": null,
-                "lottery_position": null,
-                "conference": null,
-                "role": {
-                    "id": 1,
-                    "name": "admin",
-                    "description": "Can do anything"
-                },
-                "state": null
-            },
-            {
-                "id": 14,
+                "id": 1,
                 "user_id": 1,
                 "conference_id": 1,
-                "created_at": "2020-07-06 17:17:10",
-                "updated_at": "2020-07-06 20:32:37",
-                "enrollment_form_id": 14,
+                "created_at": "2020-07-07 14:53:12",
+                "updated_at": "2020-07-07 14:53:12",
+                "enrollment_form_id": 2,
                 "lottery_position": null,
                 "conference": {
                     "id": 1,
@@ -10084,20 +11415,20 @@ fetch(url, {
                     "key": "chi20",
                     "location": "Honolulu, Hawaiʻi, USA",
                     "timezone_id": 366,
-                    "start_date": "2020-07-01",
-                    "end_date": "2020-07-07",
+                    "start_date": "2020-07-04",
+                    "end_date": "2020-07-10",
                     "description": "##Aloha!\n\nThe ACM CHI Conference on Human Factors in Computing Systems is the premier international conference of Human-Computer Interaction. __CHI__ – pronounced ‘kai’ – is a place where researchers and practitioners gather from across the world to discuss the latest in interactive technology. We are a multicultural community from highly diverse backgrounds who together investigate and design new and creative ways for people to interact using technology.\n\n###From April 25th to 30th\nCHI will, for the first time, take place in beautiful __Honolulu__, on the island of Oahu, Hawaiʻi, USA. Mahalo! Regina Bernhaupt and Florian ‘Floyd’ Mueller CHI 2020 General Chairs [generalchairs@chi2020.acm.org](mailto:generalchairs@chi2020.acm.org)",
                     "enrollment_form_id": 1,
                     "state_id": 4,
                     "url": "https:\/\/www.acm.org\/",
                     "url_name": "ACM",
-                    "created_at": "2020-07-04 14:12:29",
-                    "updated_at": "2020-07-06 20:38:18",
+                    "created_at": "2020-07-07 14:53:10",
+                    "updated_at": "2020-07-07 14:53:10",
                     "volunteer_hours": 20,
                     "volunteer_max": 100,
                     "email_chair": "noreply@chisv.org",
-                    "bidding_start": "2020-07-01",
-                    "bidding_end": "2020-07-23",
+                    "bidding_start": "2020-07-07 14:53:10",
+                    "bidding_end": "2020-07-10 00:00:00",
                     "bidding_enabled": true,
                     "artwork": null
                 },
@@ -10112,6 +11443,22 @@ fetch(url, {
                     "for": "App\\User",
                     "description": "Accepted to the conference as SV"
                 }
+            },
+            {
+                "id": 12,
+                "user_id": 1,
+                "conference_id": null,
+                "created_at": "2020-07-07 14:53:12",
+                "updated_at": "2020-07-07 14:53:12",
+                "enrollment_form_id": null,
+                "lottery_position": null,
+                "conference": null,
+                "role": {
+                    "id": 1,
+                    "name": "admin",
+                    "description": "Can do anything"
+                },
+                "state": null
             }
         ],
         "university": {
@@ -10171,21 +11518,21 @@ Parameter | Type | Status | Description
 
 ```bash
 curl -X DELETE \
-    "https://chisv.org/api/v1/user/1" \
+    "https://chisv.org/api/v1/user/2" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
+    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0"
 ```
 
 ```javascript
 const url = new URL(
-    "https://chisv.org/api/v1/user/1"
+    "https://chisv.org/api/v1/user/2"
 );
 
 let headers = {
     "Content-Type": "application/json",
     "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
+    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0",
 };
 
 fetch(url, {
@@ -10197,6 +11544,14 @@ fetch(url, {
 ```
 
 
+> Example response (200):
+
+```json
+{
+    "success": true,
+    "message": "User deleted"
+}
+```
 > Example response (403):
 
 ```json
@@ -10215,268 +11570,5 @@ Parameter | Status | Description
     `user` |  required  | The user's id
 
 <!-- END_a5d7655acadc1b6c97d48e68f1e87be9 -->
-
-#general
-
-
-<!-- START_4fd9bbcd39c117c54c591475d46e0cec -->
-## api/v1/conference/{conference}/sv/count
-> Example request:
-
-```bash
-curl -X GET \
-    -G "https://chisv.org/api/v1/conference/1/sv/count" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/conference/1/sv/count"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "GET",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (404):
-
-```json
-{
-    "message": "No query results for model [App\\Conference] 1"
-}
-```
-
-### HTTP Request
-`GET api/v1/conference/{conference}/sv/count`
-
-
-<!-- END_4fd9bbcd39c117c54c591475d46e0cec -->
-
-<!-- START_f3a734edd078d86bac9e759001b1131b -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/conference" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/conference"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (422):
-
-```json
-{
-    "message": "The given data was invalid.",
-    "errors": {
-        "name": [
-            "The name field is required."
-        ],
-        "key": [
-            "The key field is required."
-        ]
-    }
-}
-```
-
-### HTTP Request
-`POST api/v1/conference`
-
-
-<!-- END_f3a734edd078d86bac9e759001b1131b -->
-
-<!-- START_7a258424680b47d440023731a4e0be3e -->
-## Store a newly created resource in storage.
-
-> Example request:
-
-```bash
-curl -X POST \
-    "https://chisv.org/api/v1/assignment" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/assignment"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "POST",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (500):
-
-```json
-{
-    "message": "Server Error"
-}
-```
-
-### HTTP Request
-`POST api/v1/assignment`
-
-
-<!-- END_7a258424680b47d440023731a4e0be3e -->
-
-<!-- START_7d20a674615f823ca955430b9ac0ebe1 -->
-## Update the specified resource in storage.
-
-> Example request:
-
-```bash
-curl -X PUT \
-    "https://chisv.org/api/v1/assignment/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/assignment/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "PUT",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": {
-        "id": 1,
-        "user_id": 1,
-        "task_id": 156,
-        "hours": "1.0",
-        "state_id": 41,
-        "created_at": "2020-07-06 16:44:00",
-        "updated_at": "2020-07-06 16:44:00",
-        "state": {
-            "id": 41,
-            "name": "assigned",
-            "for": "App\\Assignment",
-            "description": "The task is assigned but yet not being worked on"
-        }
-    },
-    "message": "Assignment updated"
-}
-```
-
-### HTTP Request
-`PUT api/v1/assignment/{assignment}`
-
-`PATCH api/v1/assignment/{assignment}`
-
-
-<!-- END_7d20a674615f823ca955430b9ac0ebe1 -->
-
-<!-- START_08760017a44835569ff03aaa51b16be8 -->
-## Remove the specified resource from storage.
-
-> Example request:
-
-```bash
-curl -X DELETE \
-    "https://chisv.org/api/v1/assignment/1" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do"
-```
-
-```javascript
-const url = new URL(
-    "https://chisv.org/api/v1/assignment/1"
-);
-
-let headers = {
-    "Content-Type": "application/json",
-    "Accept": "application/json",
-    "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjhiNmQ1ZTQ3ZmQyYjNhYjc4Y2Q0YWM4MDYxZDNiNjI5YjA1NTM2NTViNGRlOGVlZjg2YWM2ZDA1OTk2OTFhYjVhNGNmMzUxMzdmMDE4NGY2In0.eyJhdWQiOiIyIiwianRpIjoiOGI2ZDVlNDdmZDJiM2FiNzhjZDRhYzgwNjFkM2I2MjliMDU1MzY1NWI0ZGU4ZWVmODZhYzZkMDU5OTY5MWFiNWE0Y2YzNTEzN2YwMTg0ZjYiLCJpYXQiOjE1OTQwNDI1NjQsIm5iZiI6MTU5NDA0MjU2NCwiZXhwIjoxNjI1NTc4NTY0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.iouAe2tM-Aj57Wwg-E1-jhS9y_xLUARMFpzJN_vXoeB2rTnOW2YMrPjrzmO7Le-W4uQGpdyfEsYMrEzc2RLToNBEK0-8Sc2X6ONS1U4Eh0NNIBP6e1WSO3Kc2KBKR9cKEVAZtbvNoagPnraNdDr-ucNTIpbckeb_v-uu_ZQmcvb9NtaCOVMGRskNKNfDPgcVhe87Hyfa3bwQq7J2iZT_hDHYgCurNcljiX_jj8VOvViE1P8HBVOhKT2ZGPJ8c-FpPlhGRZGyjtOk6bd_wFTm-Nc_8qoonlZkQo0DbWtWSnBlj-jyjYaPNeDCNEX4IT8288GSH11l79i54_6nSZgOpTMID2BjoV_WK3JkL8MPMFIsTWI1PWtG_zJtH5Usu9W3bz5d6rJOS0t8Y4Sm3kw6PGunKI0YfDHoD20d3zKRs5e7FT1wswliZQ_28Y5vQagwRMTQhPNgtw3T9vMQluI-oaOyq5SkRnoElHjfzNZMwvn5KfrYoARWWl_TvccQNvWvNjYFRRJlE0Mx3Hj1CdBfJcdwv1V6S84FTl296ViWCRc1AfRitpMcz5zPytH4gaiP-4oyYB5VEiryVZ1y2L_OyS_J5wYJjxhuDP4RW9oR5AKPP9TIIGd0B_WU13LoLX2MTrd1AAg1pupBJQi_0WedKCUCXf87sbNPdHvRzUKW8Do",
-};
-
-fetch(url, {
-    method: "DELETE",
-    headers: headers,
-})
-    .then(response => response.json())
-    .then(json => console.log(json));
-```
-
-
-> Example response (200):
-
-```json
-{
-    "result": true,
-    "message": "Assignment removed"
-}
-```
-
-### HTTP Request
-`DELETE api/v1/assignment/{assignment}`
-
-
-<!-- END_08760017a44835569ff03aaa51b16be8 -->
 
 

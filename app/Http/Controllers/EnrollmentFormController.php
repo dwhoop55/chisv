@@ -55,8 +55,8 @@ class EnrollmentFormController extends Controller
      * Use the field names from the currently active enrollment form. The
      * fields below are just examples.
      * 
-     * @urlParam enrollment_form required The enrollment form's id Example: 14
-     * @bodyParam id int required The forms id Example: 14
+     * @urlParam enrollment_form required The enrollment form's id Example: 5
+     * @bodyParam id int required The forms id Example: 5
      * @bodyParam attended_before int An example field Example: 5
      * @bodyParam know_city int An example field Example: true
      * @bodyParam need_visa int An example field Example: false

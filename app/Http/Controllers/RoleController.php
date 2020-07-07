@@ -5,10 +5,6 @@ namespace App\Http\Controllers;
 use App\Role;
 use Illuminate\Http\Request;
 
-/**
- * @authenticated
- * @group Role
- */
 class RoleController extends Controller
 {
     /**
@@ -22,6 +18,8 @@ class RoleController extends Controller
     }
 
     /**
+     * @authenticated
+     * @group Generic Resources
      * Get all roles
      *
      * @return \Illuminate\Http\Response
