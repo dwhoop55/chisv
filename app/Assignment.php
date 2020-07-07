@@ -12,6 +12,7 @@ class Assignment extends Model
         'user_id' => 'int',
         'task_id' => 'int',
         'state_id' => 'int',
+        'hours' => 'float'
     ];
 
     public function notes()
