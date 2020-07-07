@@ -23,7 +23,7 @@ class UsersTableSeeder extends Seeder
         $users = [
             [
                 "id" => 1,
-                'firstname' => 'ADMIN Milton',
+                'firstname' => 'Milton',
                 'lastname' => 'Waddams',
                 'email' => 'admin@chisv.org',
                 'email_verified_at' => now(),
