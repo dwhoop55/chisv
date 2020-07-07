@@ -14,7 +14,6 @@ class BidUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:bids',
             'preference' => 'required|between:0,3',
         ];
     }
