@@ -127,11 +127,26 @@ fetch(url, {
 ```
 
 
-> Example response (404):
+> Example response (200):
 
 ```json
 {
-    "message": "No query results for model [App\\Assignment] 1"
+    "result": {
+        "id": 1,
+        "user_id": 1,
+        "task_id": 440,
+        "hours": 5.5,
+        "state_id": 43,
+        "created_at": "2020-07-07 15:24:50",
+        "updated_at": "2020-07-08 13:33:27",
+        "state": {
+            "id": 43,
+            "name": "done",
+            "for": "App\\Assignment",
+            "description": "Task has been completed"
+        }
+    },
+    "message": "Assignment updated"
 }
 ```
 
@@ -187,11 +202,12 @@ fetch(url, {
 ```
 
 
-> Example response (404):
+> Example response (200):
 
 ```json
 {
-    "message": "No query results for model [App\\Assignment] 1"
+    "result": true,
+    "message": "Assignment removed"
 }
 ```
 
@@ -399,7 +415,7 @@ curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
-    -d '{"task_id":117,"preference":19}'
+    -d '{"task_id":117,"preference":2}'
 
 ```
 
@@ -416,7 +432,7 @@ let headers = {
 
 let body = {
     "task_id": 117,
-    "preference": 19
+    "preference": 2
 }
 
 fetch(url, {
@@ -582,6 +598,14 @@ fetch(url, {
 ```
 
 
+> Example response (200):
+
+```json
+{
+    "result": true,
+    "message": "Bid removed"
+}
+```
 > Example response (403):
 
 ```json
@@ -649,7 +673,113 @@ fetch(url, {
 
 ```json
 {
-    "assignments": []
+    "assignments": [
+        {
+            "title": "Social Scientists",
+            "description": "Customizable zerotolerance contingency",
+            "location": "531 Jadyn Cove",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 08:00:00",
+            "end": "2020-07-07 08:15:00",
+            "assignment": {
+                "state": {
+                    "name": "checked-in",
+                    "description": "SV is working on the task at the moment"
+                },
+                "hours": 6
+            }
+        },
+        {
+            "title": "Chemical Plant Operator",
+            "description": "Synergistic needs-based encryption",
+            "location": "24424 Mercedes Wells Suite 234",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 08:45:00",
+            "end": "2020-07-07 10:45:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 2
+            }
+        },
+        {
+            "title": "Biochemist",
+            "description": "Persistent bifurcated portal",
+            "location": "4126 Langosh Pine",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 13:45:00",
+            "end": "2020-07-07 15:15:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 1.5
+            }
+        },
+        {
+            "title": "Postmasters",
+            "description": "Extended encompassing securedline",
+            "location": "302 Emily Walk",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 12:00:00",
+            "end": "2020-07-07 13:15:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 1.25
+            }
+        },
+        {
+            "title": "Archivist",
+            "description": "Reverse-engineered asynchronous archive",
+            "location": "938 Lubowitz Dam Apt. 270",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 15:30:00",
+            "end": "2020-07-07 17:00:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 1.5
+            }
+        },
+        {
+            "title": "Industrial Safety Engineer",
+            "description": "Multi-lateral methodical hardware",
+            "location": "8413 Emery Springs Apt. 652",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 17:30:00",
+            "end": "2020-07-07 19:30:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 2
+            }
+        },
+        {
+            "title": "Night Shift",
+            "description": "Front-line bi-directional knowledgeuser",
+            "location": "73093 Anais Inlet Apt. 679",
+            "timezone": "Pacific\/Honolulu",
+            "start": "2020-07-07 11:30:00",
+            "end": "2020-07-07 11:45:00",
+            "assignment": {
+                "state": {
+                    "name": "assigned",
+                    "description": "The task is assigned but yet not being worked on"
+                },
+                "hours": 0.25
+            }
+        }
+    ]
 }
 ```
 
@@ -877,7 +1007,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 1,
+    "result": 7,
     "message": "Task import for CHI 2020 has been queued as a new job"
 }
 ```
@@ -908,7 +1038,7 @@ curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
-    -d '{"id":1,"":{"fields":"perferendis"}}'
+    -d '{"id":1,"":{"fields":"quo"}}'
 
 ```
 
@@ -926,7 +1056,7 @@ let headers = {
 let body = {
     "id": 1,
     "": {
-        "fields": "perferendis"
+        "fields": "quo"
     }
 }
 
@@ -1072,7 +1202,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 1,
+    "result": 7,
     "message": "Auction for CHI 2020 on 2020-07-01 has been queued as a new job"
 }
 ```
@@ -1127,7 +1257,7 @@ fetch(url, {
 
 ```json
 {
-    "result": 1,
+    "result": 7,
     "message": "Lottery for CHI 2020 has been queued as a new job"
 }
 ```
@@ -1430,7 +1560,8 @@ fetch(url, {
 
 ```json
 {
-    "2020-07-04": "76",
+    "2020-07-03": "1",
+    "2020-07-04": "77",
     "2020-07-05": "84",
     "2020-07-06": "91",
     "2020-07-07": "83",
@@ -1502,17 +1633,34 @@ fetch(url, {
 ```json
 {
     "current_page": 1,
-    "data": [],
+    "data": [
+        {
+            "id": 502,
+            "name": "!!!Order Filler",
+            "location": "9768 Winona Ridge Suite 142",
+            "description": "Cross-platform analyzing securedline",
+            "start_at": "09:30:00",
+            "end_at": "10:45:00",
+            "hours": 1.25,
+            "date": "2020-07-03",
+            "slots": 5,
+            "priority": 1,
+            "conference_id": 1,
+            "own_assignment": null,
+            "can_create_bid": false,
+            "own_bid": null
+        }
+    ],
     "first_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=1",
-    "from": null,
+    "from": 1,
     "last_page": 1,
     "last_page_url": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task?page=1",
     "next_page_url": null,
     "path": "http:\/\/localhost\/api\/v1\/conference\/chi20\/task",
     "per_page": "5",
     "prev_page_url": null,
-    "to": null,
-    "total": 0
+    "to": 1,
+    "total": 1
 }
 ```
 
@@ -1688,7 +1836,7 @@ fetch(url, {
                     "id": 3,
                     "parent_id": 1,
                     "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":30,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":23,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Omnis excepturi explicabo fuga. Vel facilis in nesciunt repudiandae qui quaerat minus. Ab amet nisi ea ipsa. Quas sit nihil assumenda optio quae.\",\"required\":true}}}",
-                    "total_weight": 0
+                    "total_weight": 64
                 },
                 "conference": {
                     "id": 1
@@ -1701,7 +1849,7 @@ fetch(url, {
             "region": "Bethlehem",
             "stats": {
                 "assignments": {
-                    "count": 0,
+                    "count": 5,
                     "done": 0
                 },
                 "hours_done": 0,
@@ -1713,16 +1861,132 @@ fetch(url, {
                 },
                 "bids_successful": {
                     "low": 0,
-                    "medium": 0,
-                    "high": 0
+                    "medium": 2,
+                    "high": 1
                 },
                 "bids_conflict": {
-                    "low": 0,
-                    "medium": 0,
-                    "high": 0
+                    "low": 9,
+                    "medium": 9,
+                    "high": 6
                 }
             },
-            "assignments": [],
+            "assignments": [
+                {
+                    "id": 3,
+                    "hours": 2.25,
+                    "created_at": "2020-07-07T15:24:55.000000Z",
+                    "notes": [],
+                    "state": {
+                        "id": 42,
+                        "name": "checked-in",
+                        "description": "SV is working on the task at the moment"
+                    },
+                    "task": {
+                        "id": 102,
+                        "name": "Product Specialist",
+                        "description": "Right-sized regional knowledgeuser",
+                        "location": "671 Herzog Row",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "08:15:00",
+                        "end_at": "10:30:00",
+                        "priority": 1,
+                        "slots": 5,
+                        "hours": 2.25
+                    }
+                },
+                {
+                    "id": 5,
+                    "hours": 2,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 26,
+                        "name": "Boilermaker",
+                        "description": "Persevering stable task-force",
+                        "location": "28647 Reinger Drives",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "15:15:00",
+                        "end_at": "17:15:00",
+                        "priority": 3,
+                        "slots": 4,
+                        "hours": 2
+                    }
+                },
+                {
+                    "id": 15,
+                    "hours": 1.75,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 66,
+                        "name": "Grounds Maintenance Worker",
+                        "description": "Synergized content-based service-desk",
+                        "location": "869 Kareem Oval Apt. 898",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "12:00:00",
+                        "end_at": "13:45:00",
+                        "priority": 3,
+                        "slots": 5,
+                        "hours": 1.75
+                    }
+                },
+                {
+                    "id": 28,
+                    "hours": 2,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 153,
+                        "name": "Molding and Casting Worker",
+                        "description": "Stand-alone multi-tasking frame",
+                        "location": "758 Bradtke Estates Apt. 844",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "17:45:00",
+                        "end_at": "19:45:00",
+                        "priority": 3,
+                        "slots": 3,
+                        "hours": 2
+                    }
+                },
+                {
+                    "id": 70,
+                    "hours": 0.5,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 14,
+                        "name": "Stringed Instrument Repairer and Tuner",
+                        "description": "Optional zerotolerance systemengine",
+                        "location": "93635 Von Port Apt. 908",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "11:15:00",
+                        "end_at": "11:45:00",
+                        "priority": 1,
+                        "slots": 4,
+                        "hours": 0.5
+                    }
+                }
+            ],
             "past_conferences": [
                 "UIST2020",
                 "DIS 2014",
@@ -1768,7 +2032,7 @@ fetch(url, {
                     "id": 2,
                     "parent_id": 1,
                     "body": "{\"header\":\"Please answer the following questions\",\"agreement\":\"Please read this carefully: SVs will work for approximately 14 hours during the conference\",\"fields\":{\"know_city\":{\"type\":\"boolean\",\"description\":\"Are you local to where the conference will be this year?\",\"hint\":\"If you get selected as a local volunteer you may be requested to do specific tasks that leverage that characteristic, like finding restaurants, helping with the Information desk, help with PC meeting, and others.\",\"value\":true,\"required\":true},\"attended_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you attended this conference before?\",\"value\":14,\"required\":true},\"sved_before\":{\"type\":\"integer\",\"range\":[0,99],\"description\":\"How many times have you been an SV at this conference before?\",\"value\":26,\"required\":false},\"need_visa\":{\"type\":\"boolean\",\"description\":\"Do you need to apply for a travel visa in order to attend this conference? (answer no if you are eligible for a VISA waiver program for the country of the conference)\",\"hint\":\"Choosing yes will make us send you some additional information via E-Mail. This preference will not be used when the lottery is run for selecting the SVs.\",\"value\":false,\"required\":true},\"why_you_want_to_be_sv\":{\"type\":\"string\",\"description\":\"Please explain why you want to be an SV at the conference:\",\"maxlength\":2000,\"value\":\"Error sint qui vel ipsam. Sequi optio rerum et praesentium asperiores sequi non. Et voluptatem est odit totam voluptatem culpa accusantium.\",\"required\":true}}}",
-                    "total_weight": 0
+                    "total_weight": 32
                 },
                 "conference": {
                     "id": 1
@@ -1781,7 +2045,7 @@ fetch(url, {
             "region": "North Rhine-Westphalia",
             "stats": {
                 "assignments": {
-                    "count": 0,
+                    "count": 7,
                     "done": 0
                 },
                 "hours_done": 0,
@@ -1794,15 +2058,177 @@ fetch(url, {
                 "bids_successful": {
                     "low": 0,
                     "medium": 0,
-                    "high": 0
+                    "high": 1
                 },
                 "bids_conflict": {
-                    "low": 0,
-                    "medium": 0,
-                    "high": 0
+                    "low": 6,
+                    "medium": 5,
+                    "high": 5
                 }
             },
-            "assignments": [],
+            "assignments": [
+                {
+                    "id": 1,
+                    "hours": 6,
+                    "created_at": "2020-07-07T15:24:50.000000Z",
+                    "notes": [],
+                    "state": {
+                        "id": 42,
+                        "name": "checked-in",
+                        "description": "SV is working on the task at the moment"
+                    },
+                    "task": {
+                        "id": 440,
+                        "name": "Social Scientists",
+                        "description": "Customizable zerotolerance contingency",
+                        "location": "531 Jadyn Cove",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "08:00:00",
+                        "end_at": "08:15:00",
+                        "priority": 1,
+                        "slots": 4,
+                        "hours": 0.25
+                    }
+                },
+                {
+                    "id": 4,
+                    "hours": 2,
+                    "created_at": "2020-07-07T15:24:59.000000Z",
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 208,
+                        "name": "Chemical Plant Operator",
+                        "description": "Synergistic needs-based encryption",
+                        "location": "24424 Mercedes Wells Suite 234",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "08:45:00",
+                        "end_at": "10:45:00",
+                        "priority": 1,
+                        "slots": 5,
+                        "hours": 2
+                    }
+                },
+                {
+                    "id": 21,
+                    "hours": 1.5,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 133,
+                        "name": "Biochemist",
+                        "description": "Persistent bifurcated portal",
+                        "location": "4126 Langosh Pine",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "13:45:00",
+                        "end_at": "15:15:00",
+                        "priority": 3,
+                        "slots": 5,
+                        "hours": 1.5
+                    }
+                },
+                {
+                    "id": 39,
+                    "hours": 1.25,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 184,
+                        "name": "Postmasters",
+                        "description": "Extended encompassing securedline",
+                        "location": "302 Emily Walk",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "12:00:00",
+                        "end_at": "13:15:00",
+                        "priority": 3,
+                        "slots": 4,
+                        "hours": 1.25
+                    }
+                },
+                {
+                    "id": 42,
+                    "hours": 1.5,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 198,
+                        "name": "Archivist",
+                        "description": "Reverse-engineered asynchronous archive",
+                        "location": "938 Lubowitz Dam Apt. 270",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "15:30:00",
+                        "end_at": "17:00:00",
+                        "priority": 3,
+                        "slots": 4,
+                        "hours": 1.5
+                    }
+                },
+                {
+                    "id": 56,
+                    "hours": 2,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 52,
+                        "name": "Industrial Safety Engineer",
+                        "description": "Multi-lateral methodical hardware",
+                        "location": "8413 Emery Springs Apt. 652",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "17:30:00",
+                        "end_at": "19:30:00",
+                        "priority": 2,
+                        "slots": 3,
+                        "hours": 2
+                    }
+                },
+                {
+                    "id": 71,
+                    "hours": 0.25,
+                    "created_at": null,
+                    "notes": [],
+                    "state": {
+                        "id": 41,
+                        "name": "assigned",
+                        "description": "The task is assigned but yet not being worked on"
+                    },
+                    "task": {
+                        "id": 139,
+                        "name": "Night Shift",
+                        "description": "Front-line bi-directional knowledgeuser",
+                        "location": "73093 Anais Inlet Apt. 679",
+                        "date": "2020-07-07T00:00:00.000000Z",
+                        "start_at": "11:30:00",
+                        "end_at": "11:45:00",
+                        "priority": 1,
+                        "slots": 3,
+                        "hours": 0.25
+                    }
+                }
+            ],
             "past_conferences": null,
             "past_conferences_sv": null,
             "languages": [
@@ -1908,7 +2334,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 8.5,
                 "bids_placed": {
                     "unavailable": 5,
                     "low": 50,
@@ -1929,7 +2355,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 7.75,
                 "bids_placed": {
                     "unavailable": 5,
                     "low": 44,
@@ -1950,7 +2376,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 8,
                 "bids_placed": {
                     "unavailable": 1,
                     "low": 52,
@@ -1971,7 +2397,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 8,
                 "bids_placed": {
                     "unavailable": 1,
                     "low": 52,
@@ -1988,7 +2414,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 14.5,
                 "bids_placed": {
                     "unavailable": 3,
                     "low": 51,
@@ -2005,7 +2431,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 8.5,
                 "bids_placed": {
                     "unavailable": 2,
                     "low": 57,
@@ -2022,7 +2448,7 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 8.75,
                 "bids_placed": {
                     "unavailable": 3,
                     "low": 44,
@@ -2039,29 +2465,12 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 7.75,
                 "bids_placed": {
                     "unavailable": 5,
                     "low": 45,
                     "medium": 54,
                     "high": 48
-                }
-            }
-        },
-        {
-            "id": 5,
-            "firstname": "Elva",
-            "lastname": "Gaylord",
-            "bid": null,
-            "avatar": [],
-            "stats": {
-                "hours_done": 0,
-                "hours_not_done": 0,
-                "bids_placed": {
-                    "unavailable": 0,
-                    "low": 56,
-                    "medium": 49,
-                    "high": 40
                 }
             }
         },
@@ -2077,12 +2486,29 @@ fetch(url, {
             "avatar": [],
             "stats": {
                 "hours_done": 0,
-                "hours_not_done": 0,
+                "hours_not_done": 7.75,
                 "bids_placed": {
                     "unavailable": 5,
                     "low": 61,
                     "medium": 51,
                     "high": 48
+                }
+            }
+        },
+        {
+            "id": 9,
+            "firstname": "Claire",
+            "lastname": "Beier",
+            "bid": null,
+            "avatar": [],
+            "stats": {
+                "hours_done": 0,
+                "hours_not_done": 7.5,
+                "bids_placed": {
+                    "unavailable": 1,
+                    "low": 39,
+                    "medium": 47,
+                    "high": 44
                 }
             }
         }
@@ -2419,10 +2845,10 @@ fetch(url, {
     "success": {
         "name": "CHI 2021",
         "key": "chi21",
-        "start_date": "2020-07-07",
-        "end_date": "2020-07-08",
-        "updated_at": "2020-07-07 14:57:09",
-        "created_at": "2020-07-07 14:57:09",
+        "start_date": "2020-07-08",
+        "end_date": "2020-07-09",
+        "updated_at": "2020-07-08 13:33:21",
+        "created_at": "2020-07-08 13:33:21",
         "id": 2
     },
     "message": "Conference created"
@@ -6576,7 +7002,7 @@ curl -X POST \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
-    -d '{"image":"ab","name":"Awesome image","type":"fugit","owner_id":1,"owner_type":"App\\User"}'
+    -d '{"image":"et","name":"Awesome image","type":"iste","owner_id":1,"owner_type":"App\\User"}'
 
 ```
 
@@ -6592,9 +7018,9 @@ let headers = {
 };
 
 let body = {
-    "image": "ab",
+    "image": "et",
     "name": "Awesome image",
-    "type": "fugit",
+    "type": "iste",
     "owner_id": 1,
     "owner_type": "App\\User"
 }
@@ -6653,7 +7079,7 @@ curl -X PUT \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
     -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjFmMGRkOWQ5ZGVjMTkzOWRlYzU4Yjk0NzBkMTMwZDEzOTFmYmQ3Y2Y2MDdhOWU0MWM4NWMxODI2YWUzODk2NzIzNmEwODdjYTYxMjdlNTYxIn0.eyJhdWQiOiIyIiwianRpIjoiMWYwZGQ5ZDlkZWMxOTM5ZGVjNThiOTQ3MGQxMzBkMTM5MWZiZDdjZjYwN2E5ZTQxYzg1YzE4MjZhZTM4OTY3MjM2YTA4N2NhNjEyN2U1NjEiLCJpYXQiOjE1OTQxMzM3MTIsIm5iZiI6MTU5NDEzMzcxMiwiZXhwIjoxNjI1NjY5NzEyLCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.oBxP9u445tDWNXziBwTi10ukRP2j9uP3-3UbGFET8YyNHnM_VUQqr-JlKqw5pRVH6pLnWmIO8Y7VploNQotcmQjgwwwi8IuGconVipGI66qNSKWGX6mDQYR-GDt6JtHDn1qSaDgbOfD5UObDmEvz9t2QA48ZINs79O9XXRe4qIYThHuVIuYgVafOXaCgu_TSgZDj-GkjLWR85wlhqRxzmbTn9Gn2eQOxNBVHd-hvZWHtOu88DsdzIUYLgPzz5jxye_b1Jl2WfYIf3zCK3knRFYpKUIzLYgBqjuJGLXo8yGfrfz2QDHE7i87ri-CiE6QlC4Hb7SZAQ9kaoNLoJm81P8maJVztp3fddfSNNdXDxgqoI9kPJEjUsnMUm_OJIO90TNn97RcTxH2p9ocxFrPOkh4Tm_QF8BC5brKPG7-NIM6mWVGsm6_CwqA1dEYaWTdOI7SiLj6pvIywy4pkR85cncdbzMuwIZywk2YxeUbm0vWx1N-rgTE-yOXLwGS-rVXU7RWMKsqV_ESP5wiGjD9yY2JVYAwN7CIa0NaI1h65URjXzyacmaTXYKBCgxHLPfH5ecBza_Y4eQ8wr0eIJN0e9WRUPHB6P131E0k7kZwDB7IlSON8esN4ypdHs_zm-ItXneG3njS71jEXufTNypOsp_c1fQ9IGBxC1uwwSNFScN0" \
-    -d '{"image":"quos"}'
+    -d '{"image":"sint"}'
 
 ```
 
@@ -6669,7 +7095,7 @@ let headers = {
 };
 
 let body = {
-    "image": "quos"
+    "image": "sint"
 }
 
 fetch(url, {
@@ -6798,8 +7224,129 @@ fetch(url, {
 
 ```json
 {
-    "data": [],
-    "total": 0,
+    "data": [
+        {
+            "id": 6,
+            "name": "Task import for chi20",
+            "handler": "App\\Jobs\\ImportTasks",
+            "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[\"502\"],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
+            "progress": 100,
+            "status_message": null,
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:43:37",
+            "start_at": "2020-07-07 15:43:36",
+            "created_at": "2020-07-07 15:43:36",
+            "updated_at": "2020-07-07 15:43:37",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        },
+        {
+            "id": 5,
+            "name": "Task import for chi20",
+            "handler": "App\\Jobs\\ImportTasks",
+            "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[\"502\"],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
+            "progress": 100,
+            "status_message": null,
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:37:16",
+            "start_at": "2020-07-07 15:37:13",
+            "created_at": "2020-07-07 15:37:13",
+            "updated_at": "2020-07-07 15:37:16",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        },
+        {
+            "id": 4,
+            "name": "Task import for chi20",
+            "handler": "App\\Jobs\\ImportTasks",
+            "result": "{\"create_success\":[],\"create_fail\":[],\"update_success\":[\"332\"],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
+            "progress": 100,
+            "status_message": null,
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:36:11",
+            "start_at": "2020-07-07 15:36:07",
+            "created_at": "2020-07-07 15:36:07",
+            "updated_at": "2020-07-07 15:36:11",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        },
+        {
+            "id": 3,
+            "name": "Task import for chi20",
+            "handler": "App\\Jobs\\ImportTasks",
+            "result": "{\"create_success\":[null],\"create_fail\":[],\"update_success\":[],\"update_fail\":[],\"mismatch\":[],\"invalid\":[]}",
+            "progress": 100,
+            "status_message": null,
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:35:31",
+            "start_at": "2020-07-07 15:35:30",
+            "created_at": "2020-07-07 15:35:30",
+            "updated_at": "2020-07-07 15:35:31",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        },
+        {
+            "id": 2,
+            "name": "Lottery for chi20",
+            "handler": "App\\Jobs\\Lottery",
+            "result": "{\"processed\":0,\"accepted\":0,\"waitlisted\":0,\"still_waitlisted\":0}",
+            "progress": 100,
+            "status_message": null,
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:34:06",
+            "start_at": "2020-07-07 15:33:29",
+            "created_at": "2020-07-07 15:33:29",
+            "updated_at": "2020-07-07 15:34:06",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        },
+        {
+            "id": 1,
+            "name": "Auction for chi20 2020-07-07",
+            "handler": "App\\Jobs\\Auction",
+            "result": "{\"created_assignments\":74,\"tasks_free_slots\":[{\"id\":133,\"name\":\"Biochemist\",\"start_at\":\"13:45:00\",\"end_at\":\"15:15:00\"},{\"id\":166,\"name\":\"Claims Examiner\",\"start_at\":\"16:45:00\",\"end_at\":\"18:45:00\"},{\"id\":184,\"name\":\"Postmasters\",\"start_at\":\"12:00:00\",\"end_at\":\"13:15:00\"},{\"id\":198,\"name\":\"Archivist\",\"start_at\":\"15:30:00\",\"end_at\":\"17:00:00\"},{\"id\":215,\"name\":\"Tool Sharpener\",\"start_at\":\"16:15:00\",\"end_at\":\"18:00:00\"},{\"id\":218,\"name\":\"Shoe Machine Operators\",\"start_at\":\"16:45:00\",\"end_at\":\"18:00:00\"},{\"id\":225,\"name\":\"Gas Pumping Station Operator\",\"start_at\":\"11:30:00\",\"end_at\":\"13:30:00\"},{\"id\":295,\"name\":\"Security Guard\",\"start_at\":\"14:45:00\",\"end_at\":\"16:00:00\"},{\"id\":338,\"name\":\"Director Of Business Development\",\"start_at\":\"16:15:00\",\"end_at\":\"18:00:00\"},{\"id\":371,\"name\":\"Plate Finisher\",\"start_at\":\"16:30:00\",\"end_at\":\"18:30:00\"},{\"id\":381,\"name\":\"Electric Meter Installer\",\"start_at\":\"15:45:00\",\"end_at\":\"16:30:00\"},{\"id\":426,\"name\":\"Upholsterer\",\"start_at\":\"17:00:00\",\"end_at\":\"18:45:00\"},{\"id\":458,\"name\":\"Product Specialist\",\"start_at\":\"15:30:00\",\"end_at\":\"17:45:00\"},{\"id\":476,\"name\":\"Bookbinder\",\"start_at\":\"16:30:00\",\"end_at\":\"18:30:00\"},{\"id\":477,\"name\":\"Locksmith\",\"start_at\":\"10:00:00\",\"end_at\":\"10:45:00\"},{\"id\":46,\"name\":\"Chemical Equipment Tender\",\"start_at\":\"16:15:00\",\"end_at\":\"17:30:00\"},{\"id\":97,\"name\":\"Lathe Operator\",\"start_at\":\"11:15:00\",\"end_at\":\"13:15:00\"},{\"id\":117,\"name\":\"Central Office Operator\",\"start_at\":\"12:45:00\",\"end_at\":\"14:30:00\"},{\"id\":128,\"name\":\"Engineering Teacher\",\"start_at\":\"14:45:00\",\"end_at\":\"15:45:00\"},{\"id\":171,\"name\":\"Religious Worker\",\"start_at\":\"12:30:00\",\"end_at\":\"14:15:00\"},{\"id\":187,\"name\":\"Insurance Claims Clerk\",\"start_at\":\"12:00:00\",\"end_at\":\"14:15:00\"},{\"id\":204,\"name\":\"Heaters\",\"start_at\":\"14:15:00\",\"end_at\":\"15:45:00\"},{\"id\":224,\"name\":\"General Farmworker\",\"start_at\":\"10:00:00\",\"end_at\":\"11:00:00\"},{\"id\":252,\"name\":\"Architecture Teacher\",\"start_at\":\"12:45:00\",\"end_at\":\"13:45:00\"},{\"id\":261,\"name\":\"Clinical School Psychologist\",\"start_at\":\"09:45:00\",\"end_at\":\"10:00:00\"},{\"id\":269,\"name\":\"Drafter\",\"start_at\":\"13:30:00\",\"end_at\":\"13:45:00\"},{\"id\":274,\"name\":\"Counsil\",\"start_at\":\"16:00:00\",\"end_at\":\"18:00:00\"},{\"id\":275,\"name\":\"Press Machine Setter, Operator\",\"start_at\":\"09:00:00\",\"end_at\":\"10:30:00\"},{\"id\":277,\"name\":\"Poet OR Lyricist\",\"start_at\":\"13:45:00\",\"end_at\":\"14:30:00\"},{\"id\":278,\"name\":\"Credit Checker\",\"start_at\":\"16:00:00\",\"end_at\":\"17:45:00\"},{\"id\":321,\"name\":\"Social Worker\",\"start_at\":\"15:00:00\",\"end_at\":\"17:00:00\"},{\"id\":363,\"name\":\"Dental Assistant\",\"start_at\":\"09:45:00\",\"end_at\":\"10:45:00\"},{\"id\":380,\"name\":\"Motorcycle Mechanic\",\"start_at\":\"11:30:00\",\"end_at\":\"12:15:00\"},{\"id\":383,\"name\":\"Radiation Therapist\",\"start_at\":\"15:15:00\",\"end_at\":\"16:00:00\"},{\"id\":399,\"name\":\"Fabric Pressers\",\"start_at\":\"11:45:00\",\"end_at\":\"12:30:00\"},{\"id\":403,\"name\":\"Dancer\",\"start_at\":\"16:30:00\",\"end_at\":\"18:45:00\"},{\"id\":405,\"name\":\"Air Crew Officer\",\"start_at\":\"11:30:00\",\"end_at\":\"12:00:00\"},{\"id\":409,\"name\":\"Director Of Marketing\",\"start_at\":\"12:00:00\",\"end_at\":\"14:15:00\"},{\"id\":435,\"name\":\"Pharmacy Aide\",\"start_at\":\"14:30:00\",\"end_at\":\"16:00:00\"},{\"id\":450,\"name\":\"Glass Cutting Machine Operator\",\"start_at\":\"17:15:00\",\"end_at\":\"17:45:00\"},{\"id\":459,\"name\":\"Budget Analyst\",\"start_at\":\"18:00:00\",\"end_at\":\"20:00:00\"},{\"id\":463,\"name\":\"Radiation Therapist\",\"start_at\":\"08:15:00\",\"end_at\":\"09:30:00\"},{\"id\":466,\"name\":\"Media and Communication Worker\",\"start_at\":\"17:15:00\",\"end_at\":\"18:00:00\"},{\"id\":472,\"name\":\"Psychologist\",\"start_at\":\"13:00:00\",\"end_at\":\"13:30:00\"},{\"id\":13,\"name\":\"Plasterer OR Stucco Mason\",\"start_at\":\"13:45:00\",\"end_at\":\"14:15:00\"},{\"id\":90,\"name\":\"Heavy Equipment Mechanic\",\"start_at\":\"15:45:00\",\"end_at\":\"16:30:00\"},{\"id\":91,\"name\":\"Pewter Caster\",\"start_at\":\"09:15:00\",\"end_at\":\"10:00:00\"},{\"id\":102,\"name\":\"Product Specialist\",\"start_at\":\"08:15:00\",\"end_at\":\"10:30:00\"},{\"id\":103,\"name\":\"Makeup Artists\",\"start_at\":\"08:45:00\",\"end_at\":\"10:00:00\"},{\"id\":104,\"name\":\"Wind Instrument Repairer\",\"start_at\":\"13:45:00\",\"end_at\":\"14:00:00\"},{\"id\":206,\"name\":\"Real Estate Association Manager\",\"start_at\":\"08:30:00\",\"end_at\":\"10:30:00\"},{\"id\":208,\"name\":\"Chemical Plant Operator\",\"start_at\":\"08:45:00\",\"end_at\":\"10:45:00\"},{\"id\":214,\"name\":\"Human Resources Assistant\",\"start_at\":\"09:30:00\",\"end_at\":\"11:45:00\"},{\"id\":236,\"name\":\"Immigration Inspector OR Customs Inspector\",\"start_at\":\"08:15:00\",\"end_at\":\"09:30:00\"},{\"id\":248,\"name\":\"Cashier\",\"start_at\":\"11:00:00\",\"end_at\":\"12:00:00\"},{\"id\":253,\"name\":\"Respiratory Therapy Technician\",\"start_at\":\"12:30:00\",\"end_at\":\"13:45:00\"},{\"id\":265,\"name\":\"Electronic Masking System Operator\",\"start_at\":\"15:00:00\",\"end_at\":\"15:15:00\"},{\"id\":303,\"name\":\"Anthropologist\",\"start_at\":\"13:45:00\",\"end_at\":\"14:15:00\"},{\"id\":346,\"name\":\"Sculptor\",\"start_at\":\"11:30:00\",\"end_at\":\"11:45:00\"},{\"id\":395,\"name\":\"Electronic Masking System Operator\",\"start_at\":\"09:45:00\",\"end_at\":\"10:45:00\"},{\"id\":433,\"name\":\"Numerical Tool Programmer OR Process Control Programmer\",\"start_at\":\"12:45:00\",\"end_at\":\"13:15:00\"},{\"id\":452,\"name\":\"Earth Driller\",\"start_at\":\"12:00:00\",\"end_at\":\"12:15:00\"},{\"id\":483,\"name\":\"Precision Pattern and Die Caster\",\"start_at\":\"16:00:00\",\"end_at\":\"16:15:00\"}]}",
+            "progress": 100,
+            "status_message": "Done",
+            "state_id": 23,
+            "ended_at": "2020-07-07 15:34:05",
+            "start_at": "2020-07-07 15:33:19",
+            "created_at": "2020-07-07 15:33:19",
+            "updated_at": "2020-07-07 15:34:05",
+            "type": "job",
+            "state": {
+                "id": 23,
+                "name": "successful",
+                "for": "App\\Job",
+                "description": "The job finished successfully"
+            }
+        }
+    ],
+    "total": 6,
     "take": 50
 }
 ```
@@ -6844,11 +7391,27 @@ fetch(url, {
 ```
 
 
-> Example response (404):
+> Example response (200):
 
 ```json
 {
-    "message": "No query results for model [App\\Job] 1"
+    "id": 1,
+    "name": "Auction for chi20 2020-07-07",
+    "handler": "App\\Jobs\\Auction",
+    "result": "{\"created_assignments\":74,\"tasks_free_slots\":[{\"id\":133,\"name\":\"Biochemist\",\"start_at\":\"13:45:00\",\"end_at\":\"15:15:00\"},{\"id\":166,\"name\":\"Claims Examiner\",\"start_at\":\"16:45:00\",\"end_at\":\"18:45:00\"},{\"id\":184,\"name\":\"Postmasters\",\"start_at\":\"12:00:00\",\"end_at\":\"13:15:00\"},{\"id\":198,\"name\":\"Archivist\",\"start_at\":\"15:30:00\",\"end_at\":\"17:00:00\"},{\"id\":215,\"name\":\"Tool Sharpener\",\"start_at\":\"16:15:00\",\"end_at\":\"18:00:00\"},{\"id\":218,\"name\":\"Shoe Machine Operators\",\"start_at\":\"16:45:00\",\"end_at\":\"18:00:00\"},{\"id\":225,\"name\":\"Gas Pumping Station Operator\",\"start_at\":\"11:30:00\",\"end_at\":\"13:30:00\"},{\"id\":295,\"name\":\"Security Guard\",\"start_at\":\"14:45:00\",\"end_at\":\"16:00:00\"},{\"id\":338,\"name\":\"Director Of Business Development\",\"start_at\":\"16:15:00\",\"end_at\":\"18:00:00\"},{\"id\":371,\"name\":\"Plate Finisher\",\"start_at\":\"16:30:00\",\"end_at\":\"18:30:00\"},{\"id\":381,\"name\":\"Electric Meter Installer\",\"start_at\":\"15:45:00\",\"end_at\":\"16:30:00\"},{\"id\":426,\"name\":\"Upholsterer\",\"start_at\":\"17:00:00\",\"end_at\":\"18:45:00\"},{\"id\":458,\"name\":\"Product Specialist\",\"start_at\":\"15:30:00\",\"end_at\":\"17:45:00\"},{\"id\":476,\"name\":\"Bookbinder\",\"start_at\":\"16:30:00\",\"end_at\":\"18:30:00\"},{\"id\":477,\"name\":\"Locksmith\",\"start_at\":\"10:00:00\",\"end_at\":\"10:45:00\"},{\"id\":46,\"name\":\"Chemical Equipment Tender\",\"start_at\":\"16:15:00\",\"end_at\":\"17:30:00\"},{\"id\":97,\"name\":\"Lathe Operator\",\"start_at\":\"11:15:00\",\"end_at\":\"13:15:00\"},{\"id\":117,\"name\":\"Central Office Operator\",\"start_at\":\"12:45:00\",\"end_at\":\"14:30:00\"},{\"id\":128,\"name\":\"Engineering Teacher\",\"start_at\":\"14:45:00\",\"end_at\":\"15:45:00\"},{\"id\":171,\"name\":\"Religious Worker\",\"start_at\":\"12:30:00\",\"end_at\":\"14:15:00\"},{\"id\":187,\"name\":\"Insurance Claims Clerk\",\"start_at\":\"12:00:00\",\"end_at\":\"14:15:00\"},{\"id\":204,\"name\":\"Heaters\",\"start_at\":\"14:15:00\",\"end_at\":\"15:45:00\"},{\"id\":224,\"name\":\"General Farmworker\",\"start_at\":\"10:00:00\",\"end_at\":\"11:00:00\"},{\"id\":252,\"name\":\"Architecture Teacher\",\"start_at\":\"12:45:00\",\"end_at\":\"13:45:00\"},{\"id\":261,\"name\":\"Clinical School Psychologist\",\"start_at\":\"09:45:00\",\"end_at\":\"10:00:00\"},{\"id\":269,\"name\":\"Drafter\",\"start_at\":\"13:30:00\",\"end_at\":\"13:45:00\"},{\"id\":274,\"name\":\"Counsil\",\"start_at\":\"16:00:00\",\"end_at\":\"18:00:00\"},{\"id\":275,\"name\":\"Press Machine Setter, Operator\",\"start_at\":\"09:00:00\",\"end_at\":\"10:30:00\"},{\"id\":277,\"name\":\"Poet OR Lyricist\",\"start_at\":\"13:45:00\",\"end_at\":\"14:30:00\"},{\"id\":278,\"name\":\"Credit Checker\",\"start_at\":\"16:00:00\",\"end_at\":\"17:45:00\"},{\"id\":321,\"name\":\"Social Worker\",\"start_at\":\"15:00:00\",\"end_at\":\"17:00:00\"},{\"id\":363,\"name\":\"Dental Assistant\",\"start_at\":\"09:45:00\",\"end_at\":\"10:45:00\"},{\"id\":380,\"name\":\"Motorcycle Mechanic\",\"start_at\":\"11:30:00\",\"end_at\":\"12:15:00\"},{\"id\":383,\"name\":\"Radiation Therapist\",\"start_at\":\"15:15:00\",\"end_at\":\"16:00:00\"},{\"id\":399,\"name\":\"Fabric Pressers\",\"start_at\":\"11:45:00\",\"end_at\":\"12:30:00\"},{\"id\":403,\"name\":\"Dancer\",\"start_at\":\"16:30:00\",\"end_at\":\"18:45:00\"},{\"id\":405,\"name\":\"Air Crew Officer\",\"start_at\":\"11:30:00\",\"end_at\":\"12:00:00\"},{\"id\":409,\"name\":\"Director Of Marketing\",\"start_at\":\"12:00:00\",\"end_at\":\"14:15:00\"},{\"id\":435,\"name\":\"Pharmacy Aide\",\"start_at\":\"14:30:00\",\"end_at\":\"16:00:00\"},{\"id\":450,\"name\":\"Glass Cutting Machine Operator\",\"start_at\":\"17:15:00\",\"end_at\":\"17:45:00\"},{\"id\":459,\"name\":\"Budget Analyst\",\"start_at\":\"18:00:00\",\"end_at\":\"20:00:00\"},{\"id\":463,\"name\":\"Radiation Therapist\",\"start_at\":\"08:15:00\",\"end_at\":\"09:30:00\"},{\"id\":466,\"name\":\"Media and Communication Worker\",\"start_at\":\"17:15:00\",\"end_at\":\"18:00:00\"},{\"id\":472,\"name\":\"Psychologist\",\"start_at\":\"13:00:00\",\"end_at\":\"13:30:00\"},{\"id\":13,\"name\":\"Plasterer OR Stucco Mason\",\"start_at\":\"13:45:00\",\"end_at\":\"14:15:00\"},{\"id\":90,\"name\":\"Heavy Equipment Mechanic\",\"start_at\":\"15:45:00\",\"end_at\":\"16:30:00\"},{\"id\":91,\"name\":\"Pewter Caster\",\"start_at\":\"09:15:00\",\"end_at\":\"10:00:00\"},{\"id\":102,\"name\":\"Product Specialist\",\"start_at\":\"08:15:00\",\"end_at\":\"10:30:00\"},{\"id\":103,\"name\":\"Makeup Artists\",\"start_at\":\"08:45:00\",\"end_at\":\"10:00:00\"},{\"id\":104,\"name\":\"Wind Instrument Repairer\",\"start_at\":\"13:45:00\",\"end_at\":\"14:00:00\"},{\"id\":206,\"name\":\"Real Estate Association Manager\",\"start_at\":\"08:30:00\",\"end_at\":\"10:30:00\"},{\"id\":208,\"name\":\"Chemical Plant Operator\",\"start_at\":\"08:45:00\",\"end_at\":\"10:45:00\"},{\"id\":214,\"name\":\"Human Resources Assistant\",\"start_at\":\"09:30:00\",\"end_at\":\"11:45:00\"},{\"id\":236,\"name\":\"Immigration Inspector OR Customs Inspector\",\"start_at\":\"08:15:00\",\"end_at\":\"09:30:00\"},{\"id\":248,\"name\":\"Cashier\",\"start_at\":\"11:00:00\",\"end_at\":\"12:00:00\"},{\"id\":253,\"name\":\"Respiratory Therapy Technician\",\"start_at\":\"12:30:00\",\"end_at\":\"13:45:00\"},{\"id\":265,\"name\":\"Electronic Masking System Operator\",\"start_at\":\"15:00:00\",\"end_at\":\"15:15:00\"},{\"id\":303,\"name\":\"Anthropologist\",\"start_at\":\"13:45:00\",\"end_at\":\"14:15:00\"},{\"id\":346,\"name\":\"Sculptor\",\"start_at\":\"11:30:00\",\"end_at\":\"11:45:00\"},{\"id\":395,\"name\":\"Electronic Masking System Operator\",\"start_at\":\"09:45:00\",\"end_at\":\"10:45:00\"},{\"id\":433,\"name\":\"Numerical Tool Programmer OR Process Control Programmer\",\"start_at\":\"12:45:00\",\"end_at\":\"13:15:00\"},{\"id\":452,\"name\":\"Earth Driller\",\"start_at\":\"12:00:00\",\"end_at\":\"12:15:00\"},{\"id\":483,\"name\":\"Precision Pattern and Die Caster\",\"start_at\":\"16:00:00\",\"end_at\":\"16:15:00\"}]}",
+    "progress": 100,
+    "status_message": "Done",
+    "state_id": 23,
+    "ended_at": "2020-07-07 15:34:05",
+    "start_at": "2020-07-07 15:33:19",
+    "created_at": "2020-07-07 15:33:19",
+    "updated_at": "2020-07-07 15:34:05",
+    "state": {
+        "id": 23,
+        "name": "successful",
+        "for": "App\\Job",
+        "description": "The job finished successfully"
+    }
 }
 ```
 
@@ -6915,13 +7478,13 @@ fetch(url, {
 ```json
 {
     "result": {
-        "id": 1,
+        "id": 2,
         "creator_id": 1,
         "for_id": 1,
         "for_type": "App\\User",
         "text": "More than expected",
-        "created_at": "2020-07-07 14:57:15",
-        "updated_at": "2020-07-07 14:57:15",
+        "created_at": "2020-07-08 13:33:27",
+        "updated_at": "2020-07-08 13:33:27",
         "conference_id": "1"
     },
     "message": "Note created"
@@ -7255,7 +7818,7 @@ fetch(url, {
 ```json
 {
     "data": [],
-    "clearUntil": "2020-07-07 14:57:15"
+    "clearUntil": "2020-07-08 13:33:27"
 }
 ```
 
@@ -7452,7 +8015,7 @@ fetch(url, {
         "user_id": 2,
         "conference_id": 1,
         "created_at": "2020-07-07 14:53:12",
-        "updated_at": "2020-07-07 14:57:15",
+        "updated_at": "2020-07-08 13:33:27",
         "enrollment_form_id": 3,
         "lottery_position": null,
         "conference": {
@@ -7656,80 +8219,80 @@ fetch(url, {
             "firstname": "Milton",
             "lastname": "Waddams",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 7
         },
         {
             "user_id": 2,
             "firstname": "Dortha",
             "lastname": "Waters",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 5
         },
         {
             "user_id": 3,
             "firstname": "Jevon",
             "lastname": "Ortiz",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 7
         },
         {
             "user_id": 4,
             "firstname": "Noelia",
             "lastname": "Kassulke",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 8
         },
         {
             "user_id": 5,
             "firstname": "Elva",
             "lastname": "Gaylord",
-            "hours_done": 0,
-            "assignments_count": 0
+            "hours_done": 5,
+            "assignments_count": 6
         },
         {
             "user_id": 6,
             "firstname": "Hosea",
             "lastname": "Macejkovic",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 8
         },
         {
             "user_id": 7,
             "firstname": "Remington",
             "lastname": "Volkman",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 9
         },
         {
             "user_id": 8,
             "firstname": "Hollis",
             "lastname": "Haag",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 7
         },
         {
             "user_id": 9,
             "firstname": "Claire",
             "lastname": "Beier",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 8
         },
         {
             "user_id": 10,
             "firstname": "Pauline",
             "lastname": "Effertz",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 8
         },
         {
             "user_id": 11,
             "firstname": "Ayla",
             "lastname": "Bergnaum",
             "hours_done": 0,
-            "assignments_count": 0
+            "assignments_count": 5
         }
     ],
-    "updated": "2020-07-07T14:57:09.612340Z",
+    "updated": "2020-07-08T13:33:21.569896Z",
     "paginate": true
 }
 ```
@@ -7803,7 +8366,7 @@ fetch(url, {
 
 ```json
 {
-    "id": 501,
+    "id": 503,
     "conference_id": "1",
     "name": "SVing Task",
     "description": "Nothing to do here",
@@ -8084,8 +8647,8 @@ fetch(url, {
         "region_id": 1268,
         "city_id": 12850,
         "university_id": 4044,
-        "updated_at": "2020-07-07 14:57:09",
-        "created_at": "2020-07-07 14:57:09",
+        "updated_at": "2020-07-08 13:33:20",
+        "created_at": "2020-07-08 13:33:20",
         "id": 12
     },
     "error": null
@@ -8733,7 +9296,7 @@ fetch(url, {
     {
         "id": 26,
         "task_id": 97,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 2,
         "task": {
             "id": 97,
@@ -8744,9 +9307,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -8885,7 +9448,7 @@ fetch(url, {
     {
         "id": 34,
         "task_id": 133,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 2,
         "task": {
             "id": 133,
@@ -8896,9 +9459,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -8923,7 +9486,7 @@ fetch(url, {
     {
         "id": 36,
         "task_id": 139,
-        "state_id": 31,
+        "state_id": 32,
         "preference": 3,
         "task": {
             "id": 139,
@@ -8934,9 +9497,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 32,
+            "name": "successful",
+            "description": "The bid won the auction creating an assignment"
         }
     },
     {
@@ -9056,7 +9619,7 @@ fetch(url, {
     {
         "id": 43,
         "task_id": 153,
-        "state_id": 31,
+        "state_id": 33,
         "preference": 1,
         "task": {
             "id": 153,
@@ -9067,9 +9630,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 33,
+            "name": "unsuccessful",
+            "description": "The bid did not win the auction (all slots filled)"
         }
     },
     {
@@ -9132,7 +9695,7 @@ fetch(url, {
     {
         "id": 47,
         "task_id": 166,
-        "state_id": 31,
+        "state_id": 35,
         "preference": 0,
         "task": {
             "id": 166,
@@ -9143,9 +9706,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 35,
+            "name": "unavailable",
+            "description": "The bid expresses unavailability, thus blocked assignment"
         }
     },
     {
@@ -9379,7 +9942,7 @@ fetch(url, {
     {
         "id": 60,
         "task_id": 208,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 208,
@@ -9390,9 +9953,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9531,7 +10094,7 @@ fetch(url, {
     {
         "id": 68,
         "task_id": 248,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 2,
         "task": {
             "id": 248,
@@ -9542,9 +10105,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9569,7 +10132,7 @@ fetch(url, {
     {
         "id": 70,
         "task_id": 252,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 3,
         "task": {
             "id": 252,
@@ -9580,9 +10143,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9759,7 +10322,7 @@ fetch(url, {
     {
         "id": 80,
         "task_id": 295,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 295,
@@ -9770,9 +10333,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9816,7 +10379,7 @@ fetch(url, {
     {
         "id": 83,
         "task_id": 304,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 3,
         "task": {
             "id": 304,
@@ -9827,9 +10390,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9911,7 +10474,7 @@ fetch(url, {
     {
         "id": 88,
         "task_id": 316,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 3,
         "task": {
             "id": 316,
@@ -9922,9 +10485,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -9968,7 +10531,7 @@ fetch(url, {
     {
         "id": 91,
         "task_id": 321,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 321,
@@ -9979,9 +10542,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10120,7 +10683,7 @@ fetch(url, {
     {
         "id": 99,
         "task_id": 363,
-        "state_id": 31,
+        "state_id": 35,
         "preference": 0,
         "task": {
             "id": 363,
@@ -10131,9 +10694,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 35,
+            "name": "unavailable",
+            "description": "The bid expresses unavailability, thus blocked assignment"
         }
     },
     {
@@ -10272,7 +10835,7 @@ fetch(url, {
     {
         "id": 107,
         "task_id": 395,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 395,
@@ -10283,9 +10846,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10329,7 +10892,7 @@ fetch(url, {
     {
         "id": 110,
         "task_id": 399,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 399,
@@ -10340,9 +10903,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10405,7 +10968,7 @@ fetch(url, {
     {
         "id": 114,
         "task_id": 426,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 2,
         "task": {
             "id": 426,
@@ -10416,9 +10979,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10443,7 +11006,7 @@ fetch(url, {
     {
         "id": 116,
         "task_id": 440,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 3,
         "task": {
             "id": 440,
@@ -10454,9 +11017,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10576,7 +11139,7 @@ fetch(url, {
     {
         "id": 123,
         "task_id": 458,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 2,
         "task": {
             "id": 458,
@@ -10587,9 +11150,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10614,7 +11177,7 @@ fetch(url, {
     {
         "id": 125,
         "task_id": 463,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 3,
         "task": {
             "id": 463,
@@ -10625,9 +11188,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -10728,7 +11291,7 @@ fetch(url, {
     {
         "id": 131,
         "task_id": 483,
-        "state_id": 31,
+        "state_id": 34,
         "preference": 1,
         "task": {
             "id": 483,
@@ -10739,9 +11302,9 @@ fetch(url, {
             "date": "2020-07-07 00:00:00"
         },
         "state": {
-            "id": 31,
-            "name": "placed",
-            "description": "The bid is waiting for the auction"
+            "id": 34,
+            "name": "conflict",
+            "description": "The bid is invalid due to a task time conflict"
         }
     },
     {
@@ -11344,7 +11907,7 @@ fetch(url, {
         "email_verified_at": "2020-07-07 14:53:12",
         "locale_id": 51,
         "created_at": "2020-07-07 14:53:12",
-        "updated_at": "2020-07-07 14:57:09",
+        "updated_at": "2020-07-08 13:33:21",
         "past_conferences": [
             "CHI 2019"
         ],

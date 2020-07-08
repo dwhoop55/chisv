@@ -224,6 +224,14 @@ class BidController extends Controller
      * Delete a bid (revoke)
      * 
      * @urlParam bid required The bid's id Example:1
+     * 
+     * @response 200 {
+     * "result":true,"message":"Bid removed"
+     * }
+     * 
+     * @response 403 {
+     * "message": "This action is unauthorized."
+     * }
      *
      * @param  \App\Bid  $bid
      * @return \Illuminate\Http\Response
