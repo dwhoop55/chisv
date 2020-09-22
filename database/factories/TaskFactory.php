@@ -18,7 +18,7 @@ $factory->define(Task::class, function (Faker $faker) {
         'location' => $faker->streetAddress(),
         'date' => $faker->dateTimeBetween(
             $conference->start_date,
-            $conference->end_date
+            Carbon::create($conference->end_date)->addDays(1)
         )->setTime(0, 0, 0),
         'start_at' =>  $start->format('H:i:s'),
         'end_at' =>  $end->format('H:i:s'),
