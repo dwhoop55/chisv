@@ -75,8 +75,9 @@ class LoginController extends Controller
         ];
         $params = [
             'grant_type' => 'password',
-            'client_id' => env('OAUTH_CLIENT_ID'),
-            'client_secret' => env('OAUTH_CLIENT_SECRET'),
+            'client_id' => config('app.oauth_client_id') ?? abort(500, "No OAuth client id present. Contact Admins"),
+            'client_secret' => config('app.oauth_client_secret') ?? abort(500, "No OAuth client secret
+             present. Contact Admins"),
             'username' => $request->email,
             'password' => $request->password,
             'scope' => ''
