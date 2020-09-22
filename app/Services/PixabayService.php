@@ -5,11 +5,10 @@ namespace App\Services;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Support\Facades\File;
 use Symfony\Component\Routing\Exception\InvalidParameterException;
 use Illuminate\Support\Facades\Storage;
 
-class Pixabay
+class PixabayService
 {
     protected $apiKey;
 
