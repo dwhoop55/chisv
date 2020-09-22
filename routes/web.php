@@ -28,6 +28,7 @@ Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm
 
 
 // Return our SPA
-Route::get('/{any}', function () {
-    return view('layouts.app');
-})->middleware('auth')->where('any', '.*');
+Route::get('/{any}', 'MiscController@showSpa')
+    ->name('spa.show')
+    ->middleware('auth')
+    ->where('any', '.*');

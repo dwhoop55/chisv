@@ -21,6 +21,11 @@ use Illuminate\Support\Facades\Log;
 class MiscController extends Controller
 {
 
+    public function showSpa(Request $request)
+    {
+        return view('layouts.app');
+    }
+
     public function loginAs(Request $request)
     {
         if ($request->input('id')) {
