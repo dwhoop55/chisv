@@ -108,7 +108,7 @@ class Lottery extends AdvancedJob implements ExecutableJob
                 ->where('state_id', $acceptedState->id)
                 ->count());
 
-        // Since Elloquent has easier api for AND WHERE we negate the argument
+        // Since Eloquent has easier api for AND WHERE we negate the argument
         $permissionsToAccept = $this->conference->permissions
             ->where('role_id', Role::byName('sv')->id)
             ->where('state_id', '!=', State::byName('dropped')->id)

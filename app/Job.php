@@ -33,10 +33,10 @@
  * when its handle() method is called by laravel.
  * The subclass of AdvancedJob will be able to access
  * the extended functions like progress setting which
- * will then again take this Elloquent Model from the
+ * will then again take this Eloquent Model from the
  * database and alter its state.
  * 
- * Job.php - Elloquent Model for holding additional info
+ * Job.php - Eloquent Model for holding additional info
  *    |<-- AdvancedJob interacts with, calls execute() when handle()'ed
  *       |<-- Subclasses and implements ExecutableJob: Lottery/Auction 
  * 
