@@ -494,7 +494,7 @@
                 <div>
                   <p class="heading">Bids conflicting</p>
                   <div class="subtitle">
-                    <bid-counter :bids="props.row.stats.bids_successful" />
+                    <bid-counter :bids="props.row.stats.bids_conflict" />
                   </div>
                 </div>
               </div>
