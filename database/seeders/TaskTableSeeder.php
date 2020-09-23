@@ -1,8 +1,9 @@
 <?php
 
+namespace Database\Seeders;
+
+use App\Task;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class TaskTableSeeder extends Seeder
 {
@@ -13,6 +14,6 @@ class TaskTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Task::class, 500)->create();
+        Task::factory()->times(500)->create();
     }
 }

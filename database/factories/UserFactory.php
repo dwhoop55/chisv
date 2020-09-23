@@ -1,50 +1,47 @@
 <?php
 
+namespace Database\Factories;
+
+use App\User;
 use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use App\University;
-use App\Timezone;
-use App\Degree;
-use App\Shirt;
-use App\City;
-use App\Conference;
-use App\Country;
-use App\Language;
-use App\Region;
-use App\Role;
-use App\Services\EnrollmentFormService;
-use App\State;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
-/*
-|--------------------------------------------------------------------------
-| Model Factories
-|--------------------------------------------------------------------------
-|
-| This directory should contain each of the model factory definitions for
-| your application. Factories provide a convenient way to generate new
-| model instances for testing / seeding your application's database.
-|
-*/
+class UserFactory extends Factory
+{
+    /**
+     * The name of the factory's corresponding model.
+     *
+     * @var string
+     */
+    protected $model = User::class;
 
-$factory->define(App\User::class, function (Faker $faker) {
-    return [
-        'firstname' => $faker->firstName(),
-        'lastname' => $faker->lastName(),
-        'country_id' => $faker->numberBetween(1, 240),
-        'region_id' => $faker->numberBetween(1, 4000),
-        'city_id' => $faker->numberBetween(1, 47000),
-        'university_id' => $faker->numberBetween(1, 380),
-        'university_fallback' => $faker->optional($weight = 0.5)->company(),
-        'shirt_id' => $faker->boolean() ? $faker->numberBetween(1, 6) : $faker->numberBetween(11, 17),
-        'degree_id' => $faker->numberBetween(1, 8),
-        'past_conferences' => $faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $faker->numberBetween(1, 6)),
-        'past_conferences_sv' => $faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $faker->numberBetween(1, 6)),
-        'email' => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
-        'timezone_id' => $faker->numberBetween(1, 387),
-        'remember_token' => Str::random(10),
-        'created_at' => now(),
-        'updated_at' => now(),
-    ];
-});
+    /**
+     * Define the model's default state.
+     *
+     * @return array
+     */
+    public function definition()
+    {
+
+        return [
+            'firstname' => $this->faker->firstName(),
+            'lastname' => $this->faker->lastName(),
+            'country_id' => $this->faker->numberBetween(1, 240),
+            'region_id' => $this->faker->numberBetween(1, 4000),
+            'city_id' => $this->faker->numberBetween(1, 47000),
+            'university_id' => $this->faker->numberBetween(1, 380),
+            'university_fallback' => $this->faker->optional($weight = 0.5)->company(),
+            'shirt_id' => $this->faker->boolean() ? $this->faker->numberBetween(1, 6) : $this->faker->numberBetween(11, 17),
+            'degree_id' => $this->faker->numberBetween(1, 8),
+            'past_conferences' => $this->faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $this->faker->numberBetween(1, 6)),
+            'past_conferences_sv' => $this->faker->randomElements(['CHI19', 'UIST2020', 'CHI2020', 'MobileHCI', 'DIS 2014', 'NordiCHI 2012'], $this->faker->numberBetween(1, 6)),
+            'email' => $this->faker->unique()->safeEmail,
+            'email_verified_at' => now(),
+            'password' => '$2y$10$TKh8H1.PfQx37YgCzwiKb.KjNyWgaHb9cbcoQgdIVFlYg7B77UdFm', // secret
+            'timezone_id' => $this->faker->numberBetween(1, 387),
+            'remember_token' => Str::random(10),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+    }
+}

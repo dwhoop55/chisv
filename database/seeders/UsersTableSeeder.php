@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 use App\Language;
@@ -53,7 +55,7 @@ class UsersTableSeeder extends Seeder
 
         $faker = app('Faker\Generator');
         $enrollmentFormService = new EnrollmentFormService;
-        factory(App\User::class, 10)->create()->each(function ($user) use ($faker, $role, $enrollmentFormService) {
+        User::factory()->count(10)->create()->each(function ($user) use ($faker, $role, $enrollmentFormService) {
             $state = State::byName('accepted');
 
             $conference = Conference::inRandomOrder()->first();

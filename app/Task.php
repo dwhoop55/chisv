@@ -4,14 +4,14 @@ namespace App;
 
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
-use PDO;
 
 class Task extends Model
 {
+    use HasFactory;
+
     protected $guarded = [];
     protected $dates = ['date'];
     protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];

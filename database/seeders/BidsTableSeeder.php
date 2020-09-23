@@ -1,6 +1,7 @@
 <?php
 
-use App\Bid;
+namespace Database\Seeders;
+
 use App\Conference;
 use App\Role;
 use Illuminate\Database\Seeder;
@@ -15,7 +16,7 @@ class BidsTableSeeder extends Seeder
      */
     public function run()
     {
-        $f = Faker\Factory::create();
+        $f = \Faker\Factory::create();
         Conference::all()->each(function ($c) use ($f) {
             $users = $c->users(Role::byName('sv'));
             $tasks = $c->tasks();
