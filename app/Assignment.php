@@ -9,7 +9,6 @@ class Assignment extends Model
 {
     use HasFactory;
 
-    // protected $with = ['state'];
     protected $guarded = [];
     protected $casts = [
         'user_id' => 'int',

@@ -9,7 +9,7 @@ class Conference extends Model
 {
 
     protected $with = [];
-
+    protected $hidden = ['created_at', 'updated_at'];
     // We guard there properties, such that they don't get assigned
     // when we mass-update the conference with an request
     protected $guarded = ['icon', 'image'];
