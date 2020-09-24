@@ -691,7 +691,7 @@ class ConferenceController extends Controller
         $tasks->transform(function ($task) use (&$showMore, &$user, &$userIsAccepted) {
             $safe = null;
             $safe = $task->only('id', 'name', 'location', 'description', 'start_at', 'end_at', 'hours');
-            $safe["date"] = $task->date->toDateString();
+            $safe["date"] = $task->date;
 
             if ($showMore) {
                 $safe["slots"] = $task->slots;
@@ -1041,7 +1041,7 @@ class ConferenceController extends Controller
                 'user.assignments.notes',
                 'user.assignments.notes.creator:id,firstname,lastname',
                 'user.assignments.notes.for:id,task_id,hours',
-                'user.assignments.notes.for.task:id,name,hours,start_at,end_at',
+                'user.assignments.notes.for.task:id,name,date,hours,start_at,end_at',
                 'user.bids' => function ($query) use ($conference) {
                     $query->select(['id', 'preference', 'user_id', 'task_id', 'state_id']);
                     $query->whereHas('task', function ($query) use ($conference) {

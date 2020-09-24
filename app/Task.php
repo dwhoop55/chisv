@@ -13,9 +13,12 @@ class Task extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $dates = ['date'];
     protected $hidden = ['users', 'hide', 'updated_at', 'created_at'];
-    protected $casts = ['hours' => 'float', 'slots' => 'int', 'priority' => 'int'];
+    protected $casts = [
+        'hours' => 'float',
+        'slots' => 'int',
+        'priority' => 'int'
+    ];
 
 
     /** 
