@@ -28,8 +28,8 @@ const actions = {
             .then(({ data }) => {
                 if (data.data.length > 0) {
                     var newNotifications = data.data.map((n) => {
-                        n.created_at = new Date(Date.parse(n.created_at));
-                        n.read_at = n.read_at ? new Date(Date.parse(n.read_at)) : null;
+                        n.created_at = new Date(n.created_at);
+                        n.read_at = n.read_at ? new Date(n.read_at) : null;
                         return n;
                     })
                     var newArray = (since === 0) ? newNotifications : [...newNotifications, ...getters.notifications];
