@@ -132,7 +132,12 @@ let methods = {
 
         if (typeof string != "string") console.error("Invalid input: no string!");
 
-        if (string.match(/^\d{2}:\d{2}:\d{2}$/)) {
+        if (string.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{6}Z$/)) {
+            // In new Laravel 7 ISO-8601 date. Can be read by js as is
+            let date = new Date(string);
+            console.warn(`Input (${string}) was in ISO-8601 fromat. Returning ${date}`);
+            return date;
+        } else if (string.match(/^\d{2}:\d{2}:\d{2}$/)) {
             // Missing day
             string = `0000-00-00 ${string}`;
         } else if (string.match(/^\d{4}-\d{2}-\d{2}\ \d{2}:\d{2}$/)) {
@@ -143,7 +148,7 @@ let methods = {
             string = `${string} 00:00:00`;
         } else if (!string.match(/^\d{4}-\d{2}-\d{2}\ \d{2}:\d{2}:\d{2}$/)) {
             // Not in correct format
-            console.error("Invalid input: Not in YYYY-MM-DD HH:MM:SS format");
+            console.error(`"Invalid input: Not in YYYY-MM-DD HH:MM:SS format: ${string}`);
         }
         // regular expression split that creates array with: year, month, day, hour, minutes, seconds values
         let dateTimeParts = string.split(/[- :]/);
