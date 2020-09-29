@@ -394,20 +394,4 @@ class User extends Authenticatable
 
         return round($hours, 2);
     }
-
-    public function toTimezone($date)
-    {
-        $timezone = $this->timezone;
-        $carbonDate = new Carbon($date);
-        $carbonDate->timezone = $timezone->name;
-        return $carbonDate;
-    }
-
-    public function formatDate($date, $format = null)
-    {
-        if (!$format) {
-            $format = $this->date_format . ' ' . $this->time_format;
-        }
-        return $this->toTimezone($date)->format($format);
-    }
 }
