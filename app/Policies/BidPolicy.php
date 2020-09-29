@@ -108,8 +108,8 @@ class BidPolicy
             $conference->bidding_enabled &&
             $conference->bidding_start && // must be set
             $conference->bidding_end && // must be set
-            new Carbon($task->date) >= new Carbon($conference->bidding_start) &&
-            new Carbon($task->date) <= new Carbon($conference->bidding_end) &&
+            Carbon::create($task->date) >= Carbon::create($conference->bidding_start) &&
+            Carbon::create($task->date) <= Carbon::create($conference->bidding_end) &&
             ($skip->contains("assignmentsCheck") || !$user->assignmentFor($task))
         ) {
             // Allow bidding if the user is SV for the task's conference and 'accepted',

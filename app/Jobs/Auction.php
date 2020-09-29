@@ -97,7 +97,7 @@ class Auction extends AdvancedJob implements ExecutableJob
     {
         parent::__construct($params);
         $this->conference = Conference::find($params->payload->conference_id);
-        $this->date = new Carbon($params->payload->date);
+        $this->date = Carbon::create($params->payload->date);
     }
 
     /**
@@ -172,7 +172,7 @@ class Auction extends AdvancedJob implements ExecutableJob
             // These would first have to be marked 'done' to get caught
             // in the sum above
             $new['hours_done'] += round($sv->assignments->filter(function ($assignment) {
-                return $assignment->task->date == $this->date;
+                return Carbon::create($assignment->task->date) == $this->date;
             })->sum('hours'), 2);
 
             // Now we check for a task conflict

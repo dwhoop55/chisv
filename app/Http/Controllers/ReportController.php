@@ -374,7 +374,7 @@ class ReportController extends Controller
 
         $data->transform(function ($task) {
             return [
-                "day" => $task->date->toDateString(),
+                "day" => Carbon::create($task->date)->toDateString(),
                 "name" => $task->name,
                 "start" => Carbon::create($task->start_at)->isoFormat('HH:mm'),
                 "end" => Carbon::create($task->end_at)->isoFormat('HH:mm'),
@@ -414,7 +414,7 @@ class ReportController extends Controller
             ])
             ->get()
             ->map(function ($task) {
-                $task->date_int = $task->date->timestamp;
+                $task->date_int = Carbon::create($task->date)->timestamp;
                 return $task;
             });
 
@@ -433,7 +433,7 @@ class ReportController extends Controller
             });
 
             return [
-                "day" => $day->first()->date->toDateString(),
+                "day" => Carbon::create($day->first()->date)->toDateString(),
                 "task_count" => $day->count(),
                 "task_hours" => $day->sum('hours'),
                 "task_slots" => $day->sum('slots'),

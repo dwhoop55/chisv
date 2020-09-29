@@ -42,9 +42,9 @@ class CalendarEventController extends Controller
             ->get(['id', 'user_id', 'task_id', 'hours', 'state_id']);
 
         $assignments = $assignments->map(function ($assignment) {
-            $start = $assignment->task->date;
+            $start = Carbon::create($assignment->task->date);
             $start->setTimeFrom(Carbon::create($assignment->task->start_at));
-            $end = $assignment->task->date;
+            $end = Carbon::create($assignment->task->date);
             $end->setTimeFrom(Carbon::create($assignment->task->end_at));
             return [
                 "title" => $assignment->task->name,
