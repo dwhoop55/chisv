@@ -8,6 +8,7 @@ const state = {
     timezones: null,
     shirts: null,
     degrees: null,
+    languages: null,
     priorities: [1, 2, 3],
     version: null,
 };
@@ -29,6 +30,7 @@ const getters = {
     timezones: state => state.timezones,
     shirts: state => state.shirts,
     degrees: state => state.degrees,
+    languages: state => state.languages,
     priorities: state => state.priorities,
     version: state => state.version,
 };
@@ -65,6 +67,10 @@ const actions = {
     async fetchDegrees({ commit }) {
         const response = await api.getDegrees();
         commit('setDegrees', response.data);
+    },
+    async fetchLanguages({ commit }) {
+        const response = await api.getLanguages();
+        commit('setLanguages', response.data);
     }
 };
 
@@ -76,6 +82,7 @@ const mutations = {
     setTimezones: (state, timezones) => (state.timezones = timezones),
     setShirts: (state, shirts) => (state.shirts = shirts),
     setDegrees: (state, degrees) => (state.degrees = degrees),
+    setLanguages: (state, languages) => (state.languages = languages),
     setVersion: (state, version) => (state.version = version),
 };
 

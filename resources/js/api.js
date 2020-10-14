@@ -81,6 +81,9 @@ export default {
     getDegrees() {
         return axios.get("degree");
     },
+    getLanguages() {
+        return axios.get("language");
+    },
     getShirts() {
         return axios.get("shirt");
     },

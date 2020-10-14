@@ -30,6 +30,7 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('timezone', 'MiscController@timezones');
     Route::get('shirt', 'MiscController@shirts');
     Route::get('degree', 'MiscController@degrees');
+    Route::get('language', 'MiscController@languages');
     Route::get('country', 'MiscController@countries');
     Route::get('country/{country}/city/{pattern?}', 'MiscController@locations');
     Route::get('university/name/{pattern?}', 'MiscController@universities');

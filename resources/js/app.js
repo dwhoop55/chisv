@@ -99,7 +99,7 @@ export const vm = new Vue({
         ...mapMutations('auth', ['setUserAcceptsCookies']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones', 'fetchShirts', 'fetchDegrees', 'fetchVersion']),
+        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones', 'fetchShirts', 'fetchDegrees', 'fetchLanguages', 'fetchVersion']),
         ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
     },
 
@@ -108,6 +108,7 @@ export const vm = new Vue({
         this.fetchLocales();
         this.fetchShirts();
         this.fetchDegrees();
+        this.fetchLanguages();
         this.fetchTimezones();
         this.fetchCountries();
         this.fetchUser()
