@@ -2,7 +2,7 @@
 <template>
   <div>
     <b-autocomplete
-      :required="required === false"
+      :required="required !== false"
       :value="universityName"
       :data="rows"
       :placeholder="'e.g. RWTH'"
@@ -42,7 +42,7 @@ export default {
     return {
       rows: [],
       isLoading: false,
-      internal: this.value
+      internal: this.value,
     };
   },
 
@@ -53,16 +53,16 @@ export default {
       } else if (this.value && this.value.name) {
         return this.value.name;
       }
-    }
+    },
   },
 
   methods: {
-    typing: function(text) {
+    typing: function (text) {
       this.internal = { name: text };
       this.$emit("input", this.internal);
       this.getUniversity(text);
     },
-    select: function(event) {
+    select: function (event) {
       this.internal = event;
       this.$emit("input", event);
     },
@@ -75,9 +75,9 @@ export default {
       api
         .getUniversity(name)
         .then(({ data }) => (this.rows = data))
-        .catch(error => (this.rows = []))
+        .catch((error) => (this.rows = []))
         .finally(() => (this.isLoading = false));
-    }
-  }
+    },
+  },
 };
 </script>

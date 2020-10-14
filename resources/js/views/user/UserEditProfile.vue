@@ -1,8 +1,8 @@
 <template>
   <div>
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
-      <b-field grouped group-multiline>
-        <b-field>
+      <div class="columns">
+        <div class="column is-narrow">
           <image-component
             v-if="user"
             v-model="user"
@@ -10,10 +10,10 @@
             size="128x128"
             text=" Drop new face..<br />png, jpg, gif<br />max 128x128"
           ></image-component>
-        </b-field>
+        </div>
 
-        <b-field expanded class="is-block">
-          <div class="control">
+        <div class="column">
+          <section>
             <b-field
               class="control"
               expanded
@@ -23,9 +23,7 @@
             >
               <b-input required v-model="form.firstname"></b-input>
             </b-field>
-          </div>
 
-          <div class="control">
             <b-field
               expanded
               :type="{ 'is-danger': form.errors.has('lastname') }"
@@ -34,9 +32,7 @@
             >
               <b-input required v-model="form.lastname"></b-input>
             </b-field>
-          </div>
 
-          <div class="control">
             <b-field
               expanded
               :type="{ 'is-danger': form.errors.has('email') }"
@@ -45,9 +41,9 @@
             >
               <b-input required v-model="form.email"></b-input>
             </b-field>
-          </div>
-        </b-field>
-      </b-field>
+          </section>
+        </div>
+      </div>
 
       <b-field expanded>&nbsp;</b-field>
 
@@ -112,7 +108,9 @@
         label="Preferred locale"
       >
         <b-select expanded v-model="form.locale_id">
-          <option v-for="locale in locales" :value="locale.id" :key="locale.id">{{ locale.name}}</option>
+          <option v-for="locale in locales" :value="locale.id" :key="locale.id">
+            {{ locale.name }}
+          </option>
         </b-select>
       </b-field>
 
@@ -149,7 +147,13 @@
 
       <b-field expanded>&nbsp;</b-field>
 
-      <button :disabled="form.busy" type="submit" class="button is-success is-pulled-right">Apply</button>
+      <button
+        :disabled="form.busy"
+        type="submit"
+        class="button is-success is-pulled-right"
+      >
+        Apply
+      </button>
     </form>
   </div>
 </template>
@@ -162,18 +166,18 @@ import { mapActions, mapGetters } from "vuex";
 export default {
   props: ["user"],
   model: {
-    prop: "user"
+    prop: "user",
   },
   data() {
     return {
-      form: null
+      form: null,
     };
   },
 
   created() {
     this.$watch(
       "user",
-      function(newVal, oldVal) {
+      function (newVal, oldVal) {
         this.form = new Form({
           firstname: this.user.firstname,
           lastname: this.user.lastname,
@@ -188,11 +192,11 @@ export default {
             ? this.user.university
             : { name: this.user.university_fallback },
           // timezone_id: this.user.timezone_id,
-          locale_id: this.user.locale_id
+          locale_id: this.user.locale_id,
         });
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
   },
@@ -203,7 +207,7 @@ export default {
         this.$emit("input", data.result);
         this.$buefy.toast.open({
           message: "Changes saved!",
-          type: "is-success"
+          type: "is-success",
         });
         if (this.user.id == this.authUser.id) {
           // If the editing user is the logged in user
@@ -213,13 +217,13 @@ export default {
       });
     },
     ...mapActions("auth", {
-      fetchAuthUser: "fetchUser"
-    })
+      fetchAuthUser: "fetchUser",
+    }),
   },
 
   computed: {
     ...mapGetters("auth", { authUser: "user" }),
-    ...mapGetters("defines", ["locales"])
-  }
+    ...mapGetters("defines", ["locales"]),
+  },
 };
 </script>

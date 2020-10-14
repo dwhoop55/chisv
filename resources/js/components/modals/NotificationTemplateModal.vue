@@ -4,11 +4,10 @@
       <p class="modal-card-title">Notification Templates</p>
     </header>
     <section class="modal-card-body">
-      <b-notification
-        v-if="cannotCreate"
-        :closable="false"
-        type="is-warning"
-      >To add a template make sure the template has at least one element</b-notification>
+      <b-notification v-if="cannotCreate" :closable="false" type="is-warning"
+        >To add a template make sure the template has at least one
+        element</b-notification
+      >
       <b-field grouped group-multiline>
         <b-input
           :disabled="cannotCreate"
@@ -20,17 +19,20 @@
           :disabled="cannotCreate"
           @click="createTemplate(templateName)"
           type="is-primary"
-        >Add</b-button>
+          >Add</b-button
+        >
       </b-field>
-      <p>Templates are visible to all chairs conference wide. Only group destinations will be saved.</p>
+      <p>
+        Templates are visible to all chairs conference wide. Only group
+        destinations will be saved.
+      </p>
       <b-table
         ref="table"
-        focusable
         @click="toggle($event)"
         detail-key="id"
         :opened-detailed="detailOpen"
         :selected.sync="selected"
-        :default-sort="['year','desc']"
+        :default-sort="['year', 'desc']"
         detailed
         paginated
         per-page="15"
@@ -39,34 +41,50 @@
         :loading="isLoading"
         :mobile-cards="false"
       >
-        <template slot-scope="props">
-          <b-table-column
-            field="year"
-            width="5"
-            label="Year"
-            searchable
-            sortable
-          >{{ props.row.year }}</b-table-column>
-          <b-table-column field="name" label="Name" searchable sortable>{{ props.row.name }}</b-table-column>
-          <b-table-column
-            field="data.subject"
-            label="Subject"
-            searchable
-            sortable
-          >{{ props.row.data.subject }}</b-table-column>
-          <b-table-column
-            label="Destinations"
-            searchable
-            sortable
-          >{{ formatDestinations(props.row.data.destinations) }}</b-table-column>
-          <b-table-column
-            width="5"
-            field="conference.key"
-            label="Conference"
-            searchable
-            sortable
-          >{{ props.row.conference.key }}</b-table-column>
-        </template>
+        <b-table-column
+          field="year"
+          width="5"
+          label="Year"
+          searchable
+          sortable
+          v-slot="props"
+          >{{ props.row.year }}
+        </b-table-column>
+
+        <b-table-column
+          field="name"
+          label="Name"
+          searchable
+          sortable
+          v-slot="props"
+        >
+          {{ props.row.name }}
+        </b-table-column>
+
+        <b-table-column
+          field="data.subject"
+          label="Subject"
+          searchable
+          sortable
+          v-slot="props"
+        >
+          {{ props.row.data.subject }}
+        </b-table-column>
+
+        <b-table-column label="Destinations" searchable sortable v-slot="props">
+          {{ formatDestinations(props.row.data.destinations) }}
+        </b-table-column>
+
+        <b-table-column
+          width="5"
+          field="conference.key"
+          label="Conference"
+          searchable
+          sortable
+          v-slot="props"
+        >
+          {{ props.row.conference.key }}
+        </b-table-column>
 
         <template slot="empty">
           <section class="section">
@@ -90,19 +108,25 @@
       </b-table>
     </section>
     <footer class="modal-card-foot">
-      <button class="button is-primary" type="button" @click="$parent.close()">Cancel</button>
+      <button class="button is-primary" type="button" @click="$parent.close()">
+        Cancel
+      </button>
       <button
         :disabled="!selected"
         class="button is-danger"
         type="button"
         @click="deleteTemplate(selected)"
-      >Delete selected</button>
+      >
+        Delete selected
+      </button>
       <button
         :disabled="!selected"
         class="button is-success"
         type="button"
         @click="applyTemplate()"
-      >Use selected</button>
+      >
+        Use selected
+      </button>
     </footer>
   </div>
 </template>
@@ -119,7 +143,7 @@ export default {
       templates: [],
       templateName: "",
       selected: null,
-      detailOpen: []
+      detailOpen: [],
     };
   },
 
@@ -141,12 +165,12 @@ export default {
   computed: {
     cannotCreate() {
       return this.template.elements.length == 0;
-    }
+    },
   },
 
   methods: {
     formatDestinations(destinations) {
-      let dst = destinations.map(dst => {
+      let dst = destinations.map((dst) => {
         return dst.display;
       });
       return dst.join(", ");
@@ -160,7 +184,7 @@ export default {
       api
         .getNotificationTemplates()
         .then(({ data }) => {
-          this.templates = data.map(template => {
+          this.templates = data.map((template) => {
             template.data = JSON.parse(template.data);
             return template;
           });
@@ -183,7 +207,7 @@ export default {
             .deleteNotificationTemplate(template.id)
             .then(({ data }) => this.getTemplates())
             .finally(() => (this.isLoading = false));
-        }
+        },
       });
     },
     createTemplate(name) {
@@ -199,7 +223,7 @@ export default {
       } else {
         this.detailOpen = [row.id];
       }
-    }
-  }
+    },
+  },
 };
 </script>

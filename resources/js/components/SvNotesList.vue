@@ -7,46 +7,84 @@
       :mobile-cards="false"
       :data="notes"
     >
-      <template slot-scope="props">
-        <b-table-column width="1">
-          <b-icon
-            class="is-clickable"
-            icon="delete"
-            type="is-danger"
-            @click.native="deleteNote(props.row.id)"
-          ></b-icon>
-        </b-table-column>
-        <b-table-column
-          width="200"
-          label="Created"
-          field="created_at"
-          sortable
-        >{{ momentize(props.row.created_at, {format: 'l LT', fromTz: 'UTC', toTz: conference.timezone.name}) }}</b-table-column>
-        <b-table-column width="200" label="Posted by">
-          <span
-            v-if="props.row.creator"
-          >{{ props.row.creator.firstname }} {{ props.row.creator.lastname }}</span>
-          <span v-else>N/A</span>
-        </b-table-column>
-        <b-table-column label="For" width="300" field="for_type" sortable>
-          <span v-if="props.row.for_type === 'App\\User'">This user</span>
-          <span v-else-if="props.row.for_type === 'App\\Assignment'">
-            Assignment on
-            <br />
-            <b>{{props.row.for.task.name}}</b>
-            <br />
-            {{ momentize(props.row.for.task.date, {format:"l", fromToTz: conference.timezone.name}) }}
-            {{ momentize(props.row.for.task.start_at, {format:"LT", fromToTz: conference.timezone.name}) }}
-            – {{ momentize(props.row.for.task.end_at, {format:"LT", fromToTz: conference.timezone.name}) }}
-          </span>
-          <span v-else>Unknown</span>
-        </b-table-column>
-        <b-table-column label="Text" field="text" sortable>{{ props.row.text }}</b-table-column>
-      </template>
+      <b-table-column width="1" v-slot="props">
+        <b-icon
+          class="is-clickable"
+          icon="delete"
+          type="is-danger"
+          @click.native="deleteNote(props.row.id)"
+        ></b-icon>
+      </b-table-column>
+
+      <b-table-column
+        width="200"
+        label="Created"
+        field="created_at"
+        sortable
+        v-slot="props"
+        >{{
+          momentize(props.row.created_at, {
+            format: "l LT",
+            fromTz: "UTC",
+            toTz: conference.timezone.name,
+          })
+        }}
+      </b-table-column>
+
+      <b-table-column width="200" label="Posted by" v-slot="props">
+        <span v-if="props.row.creator"
+          >{{ props.row.creator.firstname }}
+          {{ props.row.creator.lastname }}</span
+        >
+        <span v-else>N/A</span>
+      </b-table-column>
+
+      <b-table-column
+        label="For"
+        width="300"
+        field="for_type"
+        sortable
+        v-slot="props"
+      >
+        <span v-if="props.row.for_type === 'App\\User'">This user</span>
+        <span v-else-if="props.row.for_type === 'App\\Assignment'">
+          Assignment on
+          <br />
+          <b>{{ props.row.for.task.name }}</b>
+          <br />
+          {{
+            momentize(props.row.for.task.date, {
+              format: "l",
+              fromToTz: conference.timezone.name,
+            })
+          }}
+          {{
+            momentize(props.row.for.task.start_at, {
+              format: "LT",
+              fromToTz: conference.timezone.name,
+            })
+          }}
+          –
+          {{
+            momentize(props.row.for.task.end_at, {
+              format: "LT",
+              fromToTz: conference.timezone.name,
+            })
+          }}
+        </span>
+        <span v-else>Unknown</span>
+      </b-table-column>
+
+      <b-table-column label="Text" field="text" sortable v-slot="props">
+        {{ props.row.text }}
+      </b-table-column>
     </b-table>
-    <small
-      class="has-text-weight-light"
-    >Date and time are in conference time ({{ conference.timezone.name }})</small>
+
+    <small class="has-text-weight-light"
+      >Date and time are in conference time ({{
+        conference.timezone.name
+      }})</small
+    >
   </div>
   <div v-else>
     <p>No notes yet</p>
@@ -59,6 +97,6 @@ export default {
 
   data() {
     return {};
-  }
+  },
 };
 </script>

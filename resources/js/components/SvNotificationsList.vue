@@ -2,11 +2,12 @@
   <div>
     <b-loading :is-full-page="false" :active="isLoading"></b-loading>
     <b-button
-      v-if="!wasLoaded && ! isLoading"
+      v-if="!wasLoaded && !isLoading"
       :disabled="isLoading"
       @click="getNotifications()"
       size="is-small"
-    >{{ wasLoaded ? 'Reload' : 'Load' }}</b-button>
+      >{{ wasLoaded ? "Reload" : "Load" }}
+    </b-button>
     <div v-if="hasNotifications">
       <b-table
         :default-sort="['created_at', 'desc']"
@@ -22,28 +23,64 @@
           v-model="props.filters[props.column.field]"
           placeholder="Search..."
         />
-        <template slot-scope="props">
-          <b-table-column v-if="userIs('admin') || userIs('chair', conference.key)" width="50">
-            <b-button @click="showNotification(props.row.id)" size="is-small">Open</b-button>
-          </b-table-column>
-          <b-table-column
-            field="created_at"
-            label="Date"
-            width="180"
-            sortable
-          >{{ momentize(props.row.created_at, {format:'lll', fromTz: 'UTC', toTz: conference.timezone.name}) }}</b-table-column>
-          <b-table-column field="data.subject" sortable label="Subject">{{ props.row.data.subject }}</b-table-column>
-          <b-table-column field="read_at" width="180" label="Read" sortable>
-            <p
-              v-if="props.row.read_at"
-            >{{ momentize(props.row.read_at, {format:'lll', fromTz: 'UTC', toTz: conference.timezone.name}) }}</p>
-            <p v-else>Not yet</p>
-          </b-table-column>
-        </template>
+
+        <b-table-column
+          v-if="userIs('admin') || userIs('chair', conference.key)"
+          width="50"
+          v-slot="props"
+        >
+          <b-button @click="showNotification(props.row.id)" size="is-small">
+            Open
+          </b-button>
+        </b-table-column>
+
+        <b-table-column
+          field="created_at"
+          label="Date"
+          width="180"
+          sortable
+          v-slot="props"
+          >{{
+            momentize(props.row.created_at, {
+              format: "lll",
+              fromTz: "UTC",
+              toTz: conference.timezone.name,
+            })
+          }}
+        </b-table-column>
+
+        <b-table-column
+          field="data.subject"
+          sortable
+          label="Subject"
+          v-slot="props"
+        >
+          {{ props.row.data.subject }}
+        </b-table-column>
+        <b-table-column
+          field="read_at"
+          width="180"
+          label="Read"
+          sortable
+          v-slot="props"
+        >
+          <p v-if="props.row.read_at">
+            {{
+              momentize(props.row.read_at, {
+                format: "lll",
+                fromTz: "UTC",
+                toTz: conference.timezone.name,
+              })
+            }}
+          </p>
+          <p v-else>Not yet</p>
+        </b-table-column>
       </b-table>
-      <small
-        class="has-text-weight-light"
-      >Showing last 20 | Date and time are in conference time ({{ conference.timezone.name }})</small>
+      <small class="has-text-weight-light">
+        Showing last 20 | Date and time are in conference time ({{
+          conference.timezone.name
+        }})
+      </small>
     </div>
     <div v-else-if="wasLoaded">
       <p>No Notifications yet</p>
@@ -64,7 +101,7 @@ export default {
       notifications: null,
       total: null,
       isLoading: false,
-      wasLoaded: false
+      wasLoaded: false,
     };
   },
 
@@ -76,7 +113,7 @@ export default {
     hasNotifications() {
       return this.notifications && this.notifications.length > 0;
     },
-    ...mapGetters("auth", ["userIs"])
+    ...mapGetters("auth", ["userIs"]),
   },
 
   methods: {
@@ -84,10 +121,10 @@ export default {
       this.$buefy.modal.open({
         parent: this,
         props: {
-          showId: id
+          showId: id,
         },
         component: NotificationsListModalVue,
-        hasModalCard: true
+        hasModalCard: true,
       });
     },
     getNotifications() {
@@ -100,7 +137,7 @@ export default {
           this.wasLoaded = true;
         })
         .finally(() => (this.isLoading = false));
-    }
-  }
+    },
+  },
 };
 </script>

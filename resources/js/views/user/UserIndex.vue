@@ -9,7 +9,11 @@
     </b-field>
 
     <b-field expanded>
-      <university-picker :required="false" @input="onUniversityChange($event)" :value="university" />
+      <university-picker
+        :required="false"
+        @input="onUniversityChange($event)"
+        :value="university"
+      />
     </b-field>
 
     <b-table
@@ -30,30 +34,51 @@
       aria-current-label="Current page"
       @sort="onSort"
     >
-      <template slot-scope="props">
-        <b-table-column field="firstname" label="Firstname" sortable>
-          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.firstname }}</router-link>
-        </b-table-column>
+      <b-table-column
+        field="firstname"
+        label="Firstname"
+        sortable
+        v-slot="props"
+      >
+        <router-link :to="{ name: 'user', params: { id: props.row.id } }">
+          {{ props.row.firstname }}
+        </router-link>
+      </b-table-column>
 
-        <b-table-column field="lastname" label="Lastname" sortable>
-          <router-link :to="{name: 'user', params: {id: props.row.id}}">{{ props.row.lastname }}</router-link>
-        </b-table-column>
+      <b-table-column field="lastname" label="Lastname" sortable v-slot="props">
+        <router-link :to="{ name: 'user', params: { id: props.row.id } }">
+          {{ props.row.lastname }}
+        </router-link>
+      </b-table-column>
 
-        <b-table-column field="email" label="E-Mail" sortable>{{ props.row.email }}</b-table-column>
+      <b-table-column field="email" label="E-Mail" sortable v-slot="props">
+        {{ props.row.email }}
+      </b-table-column>
 
-        <b-table-column
-          field="university.name"
-          label="University"
-        >{{ props.row.university ? props.row.university.name : props.row.university_fallback }}</b-table-column>
+      <b-table-column field="university.name" label="University" v-slot="props">
+        {{
+          props.row.university
+            ? props.row.university.name
+            : props.row.university_fallback
+        }}
+      </b-table-column>
 
-        <b-table-column width="200" field="permissions" label="Permissions">
-          <div class="field is-grouped is-grouped-multiline">
-            <div class="control" :key="permission.id" v-for="permission in props.row.permissions">
-              <permission-tag :permission="permission"></permission-tag>
-            </div>
+      <b-table-column
+        width="200"
+        field="permissions"
+        label="Permissions"
+        v-slot="props"
+      >
+        <div class="field is-grouped is-grouped-multiline">
+          <div
+            class="control"
+            :key="permission.id"
+            v-for="permission in props.row.permissions"
+          >
+            <permission-tag :permission="permission"></permission-tag>
           </div>
-        </b-table-column>
-      </template>
+        </div>
+      </b-table-column>
 
       <template slot="empty">
         <section class="section">
@@ -68,17 +93,33 @@
 
       <template slot="footer">
         <div class="has-text-right">
-          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+          <b-dropdown
+            @change="onPerPageChange"
+            :value="perPage"
+            aria-role="list"
+          >
             <button class="button is-small" slot="trigger">
-              <span>{{ perPage == 99999999999 ? 'All' : perPage }} per page</span>
+              <span
+                >{{ perPage == 99999999999 ? "All" : perPage }} per page</span
+              >
               <b-icon icon="menu-down"></b-icon>
             </button>
 
-            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
-            <b-dropdown-item value="30" aria-role="listitem">25 per page</b-dropdown-item>
-            <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
-            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
-            <b-dropdown-item value="99999999999" aria-role="listitem">All per page</b-dropdown-item>
+            <b-dropdown-item value="10" aria-role="listitem"
+              >10 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="30" aria-role="listitem"
+              >25 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="50" aria-role="listitem"
+              >50 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="100" aria-role="listitem"
+              >100 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="99999999999" aria-role="listitem"
+              >All per page</b-dropdown-item
+            >
           </b-dropdown>
         </div>
       </template>
@@ -122,9 +163,9 @@ export default {
       "setSortField",
       "setSortDirection",
       "setPerPage",
-      "setPage"
+      "setPage",
     ]),
-    ...mapActions("userIndex", ["fetchUsers"])
+    ...mapActions("userIndex", ["fetchUsers"]),
   },
 
   computed: mapGetters("userIndex", [
@@ -135,11 +176,11 @@ export default {
     "sortField",
     "sortDirection",
     "data",
-    "isLoading"
+    "isLoading",
   ]),
 
   mounted() {
     this.fetchUsers();
-  }
+  },
 };
 </script>

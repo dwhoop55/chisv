@@ -1,7 +1,13 @@
 <template>
   <section>
     <b-field grouped position="is-right">
-      <b-button :disabled="isLoading" icon-left="refresh" @click="getJobs" type="is-primary">Reload</b-button>
+      <b-button
+        :disabled="isLoading"
+        icon-left="refresh"
+        @click="getJobs"
+        type="is-primary"
+        >Reload</b-button
+      >
     </b-field>
     <b-table
       style="cursor: pointer"
@@ -15,41 +21,35 @@
       default-sort="start_at"
       default-sort-direction="desc"
     >
-      <template slot="bottom-left">Showing up to {{ take }} of all {{ total }} jobs</template>
-      <template slot-scope="props">
-        <b-table-column sortable field="id" label="ID">{{ props.row.id ? props.row.id : 'n/a' }}</b-table-column>
-        <b-table-column
-          sortable
-          field="name"
-          label="Name"
-        >{{ props.row.name ? props.row.name : props.row.name.to }}</b-table-column>
-        <b-table-column
-          sortable
-          field="handler"
-          label="Handler"
-        >{{ props.row.handler.replace("App\\", '') }}</b-table-column>
-        <b-table-column sortable field="state.id" label="State">
-          <b-tag
-            v-if="props.row.attempts >=0"
-            rounded
-            type="is-white"
-          >Attempt {{ props.row.attempts+1 }}</b-tag>
-          <state-tag v-else :state="props.row.state">
-            <span v-if="props.row.progress">{{ props.row.progress }}%</span>
-          </state-tag>
-        </b-table-column>
-        <b-table-column
-          sortable
-          field="start_at"
-          label="Start At"
-        >{{ momentize(props.row.start_at, {format:'lll', fromTz: 'UTC'}) }}</b-table-column>
-        <b-table-column sortable field="ended_at" label="Ended At">
-          <div
-            v-if="props.row.ended_at"
-          >{{ momentize(props.row.ended_at, {format:'lll', fromTz: 'UTC'}) }}</div>
-          <div v-else>Not ended yet</div>
-        </b-table-column>
-      </template>
+      <template slot="bottom-left"
+        >Showing up to {{ take }} of all {{ total }} jobs</template
+      >
+      <b-table-column sortable field="id" label="ID" v-slot="props">
+        {{ props.row.id ? props.row.id : "n/a" }}
+      </b-table-column>
+      <b-table-column sortable field="name" label="Name" v-slot="props">
+        {{ props.row.name ? props.row.name : props.row.name.to }}
+      </b-table-column>
+      <b-table-column sortable field="handler" label="Handler" v-slot="props">
+        {{ props.row.handler.replace("App\\", "") }}
+      </b-table-column>
+      <b-table-column sortable field="state.id" label="State" v-slot="props">
+        <b-tag v-if="props.row.attempts >= 0" rounded type="is-white">
+          Attempt {{ props.row.attempts + 1 }}
+        </b-tag>
+        <state-tag v-else :state="props.row.state">
+          <span v-if="props.row.progress">{{ props.row.progress }}%</span>
+        </state-tag>
+      </b-table-column>
+      <b-table-column sortable field="start_at" label="Start At" v-slot="props">
+        {{ momentize(props.row.start_at, { format: "lll", fromTz: "UTC" }) }}
+      </b-table-column>
+      <b-table-column sortable field="ended_at" label="Ended At" v-slot="props">
+        <div v-if="props.row.ended_at">
+          {{ momentize(props.row.ended_at, { format: "lll", fromTz: "UTC" }) }}
+        </div>
+        <div v-else>Not ended yet</div>
+      </b-table-column>
     </b-table>
   </section>
 </template>
@@ -66,7 +66,7 @@ export default {
       take: null,
       isLoading: true,
       timer: null,
-      timerLeft: 0
+      timerLeft: 0,
     };
   },
 
@@ -94,7 +94,7 @@ export default {
           hasModalCard: true,
           onCancel: () => {
             this.getJobs();
-          }
+          },
         });
       } else if (row.type == "queue") {
         this.$buefy.dialog.alert({
@@ -105,7 +105,7 @@ export default {
             <br><br>When a queued job fails it will reschedule itself after some delay.",
           type: "is-primary",
           hasIcon: true,
-          icon: "clock"
+          icon: "clock",
         });
       }
     },
@@ -119,7 +119,7 @@ export default {
           this.take = data.take;
         })
         .finally(() => (this.isLoading = false));
-    }
-  }
+    },
+  },
 };
 </script>

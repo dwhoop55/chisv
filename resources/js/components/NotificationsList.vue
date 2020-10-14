@@ -11,23 +11,46 @@
         hoverable
         :data="notifications"
       >
-        <template slot-scope="props">
-          <b-table-column label="Conference" width="1">
-            <p
-              :class="{ 'has-text-weight-bold' : !props.row.read_at }"
-            >{{ props.row.conference_key.toUpperCase() }}</p>
-          </b-table-column>
-          <b-table-column field="data.created_at" label="Posted" width="1">
-            <b-tooltip :label="momentize(props.row.created_at, {format: 'lll', fromTz: 'UTC'})">
-              <p
-                :class="{ 'has-text-weight-bold' : !props.row.read_at }"
-              >{{ momentize(props.row.created_at, {format: 'll', fromTz: 'UTC', fromNow: true}) }}</p>
-            </b-tooltip>
-          </b-table-column>
-          <b-table-column field="data.subject" label="Subject" width="1">
-            <p :class="{ 'has-text-weight-bold' : !props.row.read_at }">{{ props.row.subject }}</p>
-          </b-table-column>
-        </template>
+        <b-table-column label="Conference" width="1" v-slot="props">
+          <p :class="{ 'has-text-weight-bold': !props.row.read_at }">
+            {{ props.row.conference_key.toUpperCase() }}
+          </p>
+        </b-table-column>
+        <b-table-column
+          field="data.created_at"
+          label="Posted"
+          width="1"
+          v-slot="props"
+        >
+          <b-tooltip
+            :label="
+              momentize(props.row.created_at, {
+                format: 'lll',
+                fromTz: 'UTC',
+              })
+            "
+          >
+            <p :class="{ 'has-text-weight-bold': !props.row.read_at }">
+              {{
+                momentize(props.row.created_at, {
+                  format: "ll",
+                  fromTz: "UTC",
+                  fromNow: true,
+                })
+              }}
+            </p>
+          </b-tooltip>
+        </b-table-column>
+        <b-table-column
+          field="data.subject"
+          label="Subject"
+          width="1"
+          v-slot="props"
+        >
+          <p :class="{ 'has-text-weight-bold': !props.row.read_at }">
+            {{ props.row.subject }}
+          </p>
+        </b-table-column>
       </b-table>
     </div>
   </div>
@@ -47,15 +70,15 @@ export default {
     ...mapGetters("notifications", {
       allNotifications: "notifications",
       unreadNotifications: "unread",
-      lastFetch: "lastFetch"
-    })
+      lastFetch: "lastFetch",
+    }),
   },
 
   methods: {
     showNotification(id) {
       this.$emit("show", id);
     },
-    ...mapActions("notifications", ["fetchNotifications"])
+    ...mapActions("notifications", ["fetchNotifications"]),
   },
 
   created() {
@@ -71,7 +94,7 @@ export default {
         unregisterRouterGuard();
       });
     }
-  }
+  },
 };
 </script>
 

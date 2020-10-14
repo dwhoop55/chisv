@@ -21,7 +21,10 @@
       <timespan-picker
         :value="interval"
         placeholder="Limit time"
-        @input="setInterval($event);reload()"
+        @input="
+          setInterval($event);
+          reload();
+        "
         class="control"
         :incrementMinutes="15"
       ></timespan-picker>
@@ -38,7 +41,7 @@
       <b-dropdown
         v-if="canChangePriorities"
         @input="onPrioritiesChange"
-        @active-change="($event == false) ? reload() : null"
+        @active-change="$event == false ? reload() : null"
         :value="priorities"
         :disabled="isLoading"
         class="control"
@@ -46,7 +49,10 @@
         aria-role="list"
       >
         <button class="button" type="button" slot="trigger">
-          <span>Priorities {{ priorities.length }} / {{ allPriorities.length }}</span>
+          <span
+            >Priorities {{ priorities.length }} /
+            {{ allPriorities.length }}</span
+          >
           <b-icon icon="menu-down"></b-icon>
         </button>
         <b-dropdown-item
@@ -65,21 +71,25 @@
         @click="createTask('single')"
         type="is-primary"
         v-if="canCreateTask"
-      >New task</b-button>
+        >New task</b-button
+      >
 
       <b-button
         class="control"
         @click="createTask('multiple')"
         type="is-primary"
         v-if="canCreateTask"
-      >Import task</b-button>
+        >Import task</b-button
+      >
 
       <b-field v-if="canDeleteTask">
         <b-button
           :disabled="isLoading || totalTasks == 0 || days.length == 0"
           @click="deleteAllTasks()"
           type="is-danger"
-        >Delete all Tasks of the selected {{ days.length > 1 ? 'days' : 'day' }}</b-button>
+          >Delete all Tasks of the selected
+          {{ days.length > 1 ? "days" : "day" }}</b-button
+        >
       </b-field>
 
       <b-field v-if="userIs('sv', conference.key)" class="is-vertical-center">
@@ -87,13 +97,16 @@
           @input="onOnlyOwnTasksChange($event)"
           :value="onlyOwnTasks"
           :type="onlyOwnTasks ? 'is-danger' : 'is-primary'"
-        >Only my tasks</b-checkbox>
+          >Only my tasks</b-checkbox
+        >
       </b-field>
 
       <b-field expanded></b-field>
 
       <b-field position="is-right">
-        <b-button @click="reload(true)" type="is-primary" icon-left="refresh">Reload</b-button>
+        <b-button @click="reload(true)" type="is-primary" icon-left="refresh"
+          >Reload</b-button
+        >
       </b-field>
     </b-field>
     <br />
@@ -124,7 +137,12 @@
       aria-current-label="Current page"
     >
       <template slot="top-left">
-        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
+        <b-dropdown
+          :value="columns"
+          @input="setColumns($event)"
+          multiple
+          aria-role="list"
+        >
           <div slot="trigger" class="is-vertical-center is-clickable">
             <b-icon icon="dots-vertical"></b-icon>Columns
           </div>
@@ -133,129 +151,200 @@
             v-if="canCreateTask || canDeleteTask"
             aria-role="listitem"
             value="manage"
-          >Manage</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="bid">Bid</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="date">Date</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="start_at">Starts</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="end_at">Ends</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="slots">Slots</b-dropdown-item>
-          <b-dropdown-item v-if="canCreateTask" aria-role="listitem" value="priority">Priority</b-dropdown-item>
+            >Manage</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="bid"
+            >Bid</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="date"
+            >Date</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="start_at"
+            >Starts</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="end_at"
+            >Ends</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="hours"
+            >Hours</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="location"
+            >Location</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="description"
+            >Description</b-dropdown-item
+          >
+          <b-dropdown-item
+            v-if="canCreateTask"
+            aria-role="listitem"
+            value="slots"
+            >Slots</b-dropdown-item
+          >
+          <b-dropdown-item
+            v-if="canCreateTask"
+            aria-role="listitem"
+            value="priority"
+            >Priority</b-dropdown-item
+          >
         </b-dropdown>
       </template>
-      <template slot-scope="props">
-        <b-table-column
-          :visible="(canCreateTask || canDeleteTask) && columns.includes('manage')"
-          label="Manage"
-          width="128"
+
+      <b-table-column
+        :visible="
+          (canCreateTask || canDeleteTask) && columns.includes('manage')
+        "
+        label="Manage"
+        width="128"
+        v-slot="props"
+      >
+        <b-button
+          v-if="canCreateTask"
+          @click="editTask(props.row)"
+          outlined
+          size="is-small"
+          type="is-primary"
+          >Edit</b-button
         >
-          <b-button
-            v-if="canCreateTask"
-            @click="editTask(props.row)"
-            outlined
+        <b-button
+          v-if="canDeleteTask"
+          @click="confirmDeleteTask(props.row)"
+          outlined
+          size="is-small"
+          type="is-danger"
+          >Delete</b-button
+        >
+      </b-table-column>
+
+      <b-table-column
+        label="Bid"
+        width="1"
+        :visible="columns.includes('bid')"
+        v-slot="props"
+      >
+        <template slot="header">
+          <div v-if="canBid">
+            <task-bid-picker-radio
+              :value="multiBidValue"
+              @click-help="showBidAllHelp()"
+              @input="onMultiBid"
+              size="is-small"
+              :show-help="true"
+            ></task-bid-picker-radio>
+          </div>
+          <div v-else>Bid status</div>
+        </template>
+        <template>
+          <task-bid-picker
+            @error="fetchTasks()"
             size="is-small"
-            type="is-primary"
-          >Edit</b-button>
-          <b-button
-            v-if="canDeleteTask"
-            @click="confirmDeleteTask(props.row)"
-            outlined
-            size="is-small"
-            type="is-danger"
-          >Delete</b-button>
-        </b-table-column>
-        <b-table-column label="Bid" width="1" :visible="columns.includes('bid')">
-          <template slot="header">
-            <div v-if="canBid">
-              <task-bid-picker-radio
-                :value="multiBidValue"
-                @click-help="showBidAllHelp()"
-                @input="onMultiBid"
-                size="is-small"
-                :show-help="true"
-              ></task-bid-picker-radio>
-            </div>
-            <div v-else>Bid status</div>
-          </template>
-          <template>
-            <task-bid-picker @error="fetchTasks()" size="is-small" v-model="props.row"></task-bid-picker>
-          </template>
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('date')"
-          field="tasks.date"
-          sortable
-          label="Date"
-          :width="columns.includes('date') ? 93 : null"
+            v-model="props.row"
+          ></task-bid-picker>
+        </template>
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('date')"
+        field="tasks.date"
+        sortable
+        label="Date"
+        :width="columns.includes('date') ? 93 : null"
+        v-slot="props"
+      >
+        {{ momentize(props.row.date, { format: "l", fromToTz: timezoneName }) }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('start_at')"
+        field="tasks.start_at"
+        width="93"
+        sortable
+        label="Starts"
+        v-slot="props"
+      >
+        {{
+          momentize(props.row.start_at, {
+            format: "LT",
+            fromToTz: timezoneName,
+          })
+        }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('end_at')"
+        field="tasks.end_at"
+        sortable
+        width="93"
+        label="Ends"
+        v-slot="props"
+      >
+        {{
+          momentize(props.row.end_at, { format: "LT", fromToTz: timezoneName })
+        }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('hours')"
+        field="tasks.hours"
+        width="1"
+        sortable
+        label="Hours"
+        v-slot="props"
+      >
+        {{ hoursFromTime(timeFromDecimal(props.row.hours)) }}
+      </b-table-column>
+
+      <b-table-column field="tasks.name" sortable label="Name" v-slot="props">
+        {{ props.row.name }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('location')"
+        field="tasks.location"
+        sortable
+        label="Location"
+        v-slot="props"
+      >
+        {{ props.row.location }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('description')"
+        field="tasks.description"
+        sortable
+        label="Description"
+        v-slot="props"
+      >
+        <a @click.prevent="showDescription(props.row)"
+          >{{ props.row.description | textlimit(40) }}
+          {{
+            props.row.description && props.row.description.length > 40
+              ? " (more)"
+              : ""
+          }}</a
         >
-          {{ momentize(props.row.date,
-          {format: 'l', fromToTz: timezoneName}) }}
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('start_at')"
-          field="tasks.start_at"
-          width="93"
-          sortable
-          label="Starts"
-        >
-          {{ momentize(
-          props.row.start_at,
-          {format: 'LT', fromToTz: timezoneName}
-          ) }}
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('end_at')"
-          field="tasks.end_at"
-          sortable
-          width="93"
-          label="Ends"
-        >
-          {{ momentize(
-          props.row.end_at,
-          {format: 'LT', fromToTz: timezoneName}
-          ) }}
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('hours')"
-          field="tasks.hours"
-          width="1"
-          sortable
-          label="Hours"
-        >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
-        <b-table-column field="tasks.name" sortable label="Name">{{ props.row.name }}</b-table-column>
-        <b-table-column
-          :visible="columns.includes('location')"
-          field="tasks.location"
-          sortable
-          label="Location"
-        >{{ props.row.location }}</b-table-column>
-        <b-table-column
-          :visible="columns.includes('description')"
-          field="tasks.description"
-          sortable
-          label="Description"
-        >
-          <a
-            @click.prevent="showDescription(props.row)"
-          >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
-        </b-table-column>
-        <b-table-column
-          :visible="canCreateTask && columns.includes('slots')"
-          field="tasks.slots"
-          width="10"
-          sortable
-          label="Slots"
-        >{{ props.row.slots }}</b-table-column>
-        <b-table-column
-          :visible="canCreateTask && columns.includes('priority')"
-          field="tasks.priority"
-          width="10"
-          sortable
-          label="Priority"
-        >{{ props.row.priority }}</b-table-column>
-      </template>
+      </b-table-column>
+
+      <b-table-column
+        :visible="canCreateTask && columns.includes('slots')"
+        field="tasks.slots"
+        width="10"
+        sortable
+        label="Slots"
+        v-slot="props"
+      >
+        {{ props.row.slots }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="canCreateTask && columns.includes('priority')"
+        field="tasks.priority"
+        width="10"
+        sortable
+        label="Priority"
+        v-slot="props"
+      >
+        {{ props.row.priority }}
+      </b-table-column>
 
       <template slot="empty">
         <section class="section">
@@ -269,14 +358,24 @@
 
             <span v-if="days.length > 0">
               on
-              <div v-for="(day, index) in days" :key="index">{{ momentize(day, {format:'ll'}) }}</div>
+              <div v-for="(day, index) in days" :key="index">
+                {{ momentize(day, { format: "ll" }) }}
+              </div>
             </span>
 
             <span v-if="interval[0] || interval[1]">
               between
-              {{ interval[0] ? momentize(interval[0], {format: "LT"}) : "start of day" }}
+              {{
+                interval[0]
+                  ? momentize(interval[0], { format: "LT" })
+                  : "start of day"
+              }}
               and
-              {{ interval[1] ? momentize(interval[1], {format: "LT"}) : "end of day" }}
+              {{
+                interval[1]
+                  ? momentize(interval[1], { format: "LT" })
+                  : "end of day"
+              }}
             </span>
 
             <p class="has-text-danger" v-if="onlyOwnTasks">
@@ -288,26 +387,44 @@
       </template>
 
       <template slot="bottom-left">
-        <small
-          class="has-text-weight-light"
-        >{{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }} matching criteria</small>
+        <small class="has-text-weight-light">
+          {{ totalTasks }} task{{ totalTasks > 1 ? "s" : "" }} matching criteria
+        </small>
       </template>
 
       <template slot="footer">
         <div class="has-text-left">
-          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+          <b-dropdown
+            @change="onPerPageChange"
+            :value="perPage"
+            aria-role="list"
+          >
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
             </button>
 
-            <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
-            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
-            <b-dropdown-item value="20" aria-role="listitem">20 per page</b-dropdown-item>
-            <b-dropdown-item value="50" aria-role="listitem">50 per page</b-dropdown-item>
-            <b-dropdown-item value="100" aria-role="listitem">100 per page</b-dropdown-item>
-            <b-dropdown-item value="200" aria-role="listitem">200 per page</b-dropdown-item>
-            <b-dropdown-item value="300" aria-role="listitem">300 per page</b-dropdown-item>
+            <b-dropdown-item value="5" aria-role="listitem"
+              >5 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="10" aria-role="listitem"
+              >10 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="20" aria-role="listitem"
+              >20 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="50" aria-role="listitem"
+              >50 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="100" aria-role="listitem"
+              >100 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="200" aria-role="listitem"
+              >200 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="300" aria-role="listitem"
+              >300 per page</b-dropdown-item
+            >
           </b-dropdown>
         </div>
       </template>
@@ -329,12 +446,12 @@ export default {
   data() {
     return {
       multiBidValue: null,
-      hackHideTable: false // This is part of the hotfix for buefy table bug
+      hackHideTable: false, // This is part of the hotfix for buefy table bug
     };
   },
 
   created() {
-    this.$watch("tasks", function(newVal, oldVal) {
+    this.$watch("tasks", function (newVal, oldVal) {
       /* This is a workaround for the bug present in
        * buefy 0.8.17+ (- 0.9.0) which breaks column show/hide
        * when the table was empty once
@@ -351,9 +468,9 @@ export default {
   methods: {
     selectAllDays(type) {
       if (type == "conference") {
-        this.setDays(this.conferenceDays.map(day => day.date));
+        this.setDays(this.conferenceDays.map((day) => day.date));
       } else if ("tasks") {
-        this.setDays(this.taskDays.map(day => day.date));
+        this.setDays(this.taskDays.map((day) => day.date));
       }
       this.reload();
     },
@@ -373,8 +490,8 @@ export default {
             page: this.page,
             confirm: () => {
               this.createMultiBid(preference);
-            }
-          }
+            },
+          },
         });
       } else {
         this.createMultiBid(preference);
@@ -385,7 +502,7 @@ export default {
         this.setIsLoading(true);
         var params = {
           conference_id: this.conference.id,
-          preference
+          preference,
         };
 
         if (this.search) {
@@ -401,7 +518,7 @@ export default {
         }
 
         if (this.days && this.days.length > 0) {
-          params.days = this.days.map(day => day.toMySqlDate());
+          params.days = this.days.map((day) => day.toMySqlDate());
         }
 
         api
@@ -421,14 +538,14 @@ export default {
             this.$buefy.notification.open({
               message: msgs.join(`<br>`),
               type: "is-success",
-              duration: 10000
+              duration: 10000,
             });
           })
-          .catch(error => {
+          .catch((error) => {
             this.$buefy.notification.open({
               message: error.response?.data?.message || error.message,
               duration: 5000,
-              type: "is-danger"
+              type: "is-danger",
             });
           })
           .finally(() => {
@@ -442,7 +559,7 @@ export default {
         this.$buefy.dialog.confirm({
           message: `You have more than ${limit} tasks selected.<br>\
                     Are you sure you want to continue?`,
-          onConfirm
+          onConfirm,
         });
       } else {
         onConfirm();
@@ -462,11 +579,11 @@ export default {
         icon: "checkbox-multiple-marked",
         confirmText: "More info",
         cancelText: "Close",
-        onConfirm: () => this.$router.push({ name: "faq", params: { id: 7 } })
+        onConfirm: () => this.$router.push({ name: "faq", params: { id: 7 } }),
       });
     },
     deleteAllTasks() {
-      let days = this.days.map(day =>
+      let days = this.days.map((day) =>
         this.momentize(day, { format: "DD.MM.YYYY" })
       );
       this.$buefy.dialog.confirm({
@@ -498,7 +615,7 @@ export default {
                 .deleteAllTasksOfConference(
                   this.conference.key,
                   `days=${JSON.stringify(
-                    this.days.map(day => day.toMySqlDate())
+                    this.days.map((day) => day.toMySqlDate())
                   )}`
                 )
                 .then(({ data }) => {
@@ -506,15 +623,15 @@ export default {
                     indefinite: true,
                     message: data.message,
                     type: "is-success",
-                    hasIcon: true
+                    hasIcon: true,
                   });
                 })
                 .finally(() => {
                   this.reload(true);
                 });
-            } // onConfirm 2
+            }, // onConfirm 2
           });
-        } // onConfirm 1
+        }, // onConfirm 1
       });
     },
     showHint(type) {
@@ -545,22 +662,22 @@ export default {
               hours: 1,
               priority: 1,
               slots: 2,
-              conference_id: this.conference.id
+              conference_id: this.conference.id,
             },
             updated: () => {
               this.reload(true);
             },
-            calendarEvents: this.calendarEvents
+            calendarEvents: this.calendarEvents,
           },
           component: TaskModalVue,
-          hasModalCard: true
+          hasModalCard: true,
         });
       } else if (type == "multiple") {
         this.$buefy.modal.open({
           parent: this,
           props: {
             conference: this.conference,
-            updated: jobId => {
+            updated: (jobId) => {
               // Job dispatched, show job modal
               // and reload once that closes
               this.$buefy.modal.open({
@@ -570,13 +687,13 @@ export default {
                 hasModalCard: true,
                 onCancel: () => {
                   this.reload(true);
-                }
+                },
               });
-            }
+            },
           },
           fullScreen: true,
           component: TasksImportModalVue,
-          hasModalCard: true
+          hasModalCard: true,
         });
       }
     },
@@ -588,10 +705,10 @@ export default {
           updated: () => {
             this.reload(true);
           },
-          calendarEvents: this.calendarEvents
+          calendarEvents: this.calendarEvents,
         },
         component: TaskModalVue,
-        hasModalCard: true
+        hasModalCard: true,
       });
     },
     confirmDeleteTask(task) {
@@ -607,7 +724,7 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.deleteTask(task);
-        }
+        },
       });
     },
     deleteTask(task) {
@@ -616,7 +733,7 @@ export default {
           duration: 5000,
           message: data.message,
           type: "is-success",
-          hasIcon: true
+          hasIcon: true,
         });
         this.reload(true);
       });
@@ -653,7 +770,7 @@ export default {
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
-        message: task.description
+        message: task.description,
       });
     },
     ...mapMutations("tasks", [
@@ -667,10 +784,10 @@ export default {
       "setPage",
       "setPriorities",
       "setOnlyOwnTasks",
-      "setIsLoading"
+      "setIsLoading",
     ]),
     ...mapActions("conference", ["fetchTaskDays"]),
-    ...mapActions("tasks", ["fetchTasks"])
+    ...mapActions("tasks", ["fetchTasks"]),
   },
 
   computed: {
@@ -718,11 +835,11 @@ export default {
       "tasks",
       "totalTasks",
       "isLoading",
-      "warnBeforeMultiBid"
+      "warnBeforeMultiBid",
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
     ...mapGetters("auth", ["userIs"]),
-    ...mapGetters("defines", { allPriorities: "priorities" })
-  }
+    ...mapGetters("defines", { allPriorities: "priorities" }),
+  },
 };
 </script>

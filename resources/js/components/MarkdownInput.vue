@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <b-field grouped group-multiline>
+  <section>
+    <b-field grouped>
       <b-button size="is-small" @click="add('**This text is bold**')">
         <b-icon icon="format-bold"></b-icon>
       </b-button>
@@ -33,22 +33,28 @@
       </b-button>
       <b-button
         size="is-small"
-        @click="add('[Use a link like this](https://chisv.org/)\n\nOr like this: This is a [link to google][1]\n\n[1]: www.google.com')"
+        @click="
+          add(
+            '[Use a link like this](https://chisv.org/)\n\nOr like this: This is a [link to google][1]\n\n[1]: www.google.com'
+          )
+        "
       >
         <b-icon icon="link"></b-icon>
       </b-button>
-
       <b-button size="is-small" @click="preview()">Preview</b-button>
     </b-field>
-    <b-input
-      expanded
-      :placeholder="placeholder"
-      :maxlength="maxlength"
-      @input="$emit('input', $event)"
-      :value="value"
-      type="textarea"
-    ></b-input>
-  </div>
+
+    <b-field>
+      <b-input
+        expanded
+        :placeholder="placeholder"
+        :maxlength="maxlength"
+        @input="$emit('input', $event)"
+        :value="value"
+        type="textarea"
+      ></b-input>
+    </b-field>
+  </section>
 </template>
 
 <script>
@@ -66,14 +72,14 @@ const preview = {
                <b-button @click="$parent.close()">Close</b-button>
            </footer>
         </div>
-        `
+        `,
 };
 
 export default {
   props: ["value", "placeholder", "maxlength"],
 
   components: {
-    preview
+    preview,
   },
 
   methods: {
@@ -83,12 +89,12 @@ export default {
         component: preview,
         props: { markdown: this.value },
         hasModalCard: true,
-        trapFocus: true
+        trapFocus: true,
       });
     },
     add(text) {
       this.$emit("input", this.value + "\n" + text);
-    }
-  }
+    },
+  },
 };
 </script>

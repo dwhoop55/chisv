@@ -19,7 +19,10 @@
       <timespan-picker
         :value="interval"
         placeholder="Limit time"
-        @input="setInterval($event);reload()"
+        @input="
+          setInterval($event);
+          reload();
+        "
         class="control"
         :incrementMinutes="15"
       ></timespan-picker>
@@ -42,11 +45,9 @@
       </b-field>
 
       <b-field v-if="canRunAuction">
-        <b-button
-          :disabled="isLoading"
-          @click="runAuction()"
-          type="is-primary"
-        >Fill free Tasks of this day (Auction)</b-button>
+        <b-button :disabled="isLoading" @click="runAuction()" type="is-primary"
+          >Fill free Tasks of this day (Auction)</b-button
+        >
       </b-field>
 
       <b-field v-if="canRunAuction">
@@ -54,7 +55,8 @@
           :disabled="isLoading"
           @click="deleteAllAssignments()"
           type="is-danger"
-        >Delete all Assignments of this day</b-button>
+          >Delete all Assignments of this day</b-button
+        >
       </b-field>
 
       <b-field expanded></b-field>
@@ -65,7 +67,8 @@
           @click="reload()"
           type="is-primary"
           icon-left="refresh"
-        >Reload</b-button>
+          >Reload</b-button
+        >
       </b-field>
     </b-field>
     <br />
@@ -84,6 +87,7 @@
       :current-page="page"
       :loading="isLoading"
       :hoverable="true"
+      :narrowed="true"
       backend-sorting
       :mobile-cards="false"
       :default-sort="sortField"
@@ -94,113 +98,173 @@
       aria-page-label="Page"
       aria-current-label="Current page"
     >
+      <b-table-column
+        :visible="columns.includes('start_at')"
+        field="tasks.start_at"
+        width="93"
+        sortable
+        label="Starts"
+        v-slot="props"
+      >
+        {{
+          momentize(props.row.start_at, {
+            format: "LT",
+            fromToTz: conference.timezone.name,
+          })
+        }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('end_at')"
+        field="tasks.end_at"
+        sortable
+        width="93"
+        label="Ends"
+        v-slot="props"
+      >
+        {{
+          momentize(props.row.end_at, {
+            format: "LT",
+            fromToTz: conference.timezone.name,
+          })
+        }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('hours')"
+        field="tasks.hours"
+        width="10"
+        sortable
+        label="Hours"
+        v-slot="props"
+      >
+        {{ hoursFromTime(timeFromDecimal(props.row.hours)) }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('name')"
+        field="tasks.name"
+        sortable
+        label="Name"
+        v-slot="props"
+      >
+        {{ props.row.name }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('location')"
+        field="tasks.location"
+        sortable
+        label="Location"
+        v-slot="props"
+      >
+        {{ props.row.location }}
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('description')"
+        field="tasks.description"
+        sortable
+        label="Description"
+        v-slot="props"
+      >
+        <a @click.prevent="showDescription(props.row)"
+          >{{ props.row.description | textlimit(40) }}
+          {{
+            props.row.description && props.row.description.length > 40
+              ? " (more)"
+              : ""
+          }}</a
+        >
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('slots')"
+        field="tasks.slots"
+        width="80"
+        sortable
+        label="Slots"
+        v-slot="props"
+      >
+        <p
+          :class="{
+            'has-text-danger has-text-weight-bold':
+              props.row.assignments.length == 0,
+            'has-text-warning has-text-weight-bold':
+              props.row.assignments.length > props.row.slots,
+            'has-text-success': props.row.assignments.length == props.row.slots,
+          }"
+        >
+          {{ props.row.assignments.length }} / {{ props.row.slots }}
+        </p>
+      </b-table-column>
+
+      <b-table-column
+        :visible="columns.includes('priority')"
+        field="tasks.priority"
+        width="10"
+        sortable
+        label="Priority"
+        v-slot="props"
+      >
+        {{ props.row.priority }}
+      </b-table-column>
+
+      <b-table-column
+        cell-class="is-marginless is-paddingless"
+        :visible="columns.includes('assignments')"
+        label="Assignments"
+        width="700"
+        v-slot="props"
+      >
+        <task-assignments-component
+          :task="props.row"
+          :conference="conference"
+          :users="users"
+          @reload="reload()"
+          @updateHours="users[$event.userId].hours_done += $event.hours"
+        ></task-assignments-component>
+      </b-table-column>
+
       <template slot="top-left">
-        <b-dropdown :value="columns" @input="setColumns($event)" multiple aria-role="list">
+        <b-dropdown
+          :value="columns"
+          @input="setColumns($event)"
+          multiple
+          aria-role="list"
+        >
           <div slot="trigger" class="is-vertical-center is-clickable">
             <b-icon icon="dots-vertical"></b-icon>Columns
           </div>
 
-          <b-dropdown-item aria-role="listitem" value="start_at">Start</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="end_at">End</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="hours">Hours</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="name">Name</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="location">Location</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="description">Description</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="slots">Slots</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="priority">Priority</b-dropdown-item>
-          <b-dropdown-item aria-role="listitem" value="assignments">Assignments</b-dropdown-item>
+          <b-dropdown-item aria-role="listitem" value="start_at"
+            >Start</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="end_at"
+            >End</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="hours"
+            >Hours</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="name"
+            >Name</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="location"
+            >Location</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="description"
+            >Description</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="slots"
+            >Slots</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="priority"
+            >Priority</b-dropdown-item
+          >
+          <b-dropdown-item aria-role="listitem" value="assignments"
+            >Assignments</b-dropdown-item
+          >
         </b-dropdown>
-      </template>
-      <template slot-scope="props">
-        <b-table-column
-          :visible="columns.includes('start_at')"
-          field="tasks.start_at"
-          width="93"
-          sortable
-          label="Starts"
-        >
-          {{ momentize(
-          props.row.start_at,
-          {format: 'LT', fromToTz: conference.timezone.name}
-          ) }}
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('end_at')"
-          field="tasks.end_at"
-          sortable
-          width="93"
-          label="Ends"
-        >
-          {{ momentize(
-          props.row.end_at,
-          {format: 'LT', fromToTz: conference.timezone.name}
-          ) }}
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('hours')"
-          field="tasks.hours"
-          width="10"
-          sortable
-          label="Hours"
-        >{{ hoursFromTime(timeFromDecimal(props.row.hours)) }}</b-table-column>
-        <b-table-column
-          :visible="columns.includes('name')"
-          field="tasks.name"
-          sortable
-          label="Name"
-        >{{ props.row.name }}</b-table-column>
-        <b-table-column
-          :visible="columns.includes('location')"
-          field="tasks.location"
-          sortable
-          label="Location"
-        >{{ props.row.location }}</b-table-column>
-        <b-table-column
-          :visible="columns.includes('description')"
-          field="tasks.description"
-          sortable
-          label="Description"
-        >
-          <a
-            @click.prevent="showDescription(props.row)"
-          >{{ props.row.description | textlimit(40) }} {{ (props.row.description && props.row.description.length > 40) ? ' (more)' : '' }}</a>
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('slots')"
-          field="tasks.slots"
-          width="80"
-          sortable
-          label="Slots"
-        >
-          <p
-            :class="{
-               'has-text-danger has-text-weight-bold': props.row.assignments.length == 0,
-               'has-text-warning has-text-weight-bold': props.row.assignments.length > props.row.slots,
-               'has-text-success': props.row.assignments.length == props.row.slots,
-            }"
-          >{{ props.row.assignments.length }} / {{ props.row.slots }}</p>
-        </b-table-column>
-        <b-table-column
-          :visible="columns.includes('priority')"
-          field="tasks.priority"
-          width="10"
-          sortable
-          label="Priority"
-        >{{ props.row.priority }}</b-table-column>
-        <b-table-column
-          class="is-marginless is-paddingless"
-          :visible="columns.includes('assignments')"
-          label="Assignments"
-          width="700"
-        >
-          <task-assignments-component
-            :task="props.row"
-            :conference="conference"
-            :users="users"
-            @reload="reload()"
-            @updateHours="users[$event.userId].hours_done += $event.hours"
-          ></task-assignments-component>
-        </b-table-column>
       </template>
 
       <template slot="empty">
@@ -212,32 +276,55 @@
             <p>
               No tasks found for
               <b v-if="search.length > 0">{{ search }}</b>
-              on {{ momentize(day, {format: 'll', fromToTz: conference.timezone.name}) }}
+              on
+              {{
+                momentize(day, {
+                  format: "ll",
+                  fromToTz: conference.timezone.name,
+                })
+              }}
             </p>
           </div>
         </section>
       </template>
 
       <template slot="bottom-left">
-        <small
-          class="has-text-weight-light"
-        >{{ totalTasks }} task{{ totalTasks > 1 ? 's' : '' }} matching criteria</small>
+        <small class="has-text-weight-light"
+          >{{ totalTasks }} task{{ totalTasks > 1 ? "s" : "" }} matching
+          criteria</small
+        >
       </template>
 
       <template slot="footer">
         <div class="has-text-left">
-          <b-dropdown @change="onPerPageChange" :value="perPage" aria-role="list">
+          <b-dropdown
+            @change="onPerPageChange"
+            :value="perPage"
+            aria-role="list"
+          >
             <button class="button is-small" slot="trigger">
               <span>{{ perPage }} per page</span>
               <b-icon icon="menu-down"></b-icon>
             </button>
 
-            <b-dropdown-item value="5" aria-role="listitem">5 per page</b-dropdown-item>
-            <b-dropdown-item value="10" aria-role="listitem">10 per page</b-dropdown-item>
-            <b-dropdown-item value="30" aria-role="listitem">30 per page</b-dropdown-item>
-            <b-dropdown-item value="60" aria-role="listitem">60 per page</b-dropdown-item>
-            <b-dropdown-item value="150" aria-role="listitem">150 per page</b-dropdown-item>
-            <b-dropdown-item value="300" aria-role="listitem">300 per page</b-dropdown-item>
+            <b-dropdown-item value="5" aria-role="listitem"
+              >5 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="10" aria-role="listitem"
+              >10 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="30" aria-role="listitem"
+              >30 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="60" aria-role="listitem"
+              >60 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="150" aria-role="listitem"
+              >150 per page</b-dropdown-item
+            >
+            <b-dropdown-item value="300" aria-role="listitem"
+              >300 per page</b-dropdown-item
+            >
           </b-dropdown>
         </div>
       </template>
@@ -257,7 +344,7 @@ export default {
     return {
       isLoading: true,
       timer: null,
-      hackHideTable: false // This is part of the hotfix for buefy table bug
+      hackHideTable: false, // This is part of the hotfix for buefy table bug
     };
   },
 
@@ -289,29 +376,29 @@ export default {
               this.conference.key,
               this.day.toMySqlDate()
             )
-            .then(data => {
+            .then((data) => {
               this.$buefy.notification.open({
                 indefinite: true,
                 message: data.data.message,
                 type: "is-success",
-                hasIcon: true
+                hasIcon: true,
               });
             })
             .finally(() => this.reload());
-        } // onConfirm
+        }, // onConfirm
       });
     },
     runAuction() {
       api
         .runAuction(this.conference.key, this.day.toMySqlDate())
-        .then(data => {
+        .then((data) => {
           let jobId = data.data.result;
           this.$buefy.modal.open({
             parent: this,
             props: { id: jobId },
             component: JobModalVue,
             hasModalCard: true,
-            onCancel: () => this.reload()
+            onCancel: () => this.reload(),
           });
         })
         .finally(() => this.reload());
@@ -321,8 +408,8 @@ export default {
         "You can search all task assignments of the current day for:\
             <li>Task name</li>\
             <li>Task location</li>\
-            <li>SVs firstname</li>\
-            <li>SVs lastname</li>"
+            <li>SVs first name</li>\
+            <li>SVs last name</li>"
       );
     },
     onPageChange(page) {
@@ -349,7 +436,7 @@ export default {
     showDescription(task) {
       this.$buefy.dialog.alert({
         title: task.name,
-        message: task.description
+        message: task.description,
       });
     },
     ...mapActions("assignments", ["fetchAssignments"]),
@@ -361,12 +448,12 @@ export default {
       "setSortField",
       "setSortDirection",
       "setPerPage",
-      "setPage"
-    ])
+      "setPage",
+    ]),
   },
 
   created() {
-    this.$watch("tasks", function(newVal, oldVal) {
+    this.$watch("tasks", function (newVal, oldVal) {
       /* This is a workaround for the bug present in
        * buefy 0.8.17+ (- 0.9.0) which breaks column show/hide
        * when the table was empty once
@@ -402,10 +489,10 @@ export default {
       "users",
       "tasks",
       "totalTasks",
-      "data"
+      "data",
     ]),
     ...mapGetters("conference", ["conferenceDays", "taskDays"]),
-    ...mapGetters("auth", ["userIs"])
-  }
+    ...mapGetters("auth", ["userIs"]),
+  },
 };
 </script>

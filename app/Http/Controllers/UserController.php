@@ -284,19 +284,15 @@ class UserController extends Controller
             }
         }
 
-        $user->location = [
-            "country" => $user->country ?? null,
-            "region" => $user->region ?? null,
-            "city" => $user->city ?? null,
-        ];
+        // $user->location = [
+        //     "country" => $user->country ?? null,
+        //     "region" => $user->region ?? null,
+        //     "city" => $user->city ?? null,
+        // ];
 
-        return ["result" => $user->loadMissing([
-            'avatar', 'permissions',
-            'permissions.conference.artwork',
-            'permissions.conference', 'permissions.role',
-            'permissions.state',
-            'university'
-        ]), "message" => "User updated"];
+        return [
+            "result" => $this->show($user), "message" => "User updated"
+        ];
     }
 
     /** 

@@ -9,7 +9,9 @@
 
       <transition name="fade">
         <div v-if="!isLoading && conference" class="columns is-centered">
-          <div class="column is-12-mobile is-12-tablet is-11-desktop is-paddingless">
+          <div
+            class="column is-12-mobile is-12-tablet is-11-desktop is-paddingless"
+          >
             <div class="level is-mobile">
               <div class="level-left">
                 <div class="level-item">
@@ -18,22 +20,28 @@
                   </figure>
                 </div>
                 <div class="level-item">
-                  <p
-                    class="is-size-3 has-text-black-bis has-text-weight-bold"
-                  >{{ conference.name | textlimit(50) }}</p>
+                  <p class="is-size-3 has-text-black-bis has-text-weight-bold">
+                    {{ conference.name | textlimit(50) }}
+                  </p>
                   <b-taglist attached class="has-margin-l-6 is-hidden-desktop">
                     <b-tag
                       rounded
                       size="is-small"
                       v-if="conference.bidding_enabled"
                       type="is-success"
-                    >Bidding open</b-tag>
-                    <b-tag rounded size="is-small" v-else type="is-warning">Bidding closed</b-tag>
+                      >Bidding open</b-tag
+                    >
+                    <b-tag rounded size="is-small" v-else type="is-warning"
+                      >Bidding closed</b-tag
+                    >
                   </b-taglist>
                 </div>
                 <div class="level-item is-hidden-touch">
                   <b-taglist attached>
-                    <state-tag size="is-medium" :state="conference.state"></state-tag>
+                    <state-tag
+                      size="is-medium"
+                      :state="conference.state"
+                    ></state-tag>
 
                     <b-tag
                       v-if="conference.bidding_enabled"
@@ -41,9 +49,13 @@
                       size="is-medium"
                       type="is-success"
                     >
-                      <b-tooltip type="is-success" :label="biddingEnabledFor">Bidding open</b-tooltip>
+                      <b-tooltip type="is-success" :label="biddingEnabledFor"
+                        >Bidding open</b-tooltip
+                      >
                     </b-tag>
-                    <b-tag rounded size="is-medium" v-else type="is-warning">Bidding closed</b-tag>
+                    <b-tag rounded size="is-medium" v-else type="is-warning"
+                      >Bidding closed</b-tag
+                    >
                   </b-taglist>
                 </div>
               </div>
@@ -56,21 +68,35 @@
                     <p class="has-text-weight-medium">
                       {{ conference.location }}
                       |
-                      {{ momentize(conference.start_date, {format: 'll', fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                      {{
+                        momentize(conference.start_date, {
+                          format: "ll",
+                          fromTz: conference.timezone.name,
+                          toTz: conference.timezone.name,
+                        })
+                      }}
                       –
-                      {{ momentize(conference.end_date, {format: 'll', fromTz: conference.timezone.name, toTz: conference.timezone.name}) }}
+                      {{
+                        momentize(conference.end_date, {
+                          format: "ll",
+                          fromTz: conference.timezone.name,
+                          toTz: conference.timezone.name,
+                        })
+                      }}
                     </p>
                     <a
                       v-if="conference.email_chair"
                       class="has-text-weight-medium"
                       :href="'mailto:' + conference.email_chair"
-                    >{{ conference.email_chair }}</a>
+                      >{{ conference.email_chair }}</a
+                    >
                     <a
                       class="is-hidden-desktop"
                       target="_blank"
                       v-if="conference.url && conference.url_name"
                       :href="conference.url"
-                    >&nbsp;{{ conference.url_name }}</a>
+                      >&nbsp;{{ conference.url_name }}</a
+                    >
                   </div>
                 </div>
                 <div class="level-right is-hidden-touch">
@@ -81,7 +107,8 @@
                         target="_blank"
                         v-if="conference.url && conference.url_name"
                         :href="conference.url"
-                      >{{ conference.url_name }}</a>
+                        >{{ conference.url_name }}</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -102,25 +129,41 @@
                   ></conference-overview>
                 </b-tab-item>
                 <b-tab-item label="SVs">
-                  <conference-svs v-if="canViewUsers()" :conference="conference"></conference-svs>
+                  <conference-svs
+                    v-if="canViewUsers()"
+                    :conference="conference"
+                  ></conference-svs>
                   <p v-else>You need to be accepted to see other SVs!</p>
                 </b-tab-item>
                 <b-tab-item label="Tasks">
-                  <conference-tasks v-if="canViewUsers()" :conference="conference"></conference-tasks>
+                  <conference-tasks
+                    v-if="canViewUsers()"
+                    :conference="conference"
+                  ></conference-tasks>
                   <p v-else>You need to be accepted to see tasks!</p>
                 </b-tab-item>
                 <b-tab-item v-if="canUpdateAssignment()" label="Assignments">
-                  <conference-assignments :conference="conference"></conference-assignments>
+                  <conference-assignments
+                    :conference="conference"
+                  ></conference-assignments>
                 </b-tab-item>
                 <b-tab-item v-if="canEdit()" label="Conference">
-                  <conference-edit @updated="fetchConference()" :conference="conference"></conference-edit>
+                  <conference-edit
+                    @updated="fetchConference()"
+                    :conference="conference"
+                  ></conference-edit>
                 </b-tab-item>
                 <b-tab-item v-if="canNotify()" label="Notify">
-                  <conference-notification ref="notify" :conference="conference"></conference-notification>
+                  <conference-notification
+                    ref="notify"
+                    :conference="conference"
+                  ></conference-notification>
                 </b-tab-item>
                 <b-tab-item v-if="canUpdateAssignment()" label="Reports">
                   <conference-reports
-                    @update-notify-destinations="$refs.notify.setDestinations($event)"
+                    @update-notify-destinations="
+                      $refs.notify.setDestinations($event)
+                    "
                     :conference="conference"
                   ></conference-reports>
                 </b-tab-item>
@@ -141,7 +184,7 @@ import { mapActions, mapMutations, mapGetters } from "vuex";
 export default {
   data() {
     return {
-      isLoading: true
+      isLoading: true,
     };
   },
 
@@ -156,18 +199,18 @@ export default {
         this.momentize(this.conference.bidding_start, {
           format: "l",
           fromTz: this.conference.timezone.name,
-          toTz: this.conference.timezone.name
+          toTz: this.conference.timezone.name,
         }) +
         " – " +
         this.momentize(this.conference.bidding_end, {
           format: "l",
           fromTz: this.conference.timezone.name,
-          toTz: this.conference.timezone.name
+          toTz: this.conference.timezone.name,
         })
       );
     },
     ...mapGetters("conference", ["conference", "tab"]),
-    ...mapGetters("auth", ["userIs"])
+    ...mapGetters("auth", ["userIs"]),
   },
   methods: {
     prepareConference(key) {
@@ -189,7 +232,7 @@ export default {
         var promises = [];
 
         promises.push(
-          this.fetchConference(key).catch(error => {
+          this.fetchConference(key).catch((error) => {
             this.$router.replace({ name: "conferences" });
           })
         );
@@ -210,7 +253,7 @@ export default {
           .finally(() => {
             this.isLoading = false;
           })
-          .catch(error => {
+          .catch((error) => {
             console.log(error);
           });
       }); // fetchUser promise resolve
@@ -255,9 +298,9 @@ export default {
     ...mapActions("conference", [
       "fetchConference",
       "fetchTaskDays",
-      "fetchAcceptedCount"
+      "fetchAcceptedCount",
     ]),
-    ...mapMutations("conference", ["setTab"])
-  }
+    ...mapMutations("conference", ["setTab"]),
+  },
 };
 </script>
