@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\UserController;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
@@ -89,6 +90,19 @@ class LoginController extends Controller
         ]);
 
         return json_decode((string) $response->getBody(), true);
+    }
+
+    /**
+     * The user has been authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  mixed  $user
+     * @return mixed
+     */
+    protected function authenticated(Request $request, $user)
+    {
+        $controller = new UserController();
+        return $controller->showSelf($user)->toArray();
     }
 
     /** 
