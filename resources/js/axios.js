@@ -30,6 +30,10 @@ window.axios.interceptors.response.use(response => response, error => {
         verb = 'load';
     }
 
+    if (error.config.baseURL == "/" && error.config.url == "login") {
+        return Promise.reject(error)
+    }
+
     if (error.response) {
         const { status } = error.response
         // The request was made and the server responded with a status code
@@ -84,13 +88,10 @@ window.axios.interceptors.response.use(response => response, error => {
                 hasIcon: true
             });
         }
-        // console.log(error.request);
     } else {
         // Something happened in setting up the request that triggered an Error
         console.log('Error', error.message);
     }
-    // console.log(error.config);
-
 
     return Promise.reject(error)
 })

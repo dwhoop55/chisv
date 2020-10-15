@@ -17,6 +17,11 @@ import router from './router';
 import axios from './axios'
 import { mapActions, mapGetters, mapMutations } from 'vuex';
 import { methods as mixins } from './mixins';
+
+import App from "./App.vue";
+import Default from "./layouts/Default.vue";
+import NoNav from "./layouts/NoNav.vue";
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -37,6 +42,8 @@ Vue.component(Form.name, Form)
 Vue.component('csv-export', JsonCSV)
 Vue.component('csv-import', VueCsvImport)
 Vue.component('vue-cal', VueCal)
+Vue.component("default-layout", Default);
+Vue.component("no-nav-layout", NoNav);
 
 Vue.use(Buefy, { defaultNoticeQueue: false, defaultToastPosition: "is-top-right" });
 Vue.use(vueDebounce, { defaultTime: '250ms', listenTo: 'input' });
@@ -90,6 +97,7 @@ export const vm = new Vue({
     el: "#app",
     store,
     router,
+    render: h => h(App),
     computed: mapGetters('auth', ['userAcceptsCookies']),
     methods: {
         async refreshNotifications() {

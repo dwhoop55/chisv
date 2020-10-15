@@ -75,7 +75,7 @@ const actions = {
         });
     },
     async logout({ commit, dispatch }) {
-        var p = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             api.logout()
                 .then(data => commit('setUser', null))
                 .catch(error => reject(error))
@@ -86,20 +86,22 @@ const actions = {
                 })
         })
     },
+    async login({ commit, dispatch }, credentials) {
+        return new Promise((resolve, reject) => {
+            api.login(credentials)
+                .then(({ data }) => {
+                    commit('setUser', data);
+                    resolve(data);
+                })
+                .catch(error => reject(error))
+        });
+    },
     async fetchUser({ commit }) {
-        var p = new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             api.getSelf()
                 .then(({ data }) => {
                     commit('setUser', data);
 
-                    // // If the user has a timezone,
-                    // // set it on our moment instance
-                    // // so all moment instances will render
-                    // // the correct timezone
-                    // if (data.timezone?.name) {
-                    //     moment.tz.setDefault(data.timezone.name);
-                    // }
-                    // Same for locale
                     if (data.locale?.code) {
                         moment.locale(data.locale.code);
                     }
@@ -111,7 +113,6 @@ const actions = {
                 });
 
         })
-        return p;
     },
 };
 

@@ -268,6 +268,9 @@ export default {
     },
     logout() {
         return axios.post(`logout`, undefined, { baseURL: '/', maxRedirects: 0 })
+    },
+    login(credentials) {
+        return axios.post(`login`, credentials, { baseURL: '/', maxRedirects: 0 })
     }
 
 
