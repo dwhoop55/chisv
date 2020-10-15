@@ -1,15 +1,5 @@
 <?php
 
-use App\User;
-use App\City;
-use App\Country;
-use App\University;
-use App\Language;
-use App\Degree;
-use App\Locale;
-use App\Shirt;
-
-use App\Timezone;
 use Illuminate\Support\Facades\Route;
 
 /*
