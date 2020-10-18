@@ -11,24 +11,21 @@
 |
 */
 
-// Auth routes
-// Route::view('register', 'auth.register')->middleware('guest')->name('register.show');
-
-// Route::get('login', 'Auth\LoginController@showLoginForm')->name('login.show');
+// Auth routes with cookies
 Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::get('loginAs', 'MiscController@loginAs')->name('loginAs')->middleware('auth');
-
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
-Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.update');
-// Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-
-// Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-// Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-
-
+Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
 
 // Return our SPA
 Route::get('/{any}', 'MiscController@showSpa')
     ->name('spa.show')
     // ->middleware('auth')
     ->where('any', '.*');
+
+
+// This has to be below the SPA route, as we only want to have it so that the
+// forgot password email notifications can get the URL by the routes name.
+// Otherwise sending emails will fail and one would have to publish all
+// internal Laravel notification templates and adjust that there.
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');

@@ -26,7 +26,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('university/name/{pattern?}', 'MiscController@universities');
     Route::get('language/name/{pattern?}', 'MiscController@languages');
 
-    Route::post('register', 'Auth\RegisterController@create')->name('register.create');
+    Route::post('register', 'Auth\RegisterController@create')
+        ->name('register.create');
+    Route::post('password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail')
+        ->name('password.forgot');
 
     Route::get('conference/preview', 'ConferenceController@indexPreview')
         ->name('conference.preview');

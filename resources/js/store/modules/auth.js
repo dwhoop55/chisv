@@ -74,7 +74,7 @@ const actions = {
             }
         });
     },
-    async logout({ commit, dispatch }) {
+    async logout({ commit }) {
         return new Promise((resolve, reject) => {
             api.logout()
                 .then(data => commit('setUser', null))
@@ -86,12 +86,24 @@ const actions = {
                 })
         })
     },
-    async login({ commit, dispatch }, credentials) {
+    async login({ commit }, credentials) {
         return new Promise((resolve, reject) => {
             api.login(credentials)
                 .then(({ data }) => {
                     commit('setUser', data);
                     resolve(data);
+                    window.location.href = '/';
+                })
+                .catch(error => reject(error))
+        });
+    },
+    async passwordReset({ commit }, data) {
+        return new Promise((resolve, reject) => {
+            api.passwordReset(data)
+                .then(({ data }) => {
+                    commit('setUser', data);
+                    resolve(data);
+                    window.location.href = '/';
                 })
                 .catch(error => reject(error))
         });

@@ -271,6 +271,12 @@ export default {
     },
     login(credentials) {
         return axios.post(`login`, credentials, { baseURL: '/', maxRedirects: 0 })
+    },
+    passwordForgot(email) {
+        return axios.post(`password/forgot`, { email });
+    },
+    passwordReset(data) {
+        return axios.post(`password/reset`, data, { baseURL: '/', maxRedirects: 0 });
     }
 
 
