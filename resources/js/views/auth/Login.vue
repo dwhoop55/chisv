@@ -4,14 +4,19 @@
       <div class="card">
         <div class="card-image"><conference-preview-carousel /></div>
         <div class="card-content">
-          <p class="field">Sign in to CHISV</p>
+          <p class="field">
+            Sign in to
+            <a target="_blank" href="https://hci.rwth-aachen.de/chisv"
+              >CHISV (more info)</a
+            >
+          </p>
           <div>
             <form @submit.prevent>
               <b-field>
                 <b-input
                   @input="error = null"
                   v-model="email"
-                  icon="at"
+                  icon="email"
                   autofocus
                   type="email"
                   placeholder="E-Mail Address"
@@ -51,7 +56,7 @@
             <b-field grouped position="is-right">
               <b-button
                 tag="router-link"
-                :to="{ name: 'passwordForgot' }"
+                :to="{ name: 'passwordForgot', query: { email: this.email } }"
                 size="is-small"
                 type="is-text"
               >
@@ -92,26 +97,24 @@ export default {
   name: "Login",
   data() {
     return {
-      email: "admin@chisv.org",
-      password: "secret",
+      email: "",
+      password: "",
       error: null,
     };
   },
   methods: {
     processLogin() {
       this.error = null;
-      this.login({ email: this.email, password: this.password })
-        .then((data) => {
-          this.goTo("/");
-        })
-        .catch((error) => {
+      this.login({ email: this.email, password: this.password }).catch(
+        (error) => {
           if (error.response && error.response.status == 422) {
             // Credentials are wrong
             this.error = "We have no account for these credentials";
           } else {
             console.error(JSON.stringify(error));
           }
-        });
+        }
+      );
     },
     ...mapActions("auth", ["fetchUser", "login"]),
   },

@@ -59,9 +59,8 @@ window.axios.interceptors.response.use(response => response, error => {
             message = error.response.data.message
                 ? error.response.data.message
                 : error.message;
-            message += (error.response.data?.errors) ? '<br>' : '';
             for (const [key, value] of Object.entries(error.response.data?.errors)) {
-                message += `<br>${key}: ${value}`
+                message += `<br>${key}:<br>&nbsp;${value.join('<br>&nbsp;')}`
             }
         } else if (status === 429) {
             message = "To many requests. Slow down.";
@@ -69,7 +68,7 @@ window.axios.interceptors.response.use(response => response, error => {
 
         Notification.open({
             duration: 10000,
-            message: `Couldn't ${verb}: ${message}`,
+            message,
             type,
             hasIcon: true
         });

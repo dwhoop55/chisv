@@ -46,10 +46,10 @@
           </button>
 
           <b-dropdown-item value="model" aria-role="listitem"
-            >(All) Unsorted datamodel behind table</b-dropdown-item
+            >All (Unsorted datamodel behind table)</b-dropdown-item
           >
           <b-dropdown-item value="table" aria-role="listitem"
-            >(Only visible) sorted table content</b-dropdown-item
+            >Only visible (sorted table content below)</b-dropdown-item
           >
         </b-dropdown>
       </b-field>

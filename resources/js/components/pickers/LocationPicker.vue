@@ -8,7 +8,13 @@
       :value="country"
       placeholder="Select your country"
     >
-      <option v-for="(country, index) in countries" :value="country" :key="index">{{ country.name }}</option>
+      <option
+        v-for="(country, index) in countries"
+        :value="country"
+        :key="index"
+      >
+        {{ country.name }}
+      </option>
     </b-select>
 
     <b-autocomplete
@@ -39,7 +45,10 @@
         </div>
       </template>
       <template slot-scope="props">
-        <div class="has-text-weight-medium" v-html="props.option.city.name"></div>
+        <div
+          class="has-text-weight-medium"
+          v-html="props.option.city.name"
+        ></div>
         <p>{{ props.option.region.name }}, {{ props.option.country.name }}</p>
       </template>
     </b-autocomplete>
@@ -56,7 +65,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      rows: []
+      rows: [],
     };
   },
 
@@ -67,7 +76,7 @@ export default {
     country() {
       return this.value?.country || null;
     },
-    ...mapGetters("defines", ["countries"])
+    ...mapGetters("defines", ["countries"]),
   },
 
   methods: {
@@ -98,9 +107,9 @@ export default {
       api
         .getCityInCountry(this.value.country.id, name)
         .then(({ data }) => (this.rows = data))
-        .catch(error => (this.rows = []))
+        .catch((error) => (this.rows = []))
         .finally(() => (this.isLoading = false));
-    }
-  }
+    },
+  },
 };
 </script>
