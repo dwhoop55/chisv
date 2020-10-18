@@ -31,9 +31,12 @@ export default {
 
   methods: {
     filter(text) {
-      this.filtered = this.languages.filter((language) => {
-        return language.name.toLowerCase().includes(text.toLowerCase());
-      });
+      var filtered = this.languages.filter((language) =>
+        language.name.toLowerCase().includes(text.toLowerCase())
+      );
+      this.filtered = filtered.filter(
+        (language) => !this.value.includes(language)
+      );
     },
   },
 };
