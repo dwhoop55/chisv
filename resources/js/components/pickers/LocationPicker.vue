@@ -1,58 +1,64 @@
 // v-model safe
 <template>
-  <b-field grouped group-multiline>
-    <b-select
-      expanded
-      v-if="countries"
-      @input="onCountryChange($event)"
-      :value="country"
-      placeholder="Select your country"
-    >
-      <option
-        v-for="(country, index) in countries"
+  <div>
+    <b-field :type="type" :message="message">
+      <b-select
+        expanded
+        v-if="countries"
+        @input="onCountryChange($event)"
         :value="country"
-        :key="index"
+        placeholder="Select your country"
       >
-        {{ country.name }}
-      </option>
-    </b-select>
+        <option
+          v-for="(country, index) in countries"
+          :value="country"
+          :key="index"
+        >
+          {{ country.name }}
+        </option>
+      </b-select>
+    </b-field>
 
-    <b-autocomplete
-      :disabled="!country"
-      expanded
-      :value="city"
-      :data="rows"
-      placeholder="City (optional)"
-      field="name"
-      :loading="isLoading"
-      keep-first
-      open-on-focus
-      v-debounce="load"
-      debounce-events="typing"
-      @select="onCityChange($event)"
-      @input="onCityInput($event)"
-      icon="magnify"
-      clearable
-    >
-      <template slot="empty">
-        <div v-if="!isLoading" class="content has-text-grey has-text-centered">
-          <b-icon icon="emoticon-sad"></b-icon>
-          <p>Nothing found, try a city close to you or leave blank</p>
-        </div>
-        <div v-if="isLoading" class="content has-text-grey has-text-centered">
-          <b-icon icon="timer-sand"></b-icon>
-          <p>Loading..</p>
-        </div>
-      </template>
-      <template slot-scope="props">
-        <div
-          class="has-text-weight-medium"
-          v-html="props.option.city.name"
-        ></div>
-        <p>{{ props.option.region.name }}, {{ props.option.country.name }}</p>
-      </template>
-    </b-autocomplete>
-  </b-field>
+    <b-field>
+      <b-autocomplete
+        :disabled="!country"
+        :value="city"
+        :data="rows"
+        placeholder="City (optional)"
+        field="name"
+        :loading="isLoading"
+        keep-first
+        open-on-focus
+        v-debounce="load"
+        debounce-events="typing"
+        @select="onCityChange($event)"
+        @input="onCityInput($event)"
+        icon="magnify"
+        clearable
+      >
+        <template slot="empty">
+          <div
+            v-if="!isLoading"
+            class="content has-text-grey has-text-centered"
+          >
+            <b-icon icon="emoticon-sad"></b-icon>
+            <p>Nothing found, try a city close to you or leave blank</p>
+          </div>
+          <div v-if="isLoading" class="content has-text-grey has-text-centered">
+            <b-icon icon="timer-sand"></b-icon>
+            <p>Loading..</p>
+          </div>
+        </template>
+        <template slot-scope="props">
+          <div
+            class="has-text-weight-medium"
+            v-html="props.option.city.name"
+          ></div>
+          <p>{{ props.option.region.name }}, {{ props.option.country.name }}</p>
+        </template>
+      </b-autocomplete>
+    </b-field>
+  </div>
 </template>
 
 <script>
@@ -60,7 +66,7 @@ import api from "@/api";
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["value"],
+  props: ["value", "type", "message"],
 
   data() {
     return {

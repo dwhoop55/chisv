@@ -1,6 +1,8 @@
 <template>
   <div class="columns is-centered">
-    <div class="column is-11-tablet is-8-desktop is-6-widescreen">
+    <div
+      class="column is-12-mobile is-10-tablet is-8-desktop is-6-widescreen is-5-fullhd"
+    >
       <div class="card">
         <div class="card-image"><conference-preview-carousel /></div>
         <div class="card-content">
@@ -32,7 +34,6 @@
                   icon="key"
                   type="password"
                   placeholder="Password"
-                  password-reveal
                   required
                 >
                 </b-input>
@@ -111,7 +112,7 @@ export default {
             // Credentials are wrong
             this.error = "We have no account for these credentials";
           } else {
-            console.error(JSON.stringify(error));
+            console.error(JSON.stringify(error.repsonse));
           }
         }
       );

@@ -34,6 +34,7 @@ export default new Vuex.Store({
     },
     plugins: [createPersistedState({
         paths: [
+            'defines',
             'auth.userAcceptsCookies',
             'auth.user',
             'profile.tab',

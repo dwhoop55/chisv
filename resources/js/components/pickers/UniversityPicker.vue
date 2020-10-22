@@ -1,35 +1,32 @@
-// v-model safe
 <template>
-  <div>
-    <b-autocomplete
-      :required="required !== false"
-      :value="universityName"
-      :data="rows"
-      :placeholder="'e.g. RWTH'"
-      :field="'name'"
-      :loading="isLoading"
-      :keep-first="true"
-      debounce-events="typing"
-      v-debounce="typing"
-      @select="select"
-      icon="magnify"
-    >
-      <template slot="empty">
-        <div v-if="!isLoading" class="content has-text-grey has-text-centered">
-          <b-icon icon="emoticon-sad"></b-icon>
-          <p>Nothing found, just type the name</p>
-        </div>
-        <div v-if="isLoading" class="content has-text-grey has-text-centered">
-          <b-icon icon="timer-sand"></b-icon>
-          <p>Loading..</p>
-        </div>
-      </template>
-      <template slot-scope="props">
-        <div class="has-text-weight-medium" v-html="props.option.name"></div>
-        <p>{{ props.option.url }}</p>
-      </template>
-    </b-autocomplete>
-  </div>
+  <b-autocomplete
+    :required="required !== false"
+    :value="universityName"
+    :data="rows"
+    placeholder="e.g. RWTH Aachen University"
+    field="name"
+    :loading="isLoading"
+    :keep-first="true"
+    debounce-events="typing"
+    v-debounce="typing"
+    @select="select"
+    icon="magnify"
+  >
+    <template slot="empty">
+      <div v-if="!isLoading" class="content has-text-grey has-text-centered">
+        <b-icon icon="emoticon-sad"></b-icon>
+        <p>Nothing found, just type the name</p>
+      </div>
+      <div v-if="isLoading" class="content has-text-grey has-text-centered">
+        <b-icon icon="timer-sand"></b-icon>
+        <p>Loading..</p>
+      </div>
+    </template>
+    <template slot-scope="props">
+      <div class="has-text-weight-medium" v-html="props.option.name"></div>
+      <p>{{ props.option.url }}</p>
+    </template>
+  </b-autocomplete>
 </template>
 
 <script>

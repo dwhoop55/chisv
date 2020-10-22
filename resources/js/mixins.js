@@ -7,6 +7,13 @@ import Form from "vform";
 export { methods }
 
 let methods = {
+    typeForFormField(fieldName, form) {
+        if (form.errors?.has(fieldName)) {
+            return "is-danger";
+        } else {
+            return "";
+        }
+    },
     deleteNote(id) {
         this.$buefy.dialog.confirm({
             message: 'Delete this note?',

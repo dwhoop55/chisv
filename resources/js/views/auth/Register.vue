@@ -12,66 +12,88 @@
           <section>
             <form @submit.prevent="save" @keydown="form.onKeydown($event)">
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('firstname') }"
+                :type="typeForFormField('firstname', form)"
                 :message="form.errors.get('firstname')"
                 label="First name"
               >
-                <b-input required v-model="form.firstname"></b-input>
+                <b-input
+                  required
+                  v-model="form.firstname"
+                  placeholder="Milton"
+                  @input="form.errors.clear('firstname')"
+                ></b-input>
               </b-field>
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('lastname') }"
+                :type="typeForFormField('lastname', form)"
                 :message="form.errors.get('lastname')"
                 label="Last name"
               >
-                <b-input required v-model="form.lastname"></b-input>
+                <b-input
+                  required
+                  v-model="form.lastname"
+                  placeholder="Waddams"
+                  @input="form.errors.clear('lastname')"
+                ></b-input>
               </b-field>
 
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('email') }"
+                :type="typeForFormField('email', form)"
                 :message="form.errors.get('email')"
                 label="E-Mail (use an institutional address)"
               >
-                <b-input required icon="email" v-model="form.email"></b-input>
+                <b-input
+                  required
+                  type="email"
+                  icon="email"
+                  v-model="form.email"
+                  placeholder="you@your-university.edu"
+                  @input="form.errors.clear('email')"
+                ></b-input>
               </b-field>
 
               <b-field expanded>&nbsp;</b-field>
 
               <b-field
-                :type="{ 'is-danger': form.errors.has('languages') }"
+                :type="typeForFormField('languages', form)"
                 :message="form.errors.get('languages')"
                 label="Languages"
               >
-                <language-picker v-model="form.languages"></language-picker>
+                <language-picker
+                  v-model="form.languages"
+                  @input="form.errors.clear('languages')"
+                ></language-picker>
+              </b-field>
+
+              <b-field label="Home Country">
+                <location-picker
+                  :type="typeForFormField('location', form)"
+                  :message="form.errors.get('location')"
+                  v-model="form.location"
+                  @input="form.errors.clear('location')"
+                ></location-picker>
               </b-field>
 
               <b-field
-                :type="{ 'is-danger': form.errors.has('location') }"
-                :message="form.errors.get('location')"
-                label="Home Country"
-              >
-                <location-picker v-model="form.location"></location-picker>
-              </b-field>
-
-              <b-field
-                :type="{ 'is-danger': form.errors.has('university.name') }"
-                :message="form.errors.get('university.name')"
+                :type="typeForFormField('university', form)"
+                :message="form.errors.get('university')"
                 label="University"
               >
                 <university-picker
                   v-model="form.university"
+                  @input="form.errors.clear('university')"
                 ></university-picker>
               </b-field>
 
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('locale_id') }"
+                :type="typeForFormField('locale_id', form)"
                 :message="form.errors.get('locale_id')"
                 label="Preferred locale"
               >
-                <b-select expanded v-model="form.locale_id">
+                <b-select
+                  expanded
+                  v-model="form.locale_id"
+                  @input="form.errors.clear('locale_id')"
+                >
                   <option
                     v-for="locale in locales"
                     :value="locale.id"
@@ -85,28 +107,31 @@
               <b-field expanded>&nbsp;</b-field>
 
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('degree_id') }"
+                :type="typeForFormField('degree_id', form)"
                 :message="form.errors.get('degree_id')"
                 label="Degree program"
               >
-                <degree-picker v-model="form.degree_id"></degree-picker>
+                <degree-picker
+                  v-model="form.degree_id"
+                  @input="form.errors.clear('degree_id')"
+                ></degree-picker>
               </b-field>
 
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('shirt_id') }"
+                :type="typeForFormField('shirt_id', form)"
                 :message="form.errors.get('shirt_id')"
                 label="T-Shirt"
               >
-                <shirt-picker v-model="form.shirt_id"></shirt-picker>
+                <shirt-picker
+                  v-model="form.shirt_id"
+                  @input="form.errors.clear('shirt_id')"
+                ></shirt-picker>
               </b-field>
 
               <b-field expanded>&nbsp;</b-field>
 
               <b-field
-                expanded
-                :type="{ 'is-danger': form.errors.has('past_conferences') }"
+                :type="typeForFormField('past_conferences', form)"
                 :message="form.errors.get('past_conferences')"
                 label="Past conferences you have attended"
               >
@@ -118,10 +143,7 @@
                 ></b-taginput>
               </b-field>
               <b-field
-                expanded
-                :type="{
-                  'is-danger': form.errors.has('past_conferences_sv'),
-                }"
+                :type="typeForFormField('past_conferences_sv', form)"
                 :message="form.errors.get('past_conferences_sv')"
                 label="Past conferences you have attended as SV"
               >
@@ -135,23 +157,32 @@
 
               <b-field expanded>&nbsp;</b-field>
 
-              <b-field expanded label="Password">
+              <b-field
+                label="Password"
+                :type="typeForFormField('password', form)"
+              >
                 <b-input
                   type="password"
                   v-model="form.password"
                   password-reveal
                   placeholder="Your password"
                   required
+                  @input="form.errors.clear('password')"
                 ></b-input>
               </b-field>
 
-              <b-field expanded label="Confirm">
+              <b-field
+                label="Confirm"
+                :type="typeForFormField('password', form)"
+                :message="form.errors.get('password')"
+              >
                 <b-input
                   type="password"
                   v-model="form.password_confirmation"
                   password-reveal
                   placeholder="Confirm your password"
                   required
+                  @input="form.errors.clear('password')"
                 ></b-input>
               </b-field>
 
@@ -204,7 +235,7 @@
 
 <script>
 import Form from "vform";
-import { mapGetters } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 
 export default {
   name: "Register",
@@ -215,7 +246,7 @@ export default {
         firstname: "",
         lastname: "",
         email: "",
-        languages: [],
+        languages: [{ id: 1, name: "English", code: "en" }],
         degree_id: null,
         past_conferences: [],
         past_conferences_sv: [],
@@ -232,10 +263,12 @@ export default {
 
   methods: {
     save() {
-      this.form.post(`register`).then((data) => (this.registerSuccess = true));
+      this.register(this.form);
+      // this.form.post(`register`).then((data) => (this.registerSuccess = true));
     },
+    ...mapActions("auth", ["register"]),
   },
 
-  computed: mapGetters("defines", ["locales"]),
+  computed: mapGetters("defines", ["locales", "languages"]),
 };
 </script>

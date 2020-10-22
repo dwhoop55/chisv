@@ -20,15 +20,6 @@ if (token) {
 // Response interceptor
 window.axios.interceptors.response.use(response => response, error => {
     var type = "is-warning";
-    var method = error.config.method;
-    var verb = "create";
-    if (method == 'delete') {
-        verb = "delete";
-    } else if (method == 'put') {
-        verb = 'update';
-    } else if (method == 'get') {
-        verb = 'load';
-    }
 
     if (error.config.baseURL == "/" && error.config.url == "login") {
         return Promise.reject(error)
@@ -63,7 +54,7 @@ window.axios.interceptors.response.use(response => response, error => {
                 message += `<br>${key}:<br>&nbsp;${value.join('<br>&nbsp;')}`
             }
         } else if (status === 429) {
-            message = "To many requests. Slow down.";
+            message = "Too many requests. Slow down.";
         }
 
         Notification.open({
@@ -77,19 +68,17 @@ window.axios.interceptors.response.use(response => response, error => {
         // console.log(error.response.headers);
     } else if (error.request) {
         // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        if (error.response?.status === 408 || error.code === 'ECONNABORTED') {
+        if (error.code === 'ECONNABORTED') {
             Notification.open({
                 duration: 10000,
-                message: `Couldn't ${verb}: Timeout happened on url ${error.config.url}`,
+                message: `Timeout happened on url ${error.config.url}`,
                 type: 'is-warning',
                 hasIcon: true
             });
         }
     } else {
         // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
+        console.log('Error', JSON.stringify(error));
     }
 
     return Promise.reject(error)

@@ -1,18 +1,16 @@
 <template>
-  <div>
-    <b-taginput
-      :value="value"
-      :data="filtered"
-      autocomplete
-      field="name"
-      :attached="true"
-      icon="tag"
-      placeholder="Pick your spoken languages"
-      @input="$emit('input', $event)"
-      v-debounce:100ms="filter"
-      :debounce-events="'typing'"
-    ></b-taginput>
-  </div>
+  <b-taginput
+    :value="value"
+    :data="filtered"
+    autocomplete
+    field="name"
+    :attached="true"
+    icon="tag"
+    placeholder="Pick your spoken languages"
+    @input="$emit('input', $event)"
+    v-debounce:100ms="filter"
+    :debounce-events="'typing'"
+  ></b-taginput>
 </template>
 
 <script>
@@ -31,12 +29,14 @@ export default {
 
   methods: {
     filter(text) {
-      var filtered = this.languages.filter((language) =>
-        language.name.toLowerCase().includes(text.toLowerCase())
+      let textMatches = this.languages.filter((l) =>
+        l.name.toLowerCase().includes(text.toLowerCase())
       );
-      this.filtered = filtered.filter(
-        (language) => !this.value.includes(language)
-      );
+
+      this.filtered = textMatches.filter((language) => {
+        let existingLanguageIds = this.value.map((language) => language.id);
+        return !existingLanguageIds.includes(language.id);
+      });
     },
   },
 };

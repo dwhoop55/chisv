@@ -1,6 +1,6 @@
 <template>
   <div class="columns is-centered">
-    <div class="column is-5">
+    <div class="column is-4">
       <div class="card">
         <header class="card-header">
           <p class="card-header-icon">

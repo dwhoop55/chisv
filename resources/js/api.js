@@ -277,6 +277,9 @@ export default {
     },
     passwordReset(data) {
         return axios.post(`password/reset`, data, { baseURL: '/', maxRedirects: 0 });
+    },
+    register(vform) {
+        return vform.post(`register`);
     }
 
 

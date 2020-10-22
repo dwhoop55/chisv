@@ -66,8 +66,8 @@ class UserCreateRequest extends FormRequest
     public function messages()
     {
         return [
-            'firstname.*' => 'Please type your firstname',
-            'lastname.*' => 'Please type your lastname',
+            'firstname.*' => 'Please type your first name',
+            'lastname.*' => 'Please type your last name',
             'email.unique' => 'This address is taken. Do you already have an account?',
             'languages.*' => 'You need to at least choose one language',
             'location.*' => 'Please pick your home country',

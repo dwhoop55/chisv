@@ -97,6 +97,17 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
+    async register({ commit }, vform) {
+        return new Promise((resolve, reject) => {
+            api.register(vform)
+                .then(({ data }) => {
+                    commit('setUser', data);
+                    resolve(data);
+                    window.location.href = '/';
+                })
+                .catch(error => reject(error))
+        });
+    },
     async passwordReset({ commit }, data) {
         return new Promise((resolve, reject) => {
             api.passwordReset(data)
