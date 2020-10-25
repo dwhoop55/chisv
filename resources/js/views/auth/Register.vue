@@ -66,9 +66,9 @@
 
               <b-field label="Home Country">
                 <location-picker
-                  :type="typeForFormField('location', form)"
-                  :message="form.errors.get('location')"
                   v-model="form.location"
+                  :message="form.errors.get('location')"
+                  :type="typeForFormField('location', form)"
                   @input="form.errors.clear('location')"
                 ></location-picker>
               </b-field>
@@ -257,14 +257,12 @@ export default {
         password: "",
         password_confirmation: "",
       }),
-      registerSuccess: false,
     };
   },
 
   methods: {
     save() {
       this.register(this.form);
-      // this.form.post(`register`).then((data) => (this.registerSuccess = true));
     },
     ...mapActions("auth", ["register"]),
   },

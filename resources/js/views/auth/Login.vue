@@ -22,7 +22,6 @@
                   autofocus
                   type="email"
                   placeholder="E-Mail Address"
-                  required
                 >
                 </b-input>
               </b-field>

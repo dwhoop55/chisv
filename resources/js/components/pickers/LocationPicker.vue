@@ -1,19 +1,14 @@
-// v-model safe
 <template>
   <div>
-    <b-field :type="type" :message="message">
+    <b-field>
       <b-select
+        v-model="value.country"
+        :disabled="isLoading"
         expanded
-        v-if="countries"
-        @input="onCountryChange($event)"
-        :value="country"
         placeholder="Select your country"
+        @input="countryChange($event)"
       >
-        <option
-          v-for="(country, index) in countries"
-          :value="country"
-          :key="index"
-        >
+        <option v-for="country in countries" :key="country.id" :value="country">
           {{ country.name }}
         </option>
       </b-select>
@@ -21,20 +16,57 @@
 
     <b-field>
       <b-autocomplete
-        :disabled="!country"
-        :value="city"
-        :data="rows"
-        placeholder="City (optional)"
-        field="name"
+        :value="cityName"
+        :data="cities"
+        :disabled="!value.country"
         :loading="isLoading"
+        debounce-events="typing"
+        field="name"
+        icon="magnify"
+        open-on-focus
+        placeholder="City (optional)"
+        v-debounce="searchCity"
+        clearable
+        @input="cityInput($event)"
+        @select="cityChange($event)"
+        @typing="clearCity()"
+      >
+        <template slot="empty">
+          <div
+            v-if="!isLoading"
+            class="content has-text-grey has-text-centered"
+          >
+            <b-icon icon="emoticon-sad"></b-icon>
+            <p>Nothing found, try a city close to you or leave blank</p>
+          </div>
+          <div v-if="isLoading" class="content has-text-grey has-text-centered">
+            <b-icon icon="timer-sand"></b-icon>
+            <p>Loading..</p>
+          </div>
+        </template>
+        <template slot-scope="props">
+          <div class="has-text-weight-medium" v-html="props.option.name"></div>
+          <p>{{ props.option.region.name }}</p>
+        </template>
+      </b-autocomplete>
+    </b-field>
+
+    <b-field>
+      <!-- <b-autocomplete
+        :data="rows"
+        :disabled="!country"
+        :loading="isLoading"
+        :value="city"
+        clearable
+        debounce-events="typing"
+        field="name"
+        icon="magnify"
         keep-first
         open-on-focus
+        placeholder="City (optional)"
         v-debounce="load"
-        debounce-events="typing"
-        @select="onCityChange($event)"
         @input="onCityInput($event)"
-        icon="magnify"
-        clearable
+        @select="onCityChange($event)"
       >
         <template slot="empty">
           <div
@@ -56,7 +88,7 @@
           ></div>
           <p>{{ props.option.region.name }}, {{ props.option.country.name }}</p>
         </template>
-      </b-autocomplete>
+      </b-autocomplete> -->
     </b-field>
   </div>
 </template>
@@ -66,54 +98,82 @@ import api from "@/api";
 import { mapGetters } from "vuex";
 
 export default {
-  props: ["value", "type", "message"],
+  props: {
+    value: {
+      country: {
+        id: Number,
+        name: String,
+      },
+      region: {
+        id: Number,
+        name: String,
+      },
+      city: {
+        id: Number,
+        name: String,
+      },
+    },
+  },
 
   data() {
     return {
       isLoading: false,
-      rows: [],
+      cities: [],
     };
   },
 
   computed: {
-    city() {
-      return this.value?.city?.name || null;
-    },
-    country() {
-      return this.value?.country || null;
+    cityName() {
+      return this.value.city?.name;
     },
     ...mapGetters("defines", ["countries"]),
   },
 
   methods: {
-    onCityInput(event) {
+    cityInput(event) {
+      console.log("cityInput", event);
       if (event === "") {
-        this.removeCity();
+        console.log("cityInput: remove city");
+        this.$emit("input", {
+          country: this.value.country,
+          region: null,
+          city: null,
+        });
       }
     },
-    removeCity() {
-      let location = { ...this.value };
-      location.city = null;
-      location.region = null;
-      this.$emit("input", location);
+    cityChange(city) {
+      console.log("cityChange", city);
+      if (city) {
+        console.log("cityChange", {
+          country: this.value.country,
+          region: city.region,
+          city: { id: city.id, name: city.name },
+        });
+        this.$emit("input", {
+          country: this.value.country,
+          region: city.region,
+          city: { id: city.id, name: city.name },
+        });
+      }
     },
-    onCityChange(location) {
-      this.$emit("input", location);
+    countryChange(country) {
+      console.log("countryChange", country);
+      this.cities = [];
+      this.clearCity(country);
     },
-    onCountryChange(country) {
-      let location = { country, region: null, city: null };
-      this.$emit("input", location);
+    clearCity(country) {
+      this.$emit("input", {
+        country: country || this.value.country,
+        region: null,
+        city: null,
+      });
     },
-    load(name) {
-      // if (!name || !name.length || name.length < 2) {
-      //   this.rows = [];
-      //   return;
-      // }
+    searchCity(text) {
       this.isLoading = true;
+      this.cities = [];
       api
-        .getCityInCountry(this.value.country.id, name)
-        .then(({ data }) => (this.rows = data))
-        .catch((error) => (this.rows = []))
+        .getCitiesInCountry(this.value.country.id, text)
+        .then(({ data }) => (this.cities = data))
         .finally(() => (this.isLoading = false));
     },
   },

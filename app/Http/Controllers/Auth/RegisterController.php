@@ -5,12 +5,10 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\Request;
-use App\Degree;
-use App\Shirt;
+use App\Http\Controllers\UserController;
 use App\Http\Requests\UserCreateRequest;
+use Illuminate\Http\JsonResponse;
 
 class RegisterController extends Controller
 {
@@ -83,8 +81,8 @@ class RegisterController extends Controller
 
         $data['password'] = Hash::make($data['password']);
         $data['country_id'] = $request['location']['country']['id'];
-        $data['region_id'] = $request['location']['region']['id'];
-        $data['city_id'] = $request['location']['city']['id'];
+        $data['region_id'] = $request['location']['region']['id'] ?? null;
+        $data['city_id'] = $request['location']['city']['id'] ?? null;
 
         $university = $request['university'];
         if (isset($university['id'])) {
@@ -105,8 +103,11 @@ class RegisterController extends Controller
 
         event(new Registered($user));
 
-        auth()->guard()->login($user);
+        auth()->login($user);
 
-        return ["result" => $user, "error" => null];
+        $controller = new UserController();
+        return $request->wantsJson()
+            ? new JsonResponse($controller->showSelf($user)->toArray(), 201)
+            : redirect()->intended('/');
     }
 }

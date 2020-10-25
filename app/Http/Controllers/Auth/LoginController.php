@@ -25,9 +25,7 @@ class LoginController extends Controller
     |
     */
 
-    use AuthenticatesUsers {
-        logout as performLogout;
-    }
+    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -103,15 +101,5 @@ class LoginController extends Controller
     {
         $controller = new UserController();
         return $controller->showSelf($user)->toArray();
-    }
-
-    /** 
-     * Logout the user by removing the Cookie and session
-     * 
-     */
-    public function logout(Request $request)
-    {
-        $this->performLogout($request);
-        return response("Logout successful", 200);
     }
 }

@@ -22,12 +22,10 @@ Route::group(['prefix' => 'v1'], function () {
     Route::get('degree', 'MiscController@degrees');
     Route::get('language', 'MiscController@languages');
     Route::get('country', 'MiscController@countries');
-    Route::get('country/{country}/city/{pattern?}', 'MiscController@locations');
+    Route::get('country/{country}/city', 'MiscController@citiesInCountry');
     Route::get('university/name/{pattern?}', 'MiscController@universities');
     Route::get('language/name/{pattern?}', 'MiscController@languages');
 
-    Route::post('register', 'Auth\RegisterController@create')
-        ->name('register.create');
     Route::post('password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail')
         ->name('password.forgot');
 

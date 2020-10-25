@@ -16,6 +16,7 @@ Route::post('login', 'Auth\LoginController@login')->name('login');
 Route::get('loginAs', 'MiscController@loginAs')->name('loginAs')->middleware('auth');
 Route::post('logout', 'Auth\LoginController@logout')->name('logout');
 Route::post('password/reset', 'Auth\ResetPasswordController@reset')->name('password.reset');
+Route::post('register', 'Auth\RegisterController@create')->name('register.create');
 
 // Return our SPA
 Route::get('/{any}', 'MiscController@showSpa')

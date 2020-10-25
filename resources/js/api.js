@@ -93,8 +93,8 @@ export default {
     getLanguage(name) {
         return axios.get(`language/name/${name}`);
     },
-    getCityInCountry(countryId, cityName) {
-        return axios.get(`country/${countryId}/city/${cityName}`);
+    getCitiesInCountry(countryId, cityName) {
+        return axios.get(`country/${countryId}/city?name=${cityName}`);
     },
     getUniversity(name) {
         return axios.get(`university/name/${name}`);
@@ -279,7 +279,7 @@ export default {
         return axios.post(`password/reset`, data, { baseURL: '/', maxRedirects: 0 });
     },
     register(vform) {
-        return vform.post(`register`);
+        return vform.post(`register`, { baseURL: '/', maxRedirects: 0 });
     }
 
 

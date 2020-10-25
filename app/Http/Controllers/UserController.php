@@ -101,8 +101,11 @@ class UserController extends Controller
      */
     public function showSelf(User $user)
     {
+        abort_if(!$user->id && !auth()->id(), 400, "No user specified");
+
+        $id = $user->id ?? auth()->id();
         $model = User
-            ::where('id', auth()->user()->id)
+            ::where('id', $id)
             ->with([
                 'permissions' => function ($query) {
                     $query->select(['id', 'user_id', 'conference_id', 'role_id', 'state_id', 'enrollment_form_id', 'lottery_position']);

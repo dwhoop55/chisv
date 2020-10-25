@@ -7,6 +7,7 @@ use App\Country;
 use App\Degree;
 use App\Language;
 use App\Locale;
+use App\Region;
 use App\Shirt;
 use App\Timezone;
 use App\University;
@@ -106,52 +107,42 @@ class MiscController extends Controller
     /**
      * @group Generic Resources
      * 
-     * Get all locations for a country by city name
+     * Get all cities for a country by country id and an optional search string
      * 
      * @urlParam country required The country the city is in Example: 82
      * @urlParam pattern The name of the city Example: Aachen
      * 
      */
-    public function locations(Country $country, String $pattern = "")
+    public function citiesInCountry(Country $country)
     {
-        $pattern = trim($pattern);
-        $unUmlautedPattern = strtr($pattern, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
-        $matches = City
-            // Example:
-            //             where
-            //   "country_id" = 233
-            //   and (
-            //     "name" LIKE '%springs%'
-            //     and "name" LIKE '%west%'
-            //     and "name" LIKE '%baden%'
-            //     or (
-            //       "name" LIKE '%springs%'
-            //       and "name" LIKE '%west%'
-            //       and "name" LIKE '%baden%'
-            //     )
-            //   )
+        $name = trim(request()->query('name'));
+        $umlName = strtr($name, ['Ä' => 'A', 'Ü' => 'U', 'Ö' => 'O', 'ä' => 'a', 'ü' => 'u', 'ö' => 'o', 'ß' => 'B']);
+        $cities = City
             ::where('country_id', $country->id)
-            ->where(function ($query) use ($pattern, $unUmlautedPattern) {
-                $patterns = explode(' ', $pattern);
-                foreach ($patterns as $pattern) {
-                    $query->where('name', 'LIKE', '%' . $pattern . '%');
-                }
-                $query->orWhere(function ($query) use ($unUmlautedPattern) {
-                    $unUmlautedPatterns = explode(' ', $unUmlautedPattern);
-                    foreach ($unUmlautedPatterns as $unUmlautedPattern) {
-                        $query->where('name', 'LIKE', '%' . $unUmlautedPattern . '%');
-                    }
-                });
+            ->where(function ($query) use ($name, $umlName) {
+                $query->where('name', 'LIKE', $name . '%');
+                $query->orWhere('name', 'LIKE', $umlName . '%');
             })
-            ->with(['country', 'region'])
-            ->orderBy('name', 'asc')
+            ->with(['region'])
+            // ->orderBy('name', 'asc')
             ->limit(1000)
-            ->get(['id', 'name', 'country_id', 'region_id']);
-        $locations = collect();
-        foreach ($matches as $match) {
-            $locations->push($match->location());
-        }
-        return $locations;
+            ->get(['id', 'name', 'region_id', 'region'])
+            ->sortBy(function ($city) {
+                return strlen($city->name);
+            })
+            ->sortBy(function ($city) use ($name, $umlName) {
+                return similar_text(strtolower($name), strtolower($city->name));
+            });
+
+
+
+        return $cities->transform(function ($city) {
+            return [
+                'id' => $city->id,
+                'name' => $city->name,
+                'region' => $city->region,
+            ];
+        })->values();
     }
 
     /**
