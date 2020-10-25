@@ -99,9 +99,9 @@ class UserController extends Controller
      * @param  \App\User  $user
      * @return \Illuminate\Http\Response
      */
-    public function showSelf(User $user)
+    public function showSelf(User $user = null)
     {
-        abort_if(!$user->id && !auth()->id(), 400, "No user specified");
+        abort_if(!$user && !auth()->id(), 400, "No user specified");
 
         $id = $user->id ?? auth()->id();
         $model = User

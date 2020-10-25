@@ -121,14 +121,14 @@ const actions = {
     },
     async fetchUser({ commit }) {
         return new Promise((resolve, reject) => {
-            api.getSelf()
+            api.bootstrapRessources(['self'])
                 .then(({ data }) => {
-                    commit('setUser', data);
+                    commit('setUser', data.self);
 
-                    if (data.locale?.code) {
-                        moment.locale(data.locale.code);
+                    if (data.self.locale?.code) {
+                        moment.locale(data.self.locale.code);
                     }
-                    resolve(data);
+                    resolve(data.self);
                 })
                 .catch(error => {
                     commit('setUser', null);

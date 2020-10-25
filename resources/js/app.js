@@ -105,32 +105,24 @@ export const vm = new Vue({
             setTimeout(this.refreshNotifications, 30000);
         },
         ...mapMutations('auth', ['setUserAcceptsCookies']),
+        ...mapActions('boot', ['bootstrapRessources']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
-        ...mapActions('defines', ['fetchStates', 'fetchRoles', 'fetchLocales', 'fetchCountries', 'fetchTimezones', 'fetchShirts', 'fetchDegrees', 'fetchLanguages', 'fetchVersion']),
-        ...mapActions('notifications', ['fetchNotifications', 'fetchNumberUnreadNotifications'])
+        ...mapActions('notifications', ['fetchNotifications'])
     },
 
     created() {
-        // This will load states as new for every page refresh
-        this.fetchLocales();
-        this.fetchShirts();
-        this.fetchDegrees();
-        this.fetchLanguages();
-        this.fetchTimezones();
-        this.fetchCountries();
-        this.fetchUser()
-            .then(() => {
-                // Will resolve when a user could be fetched,
-                // so we're logged in
-                this.fetchConferences();
-                this.fetchStates();
-                this.fetchRoles();
-                this.refreshNotifications();
-                this.fetchVersion();
+        // This will bootstrap all our constants and defines
+        // at each new page refresh
+        this.bootstrapRessources()
+            .then(data => {
+                if (data.self) {
+                    // When data.self is set we know we're logged in
+                    this.fetchConferences();
+                    this.refreshNotifications();
+                }
+            });
 
-            })
-            .catch((error) => (null));
 
         // Check if cookies have been accepted
         if (this.userAcceptsCookies === null) {

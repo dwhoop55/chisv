@@ -9,11 +9,9 @@
     icon="tshirt-crew"
     @input="$emit('input', $event)"
   >
-    <option
-      v-for="shirt in shirts"
-      :value="shirt.id"
-      :key="shirt.id"
-    >{{ shirt.cut }} cut, size {{ shirt.size }}</option>
+    <option v-for="shirt in shirts" :value="shirt.id" :key="shirt.id">
+      {{ shirt.cut }} cut, size {{ shirt.size }}
+    </option>
   </b-select>
 </template>
 
@@ -25,18 +23,11 @@ export default {
 
   data() {
     return {
-      isLoading: false
+      isLoading: false,
     };
   },
 
-  created() {
-    if (!this.shirts) {
-      this.isLoading = true;
-      this.fetchShirts().then(() => (this.isLoading = false));
-    }
-  },
-
   computed: mapGetters("defines", ["shirts"]),
-  methods: mapActions("defines", ["fetchShirts"])
+  methods: mapActions("defines", ["fetchShirts"]),
 };
 </script>

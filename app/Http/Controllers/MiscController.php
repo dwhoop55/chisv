@@ -8,7 +8,9 @@ use App\Degree;
 use App\Language;
 use App\Locale;
 use App\Region;
+use App\Role;
 use App\Shirt;
+use App\State;
 use App\Timezone;
 use App\University;
 use App\User;
@@ -21,6 +23,63 @@ use Illuminate\Support\Facades\Log;
  */
 class MiscController extends Controller
 {
+
+    /**
+     * @group Generic Resources
+     * 
+     * Bootstrap ressources for the SPA, like countries, roles, etc.
+     * @queryParam with Array<String> Array of objects to return Example: ["locales", "self", "countries"]
+     * 
+     */
+    public function bootstrapRessources(Request $request)
+    {
+        $with = collect(json_decode(request()->query('with'))) ?? null;
+        $data = collect();
+        $user = auth('api')->user();
+
+        if ($user && ($with->isEmpty() || $with->contains("self"))) {
+            $controller = new UserController();
+            $data->put('self', $controller->showSelf($user));
+        }
+
+        if ($with->isEmpty() || $with->contains("locales")) {
+            $data->put('locales', Locale::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("shirts")) {
+            $data->put('shirts', Shirt::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("degrees")) {
+            $data->put('degrees', Degree::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("languages")) {
+            $data->put('languages', Language::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("countries")) {
+            $data->put('countries', Country::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("states")) {
+            $data->put('states', State::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("role")) {
+            $data->put('roles', Role::get());
+        }
+
+        if ($with->isEmpty() || $with->contains("version")) {
+            $data->put('version', $this->version());
+        }
+
+        if ($with->isEmpty() || $with->contains("timezones")) {
+            $data->put('timezones', Timezone::all());
+        }
+
+        return $data;
+    }
 
     public function showSpa(Request $request)
     {
@@ -48,69 +107,10 @@ class MiscController extends Controller
     /**
      * @group Generic Resources
      * 
-     * Get all locales
-     * 
-     * @responseFile responses/locales.get.json
-     * 
-     */
-    public function locales()
-    {
-        return Locale::all();
-    }
-
-    /**
-     * @group Generic Resources
-     * 
-     * Get all timezones
-     * 
-     */
-    public function timezones()
-    {
-        return Timezone::all();
-    }
-
-    /**
-     * @group Generic Resources
-     * 
-     * Get all T-Shirts
-     * 
-     */
-    public function shirts()
-    {
-        return Shirt::all();
-    }
-
-    /**
-     * @group Generic Resources
-     * 
-     * Get all degrees
-     * 
-     */
-    public function degrees()
-    {
-        return Degree::all();
-    }
-
-    /**
-     * @group Generic Resources
-     * 
-     * Get all countries
-     * 
-     * @responseFile responses/countries.get.json
-     * 
-     */
-    public function countries()
-    {
-        return Country::all();
-    }
-
-    /**
-     * @group Generic Resources
-     * 
      * Get all cities for a country by country id and an optional search string
      * 
      * @urlParam country required The country the city is in Example: 82
-     * @urlParam pattern The name of the city Example: Aachen
+     * @queryParam name string The name of the city to search for Example: Aachen
      * 
      */
     public function citiesInCountry(Country $country)
@@ -153,8 +153,9 @@ class MiscController extends Controller
      * @urlParam pattern The pattern to match Example: Aachen
      * 
      */
-    public function universities(String $pattern = "")
+    public function universities(Request $request)
     {
+        $pattern = trim(request()->query('name'));
         $patterns = preg_split("/\ |\-|,|;/", $pattern);
         $query = University
             ::where('name', 'LIKE', '%' . $pattern . '%')
@@ -168,27 +169,6 @@ class MiscController extends Controller
     }
 
     /**
-     * @group Generic Resources
-     * 
-     * Get all languages matching a pattern
-     * 
-     * @urlParam pattern string The pattern to match Example: Ger
-     * 
-     */
-    public function languages(String $pattern = "")
-    {
-        $matches = Language
-            ::where('name', 'LIKE', '%' . $pattern . '%')
-            ->orWhere('code', 'LIKE', $pattern)
-            ->orderBy('name', 'asc')
-            ->get();
-        return $matches;
-    }
-
-    /**
-     * @authenticated
-     * @group Generic Resources
-     * 
      * Get CHISV version info
      * 
      * @response {

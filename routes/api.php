@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MiscController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,15 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
 
     //// GUEST ////
-    Route::get('locale', 'MiscController@locales');
-    Route::get('timezone', 'MiscController@timezones');
-    Route::get('shirt', 'MiscController@shirts');
-    Route::get('degree', 'MiscController@degrees');
-    Route::get('language', 'MiscController@languages');
-    Route::get('country', 'MiscController@countries');
+    Route::get('boot', 'MiscController@bootstrapRessources');
     Route::get('country/{country}/city', 'MiscController@citiesInCountry');
-    Route::get('university/name/{pattern?}', 'MiscController@universities');
-    Route::get('language/name/{pattern?}', 'MiscController@languages');
+    Route::get('university', 'MiscController@universities');
 
     Route::post('password/forgot', 'Auth\ForgotPasswordController@sendResetLinkEmail')
         ->name('password.forgot');
@@ -80,10 +75,6 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
-        Route::get('version', "MiscController@version");
-        Route::get('user/self', 'UserController@showSelf')
-            ->middleware("can:viewSelf,App\User")
-            ->name('user.self');
         Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.taskDays');

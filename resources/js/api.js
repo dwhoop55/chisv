@@ -15,9 +15,6 @@ export default {
             return axios.get(`notification`)
         }
     },
-    getSelf() {
-        return axios.get(`user/self`);
-    },
     getUsers(params) {
         return axios.get(`user?${params}`);
     },
@@ -63,41 +60,11 @@ export default {
     getEnrollmentForm(id) {
         return axios.get(`enrollment_form/${id}`)
     },
-    getVersion() {
-        return axios.get(`version`)
-    },
-    getRoles() {
-        return axios.get("role");
-    },
-    getLocales() {
-        return axios.get("locale");
-    },
-    getCountries() {
-        return axios.get("country");
-    },
-    getStates() {
-        return axios.get("state");
-    },
-    getDegrees() {
-        return axios.get("degree");
-    },
-    getLanguages() {
-        return axios.get("language");
-    },
-    getShirts() {
-        return axios.get("shirt");
-    },
-    getTimezones() {
-        return axios.get("timezone");
-    },
-    getLanguage(name) {
-        return axios.get(`language/name/${name}`);
-    },
     getCitiesInCountry(countryId, cityName) {
         return axios.get(`country/${countryId}/city?name=${cityName}`);
     },
     getUniversity(name) {
-        return axios.get(`university/name/${name}`);
+        return axios.get(`university?name=${name}`);
     },
     getJobs() {
         return axios.get("job");
@@ -265,6 +232,13 @@ export default {
     },
     unenroll(conference) {
         return axios.delete(`conference/${conference}/enroll`)
+    },
+    bootstrapRessources(data) {
+        if (data) {
+            return axios.get(`boot?with=${JSON.stringify(data)}`);
+        } else {
+            return axios.get(`boot`);
+        }
     },
     logout() {
         return axios.post(`logout`, undefined, { baseURL: '/', maxRedirects: 0 })

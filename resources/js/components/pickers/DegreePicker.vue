@@ -9,7 +9,9 @@
     icon="school"
     @input="$emit('input', $event)"
   >
-    <option v-for="option in degrees" :value="option.id" :key="option.id">{{ option.name }}</option>
+    <option v-for="option in degrees" :value="option.id" :key="option.id">
+      {{ option.name }}
+    </option>
   </b-select>
 </template>
 
@@ -22,18 +24,11 @@ export default {
   model: {},
   data() {
     return {
-      isLoading: false
+      isLoading: false,
     };
   },
 
-  created() {
-    if (!this.degrees) {
-      this.isLoading = true;
-      this.fetchDegrees().then(() => (this.isLoading = false));
-    }
-  },
-
   computed: mapGetters("defines", ["degrees"]),
-  methods: mapActions("defines", ["fetchDegrees"])
+  methods: mapActions("defines", ["fetchDegrees"]),
 };
 </script>

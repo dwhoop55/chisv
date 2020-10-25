@@ -199,33 +199,7 @@
               </b-field>
             </form>
 
-            <b-loading
-              animation
-              :is-full-page="true"
-              :active.sync="form.busy"
-            ></b-loading>
-
-            <b-modal
-              :has-modal-card="true"
-              :can-cancel="false"
-              :active.sync="registerSuccess"
-            >
-              <div class="modal-card">
-                <header class="modal-card-head">
-                  <p class="modal-card-title">Welcome on board!</p>
-                </header>
-                <section class="modal-card-body">
-                  <p class="is-size-5">
-                    You can now see all conferences and enroll. Happy SV-ing!
-                  </p>
-                </section>
-                <footer class="modal-card-foot">
-                  <b-button type="is-success" @click="goTo('/login')"
-                    >Continue to login</b-button
-                  >
-                </footer>
-              </div>
-            </b-modal>
+            <b-loading animation :active.sync="form.busy"></b-loading>
           </section>
         </div>
       </div>

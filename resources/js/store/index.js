@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex';
 import createPersistedState from 'vuex-persistedstate';
 
+import boot from './modules/boot';
 import defines from './modules/defines';
 import auth from './modules/auth';
 import svs from './modules/svs';
@@ -19,6 +20,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
+        boot,
         defines,
         auth,
         svs,
