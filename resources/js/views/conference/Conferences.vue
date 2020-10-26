@@ -12,6 +12,7 @@
         <conference-card
           v-if="conference"
           :conference="conference"
+          @click="enterConference(conference)"
         ></conference-card>
       </div>
       <b-loading
@@ -23,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 import CreateConferenceModalVue from "../../components/modals/CreateConferenceModal.vue";
 
 export default {
@@ -37,6 +38,13 @@ export default {
   },
 
   methods: {
+    enterConference(conference) {
+      this.setConference(conference);
+      this.$router.push({
+        name: "conference",
+        params: { key: conference.key },
+      });
+    },
     showCreate() {
       this.$buefy.modal.open({
         parent: this,
@@ -44,6 +52,8 @@ export default {
       });
     },
     ...mapActions("conferences", ["fetchConferences"]),
+    ...mapActions("conference", ["fetchConference"]),
+    ...mapMutations("conference", ["setConference"]),
   },
 };
 </script>
