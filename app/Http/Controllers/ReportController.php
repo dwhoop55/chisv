@@ -435,13 +435,13 @@ class ReportController extends Controller
             return [
                 "day" => Carbon::create($day->first()->date)->toDateString(),
                 "task_count" => $day->count(),
-                "task_hours" => $day->sum('hours'),
+                "task_hours" => round($day->sum('hours'), 2),
                 "task_slots" => $day->sum('slots'),
                 "task_free_slots" => $day->sum('slots') - $assignmentsCount,
                 "assignment_count" => $assignmentsCount,
-                "assignment_hours" => $assignmentsHours,
-                "assignment_hours_done" => $assignmentsHoursDone,
-                "assignment_hours_not_done" => $assignmentsHours - $assignmentsHoursDone,
+                "assignment_hours" => round($assignmentsHours, 2),
+                "assignment_hours_done" => round($assignmentsHoursDone, 2),
+                "assignment_hours_not_done" => round($assignmentsHours - $assignmentsHoursDone, 2),
             ];
         });
 
