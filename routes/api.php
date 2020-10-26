@@ -75,9 +75,11 @@ Route::group(['prefix' => 'v1'], function () {
             ->middleware("can:deleteTask,conference");
 
         // Custom gets (may overwrite ressource routes from below)
-        Route::get('conference/{conference}/task/day', 'ConferenceController@taskDays')
+        Route::get('conference/{conference}/task_days', 'ConferenceController@taskDays')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.taskDays');
+        Route::get('conference/{conference}/number_accepted_svs', 'ConferenceController@numberAcceptedSvs')
+            ->name('conference.numberAcceptedSvs');
         Route::get('conference/{conference}/task', 'ConferenceController@tasks')
             ->middleware("can:viewAny,App\Task")
             ->name('conference.tasks');
@@ -90,8 +92,6 @@ Route::group(['prefix' => 'v1'], function () {
         Route::get('conference/{conference}/sv_for_task_assignment/{task}', 'ConferenceController@svsForTaskAssignment')
             ->middleware("can:viewUsersForTaskAssignment,conference")
             ->name('conference.svsForTaskAssignment');
-        Route::get('conference/{conference}/sv/count', 'ConferenceController@svsCount')
-            ->name('conference.svCount');
         Route::get('enrollment_form/template', 'EnrollmentFormController@indexTemplates')
             ->middleware("can:viewTemplates,App\EnrollmentForm")
             ->name('enrollmentForm.templates');

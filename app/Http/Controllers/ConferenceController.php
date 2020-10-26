@@ -782,18 +782,7 @@ class ConferenceController extends Controller
      */
     public function taskDays(Conference $conference)
     {
-        $rawTasks = DB::table('tasks')
-            ->select('date', DB::raw('count(*) as total'))
-            ->where('conference_id', $conference->id)
-            ->groupBy('date')
-            ->get();
-
-        $tasks = collect();
-        $rawTasks->each(function ($task) use (&$tasks) {
-            $tasks->put(Carbon::create($task->date)->toDateString(), $task->total);
-        });
-
-        return $tasks;
+        return $conference->task_days;
     }
 
     /**
@@ -958,17 +947,9 @@ class ConferenceController extends Controller
      * @urlParam conference required The conference's key Example: chi20
      * 
      */
-    public function svsCount(Conference $conference)
+    public function numberAcceptedSvs(Conference $conference)
     {
-        return [
-            "result" =>
-            Permission
-                ::where('conference_id', $conference->id)
-                ->where('role_id', Role::byName('sv')->id)
-                ->where('state_id', State::byName('accepted')->id)
-                ->count(),
-            "message" => null
-        ];
+        return $conference->number_accepted_svs;
     }
 
     /**
@@ -1232,9 +1213,35 @@ class ConferenceController extends Controller
             ->values();
     }
 
+    /**
+     * @authenticated
+     * @group Conference
+     * Get the number of accepted SVs
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * 
+     */
+    public function svsCount(Conference $conference)
+    {
+        return [
+            "result" =>
+            Permission
+                ::where('conference_id', $conference->id)
+                ->where('role_id', Role::byName('sv')->id)
+                ->where('state_id', State::byName('accepted')->id)
+                ->count(),
+            "message" => null
+        ];
+    }
+
     public function prepareConference(Conference $conference)
     {
+        Log::alert(json_encode($conference));
         return $conference
+            ->append([
+                'number_accepted_svs',
+                'task_days',
+            ])
             ->loadMissing([
                 'icon:id,owner_id,web_path',
                 'artwork:id,owner_id,web_path',

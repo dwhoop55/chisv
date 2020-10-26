@@ -8,7 +8,7 @@
       ></div>
 
       <transition name="fade">
-        <div v-if="!isLoading && conference" class="columns is-centered">
+        <div v-if="conference" class="columns is-centered">
           <div
             class="column is-12-mobile is-12-tablet is-11-desktop is-paddingless"
           >
@@ -182,6 +182,8 @@ import api from "@/api.js";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 
 export default {
+  name: "Conference",
+
   data() {
     return {
       isLoading: true,
@@ -231,11 +233,11 @@ export default {
 
         var promises = [];
 
-        promises.push(
-          this.fetchConference(key).catch((error) => {
-            this.$router.replace({ name: "conferences" });
-          })
-        );
+        // promises.push(
+        //   this.fetchConference(key).catch((error) => {
+        //     this.$router.replace({ name: "conferences" });
+        //   })
+        // );
 
         promises.push(this.fetchAcceptedCount(key));
         promises.push(this.fetchTaskDays(key));

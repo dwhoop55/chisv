@@ -2,8 +2,8 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Conference extends Model
 {
@@ -20,7 +20,38 @@ class Conference extends Model
         'timezone_id' => 'int',
         'volunteer_hours' => 'int',
         'volunteer_max' => 'int',
+        'number_accepted_svs' => 'int',
     ];
+
+    /** 
+     * Get the number of accepted SVs
+     * 
+     * @return Array
+     */
+    public function getNumberAcceptedSvsAttribute()
+    {
+        return $this->permissions
+            ->where('state_id', State::byName('accepted')->id)
+            ->count();
+    }
+
+    /** 
+     * Get the days with tasks and their count
+     * 
+     * @return Array
+     */
+    public function getTaskDaysAttribute()
+    {
+        $days = collect();
+
+        $this->tasks
+            ->groupBy('date')
+            ->each(function ($tasks, $date) use (&$days) {
+                $days->put((Carbon::create($date))->toDateString(), $tasks->count());
+            });
+
+        return $days;
+    }
 
     /**
      * Get the route key for the model.
