@@ -2,9 +2,9 @@ import api from "@/api";
 
 
 const actions = {
-    async bootstrapRessources({ commit }, ressources) {
+    async getRessources({ commit }, ressources) {
         return new Promise((resolve, reject) => {
-            api.bootstrapRessources(ressources)
+            api.getRessources(ressources)
                 .then(({ data }) => {
                     data.self && commit('auth/setUser', data.self, { root: true });
                     data.locales && commit('defines/setLocales', data.locales, { root: true });
@@ -16,6 +16,7 @@ const actions = {
                     data.roles && commit('defines/setRoles', data.roles, { root: true });
                     data.timezones && commit('defines/setTimezones', data.timezones, { root: true });
                     data.version && commit('defines/setVersion', data.version, { root: true });
+                    data.conferences && commit('conferences/setConferences', data.conferences, { root: true });
                     resolve(data);
                 })
                 .catch(error => reject(error));

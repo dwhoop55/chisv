@@ -1,4 +1,11 @@
 export default {
+    getRessources(data) {
+        if (data) {
+            return axios.get(`boot?with=${JSON.stringify(data)}`);
+        } else {
+            return axios.get(`boot`);
+        }
+    },
     getFaq(id) {
         return axios.get(`faq/${id}`);
     },
@@ -17,12 +24,6 @@ export default {
     },
     getUsers(params) {
         return axios.get(`user?${params}`);
-    },
-    getConferences() {
-        return axios.get("conference");
-    },
-    getConferencesPreview() {
-        return axios.get("conference/preview");
     },
     getConference(key) {
         return axios.get(`conference/${key}`);
@@ -232,13 +233,6 @@ export default {
     },
     unenroll(conference) {
         return axios.delete(`conference/${conference}/enroll`)
-    },
-    bootstrapRessources(data) {
-        if (data) {
-            return axios.get(`boot?with=${JSON.stringify(data)}`);
-        } else {
-            return axios.get(`boot`);
-        }
     },
     logout() {
         return axios.post(`logout`, undefined, { baseURL: '/', maxRedirects: 0 })

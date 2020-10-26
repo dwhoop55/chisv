@@ -105,7 +105,7 @@ export const vm = new Vue({
             setTimeout(this.refreshNotifications, 30000);
         },
         ...mapMutations('auth', ['setUserAcceptsCookies']),
-        ...mapActions('boot', ['bootstrapRessources']),
+        ...mapActions('boot', ['getRessources']),
         ...mapActions('auth', ['fetchUser']),
         ...mapActions('conferences', ['fetchConferences']),
         ...mapActions('notifications', ['fetchNotifications'])
@@ -114,11 +114,9 @@ export const vm = new Vue({
     created() {
         // This will bootstrap all our constants and defines
         // at each new page refresh
-        this.bootstrapRessources()
+        this.getRessources()
             .then(data => {
                 if (data.self) {
-                    // When data.self is set we know we're logged in
-                    this.fetchConferences();
                     this.refreshNotifications();
                 }
             });

@@ -37,21 +37,11 @@
 </template>
 
 <script>
-import api from "@/api";
+import { mapGetters } from "vuex";
 
 export default {
-  data() {
-    return {
-      isLoading: true,
-      conferences: null,
-    };
-  },
-
-  created() {
-    api.getConferencesPreview().then(({ data }) => {
-      this.conferences = data;
-      this.isLoading = false;
-    });
+  computed: {
+    ...mapGetters("conferences", ["isLoading", "conferences"]),
   },
 };
 </script>

@@ -121,7 +121,7 @@ const actions = {
     },
     async fetchUser({ commit }) {
         return new Promise((resolve, reject) => {
-            api.bootstrapRessources(['self'])
+            api.getRessources(['self'])
                 .then(({ data }) => {
                     commit('setUser', data.self);
 

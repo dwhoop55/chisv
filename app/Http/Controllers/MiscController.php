@@ -7,7 +7,6 @@ use App\Country;
 use App\Degree;
 use App\Language;
 use App\Locale;
-use App\Region;
 use App\Role;
 use App\Shirt;
 use App\State;
@@ -38,8 +37,7 @@ class MiscController extends Controller
         $user = auth('api')->user();
 
         if ($user && ($with->isEmpty() || $with->contains("self"))) {
-            $controller = new UserController();
-            $data->put('self', $controller->showSelf($user));
+            $data->put('self', (new UserController)->showSelf($user));
         }
 
         if ($with->isEmpty() || $with->contains("locales")) {
@@ -76,6 +74,10 @@ class MiscController extends Controller
 
         if ($with->isEmpty() || $with->contains("timezones")) {
             $data->put('timezones', Timezone::all());
+        }
+
+        if ($with->isEmpty() || $with->contains("conferences")) {
+            $data->put('conferences', (new ConferenceController)->index());
         }
 
         return $data;

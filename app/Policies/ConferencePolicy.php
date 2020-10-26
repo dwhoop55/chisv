@@ -6,6 +6,7 @@ use App\User;
 use App\Conference;
 use App\State;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Log;
 
 class ConferencePolicy
 {
@@ -340,10 +341,13 @@ class ConferencePolicy
      */
     public function view(User $user, Conference $conference)
     {
-        if ($conference->state == State::byName('planning')) {
-            // Conference is in planning phase,
+        if (
+            $conference->state->id == State::byName('planning')->id
+            || $conference->state->id == State::byName('over')->id
+        ) {
+            // Conference is in planning or over phase,
             // only admins and the associated chair
-            // is allowed to access
+            // are allowed to access
             return ($user->isAdmin() || $user->isChair($conference));
         } else {
             // Otherwise, everyone logged in is allowed

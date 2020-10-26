@@ -9,9 +9,15 @@
         v-for="conference in conferences"
         :key="conference.id"
       >
-        <conference-card :conference="conference"></conference-card>
+        <conference-card
+          v-if="conference"
+          :conference="conference"
+        ></conference-card>
       </div>
-      <b-loading :is-full-page="false" :active="isLoading"></b-loading>
+      <b-loading
+        :is-full-page="false"
+        :active="!conferences && isLoading"
+      ></b-loading>
     </div>
   </section>
 </template>

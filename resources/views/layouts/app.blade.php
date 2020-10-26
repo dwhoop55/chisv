@@ -22,21 +22,15 @@
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.1.45/css/materialdesignicons.min.css">
+    <link href="//fonts.googleapis.com/css?family=Roboto|Roboto+Condensed&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.materialdesignicons.com/5.8.55/css/materialdesignicons.min.css">
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 
 <body>
-    <div id="app">
-        <navbar></navbar>
-
-        <div class="section">
-            <router-view></router-view>
-        </div>
-    </div>
+    <div id="app"> </div>
     <script src="{{ mix('js/app.js') }}"></script>
 </body>
 

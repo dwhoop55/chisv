@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => 'v1'], function () {
 
     //// GUEST ////
-    Route::get('boot', 'MiscController@bootstrapRessources');
+    Route::get('boot', 'MiscController@bootstrapRessources')->name('boot');
     Route::get('country/{country}/city', 'MiscController@citiesInCountry');
     Route::get('university', 'MiscController@universities');
 

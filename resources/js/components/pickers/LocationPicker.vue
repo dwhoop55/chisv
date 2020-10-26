@@ -131,9 +131,7 @@ export default {
 
   methods: {
     cityInput(event) {
-      console.log("cityInput", event);
       if (event === "") {
-        console.log("cityInput: remove city");
         this.$emit("input", {
           country: this.value.country,
           region: null,
@@ -142,13 +140,7 @@ export default {
       }
     },
     cityChange(city) {
-      console.log("cityChange", city);
       if (city) {
-        console.log("cityChange", {
-          country: this.value.country,
-          region: city.region,
-          city: { id: city.id, name: city.name },
-        });
         this.$emit("input", {
           country: this.value.country,
           region: city.region,
@@ -157,7 +149,6 @@ export default {
       }
     },
     countryChange(country) {
-      console.log("countryChange", country);
       this.cities = [];
       this.clearCity(country);
     },

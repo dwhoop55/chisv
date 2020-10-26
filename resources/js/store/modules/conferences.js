@@ -37,16 +37,16 @@ const getters = {
 const actions = {
     async fetchConferences({ commit }) {
         commit('setIsLoading', true);
-        api.getConferences()
+        api.getRessources(['conferences'])
             .then(({ data }) => {
-                commit('setConferences', data);
+                commit('setConferences', data.conferences);
             })
             .catch(error => {
                 commit('setConferences', null);
             })
             .finally(() => {
                 commit('setIsLoading', false);
-            })
+            });
     }
 };
 

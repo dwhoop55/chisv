@@ -80,23 +80,7 @@ class ConferenceController extends Controller
      */
     public function show(Conference $conference)
     {
-        $user = auth()->user();
-        $enrollmentFormService = new EnrollmentFormService;
-        $conference->loadMissing([
-            'icon:id,owner_id,web_path',
-            'artwork:id,owner_id,web_path',
-            'state:name,description',
-            'timezone',
-            'enrollmentFormTemplate:id,name,body'
-        ]);
-
-        // Remove weights if the user is just normal sv
-        if ($user->cannot('updateEnrollmentFormWeights', $conference)) {
-            $conference->enrollment_form_template = $enrollmentFormService
-                ->removeWeights($conference->enrollmentFormTemplate);
-        }
-
-        return $conference;
+        return $this->prepareConference($conference);
     }
 
 
@@ -1200,32 +1184,6 @@ class ConferenceController extends Controller
         return $paginated;
     }
 
-
-    /**
-     * @group Conference
-     * Get a preview of all open conferences for public display
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function indexPreview()
-    {
-        $conferences = Conference
-            ::with([
-                'icon:owner_id,web_path',
-                'artwork:owner_id,web_path',
-                'state',
-            ])
-            ->whereHas('state', function ($query) {
-                $query->where('id', State::byName('enrollment')->id);
-                $query->orWhere('id', State::byName('running')->id);
-                $query->orWhere('id', State::byName('registration')->id);
-            })
-            ->orderBy('start_date', 'desc')
-            ->get(['id', 'name', 'location', 'state_id']);
-
-        return $conferences->values();
-    }
-
     /**
      * @authenticated
      * @group Conference
@@ -1235,17 +1193,60 @@ class ConferenceController extends Controller
      */
     public function index()
     {
-        $conferences = Conference
-            ::with('icon', 'artwork', 'state', 'timezone')
+        $guest = auth('api')->guest();
+        $user = auth('api')->user();
+
+        return Conference
+            ::with(
+                'icon:id,owner_id,web_path',
+                'artwork:id,owner_id,web_path',
+                'state:id,name,description',
+                'timezone',
+                'enrollmentFormTemplate:id,name,body'
+            )
             ->orderBy('start_date', 'desc')
             ->get()
-            ->filter(function ($conference) {
-                return auth()->user()->can('view', $conference);
-            });
-
-        return $conferences->values();
+            ->filter(function ($conference) use ($user) {
+                if (
+                    $conference->state->id == State::byName('planning')->id
+                    || $conference->state->id == State::byName('over')->id
+                ) {
+                    Log::info('message');
+                    return $user && $user->can('view', $conference);
+                } else {
+                    return true;
+                }
+            })
+            ->map(function ($conference) use ($guest) {
+                $conference = $this->prepareConference($conference);
+                if ($guest) {
+                    return $conference->only([
+                        'timezone', 'icon',
+                        'artwork', 'state',
+                        'location', 'name',
+                        'id'
+                    ]);
+                }
+                return $this->show($conference);
+            })
+            ->values();
     }
 
+    public function prepareConference(Conference $conference)
+    {
+        return $conference
+            ->loadMissing([
+                'icon:id,owner_id,web_path',
+                'artwork:id,owner_id,web_path',
+                'state:name,description',
+                'timezone',
+                'enrollmentFormTemplate:id,name,body'
+            ])->makeHidden([
+                'enrollment_form_id',
+                'state_id',
+                'timezone_id'
+            ]);
+    }
 
     /**
      * @authenticated

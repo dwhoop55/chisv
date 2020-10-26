@@ -40,6 +40,7 @@ export default new Vuex.Store({
             'auth.userAcceptsCookies',
             'auth.user',
             'profile.tab',
+            'conferences',
             'conference.last',
             'conference.tab',
             // 'conference.conference', // Do not add it
