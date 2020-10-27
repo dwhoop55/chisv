@@ -3,7 +3,8 @@
     <div
       class="column is-12-mobile is-10-tablet is-8-desktop is-6-widescreen is-5-fullhd"
     >
-      <div class="card">
+      <div class="card is-relative">
+        <b-loading :is-full-page="false" :active="isLoading" />
         <div class="card-image"><conference-preview-carousel /></div>
         <div class="card-content">
           <p class="field">
@@ -97,6 +98,7 @@ export default {
   name: "Login",
   data() {
     return {
+      isLoading: false,
       email: "",
       password: "",
       error: null,
@@ -104,6 +106,7 @@ export default {
   },
   methods: {
     processLogin() {
+      this.isLoading = true;
       this.error = null;
       this.login({ email: this.email, password: this.password }).catch(
         (error) => {
@@ -113,6 +116,7 @@ export default {
           } else {
             console.error(JSON.stringify(error.repsonse));
           }
+          this.isLoading = false;
         }
       );
     },

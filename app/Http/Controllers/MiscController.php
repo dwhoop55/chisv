@@ -157,16 +157,21 @@ class MiscController extends Controller
      */
     public function universities(Request $request)
     {
-        $pattern = trim(request()->query('name'));
-        $patterns = preg_split("/\ |\-|,|;/", $pattern);
+        $name = trim(request()->query('name'));
         $query = University
-            ::where('name', 'LIKE', '%' . $pattern . '%')
-            ->orWhere('url', 'LIKE', '%' . $pattern . '%');
-        foreach ($patterns as $item) {
-            $query = $query->where('name', 'LIKE', '%' . $item . '%');
-            $query = $query->orWhere('url', 'LIKE', '%' . $item . '%');
-        }
-        $matches = $query->orderBy('name', 'asc')->get();
+            ::where('name', 'LIKE', '%' . $name . '%')
+            ->orWhere('url', 'LIKE', '%' . $name . '%');
+
+        $matches = $query
+            ->orderBy('name', 'asc')
+            ->get()
+            ->sortBy(function ($university) {
+                return strlen($university->name);
+            })
+            ->sortBy(function ($university) use ($name) {
+                return similar_text(strtolower($name), strtolower($university->name));
+            })
+            ->values();
         return $matches;
     }
 

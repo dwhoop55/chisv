@@ -199,7 +199,7 @@
               </b-field>
             </form>
 
-            <b-loading animation :active.sync="form.busy"></b-loading>
+            <b-loading :active="isLoading"></b-loading>
           </section>
         </div>
       </div>
@@ -216,6 +216,7 @@ export default {
 
   data() {
     return {
+      isLoading: false,
       form: new Form({
         firstname: "",
         lastname: "",
@@ -236,7 +237,8 @@ export default {
 
   methods: {
     save() {
-      this.register(this.form);
+      this.isLoading = true;
+      this.register(this.form).catch((error) => (this.isLoading = false));
     },
     ...mapActions("auth", ["register"]),
   },

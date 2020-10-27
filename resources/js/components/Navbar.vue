@@ -166,7 +166,7 @@ export default {
       return this.user?.id || null;
     },
     firstname() {
-      return this.user?.firstname || "Account";
+      return this.user?.firstname.substring(0, 20) || "Account";
     },
     ...mapGetters("auth", ["user", "userIs"]),
     ...mapGetters("conference", ["conference", "last"]),
@@ -178,6 +178,10 @@ export default {
   },
 
   methods: {
+    logout() {
+      this.$buefy.loading.open();
+      this.vuexLogout();
+    },
     showPrivacyPolicy() {
       this.$buefy.modal.open({
         parent: this,
@@ -203,7 +207,7 @@ export default {
         hasModalCard: true,
       });
     },
-    ...mapActions("auth", { logout: "logout" }),
+    ...mapActions("auth", { vuexLogout: "logout" }),
     ...mapActions("notifications", ["fetchNotifications"]),
   },
 };
