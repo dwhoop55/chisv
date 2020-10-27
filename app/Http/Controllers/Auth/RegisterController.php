@@ -79,6 +79,8 @@ class RegisterController extends Controller
             'password'
         );
 
+        $data['firstname'] = ucWords(strtolower($data['firstname']));
+        $data['lastname'] = ucWords(strtolower($data['lastname']));
         $data['password'] = Hash::make($data['password']);
         $data['country_id'] = $request['location']['country']['id'];
         $data['region_id'] = $request['location']['region']['id'] ?? null;
