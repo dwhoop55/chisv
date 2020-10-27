@@ -26,6 +26,9 @@
       <div class="has-text-weight-medium" v-html="props.option.name"></div>
       <p>{{ props.option.url }}</p>
     </template>
+    <template slot="header">
+      <p>You can search by name and website</p>
+    </template>
   </b-autocomplete>
 </template>
 

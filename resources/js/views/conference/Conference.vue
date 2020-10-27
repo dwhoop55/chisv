@@ -1,6 +1,6 @@
 <template>
   <div>
-    <b-loading :active="isLoading"></b-loading>
+    <b-loading :active="!conference"></b-loading>
     <div>
       <div
         class="is-fixed is-100hw is-100vh is-pinned-l is-pinned-t is-cover is-below is-blurred is-visible-8"
@@ -186,13 +186,18 @@ export default {
 
   data() {
     return {
-      isLoading: true,
+      // isLoading: true,
     };
   },
 
   created() {
     let key = this.$route.params.key;
-    this.prepareConference(key);
+    this.fetchUser();
+    this.fetchConference(key).catch((error) => {
+      this.$router.replace({ name: "conferences" });
+    });
+    window.scrollTo(0, 0);
+    // this.prepareConference(key);
   },
 
   computed: {
@@ -294,9 +299,9 @@ export default {
       );
     },
     ...mapActions("auth", ["fetchUser"]),
-    ...mapActions("svs", ["fetchSvs"]),
-    ...mapActions("tasks", ["fetchTasks"]),
-    ...mapActions("assignments", ["fetchAssignments"]),
+    // ...mapActions("svs", ["fetchSvs"]),
+    // ...mapActions("tasks", ["fetchTasks"]),
+    // ...mapActions("assignments", ["fetchAssignments"]),
     ...mapActions("conference", [
       "fetchConference",
       "fetchTaskDays",
