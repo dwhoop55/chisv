@@ -1,14 +1,13 @@
 import api from "@/api";
 
 const state = {
-    columns: ['start_at', 'end_at', 'hours', 'name', 'location', 'description', 'slots', 'priority', 'bids', 'assignments'],
+    columns: ['start_at', 'end_at', 'hours', 'name', 'location', 'description', 'slots', 'priority', 'bids'],
     search: "",
     sort: { field: 'start_at', direction: 'asc' },
     page: { items: 10, index: 1 },
     day: new Date(),
     interval: [null, null],
     data: {},
-    isLoading: false,
     showAssignmentsAvatar: true,
 };
 
@@ -25,15 +24,13 @@ const getters = {
     users: state => state.data?.users,
     tasks: state => state.data?.tasks,
     totalTasks: state => state.data?.total,
-    isLoading: state => state.isLoading,
     showAssignmentsAvatar: state => state.showAssignmentsAvatar,
 };
 
 const actions = {
-    async fetchAssignments({ commit, rootGetters, getters, state }, key) {
+    async fetchAssignments({ commit, rootGetters, getters, state }) {
         return new Promise((resolve, reject) => {
-            commit('setIsLoading', true);
-            const conferenceKey = key || rootGetters['conference/conference'].key;
+            const conferenceKey = rootGetters['conference/conference'].key;
             var params = [
                 `sort_by=${getters.sortField}`,
                 `sort_order=${getters.sortDirection}`,
@@ -62,9 +59,6 @@ const actions = {
                     commit('setData', null);
                     reject(error);
                 })
-                .finally(() => {
-                    commit('setIsLoading', false);
-                })
 
         });
 
@@ -81,7 +75,6 @@ const mutations = {
     setPerPage: (state, perPage) => (state.page.items = perPage),
     setPage: (state, page) => (state.page.index = page),
     setData: (state, data) => (state.data = data),
-    setIsLoading: (state, bool) => (state.isLoading = bool),
     setShowAssignmentsAvatar: (state, bool) => (state.showAssignmentsAvatar = bool),
 };
 

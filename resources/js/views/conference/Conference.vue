@@ -120,6 +120,7 @@
                 :animated="false"
                 position="is-left"
                 type="is-boxed"
+                :destroy-on-hide="true"
               >
                 <b-tab-item label="Overview">
                   <conference-overview
@@ -220,51 +221,51 @@ export default {
     ...mapGetters("auth", ["userIs"]),
   },
   methods: {
-    prepareConference(key) {
-      // First we need to fetch the user to have up to date permissions
-      // These are very important because based on them the
-      // task and sv view will not load. We need to wait for the
-      // promise to resolve or we will have a reace condition
-      // between up to date permissions in vuex and the sv/task list
-      // being show or not
-      this.fetchUser().then(() => {
-        // Now we fetch all the view we need to show a complete
-        // conference (svs/tasks/assignments if needed)
-        // We add them to an promises array and wait for all to resolve
-        // before we have all the components render
-        // This makes the entire loading look better
-        // and also catches all the cases where the data for
-        // the view is not quite there yet
+    // prepareConference(key) {
+    //   // First we need to fetch the user to have up to date permissions
+    //   // These are very important because based on them the
+    //   // task and sv view will not load. We need to wait for the
+    //   // promise to resolve or we will have a reace condition
+    //   // between up to date permissions in vuex and the sv/task list
+    //   // being show or not
+    //   this.fetchUser().then(() => {
+    //     // Now we fetch all the view we need to show a complete
+    //     // conference (svs/tasks/assignments if needed)
+    //     // We add them to an promises array and wait for all to resolve
+    //     // before we have all the components render
+    //     // This makes the entire loading look better
+    //     // and also catches all the cases where the data for
+    //     // the view is not quite there yet
 
-        var promises = [];
+    //     var promises = [];
 
-        // promises.push(
-        //   this.fetchConference(key).catch((error) => {
-        //     this.$router.replace({ name: "conferences" });
-        //   })
-        // );
+    //     // promises.push(
+    //     //   this.fetchConference(key).catch((error) => {
+    //     //     this.$router.replace({ name: "conferences" });
+    //     //   })
+    //     // );
 
-        promises.push(this.fetchAcceptedCount(key));
-        promises.push(this.fetchTaskDays(key));
-        if (this.canViewUsers(key)) {
-          promises.push(this.fetchSvs(key));
-        }
-        if (this.canViewUsers(key)) {
-          promises.push(this.fetchTasks(key));
-        }
-        if (this.canUpdateAssignment(key)) {
-          promises.push(this.fetchAssignments(key));
-        }
+    //     promises.push(this.fetchAcceptedCount(key));
+    //     promises.push(this.fetchTaskDays(key));
+    //     if (this.canViewUsers(key)) {
+    //       promises.push(this.fetchSvs(key));
+    //     }
+    //     if (this.canViewUsers(key)) {
+    //       promises.push(this.fetchTasks(key));
+    //     }
+    //     if (this.canUpdateAssignment(key)) {
+    //       promises.push(this.fetchAssignments(key));
+    //     }
 
-        Promise.all(promises)
-          .finally(() => {
-            this.isLoading = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }); // fetchUser promise resolve
-    },
+    //     Promise.all(promises)
+    //       .finally(() => {
+    //         this.isLoading = false;
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //       });
+    //   }); // fetchUser promise resolve
+    // },
     canViewUsers(key) {
       let k = key || this.conference.key;
       return (

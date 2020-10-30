@@ -2,7 +2,7 @@ import api from "@/api";
 import defines from "./defines";
 
 const state = {
-    data: {},
+    svs: null,
     search: "",
     sort: { field: 'firstname', direction: 'asc' },
     page: { items: 10, index: 1 },
@@ -10,10 +10,19 @@ const state = {
     isLoading: false,
     showWaitlistPosition: true,
     showSvAvatar: true,
+    columns: [
+        'firstname',
+        'lastname',
+        'university',
+        'hours',
+        'lottery_position',
+        'state',
+        'enrolled_at'
+    ]
 };
 
 const getters = {
-    data: state => state.data,
+    svs: state => state.svs,
     search: state => state.search,
     sortField: state => state.sort.field,
     sortDirection: state => state.sort.direction,
@@ -23,18 +32,14 @@ const getters = {
     isLoading: state => state.isLoading,
     showWaitlistPosition: state => state.showWaitlistPosition,
     showSvAvatar: state => state.showSvAvatar,
+    columns: state => state.columns,
 };
 
 const actions = {
-    async fetchSvs({ commit, rootGetters, getters }, key) {
-        commit('setIsLoading', true);
-        var params = [
-            `sort_by=${getters.sortField}`,
-            `sort_order=${getters.sortDirection}`,
-            `page=${getters.page}`,
-            `per_page=${getters.perPage}`
-        ];
+    async fetchSvs({ commit, rootGetters, getters }, hideLoading) {
+        !hideLoading && commit('setIsLoading', true);
 
+        var params = [];
         if (getters.search) {
             params.push(`search=${getters.search}`);
         }
@@ -43,25 +48,26 @@ const actions = {
             params.push(`only_states=${JSON.stringify(getters.states)}`);
         }
 
+        params.push(`columns=${JSON.stringify(getters.columns)}`);
 
         api.getConferenceSvs(
-            key || rootGetters['conference/conference'].key,
+            rootGetters['conference/conference'].key,
             params.join("&")
         )
             .then(({ data }) => {
-                commit('setData', data);
+                commit('setSvs', data);
             })
             .catch(error => {
-                commit('setData', null);
+                commit('setSvs', null);
             })
             .finally(() => {
-                commit('setIsLoading', false);
+                !hideLoading && commit('setIsLoading', false);
             })
     }
 };
 
 const mutations = {
-    setData: (state, data) => (state.data = data),
+    setSvs: (state, data) => (state.svs = data),
     setSearch: (state, search) => (state.search = search),
     setSortField: (state, field) => (state.sort.field = field || 'firstname'),
     setSortDirection: (state, direction) => (state.sort.direction = direction || 'asc'),
@@ -71,6 +77,7 @@ const mutations = {
     setIsLoading: (state, bool) => (state.isLoading = bool),
     setShowWaitlistPosition: (state, bool) => (state.showWaitlistPosition = bool),
     setShowSvAvatar: (state, bool) => (state.showSvAvatar = bool),
+    setColumns: (state, columns) => (state.columns = columns),
 };
 
 export default {

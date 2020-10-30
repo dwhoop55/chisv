@@ -2,8 +2,7 @@
   <div>
     <b-field grouped group-multiline>
       <b-input
-        expanded
-        v-debounce.fireonempty="onSearch"
+        v-debounce.fireonempty="searchChange"
         :value="search"
         placeholder="Search.."
         type="search"
@@ -11,121 +10,82 @@
       ></b-input>
 
       <b-field>
-        <b-dropdown
-          @input="onStatesChange($event)"
-          :value="states"
-          multiple
-          aria-role="list"
-        >
-          <button class="button" type="button" slot="trigger">
-            <span v-if="states.length"
-              >States ({{ states.length }}/{{ allStates.length }})</span
-            >
-            <span v-else>Limit by state</span>
-            <b-icon icon="menu-down"></b-icon>
-          </button>
-
-          <b-dropdown-item
-            v-for="state in allStates"
-            :key="state.id"
-            :value="state.id"
-            aria-role="listitem"
-          >
-            <span :class="stateType(state).replace('is-', 'has-text-')">{{
-              state.name | capitalize
-            }}</span>
-          </b-dropdown-item>
-        </b-dropdown>
-      </b-field>
-
-      <b-field>
-        <b-button
-          type="is-primary"
+        <button
           :disabled="isLoading"
-          v-if="
-            (userIs('admin') || userIs('chair', conference.key)) &&
-            enrollmentFormTemplate
-          "
-          @click="showEnrollmentFormWeightsSettings"
-          >Form Weights</b-button
-        >
-      </b-field>
-
-      <b-field v-if="canRunLottery">
-        <b-button :disabled="isLoading" @click="runLottery()" type="is-primary"
-          >Run lottery & Accept</b-button
-        >
-      </b-field>
-
-      <b-field v-if="canUpdateEnrollment">
-        <b-button
-          :disabled="isLoading"
-          @click="resetEnrolled()"
-          type="is-danger"
-        >
-          Reset
-          <b>all</b> SVs to 'enrolled'
-        </b-button>
-      </b-field>
-
-      <div v-if="canUpdateEnrollment" style="align-items: center">
-        <b-taglist>
-          <b-tag type="is-success" size="is-medium" rounded>
-            {{ acceptedCount }}/{{ conference.volunteer_max }}
-            SVs accepted
-          </b-tag>
-        </b-taglist>
-      </div>
-
-      <b-field expanded></b-field>
-
-      <b-field position="is-right">
-        <b-button
           @click="
             fetchAcceptedCount();
             fetchSvs();
           "
-          type="is-primary"
-          icon-left="refresh"
-          >Reload</b-button
+          class="button is-grey"
         >
+          <b-icon icon="refresh"></b-icon>
+        </button>
+      </b-field>
+
+      <b-field>
+        <button
+          :disabled="isLoading"
+          @click="openSettings()"
+          class="button is-grey"
+        >
+          <b-icon icon="cog"></b-icon>
+        </button>
+      </b-field>
+
+      <b-field
+        v-if="canChangeFormWeights || canRunLottery || canUpdatePermission"
+      >
+        <b-dropdown :disabled="isLoading" aria-role="list">
+          <button class="button" slot="trigger" slot-scope="{ active }">
+            <span>Actions</span>
+            <b-icon :icon="active ? 'menu-up' : 'menu-down'"></b-icon>
+          </button>
+
+          <b-dropdown-item
+            v-if="canChangeFormWeights"
+            aria-role="listitem"
+            @click="showEnrollmentFormWeightsSettings()"
+            >Adjust form weights
+          </b-dropdown-item>
+          <b-dropdown-item
+            v-if="canRunLottery"
+            aria-role="listitem"
+            @click="runLottery()"
+            >Run lottery & Accept
+          </b-dropdown-item>
+          <b-dropdown-item
+            v-if="canUpdatePermission"
+            aria-role="listitem"
+            @click="resetEnrolled()"
+            >Reset <b>all</b> SVs to 'enrolled'
+          </b-dropdown-item>
+        </b-dropdown>
       </b-field>
     </b-field>
 
-    <br />
     <b-table
-      ref="table"
-      v-if="data.data"
-      :data="data.data"
-      @click="toggle($event)"
-      detail-key="id"
-      :opened-detailed="detailOpen"
-      :show-detail-icon="true"
-      detailed
-      paginated
-      pagination-position="both"
-      backend-pagination
-      :total="data.total"
-      :per-page="perPage"
+      v-if="svs"
       :current-page="page"
-      @page-change="onPageChange"
-      @per-page-change="onPerPageChange"
+      :data="svs"
+      :default-sort="sortField"
+      :default-sort-direction="sortDirection"
       :loading="isLoading"
-      :hoverable="true"
-      backend-sorting
-      default-sort="lastname"
-      @sort="onSort"
-      sort-icon="chevron-up"
-      aria-next-label="Next page"
-      aria-previous-label="Previous page"
-      aria-page-label="Page"
-      aria-current-label="Current page"
+      :mobile-cards="false"
+      :per-page="perPage"
+      narrowed
+      paginated
+      hoverable
+      pagination-position="both"
+      @sort="sortChange($event)"
+      @page-change="pageChange($event)"
     >
       <b-table-column
+        :visible="columns.includes('firstname')"
         field="firstname"
-        label="Firstname"
+        label="First name"
         sortable
         v-slot="props"
+        width="50"
       >
         <div class="is-vertical-center">
           <figure v-if="showSvAvatar" class="media-left">
@@ -138,7 +98,6 @@
               <router-link
                 v-if="userIsAdminOrChairOrCaptain(conference.key)"
                 title="Go to the users profile"
-                @click="ignoreNextToggleClick = true"
                 :to="{ name: 'user', params: { id: props.row.id } }"
                 >{{ props.row.firstname }}</router-link
               >
@@ -149,120 +108,122 @@
       </b-table-column>
 
       <b-table-column
+        :visible="columns.includes('lastname')"
         cell-class="is-vertical-center-column"
         field="lastname"
-        label="Lastname"
+        label="Last name"
         sortable
         v-slot="props"
+        width="40"
       >
         {{ props.row.lastname }}
       </b-table-column>
 
       <b-table-column
+        :visible="columns.includes('university')"
         cell-class="is-vertical-center-column"
-        width="400"
-        field="universities.name"
+        width="80"
+        field="university_name"
         label="University"
-        sortable
         v-slot="props"
+        sortable
       >
-        <p v-if="props.row.university" :title="props.row.university">
-          {{ props.row.university | textlimit(40) }}
+        <p v-if="props.row.university_name">
+          {{ props.row.university_name | textlimit(40) }}
         </p>
         <p v-else>N/A</p>
       </b-table-column>
 
       <b-table-column
+        :visible="
+          columns.includes('hours') &&
+          userIsAdminOrChairOrCaptain(conference.key)
+        "
         cell-class="is-vertical-center-column"
-        :visible="userIsAdminOrChairOrCaptain(conference.key)"
-        width="130"
-        field="stats.hours_done"
-        label="Hours done"
+        field="hours_done"
+        label="Hours"
+        numeric
+        sortable
         v-slot="props"
+        width="10"
       >
         <span
-          v-if="props.row.stats"
           :class="{
             'has-text-danger has-text-weight-bold':
-              props.row.stats.hours_done >= conference.volunteer_hours,
+              props.row.hours_done >= conference.volunteer_hours,
           }"
-          >{{ props.row.stats.hours_done.toString().substr(0, 5) }}</span
+          >{{ props.row.hours_done.toString().substr(0, 5) }}</span
         >
       </b-table-column>
 
       <b-table-column
+        :visible="
+          columns.includes('lottery_position') &&
+          userIsAdminOrChairOrCaptain(conference.key)
+        "
         cell-class="is-vertical-center-column"
-        width="130"
-        label="SV State"
+        field="permission.lottery_position"
+        label="Lottery pos"
+        numeric
+        sortable
         v-slot="props"
+        width="1"
       >
         <div class="is-relative">
-          <transition name="fade">
-            <b-dropdown
-              ref="stateDropdown"
-              v-if="
-                canUpdateEnrollment &&
-                props.row.permission &&
-                props.row.permission.state
-              "
-              :value="props.row.permission.state.id"
-              @change="updateSvState(props.row, $event)"
-              @active-change="ignoreNextToggleClick = true"
-              aria-role="list"
-            >
-              <button
-                :class="
-                  'button is-small ' + stateType(props.row.permission.state)
-                "
-                slot="trigger"
-              >
-                <span>{{
-                  props.row.permission.state.name +
-                  (showWaitlistPosition &&
-                  props.row.permission.waitlist_position
-                    ? " (" +
-                      props.row.permission.waitlist_position.position +
-                      ")"
-                    : "")
-                }}</span>
-                <b-icon icon="menu-down"></b-icon>
-              </button>
-              <b-dropdown-item
-                v-for="state in allStates"
-                :key="state.id"
-                :value="state.id"
-                aria-role="listitem"
-              >
-                <p
-                  :class="
-                    'has-text-weight-bold ' +
-                    stateType(state).replace('is-', 'has-text-')
-                  "
-                >
-                  {{ state.name }}
-                </p>
-              </b-dropdown-item>
-            </b-dropdown>
-            <state-tag
-              v-else-if="props.row.permission && props.row.permission.state"
-              :state="props.row.permission.state"
-            />
-          </transition>
-          <b-loading
-            :is-full-page="false"
-            :active="isUpdatingState"
-          ></b-loading>
+          <p v-if="props.row.permission.lottery_position != undefined">
+            {{ props.row.permission.lottery_position }}
+          </p>
+          <b-tooltip
+            v-else
+            label="This user does not have a lottery position yet. Run the lottery to generate a random position"
+          >
+            <b-icon icon="help" size="is-small"></b-icon>
+          </b-tooltip>
         </div>
       </b-table-column>
 
       <b-table-column
+        :visible="
+          columns.includes('form_weight') &&
+          userIsAdminOrChairOrCaptain(conference.key)
+        "
         cell-class="is-vertical-center-column"
-        v-if="userIsAdminOrChairOrCaptain(conference.key)"
-        width="150"
-        field="created_at"
+        field="permission.enrollment_form.total_weight"
+        label="Form Weight"
+        numeric
+        sortable
+        v-slot="props"
+        width="1"
+      >
+        <div class="is-relative">
+          <p
+            v-if="
+              props.row.permission.enrollment_form &&
+              props.row.permission.enrollment_form.total_weight != undefined
+            "
+          >
+            {{ props.row.permission.enrollment_form.total_weight }}
+          </p>
+          <b-tooltip
+            v-else
+            label="This user does not have a an enrollment form weight yet. Adjust the form weight to generate this number"
+          >
+            <b-icon icon="help" size="is-small"></b-icon>
+          </b-tooltip>
+        </div>
+      </b-table-column>
+
+      <b-table-column
+        :visible="
+          columns.includes('enrolled_at') &&
+          userIsAdminOrChairOrCaptain(conference.key)
+        "
+        cell-class="is-vertical-center-column"
+        field="permission.created_at"
         label="Enrolled"
         sortable
         v-slot="props"
+        width="10"
       >
         <b-tooltip
           type="is-light"
@@ -278,344 +239,67 @@
               fromTz: "UTC",
               fromNow: true,
             })
-          }}</b-tooltip
-        >
+          }}
+        </b-tooltip>
       </b-table-column>
 
       <b-table-column
-        cell-class="is-vertical-center-column"
-        field="lottery_position"
-        v-if="userIsAdminOrChairOrCaptain(conference.key)"
-        width="150"
-        label="Lottery position"
+        :visible="columns.includes('state')"
+        cell-class="is-vertical-center-column is-marginless is-paddingless"
+        field="permission.state.id"
+        label="SV State"
         sortable
         v-slot="props"
+        width="1"
       >
-        <div class="is-relative">
-          <p v-if="props.row.permission.lottery_position != undefined">
-            {{ props.row.permission.lottery_position }}
-          </p>
-          <b-tooltip
-            v-else
-            label="This user does not have a lottery position yet. Run the lottery to generate a random position."
-          >
-            <b-icon icon="help" size="is-small"></b-icon>
-          </b-tooltip>
-        </div>
-      </b-table-column>
-
-      <b-table-column
-        cell-class="is-vertical-center-column"
-        field="enrollment_forms.total_weight"
-        :visible="userIsAdminOrChairOrCaptain(conference.key)"
-        width="150"
-        label="Weighted form"
-        sortable
-        v-slot="props"
-      >
-        <div class="is-relative">
-          <p
-            v-if="
-              props.row.permission &&
-              props.row.permission.enrollment_form &&
-              props.row.permission.enrollment_form.total_weight != undefined
-            "
-          >
-            {{ props.row.permission.enrollment_form.total_weight }}
-          </p>
-        </div>
-      </b-table-column>
-
-      <template slot="detail" slot-scope="props">
-        <div class="notification field is-floating-label">
-          <label class="label">Person</label>
-          Location:
-          {{ props.row.city ? props.row.city + ", " : "" }}
-          {{ props.row.region ? props.row.region + ", " : "" }}
-          {{ props.row.country ? props.row.country : "" }}
-          <div v-if="props.row.degree">
-            Study Program:
-            {{ props.row.degree }}
-          </div>
-
-          <div v-if="props.row.email">
-            E-Mail:
-            <a
-              @click="ignoreNextToggleClick = true"
-              :href="'mailto:' + props.row.email"
-              >{{ props.row.email }}</a
-            >
-          </div>
-
-          <div
-            v-if="
-              props.row.past_conferences &&
-              props.row.past_conferences.length > 0
-            "
-          >
-            Attended conferences:
-            <b-taglist>
-              <b-tag
-                type="is-light"
-                v-for="(conference, index) in props.row.past_conferences"
-                :key="index"
-                >{{ conference }}</b-tag
-              >
-            </b-taglist>
-          </div>
-          <div
-            v-else-if="
-              props.row.past_conferences &&
-              props.row.past_conferences.length == 0
-            "
-          >
-            Did not attend conferences yet
-          </div>
-
-          <div
-            v-if="
-              props.row.past_conferences_sv &&
-              props.row.past_conferences_sv.length > 0
-            "
-          >
-            Attended conferences as SV:
-            <b-taglist>
-              <b-tag
-                type="is-light"
-                v-for="(conference, index) in props.row.past_conferences_sv"
-                :key="index"
-                >{{ conference }}</b-tag
-              >
-            </b-taglist>
-          </div>
-          <div
-            v-else-if="
-              props.row.past_conferences_sv &&
-              props.row.past_conferences_sv.length == 0
-            "
-          >
-            Did not attend conferences as SV yet
-          </div>
-
-          <div v-if="props.row.languages && props.row.languages.length > 0">
-            Spoken languages:
-            <b-taglist>
-              <b-tag
-                type="is-light"
-                v-for="(language, index) in props.row.languages"
-                :key="index"
-                >{{ language.name }}</b-tag
-              >
-            </b-taglist>
-          </div>
-          <div
-            v-else-if="props.row.languages && props.row.languages.length == 0"
-          >
-            No spoken languages known
-          </div>
-        </div>
-
-        <b-field />
-
-        <div
-          v-if="canViewAssignments(props.row.id)"
-          class="notification field is-floating-label"
-        >
-          <label class="label">Assigned Tasks</label>
-          <b-collapse
-            v-if="props.row.assignments && props.row.assignments.length"
-            :open="true"
-          >
-            <span slot="trigger" slot-scope="props">
-              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-              {{ !props.open ? "Show" : "Hide" }}
-            </span>
-            <sv-assignments-list
-              :can-view-notes="canViewNotes"
-              :assignments="props.row.assignments"
-              :conference="conference"
-            />
-          </b-collapse>
-          <span v-else>No assignments yet</span>
-        </div>
-
-        <b-field />
-
-        <div v-if="canViewNotes" class="notification field is-floating-label">
-          <label class="label">
-            Associated notes ({{ conference.key }})
-            <b-icon
-              title="Add note to user"
-              v-if="userIsAdminOrChairOrCaptain(conference.key)"
-              class="is-clickable"
-              @click.native="
-                ignoreNextToggleClick = true;
-                addNote(props.row, 'User');
-              "
-              icon="message-plus-outline"
-            />
-          </label>
-          <b-collapse
-            v-if="combineNotes(props.row).length"
-            :open="combineNotes(props.row).length < 7 ? true : false"
-          >
-            <span slot="trigger" slot-scope="props">
-              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-              {{ !props.open ? "Show" : "Hide" }}
-            </span>
-            <sv-notes-list
-              :notes="combineNotes(props.row)"
-              :conference="conference"
-              :user="props.row"
-            ></sv-notes-list>
-          </b-collapse>
-          <p v-else>No notes yet</p>
-        </div>
-
-        <b-field />
-
-        <div v-if="canViewBids(props.row.id)">
-          <div class="notification field is-floating-label">
-            <label class="label">Bids</label>
-            {{ props.open }}
-            <b-collapse
-              @open="showBidsForUser = props.row.id"
-              @close="showBidsForUser = null"
-              :open="showBidsForUser == props.row.id"
-            >
-              <span slot="trigger" slot-scope="props">
-                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-                {{ !props.open ? "Show" : "Hide" }}
-              </span>
-              <sv-bids-list
-                v-if="showBidsForUser == props.row.id"
-                :user="props.row"
-                :conference="conference"
-              ></sv-bids-list>
-            </b-collapse>
-          </div>
-        </div>
-
-        <b-field />
-
-        <div v-if="canViewNotifications(props.row.id)">
-          <div class="notification field is-floating-label">
-            <label class="label">Notifications</label>
-            {{ props.open }}
-            <b-collapse
-              @open="showNotificationsForUser = props.row.id"
-              @close="showNotificationsForUser = null"
-              :open="showNotificationsForUser == props.row.id"
-            >
-              <span slot="trigger" slot-scope="props">
-                <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-                {{ !props.open ? "Show" : "Hide" }}
-              </span>
-              <sv-notifications-list
-                v-if="showNotificationsForUser == props.row.id"
-                :user="props.row"
-                :conference="conference"
-              ></sv-notifications-list>
-            </b-collapse>
-          </div>
-        </div>
-
-        <b-field />
-
-        <div
+        <b-dropdown
           v-if="
-            userIs('admin') ||
-            userIs('chair', conference.key) ||
-            userIs('captain', conference.key)
+            canUpdatePermission &&
+            props.row.permission &&
+            props.row.permission.state
           "
-          class="notification field is-floating-label"
+          :disabled="isUpdatingState"
+          :value="props.row.permission.state.id"
+          aria-role="list"
+          position="is-top-left"
+          @change="updateSvState(props.row, $event)"
         >
-          <label class="label">
-            Enrollment form
-            <span v-if="props.row.permission.enrollment_form"
-              >(Type: {{ props.row.permission.enrollment_form.name }} )</span
-            >
-          </label>
-          <b-collapse
-            v-if="props.row.permission.enrollment_form"
-            :open="conference.state.name != 'running'"
+          <button
+            :class="
+              'is-marginless button is-small ' +
+              stateType(props.row.permission.state)
+            "
+            slot="trigger"
           >
-            <!-- This will hide the enrollment form when the conference is running to make the tasks better visible -->
-            <span slot="trigger" slot-scope="props">
-              <b-icon :icon="!props.open ? 'menu-down' : 'menu-up'"></b-icon>
-              {{ !props.open ? "Show" : "Hide" }}
-            </span>
-
-            <enrollment-form-summary
-              class="section has-padding-t-8"
-              v-model="props.row.permission.enrollment_form"
-            ></enrollment-form-summary>
-          </b-collapse>
-          <span v-else>No enrollment form</span>
-        </div>
-
-        <b-field />
-
-        <div v-if="props.row.stats">
-          <div class="notification field is-floating-label">
-            <label class="label">Statistics</label>
-            <div class="level">
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Hours done</p>
-                  <div class="subtitle">
-                    <span
-                      :class="{
-                        'has-text-danger has-text-weight-bold':
-                          props.row.stats.hours_done >=
-                          conference.volunteer_hours,
-                      }"
-                      >{{
-                        props.row.stats.hours_done.toString().substr(0, 5)
-                      }}/{{ conference.volunteer_hours }}</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Assignments done</p>
-                  <div class="subtitle">
-                    <span
-                      >{{ props.row.stats.assignments["done"] }} /
-                      {{ props.row.stats.assignments["count"] }}</span
-                    >
-                  </div>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Bids placed</p>
-                  <div class="subtitle">
-                    <bid-counter :bids="props.row.stats.bids_placed" />
-                  </div>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Bids successful</p>
-                  <div class="subtitle">
-                    <bid-counter :bids="props.row.stats.bids_successful" />
-                  </div>
-                </div>
-              </div>
-              <div class="level-item has-text-centered">
-                <div>
-                  <p class="heading">Bids conflicting</p>
-                  <div class="subtitle">
-                    <bid-counter :bids="props.row.stats.bids_conflict" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
+            <span>{{
+              props.row.permission.state.name +
+              (showWaitlistPosition && props.row.permission.waitlist_position
+                ? " (" + props.row.permission.waitlist_position.position + ")"
+                : "")
+            }}</span>
+            <b-icon icon="menu-down"></b-icon>
+          </button>
+          <b-dropdown-item
+            v-for="state in allStates"
+            :key="state.id"
+            :value="state"
+            aria-role="listitem"
+          >
+            <p
+              :class="
+                'has-text-weight-bold ' +
+                stateType(state).replace('is-', 'has-text-')
+              "
+            >
+              {{ state.name }}
+            </p>
+          </b-dropdown-item>
+        </b-dropdown>
+        <state-tag
+          v-else-if="props.row.permission && props.row.permission.state"
+          :state="props.row.permission.state"
+        />
+      </b-table-column>
 
       <template slot="empty">
         <section class="section">
@@ -647,41 +331,14 @@
       </template>
 
       <template slot="bottom-left">
-        <small class="has-text-weight-light"
-          >Found {{ data.total }} SV{{ data.total > 1 ? "s" : "" }}</small
-        >
-      </template>
-      <template slot="footer">
-        <div class="has-text-left">
-          <b-dropdown
-            @change="onPerPageChange"
-            :value="perPage"
-            aria-role="list"
-          >
-            <button class="button is-small" slot="trigger">
-              <span>{{ perPage }} per page</span>
-              <b-icon icon="menu-down"></b-icon>
-            </button>
-
-            <b-dropdown-item value="2" aria-role="listitem"
-              >2 per page</b-dropdown-item
-            >
-            <b-dropdown-item value="5" aria-role="listitem"
-              >5 per page</b-dropdown-item
-            >
-            <b-dropdown-item value="10" aria-role="listitem"
-              >10 per page</b-dropdown-item
-            >
-            <b-dropdown-item value="20" aria-role="listitem"
-              >20 per page</b-dropdown-item
-            >
-            <b-dropdown-item value="30" aria-role="listitem"
-              >30 per page</b-dropdown-item
-            >
-            <b-dropdown-item value="40" aria-role="listitem"
-              >40 per page</b-dropdown-item
-            >
-          </b-dropdown>
+        <div class="is-block">
+          <b-tag v-if="svs" type="is-light">
+            Showing {{ svs.length }} SV{{ svs.length > 1 ? "s" : "" }}
+          </b-tag>
+          <b-tag v-if="!userIs('sv', conference.key)" type="is-success">
+            {{ conference.number_accepted_svs }}/{{ conference.volunteer_max }}
+            SVs are accepted
+          </b-tag>
         </div>
       </template>
     </b-table>
@@ -692,10 +349,12 @@
 import api from "@/api.js";
 import Form from "vform";
 import JobModalVue from "@/components/modals/JobModal.vue";
+import EnrollmentFormSettingsModalVue from "@/components/modals/EnrollmentFormSettingsModal.vue";
+import ConferenceSvsSettingsModalVue from "@/components/modals/ConferenceSvsSettingsModal.vue";
 import { mapGetters, mapActions, mapMutations } from "vuex";
-import EnrollmentFormSettingsModalVue from "../../components/modals/EnrollmentFormSettingsModal.vue";
 
 export default {
+  name: "ConferenceSvs",
   props: ["conference"],
 
   data() {
@@ -717,7 +376,18 @@ export default {
     };
   },
 
+  created() {
+    this.fetchSvs(this.svs);
+  },
+
   methods: {
+    openSettings() {
+      this.$buefy.modal.open({
+        component: ConferenceSvsSettingsModalVue,
+        parent: this,
+        props: { conference: this.conference },
+      });
+    },
     addNote(user) {
       this.$buefy.dialog.prompt({
         message: `Add note to ${user.firstname} ${user.lastname} for ${this.conference.key}`,
@@ -784,7 +454,6 @@ export default {
       });
     },
     runLottery() {
-      this.setIsLoading(true);
       api
         .runLottery(this.conference.key)
         .then(({ data }) => {
@@ -800,7 +469,6 @@ export default {
           });
         })
         .finally(() => {
-          this.setIsLoading(false);
           this.fetchSvs();
           this.fetchAcceptedCount();
         });
@@ -834,65 +502,36 @@ export default {
         })
         .finally(() => this.setIsLoading(false));
     },
-    updateSvState(user, $event) {
+    updateSvState(user, state) {
       var vform = new Form({
         id: user.permission.id,
-        user_id: user.id,
-        conference_id: user.permission.conference.id,
-        role_id: user.permission.role.id,
-        state_id: $event,
+        state_id: state.id,
       });
 
       this.isUpdatingState = true;
       api
         .updatePermission(vform, user.permission.id)
         .then(({ data }) => {
-          user.permission = data.result;
+          user.permission.state.id = state.id;
+          user.permission.state.name = state.name;
           this.fetchAcceptedCount();
-          this.fetchSvs();
         })
+        .catch(() => this.fetchSvs())
         .finally(() => (this.isUpdatingState = false));
     },
-    onPageChange(page) {
+    pageChange(page) {
       this.setPage(page);
-      this.fetchSvs();
     },
-    onPerPageChange(perPage) {
+    perPageChange(perPage) {
       this.setPerPage(perPage);
-      this.fetchSvs();
     },
-    onSort(field, order) {
+    sortChange(field, order) {
       this.setSortField(field);
       this.setSortDirection(order);
-      this.fetchSvs();
     },
-    onSearch(search) {
+    searchChange(search) {
       this.setSearch(search);
       this.fetchSvs();
-    },
-    onStatesChange(states) {
-      this.setStates(states);
-      this.fetchSvs();
-    },
-    toggle: function (row) {
-      if (this.ignoreNextToggleClick) {
-        this.ignoreNextToggleClick = false;
-      } else {
-        if (this.detailOpen.includes(row.id)) {
-          this.detailOpen = [];
-        } else {
-          this.detailOpen = [row.id];
-        }
-      }
-    },
-    canViewNotifications(userId) {
-      return this.isChairCaptainOrSelf(userId);
-    },
-    canViewBids(userId) {
-      return this.isChairCaptainOrSelf(userId);
-    },
-    canViewAssignments(userId) {
-      return this.isChairCaptainOrSelf(userId);
     },
     isChairCaptainOrSelf(userId) {
       return (
@@ -912,21 +551,21 @@ export default {
       "setPage",
       "setStates",
       "setIsLoading",
+      "setColumns",
     ]),
   },
 
   computed: {
-    canViewNotes() {
+    canChangeFormWeights() {
       return (
-        this.userIs("admin") ||
-        this.userIs("chair", this.conference.key) ||
-        this.userIs("captain", this.conference.key)
+        (this.userIs("admin") || this.userIs("chair", this.conference.key)) &&
+        this.enrollmentFormTemplate
       );
     },
-    canUpdateEnrollment() {
+    canRunLottery() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);
     },
-    canRunLottery() {
+    canUpdatePermission() {
       return this.userIs("admin") || this.userIs("chair", this.conference.key);
     },
     enrollmentFormTemplate() {
@@ -936,7 +575,7 @@ export default {
       return this.statesFor("App\\User");
     },
     ...mapGetters("svs", [
-      "data",
+      "svs",
       "search",
       "sortField",
       "sortDirection",
@@ -946,8 +585,8 @@ export default {
       "isLoading",
       "showWaitlistPosition",
       "showSvAvatar",
+      "columns",
     ]),
-    ...mapGetters("conference", ["acceptedCount"]),
     ...mapGetters("defines", ["statesFor"]),
     ...mapGetters("auth", ["user", "userIs", "userIsAdminOrChairOrCaptain"]),
   },

@@ -46,7 +46,6 @@ const actions = {
     async fetchConference({ commit, dispatch, state }, key) {
         const response = await api.getConference(key || state.conference.key)
         commit('setConference', response.data);
-        commit('setLast', response.data);
     },
     async fetchTaskDays({ commit, state }, key) {
         const response = await api.getConferenceTaskDays(key || state.conference.key);
@@ -60,8 +59,10 @@ const actions = {
 };
 
 const mutations = {
-    setLast: (state, conference) => (state.last = { key: conference?.key, name: conference?.name }),
-    setConference: (state, conference) => (state.conference = conference),
+    setConference: (state, conference) => {
+        state.conference = conference
+        state.last = { key: conference.key, name: conference.name };
+    },
     setTab: (state, tab) => (state.tab = tab),
     setTaskDays: (state, days) => (state.conference.task_days = days),
     setAcceptedCount: (state, count) => (state.conference.number_accepted_svs = count),

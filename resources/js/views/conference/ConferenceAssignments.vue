@@ -1,6 +1,11 @@
 <template>
   <div>
     <b-field grouped group-multiline>
+      <b-field>
+        <button :disabled="isLoading" @click="reload()" class="button is-grey">
+          <b-icon icon="refresh"></b-icon>
+        </button>
+      </b-field>
       <b-datepicker
         @input="onDayChange($event)"
         :value="day"
@@ -58,23 +63,10 @@
           >Delete all Assignments of this day</b-button
         >
       </b-field>
-
-      <b-field expanded></b-field>
-
-      <b-field position="is-right">
-        <b-button
-          :disabled="isLoading"
-          @click="reload()"
-          type="is-primary"
-          icon-left="refresh"
-          >Reload</b-button
-        >
-      </b-field>
     </b-field>
     <br />
 
     <b-table
-      v-if="!hackHideTable"
       @page-change="onPageChange"
       @sort="onSort"
       ref="table"
@@ -342,9 +334,8 @@ export default {
 
   data() {
     return {
-      isLoading: true,
+      isLoading: false,
       timer: null,
-      hackHideTable: false, // This is part of the hotfix for buefy table bug
     };
   },
 
@@ -352,13 +343,19 @@ export default {
     clearInterval(this.timer);
   },
 
+  created() {
+    this.autoRefresh();
+  },
+
   methods: {
-    reload() {
+    async reload() {
       this.isLoading = true;
-      this.fetchAssignments().then(() => (this.isLoading = false));
+      await this.fetchAssignments();
+      this.isLoading = false;
     },
+
     autoRefresh() {
-      this.fetchAssignments(this.conference.key, false).then(
+      this.fetchAssignments().then(
         () => (this.timer = setTimeout(this.autoRefresh, 10000))
       );
     },
@@ -450,24 +447,6 @@ export default {
       "setPerPage",
       "setPage",
     ]),
-  },
-
-  created() {
-    this.$watch("tasks", function (newVal, oldVal) {
-      /* This is a workaround for the bug present in
-       * buefy 0.8.17+ (- 0.9.0) which breaks column show/hide
-       * when the table was empty once
-       * After it has been fixed in buefy remove this 'hack
-       */
-      if (oldVal?.length == 0 && newVal?.length > 1) {
-        console.log("Hotfixing buefy table");
-        this.hackHideTable = true;
-        setTimeout(() => (this.hackHideTable = false), 10);
-      }
-    });
-
-    this.reload();
-    this.autoRefresh();
   },
 
   computed: {

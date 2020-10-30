@@ -952,6 +952,7 @@ class ConferenceController extends Controller
         return $conference->number_accepted_svs;
     }
 
+
     /**
      * @authenticated
      * @group Conference
@@ -974,6 +975,148 @@ class ConferenceController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function svs(Conference $conference)
+    {
+
+        $svs = collect();
+        $columns = collect(json_decode(request()->columns));
+        $search = strlen(request()->search) > 0 ? request()->search : null;
+        $onlyStates = collect(json_decode(request()->only_states));
+        $canSeeHoursDone = (auth()->user()->isAdmin() ||
+            auth()->user()->isChair($conference) ||
+            auth()->user()->isCaptain($conference));
+
+        $states = collect();
+        State::where('for', 'App\User')
+            ->get()
+            ->map(function ($state) use ($states) {
+                $states->put($state->id, $state);
+            });
+        $stateWaitlisted = $states->where('name', 'waitlisted')->first();
+
+
+        // Main query
+        $conference
+            ->users()
+            ->getQuery()
+            ->with([
+                'university:id,name',
+            ])
+            ->where("role_id", Role::byName('sv')->id)
+            // Only add queries when we are searching for something
+            ->when($search, function ($query) use ($search, $columns) {
+                $query->where(function ($query) use ($search, $columns) {
+                    $query->orWhere('users.firstname', 'LIKE', '%' . $search . '%');
+                    $query->orWhere('users.lastname', 'LIKE', '%' . $search . '%');
+                    if ($columns->contains('email')) {
+                        $query->orWhere('users.email', 'LIKE', '%' . $search . '%');
+                    }
+                });
+            })
+            // Only add state filter when in the request
+            ->when($onlyStates && $onlyStates->isNotEmpty(), function ($query) use ($onlyStates) {
+                $query->whereIn("state_id", $onlyStates);
+            })
+            ->get([
+                'users.id',
+                'users.firstname',
+                'users.lastname',
+                // We use ": 'users.id'," here as
+                // it anyway defined above and not
+                // destroying anything. We need to
+                // do this or we end up with "": ""
+                // in JSON
+                'users.university_id',
+                'users.university_fallback',
+                'permissions.state_id',
+                'permissions.lottery_position AS permission_lottery_position',
+                'permissions.created_at AS permission_created_at',
+                'permissions.id AS permission_id',
+            ])
+            ->each(function ($sv) use (&$svs, $canSeeHoursDone, $states, $stateWaitlisted, $columns) {
+                // We default the hours to 0, even when there are
+                // no assignments, which is logically correct
+                if ($canSeeHoursDone) $sv->hours_done = 0;
+
+                if ($columns->contains('university')) {
+                    // We only need the name of the University
+                    $sv->university_name = $sv->university
+                        ? html_entity_decode($sv->university->name)
+                        : $sv->university_fallback;
+                }
+
+                $permission = new \stdClass();
+                $permission->id = intval($sv->permission_id);
+                if ($columns->contains('enrolled_at')) $permission->created_at = $sv->permission_created_at;
+                if ($columns->contains('lottery_position')) {
+                    $permission->lottery_position = $sv->permission_lottery_position ? intval($sv->permission_lottery_position) : null;
+                }
+                if ($columns->contains('state')) $permission->state = $states->get($sv->state_id)->only('id', 'name', 'description');
+                $sv->permission = $permission;
+
+                // We hide some attributes to save on network usage
+                $sv->makeHidden([
+                    'university_id', 'university_fallback',
+                    'university', 'permission_created_at',
+                    'permission_lottery_position', 'state_id',
+                    'permission_id'
+                ]);
+
+                // Add our SV to the later returned array
+                $svs->put($sv->id, $sv);
+            }, 1000);
+
+        // Now we add the hours done to every sv,
+        // by looping over all assignments
+        if (
+            $svs->isNotEmpty()
+            && $canSeeHoursDone
+            && $columns->contains('hours')
+        ) {
+            $conference
+                ->assignments()
+                ->getQuery()
+                ->where('state_id', State::byName('done')->id)
+                ->when($svs->count() < 50, function ($query) use ($svs) {
+                    $query->whereIn('user_id', $svs->keys());
+                })
+                ->get('assignments.*')
+                ->each(function ($assignment) use (&$svs) {
+                    $svId = $assignment->user_id;
+                    // Get the SV from our list, there should always be one
+                    $sv = $svs->get($svId);
+                    if ($sv) {
+                        $sv->hours_done += round($assignment->hours, 2);
+                        $svs->put($svId, $sv);
+                    }
+                }, 1000);
+        }
+
+        return $svs->values();
+    }
+
+
+    /**
+     * @authenticated
+     * @group Conference
+     * Get all users of a conference matching the query
+     * 
+     * @urlParam conference required The conference's key Example: chi20
+     * @queryParam search string Search string Example: A
+     * @queryParam only_states array of ints. Limit to array of specific states Example: [11,12,13,14]
+     * @queryParam sort_by Key to sort for Example: lastname
+     * @queryParam sort_order Order to sort for Example: desc
+     * @queryParam per_page Users per page Example: 2
+     * @queryParam page Page to return Example: 1
+     * 
+     * This code is super time critical. For around
+     * 100 users it may take up to 3 seconds before we can
+     * return the users. Anything you add here will slow it down
+     * even more! This is why the data returned is very optimized
+     * for the gui
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function svsPaginated(Conference $conference)
     {
         // Determine if we can show more infos based on if
         // the user is only an SV or also Chair/Captain
@@ -1192,7 +1335,6 @@ class ConferenceController extends Controller
                     $conference->state->id == State::byName('planning')->id
                     || $conference->state->id == State::byName('over')->id
                 ) {
-                    Log::info('message');
                     return $user && $user->can('view', $conference);
                 } else {
                     return true;
@@ -1236,7 +1378,6 @@ class ConferenceController extends Controller
 
     public function prepareConference(Conference $conference)
     {
-        Log::alert(json_encode($conference));
         return $conference
             ->append([
                 'number_accepted_svs',
@@ -1248,10 +1389,6 @@ class ConferenceController extends Controller
                 'state:name,description',
                 'timezone',
                 'enrollmentFormTemplate:id,name,body'
-            ])->makeHidden([
-                'enrollment_form_id',
-                'state_id',
-                'timezone_id'
             ]);
     }
 
