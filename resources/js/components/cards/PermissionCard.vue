@@ -3,7 +3,9 @@
     <div class="card">
       <div
         class="card-image is-cover"
-        :style="`height:300px;${conferenceArtworkBackground(permission.conference)}`"
+        :style="`height:300px;${conferenceArtworkBackground(
+          permission.conference
+        )}`"
       >
         <b-field grouped position="is-right">
           <transition name="slide-right-fade">
@@ -13,7 +15,8 @@
               @click="confirmRevoke"
               type="is-danger"
               class="has-margin-7"
-            >Revoke</b-button>
+              >Revoke</b-button
+            >
           </transition>
           <transition name="slide-right-fade">
             <b-button
@@ -22,31 +25,51 @@
               @click="showEnrollmentForm()"
               type="is-light"
               class="has-margin-t-7 has-margin-r-7"
-            >{{ canEditForm ? "Edit" : "Show" }} Enrollment Form</b-button>
+              >{{ canEditForm ? "Edit" : "Show" }} Enrollment Form</b-button
+            >
           </transition>
         </b-field>
       </div>
 
       <div class="card-content is-paddingless has-padding-b-7 has-padding-r-6">
         <b-taglist
-          @click.native="canRevoke ? showEditModal() : null"
+          @click.native="canEdit ? showEditModal() : null"
           attached
-          :class="{ 'is-clickable': canRevoke, 'is-pulled-right': true }"
+          :class="{ 'is-clickable': canEdit, 'is-pulled-right': true }"
         >
-          <transition name="slide-right-fade">
-            <b-tag v-if="canRevoke" rounded :type="roleType(permission.role)" size="is-large">
-              <b-icon class="has-padding-7" icon="pencil" size="is-small"></b-icon>
-            </b-tag>
-          </transition>
-          <role-tag :role="permission.role" size="is-large" v-if="permission.role" />
-          <state-tag size="is-large" v-if="permission.state" :state="permission.state" />
+          <role-tag
+            :role="permission.role"
+            size="is-large"
+            v-if="permission.role"
+          />
+          <state-tag
+            size="is-large"
+            v-if="permission.state"
+            :state="permission.state"
+          />
+          <b-tag
+            v-if="canEdit"
+            rounded
+            :type="stateType(permission.state)"
+            size="is-large"
+          >
+            <b-icon
+              class="has-padding-7"
+              icon="pencil"
+              size="is-small"
+            ></b-icon>
+          </b-tag>
         </b-taglist>
 
         <div class="has-margin-4">
           <p class="subtitle" v-if="permission.conference">
             <router-link
-              :to="{name: 'conference', params: {key: permission.conference.key}}"
-            >{{ permission.conference.name }}</router-link>
+              :to="{
+                name: 'conference',
+                params: { key: permission.conference.key },
+              }"
+              >{{ permission.conference.name }}</router-link
+            >
           </p>
           <p class="subtitle" v-else>All conferences</p>
         </div>
@@ -71,9 +94,9 @@ export default {
         parent: this,
         props: {
           permission: this.permission,
-          onUpdated: () => this.$emit("updated")
+          onUpdated: () => this.$emit("updated"),
         },
-        hasModalCard: true
+        hasModalCard: true,
       });
     },
     showEnrollmentForm() {
@@ -87,12 +110,12 @@ export default {
         props: {
           canEdit: this.canEditForm,
           form: this.parseEnrollmentForm(this.permission.enrollment_form),
-          onUpdated: () => this.$emit("updated")
+          onUpdated: () => this.$emit("updated"),
         },
-        hasModalCard: true
+        hasModalCard: true,
       });
     },
-    confirmRevoke: function() {
+    confirmRevoke: function () {
       let message = `Are you sure you want to <b>revoke</b> ${this.permission.role.name} permissions?`;
       let extra = "";
       if (this.permission.role.name == "sv") {
@@ -110,18 +133,18 @@ export default {
         hasIcon: true,
         onConfirm: () => {
           this.revoke();
-        }
+        },
       });
     },
-    revoke: function() {
-      api.deletePermission(this.permission.id).then(data => {
+    revoke: function () {
+      api.deletePermission(this.permission.id).then((data) => {
         this.$buefy.toast.open({
           type: "is-success",
-          message: data.data.message
+          message: "Revoked",
         });
         this.$emit("revoked", this.permission);
       });
-    }
+    },
   },
 
   computed: {
@@ -134,7 +157,14 @@ export default {
         this.userIs("chair", this.permission.conference?.key)
       );
     },
-    ...mapGetters("auth", ["userIs"])
-  }
+    canEdit() {
+      return (
+        this.permission.role.name == "sv" &&
+        (this.userIs("admin") ||
+          this.userIs("chair", this.permission.conference?.key))
+      );
+    },
+    ...mapGetters("auth", ["userIs"]),
+  },
 };
 </script>

@@ -30,7 +30,8 @@ class PermissionPolicy
      * @return mixed
      */
     public function view(User $user, Permission $permission)
-    { }
+    {
+    }
 
     /**
      * Determine whether the user can create permissions.
@@ -61,7 +62,7 @@ class PermissionPolicy
         $conference = $permission->conference;
         if (
             $user->isChair($conference)
-            && $permission->role != Role::byName('admin')
+            && $permission->role_id != Role::byName('admin')->id
         ) {
             // If the user is chair for the conference in the permission
             // and is not trying to grant admin, we allow
@@ -70,7 +71,7 @@ class PermissionPolicy
 
         if (
             $user->isCaptain($conference)
-            && $permission->role == Role::byName('sv')
+            && $permission->role_id == Role::byName('sv')->id
         ) {
             // If the user is captain for the conference in the permission
             // and is creating sv, we allow
@@ -89,20 +90,31 @@ class PermissionPolicy
     {
         $conference = $permission->conference;
 
-        if ($user->isAdmin() && ($permission->role_id != Role::byName('admin')->id
-            ||  $user->id != $permission->user->id)) {
+        if (
+            $user->isAdmin()
+            && ($permission->role_id != Role::byName('admin')->id
+                ||  $user->id != $permission->user_id)
+        ) {
             // An admin can always change permissions as long
             // its not the own admin permission
             return true;
         }
 
-        if ($conference && ($user->isChair($conference)) && $permission->role != Role::byName('admin')) {
+        if (
+            $conference
+            && ($user->isChair($conference))
+            && $permission->role_id != Role::byName('admin')->id
+        ) {
             // Allow update if the permission is associated as chair to user
             // and not the admin role
             return true;
         }
 
-        if ($conference && ($user->isCaptain($conference)) && $permission->role == Role::byName('sv')) {
+        if (
+            $conference
+            && ($user->isCaptain($conference))
+            && $permission->role == Role::byName('sv')
+        ) {
             // Allow update if the permission is associated as captain to user
             // and is the sv role
             return true;

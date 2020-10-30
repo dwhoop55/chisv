@@ -10,17 +10,30 @@
   >
     <button class="button" type="button" slot="trigger">
       <!-- Multiple -->
-      <span v-if="multiple && getValue.length >= 1">States {{ value.length }}/{{ allStates.length }}</span>
-      <span v-else-if="multiple && getValue.length == 0 && text">{{ text }}</span>
+      <span v-if="multiple && getValue.length >= 1"
+        >States {{ value.length }}/{{ allStates.length }}</span
+      >
+      <span v-else-if="multiple && getValue.length == 0 && text">{{
+        text
+      }}</span>
       <span v-else-if="multiple && getValue.length == 0">Select states</span>
       <!-- Single -->
-      <span v-else-if="!multiple && getValue.name">{{ value.name | capitalize }}</span>
+      <span v-else-if="!multiple && getValue.name">{{
+        value.name | capitalize
+      }}</span>
       <span v-else-if="!multiple && !getValue && text">{{ text }}</span>
       <span v-else-if="!multiple && !getValue">Select state</span>
       <b-icon icon="menu-down"></b-icon>
     </button>
-    <b-dropdown-item v-for="state in allStates" :value="state" :key="state.id" aria-role="listitem">
-      <span :class="stateType(state).replace('is-', 'has-text-')">{{ state.name | capitalize }}</span>
+    <b-dropdown-item
+      v-for="state in allStates"
+      :value="state"
+      :key="state.id"
+      aria-role="listitem"
+    >
+      <span :class="stateType(state).replace('is-', 'has-text-')">{{
+        state.name | capitalize
+      }}</span>
       <span v-if="!hideDescription">({{ state.description }})</span>
     </b-dropdown-item>
   </b-dropdown>
@@ -37,12 +50,12 @@ export default {
     "multiple",
     "hideDescription",
     "text",
-    "inline"
+    "inline",
   ],
 
   data() {
     return {
-      isLoading: false
+      isLoading: false,
     };
   },
 
@@ -68,9 +81,9 @@ export default {
         return this.states;
       }
     },
-    ...mapGetters("defines", ["statesFor", "states"])
+    ...mapGetters("defines", ["statesFor", "states"]),
   },
 
-  methods: mapActions("defines", ["fetchStates"])
+  methods: mapActions("defines", ["fetchStates"]),
 };
 </script>

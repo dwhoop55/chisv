@@ -1,7 +1,9 @@
 <template>
   <div class="modal-card" style="width: auto">
     <header class="modal-card-head">
-      <p class="modal-card-title">{{ this.permission ? 'Edit' : 'Grant' }} permission</p>
+      <p class="modal-card-title">
+        {{ this.permission ? "Edit" : "Grant" }} permission
+      </p>
     </header>
     <form @submit.prevent="save" @keydown="form.onKeydown($event)">
       <section class="modal-card-body">
@@ -10,18 +12,24 @@
           :type="{ 'is-danger': form.errors.has('role_id') }"
           :message="form.errors.get('role_id')"
         >
-          <role-picker :disabled="permission" v-model="form.role_id"></role-picker>
+          <role-picker
+            :disabled="permission"
+            v-model="form.role_id"
+          ></role-picker>
         </b-field>
         <b-field
-          v-if="form.role_id && form.role_id!=1"
+          v-if="form.role_id && form.role_id != 1"
           label="Conference"
           :type="{ 'is-danger': form.errors.has('conference_id') }"
           :message="form.errors.get('conference_id')"
         >
-          <conference-picker v-model="form.conference_id"></conference-picker>
+          <conference-picker
+            :disabled="permission"
+            v-model="form.conference_id"
+          ></conference-picker>
         </b-field>
         <b-field
-          v-if="form.role_id==10"
+          v-if="form.role_id == 10"
           label="State"
           :type="{ 'is-danger': form.errors.has('state_id') }"
           :message="form.errors.get('state_id')"
@@ -35,7 +43,9 @@
         </b-field>
       </section>
       <footer class="modal-card-foot">
-        <button :disabled="form.busy" type="submit" class="button is-success">Save</button>
+        <button :disabled="form.busy" type="submit" class="button is-success">
+          Save
+        </button>
       </footer>
     </form>
   </div>
@@ -49,20 +59,20 @@ export default {
   props: {
     permission: {
       type: Object,
-      default: null
+      default: null,
     },
     user: {
       type: Object,
-      default: null
+      default: null,
     },
     onUpdated: {
       type: Function,
-      default: () => console.log("onUpdated not passed as prop")
+      default: () => console.log("onUpdated not passed as prop"),
     },
     onCreated: {
       type: Function,
-      default: () => console.log("onCreated not passed as prop")
-    }
+      default: () => console.log("onCreated not passed as prop"),
+    },
   },
 
   data() {
@@ -78,8 +88,8 @@ export default {
         state_id:
           this.permission && this.permission.state
             ? this.permission.state.id
-            : null
-      })
+            : null,
+      }),
     };
   },
 
@@ -95,7 +105,7 @@ export default {
   },
 
   methods: {
-    save: function() {
+    save: function () {
       let promise;
       if (this.permission) {
         // Permission given, update
@@ -105,16 +115,16 @@ export default {
         promise = api.createPermission(this.form);
       }
 
-      promise.then(data => {
+      promise.then(({ data }) => {
         this.$buefy.toast.open({
-          message: data.data.message,
-          type: "is-success"
+          message: this.permission ? "Updated" : "Created",
+          type: "is-success",
         });
         this.$parent.close();
         this.permission ? this.onUpdated() : this.onCreated();
       });
     },
-    getUserId: function() {
+    getUserId: function () {
       if (this.permission && this.permission.user && this.permission.user.id) {
         return this.permission.user.id;
       } else if (this.user && this.user.id) {
@@ -122,7 +132,7 @@ export default {
       } else {
         return;
       }
-    }
-  }
+    },
+  },
 };
 </script>

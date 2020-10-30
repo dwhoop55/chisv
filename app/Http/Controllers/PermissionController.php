@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PermissionCreateRequest;
 use App\Permission;
 use Illuminate\Http\Request;
 use App\Http\Requests\PermissionRequest;
+use App\Http\Requests\PermissionUpdateRequest;
 use App\State;
+use Illuminate\Support\Facades\Log;
 
 /** 
  * @authenticated
@@ -42,9 +45,16 @@ class PermissionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(PermissionRequest $request)
+    public function store(PermissionCreateRequest $request)
     {
-        $permission = new Permission($request->all());
+        $permission = new Permission(
+            request([
+                'user_id',
+                'role_id',
+                'conference_id',
+                'state_id',
+            ])
+        );
         $user = auth()->user();
 
         // Last check: abort if the policy denies creation of
@@ -58,7 +68,8 @@ class PermissionController extends Controller
         } catch (\Throwable $th) {
             abort(400, 'Permission already exists');
         }
-        return ["result" => $result, "message" => "Permission granted!"];
+
+        return response()->noContent(201);
     }
 
     /**
@@ -66,10 +77,7 @@ class PermissionController extends Controller
      *      
      * @urlParam permission required The permission's id Example: 2
      * 
-     * @response 200 {
-     * "success": true,"message": "Permission revoked"
-     * }
-     * 
+     * @response 204
      * @response 404 {
      * "message": "No query results for model [App\\Permission] 1"
      * }
@@ -79,64 +87,76 @@ class PermissionController extends Controller
      */
     public function destroy(Permission $permission)
     {
-        $result = $permission->delete();
-        return ['success' => $result, "message" => "Permission revoked"];
+        $permission->delete();
+        return response()->noContent();
     }
 
     /**
      * Update a permission
      *      
      * @urlParam permission required The permission's id Example: 2
-     * @bodyParam user_id int required The user's id Example: 1
      * @bodyParam role_id int required The role of the permission by id Example: 2
-     * @bodyParam conference_id int The conference id to bind the permission to Example: 1
      * @bodyParam state_id int The permission's state Example: 11
      * 
+     * @response 204
      * 
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Permission  $permission
      * @return \Illuminate\Http\Response
      */
-    public function update(PermissionRequest $request, Permission $permission)
+    public function update(PermissionUpdateRequest $request, Permission $permission)
     {
-        $oldPermission = $permission;
-        $updatedPermission = new Permission($request->all());
+        // $oldPermission = $permission;
+        // $updatedPermission = $permission;
+        // $updatedPermission->fill($request->only(['state_id']));
+        // dd($updatedPermission->toArray());
         $waitlistedId = State::byName('waitlisted', 'App\User')->id;
         $enrolledId = State::byName('enrolled', 'App\User')->id;
         $acceptedId = State::byName('accepted', 'App\User')->id;
         $droppedId = State::byName('dropped', 'App\User')->id;
+
+        $newStateId = $request->input('state_id');
         $user = auth()->user();
 
         // Last check: abort if the policy denies update of
         // this specific permission for the given user
-        abort_unless($user->can('createThis', $updatedPermission), 403, 'You don\'t have permission to update the permission in this way');
+        abort_unless(
+            $user->can(
+                'createThis',
+                new Permission([
+                    'conference' => $permission->conference,
+                    'state_id' => $newStateId
+                ])
+            ),
+            403,
+            'You don\'t have permission to update the permission in this way'
+        );
 
         // Make sure to adjust lottery_position
-        // -> Waitlist
-        if ($oldPermission->state_id != $waitlistedId && $updatedPermission->state_id == $waitlistedId) {
-            // -> Waitlist
+        if ($permission->state_id != $waitlistedId && $newStateId == $waitlistedId) {
+            // -> changed to waitlisted
             // User was put onto the waitlist. Assign new (max) lottery_position
             // may return null
-            $max = $updatedPermission->conference->permissions->max('lottery_position');
+            $max = $permission->conference->permissions->max('lottery_position');
             // null + 1 = 1
-            $updatedPermission->lottery_position = $max + 1;
+            $permission->lottery_position = $max + 1;
         } else if (
-            ($oldPermission->state_id != $enrolledId && $updatedPermission->state_id == $enrolledId)
-            || ($oldPermission->state_id != $acceptedId && $updatedPermission->state_id == $acceptedId)
-            || ($oldPermission->state_id != $droppedId && $updatedPermission->state_id == $droppedId)
+            ($permission->state_id != $enrolledId && $newStateId == $enrolledId)
+            || ($permission->state_id != $acceptedId && $newStateId == $acceptedId)
+            || ($permission->state_id != $droppedId && $newStateId == $droppedId)
         ) {
-            // -> Enrolled
-            // -> Accepted
-            // -> Dropped
-            $updatedPermission->lottery_position = null;
-        } else {
-            $updatedPermission->lottery_position = $oldPermission->lottery_position;
+            // -> changed to enrolled
+            // -> changed to accepted
+            // -> changed to dropped
+            $permission->lottery_position = null;
         }
 
-        $oldPermission->update($updatedPermission->only('conference_id', 'state_id', 'role_id', 'lottery_position'));
-        $updatedPermission = $oldPermission->refresh();
-        $updatedPermission->updateWaitlistPosition();
+        $permission->state_id = $newStateId;
 
-        return ["result" => $updatedPermission, "message" => "Permission updated!"];
+        $permission->saveOrFail();
+        $permission->refresh();
+        $permission->updateWaitlistPosition();
+
+        return $permission->only(['id', 'lottery_position', 'waitlist_position']);
     }
 }
