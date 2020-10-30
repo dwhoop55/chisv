@@ -97,6 +97,18 @@ const actions = {
                 .catch(error => reject(error))
         });
     },
+    async loginAs({ commit }, id) {
+        return new Promise((resolve, reject) => {
+            localStorage.removeItem("vuex");
+            api.loginAs(id)
+                .then(({ data }) => {
+                    commit('setUser', data);
+                    resolve(data);
+                    window.location.reload();
+                })
+                .catch(error => reject(error))
+        });
+    },
     async register({ commit }, vform) {
         return new Promise((resolve, reject) => {
             api.register(vform)

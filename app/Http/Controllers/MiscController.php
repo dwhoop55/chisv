@@ -90,13 +90,14 @@ class MiscController extends Controller
 
     public function loginAs(Request $request)
     {
-        if ($request->input('id')) {
-            $id = $request->input('id');
-            $ok = Auth::user()->can('loginAs', User::find($id));
+        $id = $request->input('id');
+        $newUser = User::findOrFail($id);
+        if ($id) {
+            $ok = Auth::user()->can('loginAs', $newUser);
             if ($ok) {
                 Auth::logout();
-                Auth::loginUsingId($id);
-                return redirect('/');
+                Auth::login($newUser);
+                return (new UserController)->showSelf($newUser);
             } else {
                 Log::critical("User (id) " . Auth::user()->id . " tried to use loginAs for " . $id . " and was not authorized!");
                 return abort(403, 'You are not authorized or the user holds chair/admin permissions.');

@@ -8,7 +8,13 @@
               <p class="subtitle">{{ user.firstname }} {{ user.lastname }}</p>
             </div>
             <div v-if="canDelete" class="level-item">
-              <b-button outlined size="is-small" type="is-danger" @click="deleteUser()">Delete</b-button>
+              <b-button
+                outlined
+                size="is-small"
+                type="is-danger"
+                @click="deleteUser()"
+                >Delete</b-button
+              >
             </div>
             <div v-if="canLoginAs" class="level-item">
               <b-button
@@ -16,7 +22,8 @@
                 size="is-small"
                 type="is-primary"
                 @click="onLoginAs(user.id)"
-              >Become this user</b-button>
+                >Become this user</b-button
+              >
             </div>
           </div>
         </div>
@@ -33,21 +40,38 @@
               v-if="canGrant"
               @click="showGrantModal()"
               class="is-primary is-pulled-right"
-            >Grant</b-button>
+              >Grant</b-button
+            >
 
             <div class="subtitle has-margin-t-3">
               <p v-if="hasActivePermissions">Active conferences</p>
               <p v-else>Not associated to active conferences</p>
             </div>
-            <div class="column" v-for="permission in activePermissions" v-bind:key="permission.id">
-              <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
+            <div
+              class="column"
+              v-for="permission in activePermissions"
+              v-bind:key="permission.id"
+            >
+              <permission-card
+                @revoked="getUser()"
+                @updated="getUser()"
+                :permission="permission"
+              />
             </div>
 
             <div class="subtitle has-margin-t-3">
               <p v-if="hasPastPermissions">Past conferences</p>
             </div>
-            <div class="column" v-for="permission in pastPermissions" v-bind:key="permission.id">
-              <permission-card @revoked="getUser()" @updated="getUser()" :permission="permission" />
+            <div
+              class="column"
+              v-for="permission in pastPermissions"
+              v-bind:key="permission.id"
+            >
+              <permission-card
+                @revoked="getUser()"
+                @updated="getUser()"
+                :permission="permission"
+              />
             </div>
           </b-tab-item>
 
@@ -59,7 +83,11 @@
             <user-edit-password v-model="user"></user-edit-password>
           </b-tab-item>
 
-          <b-tab-item icon="gesture-tap-button" label="UI" v-if="user.id == authUser.id">
+          <b-tab-item
+            icon="gesture-tap-button"
+            label="UI"
+            v-if="user.id == authUser.id"
+          >
             <user-edit-ui></user-edit-ui>
           </b-tab-item>
         </b-tabs>
@@ -79,20 +107,20 @@ import PermissionModalVue from "../../components/modals/PermissionModal.vue";
 export default {
   name: "UserEdit",
   computed: {
-    activePermissions: function() {
-      return this.user.permissions.filter(function(permission) {
+    activePermissions: function () {
+      return this.user.permissions.filter(function (permission) {
         return permission.conference && permission.conference.state_id != 6;
       });
     },
-    hasActivePermissions: function() {
+    hasActivePermissions: function () {
       return this.activePermissions.length != 0;
     },
-    pastPermissions: function() {
-      return this.user.permissions.filter(function(permission) {
+    pastPermissions: function () {
+      return this.user.permissions.filter(function (permission) {
         return !permission.conference || permission.conference.state_id == 6;
       });
     },
-    hasPastPermissions: function() {
+    hasPastPermissions: function () {
       return this.pastPermissions.length != 0;
     },
     canGrant() {
@@ -111,13 +139,13 @@ export default {
       return this.$route.params.id;
     },
     ...mapGetters("profile", ["tab"]),
-    ...mapGetters("auth", { userIs: "userIs", authUser: "user" })
+    ...mapGetters("auth", { userIs: "userIs", authUser: "user" }),
   },
 
   data() {
     return {
       user: null,
-      isLoading: true
+      isLoading: true,
     };
   },
 
@@ -125,11 +153,11 @@ export default {
     // Register a watcher to keep the user model up to date
     this.$watch(
       "routeId",
-      function(newVal, oldVal) {
+      function (newVal, oldVal) {
         this.getUser(newVal);
       },
       {
-        immediate: true
+        immediate: true,
       }
     );
   },
@@ -159,7 +187,7 @@ export default {
         confirmText: "I know what I am doing!",
         onConfirm: () => {
           this.loginAs(this.user.id);
-        }
+        },
       });
     },
     showGrantModal() {
@@ -168,9 +196,9 @@ export default {
         component: PermissionModalVue,
         props: {
           user: this.user,
-          onCreated: this.getUser
+          onCreated: this.getUser,
         },
-        hasModalCard: true
+        hasModalCard: true,
       });
     },
     deleteUser() {
@@ -187,7 +215,7 @@ export default {
             this.fetchUsers();
             this.$router.go(-1);
           });
-        }
+        },
       });
     },
     getUser(id) {
@@ -199,13 +227,13 @@ export default {
           document.title = `${this.user.firstname} ${this.user.lastname} - chisv`;
           this.$forceUpdate();
         })
-        .catch(error => {
+        .catch((error) => {
           if (error.response.status == 403) {
             this.$buefy.notification.open({
               type: "is-danger",
               duration: 10000,
               message:
-                "No intersecting conferences. Ask admin to add user to conference"
+                "No intersecting conferences. Ask admin to add user to conference",
             });
             this.$router.go(-1);
           } else if (error.response.status == 404) {
@@ -215,7 +243,8 @@ export default {
         .finally(() => (this.isLoading = false));
     },
     ...mapMutations("profile", ["setTab"]),
-    ...mapActions("userIndex", ["fetchUsers"])
-  }
+    ...mapActions("userIndex", ["fetchUsers"]),
+    ...mapActions("auth", ["loginAs"]),
+  },
 };
 </script>

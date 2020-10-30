@@ -240,6 +240,9 @@ export default {
     login(credentials) {
         return axios.post(`login`, credentials, { baseURL: '/', maxRedirects: 0 })
     },
+    loginAs(id) {
+        return axios.post(`loginAs`, { id }, { baseURL: '/', maxRedirects: 0 })
+    },
     passwordForgot(email) {
         return axios.post(`password/forgot`, { email });
     },
