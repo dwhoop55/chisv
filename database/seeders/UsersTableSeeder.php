@@ -55,7 +55,7 @@ class UsersTableSeeder extends Seeder
 
         $faker = app('Faker\Generator');
         $enrollmentFormService = new EnrollmentFormService;
-        User::factory()->count(10)->create()->each(function ($user) use ($faker, $role, $enrollmentFormService) {
+        User::factory()->count(1000)->create()->each(function ($user) use ($faker, $role, $enrollmentFormService) {
             $state = State::byName('accepted');
 
             $conference = Conference::inRandomOrder()->first();

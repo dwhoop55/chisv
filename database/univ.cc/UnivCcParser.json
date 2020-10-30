@@ -1,5 +1,5 @@
 {
-    "generated": "2020-03-09 19:27:45",
+    "generated": "2020-10-28 15:47:57",
     "universities": {
         "65de9745196d49620c98eb78c4f461460a148f59eb606401ef9599758b9e610b5f8685b40aee73a5b8cbf4a2be8174ada96211233852ffc7a918e9cd2586348f": {
             "name": "1 December University of Alba Iulia",
@@ -659,7 +659,7 @@
         },
         "7af4b3bee8d0aefdb14670c9576380163360715d0897a5cb83ca5fce0a32eba5f2b5b093e19c055d1f61313c5b88d51904b0961ada87129de7f8fcbba5c37362": {
             "name": "Al-Buraimi University College",
-            "url": "http:\/\/www.buc.edu.om\/"
+            "url": "http:\/\/buc.edu.om\/"
         },
         "bb6595b7f2c00ea2e80e8604b07d4fa99ab46b90dc37932481107351dd34c80cbac973e5709b68be6439adc6f5a040a9a8fd4de690e64b78fcf6a4fecf10170b": {
             "name": "Aleksander Gieysztor School of Humanities in Pultusk",
@@ -809,6 +809,10 @@
             "name": "All Saints University College of Medicine",
             "url": "https:\/\/allsaintsu.org\/"
         },
+        "87720f7cf83966fe2fd11c9046b69e66437c31c5b547b9ce1342d850cdcc337714de34c9fe1102bfe85b09bac95ec032448185591fc2b100c63602837ac05538": {
+            "name": "All Saints University College of Medicine St Vincent",
+            "url": "https:\/\/allsaintsu.org\/"
+        },
         "cb5f1006aa331fbad495a87ace685acd65eddc27e6671f9fccc237286578877597bcb4244653d6a444b11be17258d3644e1fe9e673d589255e510e5e833eb16b": {
             "name": "All Saints University School of Medicine",
             "url": "http:\/\/www.allsaintsuniversity.org\/"
@@ -832,6 +836,10 @@
         "aff991c0fe7fa89f608f441e67e6d73759cb1cfdf234ab59caed5abcc97f410b622de4dbd02147d393e0afde6b054f65142cdc801a8f98d0eec3775721dee89a": {
             "name": "Almaty Management University ",
             "url": "https:\/\/www.almau.edu.kz\/"
+        },
+        "24d31cb72512e6a7dcd73770379ec6d9d50f6cc51cae1ba34738923ef3f1d2aa5875f47c25eccaf76d96aa8289d9c8c3fd9205d2d13154038a8af6489b9ba9b3": {
+            "name": "Almughtaribeen University",
+            "url": "https:\/\/www.mu.edu.sd\/"
         },
         "337005e99558a4b171755972bbf3ee9f123b44d681b04de4d19cbbc64a1dc8d2db32e8aa95f25ebd177f585b33dc8892bf3e3542a4a84451cc48cf9381dad595": {
             "name": "Almustafa Open University",
@@ -881,6 +889,10 @@
             "name": "Al-razi University",
             "url": "http:\/\/alraziuni.edu.ye\/"
         },
+        "2381218def03bdec9a365818bcc4c05c472afe6720c1b3cdbb89d44bd8d296c32bb9fd116ce4aab44a90fb13dffce104a154a6e6461e177bacb2ae0cbc4c5ad4": {
+            "name": "Al-Saeeda University",
+            "url": "https:\/\/su-edu.net\/"
+        },
         "e95893c225c0a18b91f3968e6c5aa3c8cfa7f918ce11d051f6d1f751bdc078a66e6d8526c4dce4cc727227d24c9c01b67d8d6cf60800cc04854d18c9aeb23b66": {
             "name": "Altai State Medical University",
             "url": "http:\/\/www.asmu.ru\/"
@@ -892,6 +904,10 @@
         "c20d04224b352d04cbd85d3785f1e4f7fbbe0a37f6f3232b326aa0f1d27fcc12e899d89e5217db123079e72726957b6aa2371eacf12eee533540e24eab581b1b": {
             "name": "Altai State University",
             "url": "http:\/\/www.asu.ru\/"
+        },
+        "397a36f9ddaeec3a70c01418719bd6b694b7ecef5143a1a0c51048fc4eec27e26a03ad646be69e8bb4e3812d2fac89e5a2f0dde6966710a653971ed3847bc520": {
+            "name": "Altinbas University ",
+            "url": "http:\/\/altinbas.edu.tr\/"
         },
         "7d7dca0013de5e59e1c73d020c089f8afe4303f9bbe86f3211254d407afb8deb0b33d2a6df7a4722d17b9564bcd42eb79e6667eb18081d54263801744d46b757": {
             "name": "Al Turath University College",
@@ -1125,6 +1141,10 @@
             "name": "Angeles University",
             "url": "http:\/\/www.auf.edu.ph\/"
         },
+        "30cb289a70dacd2ceb8a0977fd4eeb5e97089e3823b93deba015d70f806b21f79cae5077ab50bc18006558b23797063680049b3dd3f1706bfcd445f80b09e755": {
+            "name": "An Giang University",
+            "url": "https:\/\/www.agu.edu.vn\/"
+        },
         "2d360c7739a23cb39ccd544f07b22e70691393669920108f19121e871f2fe9a5ca5af70101a819c0bd72d7c678e2067c16817f81cddabf4fefc2843359f49f27": {
             "name": "Angkor University",
             "url": "http:\/\/www.angkor.edu.kh\/"
@@ -1217,6 +1237,10 @@
             "name": "Aoyama Gakuin University",
             "url": "http:\/\/www.aoyama.ac.jp\/"
         },
+        "10866fb0e69aedb49249a1222144fcf26c13005dd5a9387b3e2659cbebe55f960c31a2ad8a9e50985c837fecaeba6802345cd97982617369c6efccaa2ba1cf58": {
+            "name": "Appiled Economics Research Centre, University of Karachi",
+            "url": "http:\/\/www.aerc.edu.pk\/"
+        },
         "7aa60a325f962e7dd02b216b0bacc68444c15d866f97f13e411664d615de35f7ae3e306491ffab1eb4bb6fe37d322980d2116b9e055ab94c74d6f2ab788d5736": {
             "name": "Applied Science University",
             "url": "http:\/\/www.asu.edu.jo\/"
@@ -1272,6 +1296,10 @@
         "24ab2b0166b66ddb5c1119c0ed46ce9bc1dc77c7367c16643ba97545c057ed8046a8b40ea4bea0f925241134d72a8df37329fed798b4dbc91f21e8f9abdb805c": {
             "name": "Araullo University",
             "url": "http:\/\/www.aupen.edu.ph\/"
+        },
+        "6afc63f3416f01c7bcacc4f51583f276a14e5b39facc564e8dd772d27dc6074ae0d13a2bc88792990e5897aaa084f0d6b92a6f8767f931ab472c15ce344c57f9": {
+            "name": "Aravali Veterinary College",
+            "url": "http:\/\/arawaliveterinarycollege.com"
         },
         "51991058329f67ef9ef8e5f2d35516b7814f878fa65459f30e5ea97986797d831c5bc9c95bca412af7b93402d2b0fd37c28962996ada096b88531d6bbfd8b1dd": {
             "name": "Arba Minch University",
@@ -2781,6 +2809,10 @@
             "name": "Cavendish University",
             "url": "http:\/\/www.cavendishza.org\/"
         },
+        "18d557e703881ba9b8133176f3534d407e3a87effd3bd4982f72bc671882d252131e2643428ecf5bae12ee185e9e2d019f65cccf231559fa981bacb31253e1c4": {
+            "name": "CBS International Business School",
+            "url": "https:\/\/cbs.de\/"
+        },
         "27ae52b14c63689b584eb64b64fbe780cdd8c43a232a2916decd5126913d65b5e7e722f517cbce9580ba278ecc3d77306bb41026c0beb5ccde343101bffec6f2": {
             "name": "CCS Haryana Agricultural University",
             "url": "http:\/\/hau.ernet.in\/"
@@ -3569,6 +3601,10 @@
             "name": "College of Science, Baghdad University",
             "url": "http:\/\/www.scbaghdad.edu.iq\/"
         },
+        "349e4547509f927cc4d6c123d7cd9a1673b7bb06a2d33ba488ce9512002b2a683860b2b58a75d0c921ccc3d45d23ef07c47e1029aff03b5e175a6b47290dd738": {
+            "name": "College Of Shari'a Sciences",
+            "url": "https:\/\/css.edu.om\/"
+        },
         "80fa49b95fa9fda5a35781d4d6679eaaaedd56f5805ba5422ca096a3574286118f6cba02c01a3d87d770fa30730ebe986a67bdeab6bf5f62861a8ef9966a2518": {
             "name": "College of Technology at Abha",
             "url": "http:\/\/www.act.gotevot.edu.sa\/"
@@ -3608,10 +3644,6 @@
         "3ed30be831e4d0a27610e556dc22e6e5e1ba6c11433b394b2a39414cfcb5b87c845f0781286ee8741d0002eed425f56973d41b992046a1f704d7d1afcb520021": {
             "name": "Collegium Civitas",
             "url": "http:\/\/www.collegium.edu.pl\/"
-        },
-        "f46307c44bc65acc8abb9f7100d59047eb0c8b27d307f6d877ee544855608e8970a289c28f9b37552a210e1c700d79c72943b2a202a1b05bcdb6d46774811790": {
-            "name": "Cologne Business School",
-            "url": "https:\/\/cbs.de\/"
         },
         "e3b414bb6b957b4dc4aa9334c6f4f0f12248e96e784a7e07ba1bb2211f4adcf2d3ac1efd137b209cd863ed72edd9323f9fc6731f9038e4d4d32a6fd3c4bb71c8": {
             "name": "Columbia College",
@@ -3708,6 +3740,10 @@
         "4aa21398a6c803e75b0964a8a0eb4df3ee42a6b82b9a1e039a6c32546aafa32631c76fe7c44e726b8d52506e64b8595a04588ee5ec0f886f6733ee474874cc46": {
             "name": "Copperbelt University",
             "url": "https:\/\/www.cbu.edu.zm\/"
+        },
+        "c68b34a94972a8b11aea311b4778d363cb874d748d6d0621fbab6729b3ee6fdbb43f05724370b5e7728637a784a704fa11be02c6112d3834fd69dd1fe2948876": {
+            "name": "Cordoba Private University",
+            "url": "http:\/\/www.cpu.edu.sy\/"
         },
         "525314337b03fda493d31bc8fb943aa7bb3a68a8b1d40afd97a5ae821324f76cf380eb3eb2491eef2f78d56ad24de1c13c6c250fb0bb4c1f655eedfa3ccd9c4c": {
             "name": "Cork Institute of Technology",
@@ -4013,6 +4049,10 @@
             "name": "Deakin University",
             "url": "http:\/\/www.deakin.edu.au\/"
         },
+        "f54ed8cf234dac0b322bbb9efbcdccea32589704d393c865481895a4d406d9dff2233e550721b590d7fa339b3a3f7affd23d8e1b90d0f4ebd835a8fb2fa139d7": {
+            "name": "Debark University",
+            "url": "http:\/\/www.dku.edu.et\/"
+        },
         "cbc7d17e6e858573764514790889f7a140d4603c8582f5f86a36f659392a323906c7f939abcb6d11663b4390d68cc48fedc3331dac246148bdded2cd425bea67": {
             "name": "Debre Birhan University",
             "url": "http:\/\/www.dbu.edu.et\/"
@@ -4208,6 +4248,10 @@
         "28737a6deca767240ffd8025c7ead8e5ce359e4d50b00eb39d93d0f699433c25e60b5bd829546dc461fdf57350ecfb83fba714f72bc79de853816b999afa5ca4": {
             "name": "Dogus University",
             "url": "https:\/\/www.dogus.edu.tr\/"
+        },
+        "b0356521a36ac421fdf771e6f1025cdd2f0f08cd10dcbaafa63854751c75f9ed0de8c266d7de320f67660dac1e78c2c0ca915761f1e206362933bc8f9977bea1": {
+            "name": "Doha Institute for Graduate Studies",
+            "url": "https:\/\/www.dohainstitute.edu.qa\/"
         },
         "25160062f05e6f03ac2f76a3874a0a958b31ce5b3ef98d52eff9b92df9a981d5732bf816eae3ae6197d5d6674b340359f259ea43edf776a75abd54aab65edfe2": {
             "name": "Doho University",
@@ -5433,10 +5477,6 @@
             "name": "European Management Center Paris",
             "url": "http:\/\/www.emc-campus.com\/"
         },
-        "9b28c4e678476f3bc9557477157bdb764e544e34f1fd129c6f86138820071108c5ebab9bc2f556e94126c75a1dbb26b236e7ad9078abc49a767c25c3bdd5710f": {
-            "name": "European Management School",
-            "url": "http:\/\/www.ems-mainz.de\/"
-        },
         "fd7e8660d36080dbd1faf5e853b2babb299e0b7683df4252c3b3cdb94031680cffb13f56745f7dd0e3025b66f89159d85baf3ec97aa532d056044a05164d7f40": {
             "name": "European Open University",
             "url": "http:\/\/www.europeanopenuniversity.com\/"
@@ -5459,7 +5499,7 @@
         },
         "66aa017f32245b3543b479068728911eac57d361df90d97fb75ff29e6fa192a6a88e0a07561f114fe36ab88bc7fe3a89000b01f72a8bdd4e7a4c106d9802f803": {
             "name": "European University",
-            "url": "https:\/\/www.euruni.edu\/"
+            "url": "http:\/\/www.eu.ac.rs\/"
         },
         "00ebc2889b48c8eddced234256ce84ebabeffeea1be8cb8a31faede9344666b68f7115a254247a21fcb093fdfc70771d8e063843de99e7b3984e54ae75fb770e": {
             "name": "European University, Athens Campus",
@@ -5913,6 +5953,10 @@
             "name": "Fachhochschule W\u00fcrzburg - Schweinfurt",
             "url": "http:\/\/www.fh-wuerzburg.de\/"
         },
+        "c03c34258c894adbb4fdd735b588896b7549e67acf79a1448c02833309523bd13a371706b90cd8c949a710163971889b811b050424c0af1ceb69250d55dcbce1": {
+            "name": "Faculdade Arnaldo",
+            "url": "https:\/\/www.faculdadearnaldo.com.br"
+        },
         "555ad1cbf83f2a45fc02fa032138901d35db0188886b5d9d8b7781ca230aa8442a044567e6729e75e3d7e336afd0bd4fcea2be24a5eb38f45a20570843ec5100": {
             "name": "Faculdade de Jaguari\u00fana",
             "url": "http:\/\/www.faj.br\/"
@@ -6063,7 +6107,7 @@
         },
         "a3e8e842f959dfb271a469ebd20d71bdece522c0a51fc83609c121ecba3d86de1d3ed67de75304ea716390f2ffb5f7998a52740bb3cd4d2f62d8696d444b9e9d": {
             "name": "Federal University of Technology, Owerri",
-            "url": "http:\/\/futo.edu.ng\/"
+            "url": "https:\/\/futo.edu.ng\/"
         },
         "7626fa6ffc4968ccfb8a6e717739398b5714d449f332db0a76a71d122573dd0f9eddf9aa24f8ee0a31761d9c279ef3bf3cab532d3d9d07e019508308063651fa": {
             "name": "Federal Urdu University of Arts,Science and Technology",
@@ -6219,7 +6263,7 @@
         },
         "531a0ae0f3d970b51a3d719229d8c9bfb5c22501ae7a9f4624089c9e2fcb6d275f691cf50f53b504e41fc427bca03cc8181755c654c8f68b81b07c46b093d1ba": {
             "name": "Foundation University",
-            "url": "http:\/\/www.foundationuniversity.com\/"
+            "url": "http:\/\/www.foundationu.com\/"
         },
         "1603e87b4c9eba6c5af80baf0598ec094225394bfb256f0fc82383f0464c5145e8ab8beb113353a3cfdeb72afa960f46e7ac959d4b578ca253e6150914a38699": {
             "name": "Fountain University",
@@ -7013,6 +7057,10 @@
             "name": "Hamadan University of Medical Sciences",
             "url": "http:\/\/www.umsha.ac.ir\/"
         },
+        "5b38988b0528f52e12b7cad72238cc61b73cabb371e53a4c84a74c25a7735b5bcb37de278fb0931a5e520fa20697a1649d0b78731504a6502a763f42225f4298": {
+            "name": "Hamad Bin Khalifa University",
+            "url": "https:\/\/www.hbku.edu.qa\/"
+        },
         "e85377ef4ec6e08f06f6618532b04748643273839fe4dd45a6fe7c73715bfc4ee9ab197307b1b3b5b05aaf686ae38aba24926ed3eb89ebc4d1b17a8c494bd555": {
             "name": "Hamamatsu University",
             "url": "http:\/\/www.hamamatsu-u.ac.jp\/"
@@ -7020,6 +7068,10 @@
         "c360151552e901f03a687023a9f06153cd8beef8f9374f60dabe471e441b5440dba77e34fd0b287da04eacfc87955c1e2b816f204294ddf325e0ad8c854701ca": {
             "name": "Hamamatsu University School of Medicine",
             "url": "http:\/\/www.hama-med.ac.jp\/"
+        },
+        "57b38f2c87361894135f78043e56a2c78f804efddef5b44ee68c0de9db273ddacd95953cb6bb74934a54e2a4e824256c0771a85109cd5ad747857418bf8ddb73": {
+            "name": "Hama University",
+            "url": "http:\/\/www.hama-univ.edu.sy\/"
         },
         "e1fe5f347212e9cdb4db7e08875135cc916079da25351ee55228fafb35e30dfc9682106301d68303006c55f2195ec20df51addb8488bb38fc666334b2437458b": {
             "name": "Hamdan Bin Mohammed Smart University",
@@ -7179,7 +7231,7 @@
         },
         "b9484cd4adcc0facc67b6b9fab29e15fe5f55328f7f052560505a86e5e020a0c7845d28ab22a870bf1cba42860ec27e22794719a0694bdc0913307311b842aef": {
             "name": "Hawler Medical University",
-            "url": "http:\/\/www.hawlermu.org\/"
+            "url": "https:\/\/hmu.edu.krd\/"
         },
         "48d59a00a96d03cd6e31d55190831dfcfba9fc91e258f9bc2df3ecb1c3fd47558c50bbb240f2082af7a94ac972a7779a6688c6e0d010f7a80c601006770a039f": {
             "name": "Hayek International Business School",
@@ -8233,6 +8285,10 @@
             "name": "Indore Indira Business School",
             "url": "http:\/\/www.indoreindira.com\/"
         },
+        "810d371e3023f8b12463896c47b3751664c6a0e806ebdeb36d084d09bd4888c9c550e40a64c139cd547aac7db9d0e4ba106ef655553926058ed3cf395173b8a4": {
+            "name": "Indraprastha Institute of Information Technology, Delhi",
+            "url": "https:\/\/www.iiitd.ac.in\/"
+        },
         "5e890ca42d57d2354154d88f92dfbef3066599dbb475bf9776958c318bbf707f9c97ea55aa6dadb5fc0b5f1177eea19c4b269f23dcc1a5b411db2f619058bfa9": {
             "name": "Indrashil University",
             "url": "http:\/\/indrashiluniversity.edu.in\/"
@@ -8264,6 +8320,10 @@
         "a9459df3e083bd02ac1b27d443fdda6a71cf4ed733e37b44fbb6234185b1c69a091f783e5cd7c4e319aea24e08096911c0ca6660314b486e6c811995bef0a44b": {
             "name": "Inje University",
             "url": "http:\/\/www.inje.ac.kr\/"
+        },
+        "c299549cf560cd842ccfd56472889fdc09b91eeaf6fa059cbb3ddd7628ea5f0b116236b489e3f268f523e7778bd7fc87b6cee9e73ee1c5ab68b0839a8631e871": {
+            "name": "Injibara University",
+            "url": "https:\/\/www.inu.edu.et\/"
         },
         "1d8243622dc5cfd7d6665d322942860af0eef1907e573a6a777c1583bd0d38b5c8e6c63d41d8e52b9771b8446d5665bc00c85d352e2cf7c5fb7138101475c43e": {
             "name": "Inner Mongolia Agricultural University",
@@ -10741,6 +10801,10 @@
             "name": "Kharkiv State Transport Technical University",
             "url": "http:\/\/www.khadi.kharkov.ua\/"
         },
+        "78e01ad0b428119de7aef72fa79e65b2b5e0553ea1ccf56e86a920d792fc22ea375e94a7232f8f2d19873b50b3afee9e88a8bb72e5e6e7109b86d9a9d50cf73e": {
+            "name": "Khatam University",
+            "url": "http:\/\/khatam.ac.ir\/"
+        },
         "033168bbb6778484710e16d75601d6e2a4168b71d5a4c918449838b760abcb0dcf5c4db9139689e09e3ffe85ca165c022cae7344bb1c0fd15cf1e3987b0f2be4": {
             "name": "Khazar University",
             "url": "http:\/\/www.khazar.org\/"
@@ -11127,7 +11191,7 @@
         },
         "e2a4bee5fbad76566d2d15dc403e5d6a8a14adbe7d04850dd3f95515f8ae8814580ec6f0c79b8d48bc9867b21912fbf8a6f8cdb958a59437a5859de336798c25": {
             "name": "Korea University",
-            "url": "http:\/\/www.korea.ac.kr\/"
+            "url": "http:\/\/www.korea-u.ac.jp\/"
         },
         "281e2ee62ce35fd48e38230c2b4e7e57b95c0593908c32d8eb39e9a27e5530b2794f758dab9f7af3a45b3d882802b9f985653d1c017705fdfb0553379864169d": {
             "name": "Koriyama Women's University and College",
@@ -11640,6 +11704,10 @@
         "7756a9649dddb07bf65a6c58c04cc1fdcfe7428a01cdfc08cdf6398db0184e54d606e4e9003ad193846d1d21f2903b61e3f2186ca4c4b7d7097d40df9ab4eb6b": {
             "name": "Lakshmibai National Institute of Physical Education",
             "url": "http:\/\/www.lnipe.edu.in\/"
+        },
+        "606c7e8a90c9f63dc027a6f8e4e90b463102d7b5a74a7c773649c7f85fb5f5d41047a483c722950b3300834e2cf7e696ec96af6c6a99c6696728d754ff7d4752": {
+            "name": "Lala Lajpat Rai University of Veterinary and Animal Sciences",
+            "url": "https:\/\/www.luvas.edu.in\/"
         },
         "a79f4096048fd8e93a3076f46583cfde1667b401aafc9152106949fc9a5e663692db1be1aea669067557644d258fb2f183d205af329989b6b42d5a1f4c1ce3bc": {
             "name": "Lalit Narayan Mithila University",
@@ -12221,6 +12289,10 @@
             "name": "Mahsa University College for Health and Medical Science",
             "url": "http:\/\/www.mahsa.edu.my\/"
         },
+        "cb194173af6b63c2c2dc29444ab7f52b71a06d6c3fbfc58a9386fa58a9f7ffd8383d574486f2cc330eb00a6f7870b415bce36375bae6c932001bdac85d8f9e15": {
+            "name": "Maiwand Institute of Higher Education",
+            "url": "http:\/\/maiwand.edu.af\/"
+        },
         "aef39f2ddffdf688ab27263f8f87cdb5b32027f92e0cdd612c3eafa64dec7df73a89153bc3644d08ab5ff2b3ede37e7bda61ece81f981254049f6841d745ae03": {
             "name": "Majan University College",
             "url": "http:\/\/www.majancollege.edu.om\/"
@@ -12285,10 +12357,6 @@
             "name": "Mamasani University of Technology",
             "url": "http:\/\/www.mamasaniiau.ac.ir\/"
         },
-        "d0398f1686dd2cc0c9a2cdf7b833948c255d062404f51d8b681f7277bb6c2ac08682d0b1488234cbd2680e8803cd7ac59bdcf754327d150a3912197d50f1d830": {
-            "name": "Mamoun Private University for Science and Technology",
-            "url": "http:\/\/www.must.edu.sy\/"
-        },
         "faa41d76a01528e5e24868beff1e2bec77fd9133ad32e186c56bf1dec2e124035f52643f8ea188e33e30c4aed95bdebc0c9dca17ab7011313115348272ad0f5a": {
             "name": "Management and Science University",
             "url": "http:\/\/www.msu.edu.my\/"
@@ -12300,6 +12368,10 @@
         "9e5fc8d504b480f4bd445dcc49f9ce59f25dc158b63c906158e3956cffd0dd2113e7e787ca6a938e702d58db686aee021bbd84f925abf222b0200b65a064faf1": {
             "name": "Manarat International University",
             "url": "http:\/\/www.manarat.ac.bd\/"
+        },
+        "b90c23f594b7309a9e13a759b9daf42d3b360d755ab5401807212025efa56dec9af4d8217b692cc82f2592b1cd91c8961bba5545f5fdb28ed5953849cadfbd83": {
+            "name": "Manav Bharti University",
+            "url": "https:\/\/www.manavbhartiuniversity.edu.in\/"
         },
         "61991b80ea4417a69b1911f64980e741f72df76de6ebb07a4bdf32fb9ddf2dce79fc628a6ca3a7808f78be26c4172358e851cca70579b8c67a0f033316558f69": {
             "name": "Mandalay University of Distance Education",
@@ -12565,9 +12637,9 @@
             "name": "Medizinische Universit\u00e4t Wien",
             "url": "https:\/\/www.meduniwien.ac.at\/"
         },
-        "2adff2cfd4407bef00b90bbaa2bc3427c0ffd42ccc096f55f38842c1315c1b5b11f65d93ca1b27aadae638339072db4117cb74bf8c9cb2fadb774d51f1c237aa": {
-            "name": "Megatrend University of Applied Sciences",
-            "url": "http:\/\/www.megatrend-edu.net\/"
+        "a36acd729e78daae57643a4b89124f8534e756e741922ccbf553fb0acf23c3d7d1f325ae5c62072ee81975f461eae71a741f13ce62217b429551a5abcc6f5f52": {
+            "name": "Megatrend University",
+            "url": "http:\/\/megatrend.edu.rs\/"
         },
         "0c7bcbc341c8c1fcf26c2a9712008cd528927bdd64d8701eb00325ef1e05c5b6521b4df0b41643ed8f29a633e5c2a7e3a753fb67457e6c87e39d33ef90246df5": {
             "name": "Mehrabyan Medical Institute and Medical College",
@@ -12616,6 +12688,10 @@
         "0b3c5f32f39f74e4e972d1564b2ea408a119c8db1c86e426c01dee1e079214fab61b92a29106b6db06623de5e95890baa27cd235cafafcf8415e9a75db08dafb": {
             "name": "Mejiro University",
             "url": "http:\/\/www.mejiro.ac.jp\/"
+        },
+        "56272843d4b25cfd76813b47d5ccf09e31b59f36242f2d728963e3cdaf89eef778b488b63108df04f67c1e6adf029245d6a7ead936a9111638a59c8a2a0f7868": {
+            "name": "Mekdela Amba University",
+            "url": "https:\/\/mkau.edu.et\/"
         },
         "0707546c949909fc4e82d3d8c6ad9aab66a91bfc319466b70e8056b9456dc11561dd336e60037e55d12f35b0dba408e77d9adce374c5a25106fbb52d59328c99": {
             "name": "Mekelle Institute of Technology",
@@ -12696,6 +12772,10 @@
         "2c0829e691ee065ed956b617563da454be1d4ad02a9ed472297ec0b08146cc8f6d6922dc28d80a91a4216d2c0841a64f05200eab2386cbbab24cccd86b1a10d2": {
             "name": "Middlesex University",
             "url": "http:\/\/www.mdx.ac.uk\/"
+        },
+        "c7594b7d1c1204e4ff6a144736c687d4c00bba2fd4651a87faf4f4b7b1edd68c2457d1831b7f99bbdfb4e3ca2b49cbcb91fc4100b27bbe16c5723d25d511183f": {
+            "name": "Middle Technical University",
+            "url": "https:\/\/mtu.edu.iq\/"
         },
         "f47b11cb020476f5c94c1a8a9c1304dd9a3763dcd42b1c3630a14ef0b0db98ebc79d49dd5654756c89b9900b61afb92be94cbc42791c2b0a675c6e62888db7ea": {
             "name": "Midlands State University",
@@ -14721,6 +14801,10 @@
             "name": "Okayama University of Science",
             "url": "http:\/\/www.ous.ac.jp\/"
         },
+        "fd0cac775884d7254c0d0de8b6fc3ce75a42f5895e6077fc54ca12094e144169ee7446794a60e8719f78f55ae003aadd6cd5f87250770e3875eb7774d33a53a0": {
+            "name": "Okinawa Institute of Science and Technology Graduate University (OIST)",
+            "url": "https:\/\/oist.jp"
+        },
         "2c60c21ae593c91a317de0f7f5fb273fab4df158f5abe7fd139e61030e917a6bba00b365d038eee7a45667b01e459fe5bb9e9286bfcd45b7cde8063ff200fe35": {
             "name": "Okinawa International University",
             "url": "http:\/\/www.okiu.ac.jp\/"
@@ -14800,6 +14884,10 @@
         "aaf7f378b12d3805d0f477ac7f7210b588455b595c08ca081d705defab5fb032dcd4bd22b678fe31ef7cd44193642e316d0e8bef0948a88f6614be3171e399a6": {
             "name": "Open Polytechnic ",
             "url": "http:\/\/www.openpolytechnic.ac.nz\/"
+        },
+        "bd7a64509a71f862389d390a88860f1007400dfe15513d192ad0519c9865ae2f95a75c4b8756d619dbb638b0b0ee609f46ab760f62146e7a2a4486a31c1489b3": {
+            "name": "Open Slavic Law University (University Osyu)",
+            "url": "http:\/\/osyu.rf.gd"
         },
         "af3126d2450a3d941260005329506b83710f79300887908362fbe6c65d45b2e089b1e710c8bcc4401ef13e45c05f532c19090060f487efbade5787d6c02471b9": {
             "name": "Open University",
@@ -15329,10 +15417,6 @@
             "name": "Petro Mohyla Black Sea State University",
             "url": "https:\/\/chmnu.edu.ua\/"
         },
-        "ae33d4e3292310bee3d1f1fc46190147a6578f97be1e5ebcd6cfbfaca5b5d404dbc3d374af935371bceac33e244baf5e8aceda53cce2c74827870116f6ab2527": {
-            "name": "Petronas Technology University",
-            "url": "http:\/\/www.utp.edu.my\/"
-        },
         "c9b9424c45db10ea9d8b597687992fee47a395e1c532630c638cd6dde68ca50f027cede1a222410e6d046b1c06c87914b542e5da58aea099500ca905dbb13ef9": {
             "name": "Petrozavodsk State University",
             "url": "http:\/\/www.karelia.ru\/psu\/"
@@ -15536,6 +15620,10 @@
         "15f4214afafc213ac2fe1489250d7883dde757f4cb8c9bc061bf20e85b743e15525ad1e5675a0ebbc72c69791bf069f8b8a1b142c62436dbf70c17c2d3ac6f59": {
             "name": "Poltava National Technical University",
             "url": "http:\/\/www.pntu.edu.ua\/"
+        },
+        "3a9e62ac29f4449f09feccef502620f31078bfa7bdda742a1c0e31d120d3bd61ccad300317dfbfd63fa4f3b85713ef30f06e0e161d40868aaa71e6dd2572eab3": {
+            "name": "Poltava State Agrarian Academy",
+            "url": "https:\/\/www.pdaa.edu.ua\/"
         },
         "d9eb77b297792a0bdc842dd26b58d8a65c25fd2f571d67aded7f49d04e65f799c123d3de958a4631d488b4a777407eef03dad0fa6d8632b45b6bd8272a1b25c5": {
             "name": "Poltava University of Consumer Cooperatives in Ukraine",
@@ -16045,6 +16133,10 @@
             "name": "Rajasthan Technical University",
             "url": "http:\/\/www.rtu.ac.in\/"
         },
+        "c3990309f2e8d3cf01d1ad3e75a9ee34c27ed74d91c5a2ce8c883741678557fa61cbde88b13a47d7f6c3f68f8418371f9181f37b57d7ff9935bb46a6b3ca8fdd": {
+            "name": "Rajasthan University of Veterinary and Animal Sciences",
+            "url": "http:\/\/rajuvas.org"
+        },
         "a0a16764be0e3b5005958b0b2bfcc2d86a81ff0c03db9c361f38f25c9a4ef1e77fdc791dcf4dfb18aa4410339ef843393bec9efa256e8809b0ed2e557102266f": {
             "name": "Rajasthan Vidyapeeth University",
             "url": "http:\/\/www.jrnrvu.org\/"
@@ -16114,8 +16206,8 @@
             "url": "https:\/\/www.redeemer.ca\/"
         },
         "97349e97da24bfe1bdbba42d54f2aab875bf968bdfb16d91165e795c31ff2ebefa6fb08318bbeade438b3c8d142cfb55bf6a9c2709f8110626187ae9b1fcc720": {
-            "name": "Redeemers University",
-            "url": "http:\/\/www.run.edu.ng\/"
+            "name": "Redeemer's University",
+            "url": "https:\/\/www.run.edu.ng\/"
         },
         "1e4ef4d11e84bdceb7f8f6d34aaa257389761438cfd10fbfea12549e26aa22baedd690efe7e96cdff835503fed3f25f4b204da7737a275189364fb1f6a94895a": {
             "name": "Red Sea University",
@@ -16456,6 +16548,10 @@
         "5b1b04e8356d5dc470e5f8efdd18eb1762d162aebb47efd0aeae4064556221976e88e743d7828db3866cdf22483387ac36e7fb978dbe75e77c0906b920703084": {
             "name": "Russian State University for the Humanities",
             "url": "http:\/\/www.rsuh.ru\/"
+        },
+        "b38046806a6d8caab978c7b72df12dc7d261221a9f5800d2a874f6efbc20da063ec09a60842dd9dd1edf55771f861ee474b1d172aa5f7b54c95474e2d3d9370a": {
+            "name": "Russian-Tajik Slavonic University",
+            "url": "http:\/\/www.rtsu.tj\/"
         },
         "92b1d138e0745f898ea097c031a12d3b77063a034ab9095f0a500be7393943f90334c48c991e4271be176263ec17e83069e02766cb848972e3df962342e27325": {
             "name": "Ryazan State Pedagogical University",
@@ -17055,7 +17151,7 @@
         },
         "34af38ea5f5bbda0dba959fd3a0321f921b66dc445685a789857b1e09a9cf80741beed9f98f99465afed9357dbf839bc261ee99dce1943c1219a43afa171287e": {
             "name": "Seokyeong University",
-            "url": "http:\/\/www.skuniv.ac.kr\/"
+            "url": "https:\/\/www.skuniv.ac.kr\/"
         },
         "e62c8df3487a2ad44a88a68850d89de822c22557494aad58c3a63d22a3653136e697088c6660b4b6d2b2d9ec4715650171a81997293f9d0e4c7dcacc5d0dddb5": {
             "name": "Seonam University",
@@ -17955,7 +18051,7 @@
         },
         "ed16f7034ab91eeb5bc9f2451c19fd744421b6c3095f8df548795f16e700ec05b88068e0a7b7a8e63606d3b0eb8fff45040bfac7853106f2484cad9532e15cd0": {
             "name": "Southeast University",
-            "url": "http:\/\/www.seu.ac.bd\/"
+            "url": "http:\/\/www.seu.edu.cn\/"
         },
         "4360369b6de6793ff32f19aebc55585bf25d3f9fc7e49e69a8868829863d442cc6b1bd8e6c2b04c775a52eda50341c960625de5c7646bd90cc7fb336b83987a0": {
             "name": "Southern Alberta Institute of Technology",
@@ -18000,6 +18096,10 @@
         "0c077e05309ab88aeab9767ca1544159b1c65cbd125edabb8877b17d9a31a1d49a825f29f26fa2a24d28380777891f19cd85de61caab35d5a598ccd8e3228c1a": {
             "name": "South University of Science and Technology of China ",
             "url": "http:\/\/www.sustc.edu.cn\/"
+        },
+        "738dc422b665ec24c6ec50b45e42a58b1341a1c8f5f2621a7e09691f9cd0efe31356d3f8c12eab409b64a00769b3f8cbb2fc32505467d3adbc5babe915c4468c": {
+            "name": "South Ural State Agrarian University",
+            "url": "https:\/\/sursau.ru\/"
         },
         "c43a95ab5a4be95fc1b1cc803ae9f217d544d1e3ecfcec27c0d258ef38e7479817be1c29a839be9927cb5f95ddba39292611ef824bfa0a386f6a47091dad1dca": {
             "name": "South Valley University",
@@ -18579,7 +18679,7 @@
         },
         "ae390bd24db2dac2cbab3c8bee74133b0f9b84d39284cb19bba75db3e4693739b2028a7b0476eafdc2630507469d8ed4f5f8a6419f777d5e5765a6dd8740afeb": {
             "name": "Sultan Qaboos University",
-            "url": "http:\/\/www.squ.edu.om\/"
+            "url": "https:\/\/www.squ.edu.om"
         },
         "cf1655f37f0966600cd62966ab5a83da7521c0a22b4714a4a8a55097c14fd45cbba9dd937ceb8889e09c23001520c200bacee3014ac9ed6324431647ca7465f3": {
             "name": "Sultan Salahuddin Abdul Aziz Shah Polytechnic",
@@ -18636,6 +18736,10 @@
         "80bc8eb065d2fe272b39e7740465eb97073b4b5589392d562c2869d0f760140e73a5cb31fa1143b9b6389a8fa654fc6c6a4716c9601913a843be0b555dc3a624": {
             "name": "Suranaree University of Technology",
             "url": "http:\/\/www.sut.ac.th\/"
+        },
+        "498d19f4b04e992637be25daeca5765117cf6545280012faf42e4665cef367379a3649d217bef6dd6b6af2a340287f5b503913dd0adee33d72a10d6fc88ee6ca": {
+            "name": "Suresh Gyanvihar University",
+            "url": "https:\/\/gyanvihar.org"
         },
         "d76c50c643a665ad9bf978c697f61c76737731025c8a0fbfe16eb2f23492337d43bbb13a2a407ce641ca99775d743b1ad35d4a9e89bb578b774f2247a9d6a28a": {
             "name": "Surgut State University",
@@ -20093,6 +20197,10 @@
             "name": "TPM College",
             "url": "http:\/\/www.tpmcollege.edu.my\/"
         },
+        "b8b61f0be496f07f05e6a5f654a509755406796a1fc4715ad9d5fedc71045be146d4bf65ff41a01aeec52db55bac0d837b00ceb62eb2dab62127d52f566c5a8c": {
+            "name": "Trade Union University",
+            "url": "http:\/\/www.dhcd.edu.vn\/"
+        },
         "50cd232b9917e044464eed8fc0e8e7d61d9074d96df50666c6890d4e85a06788791a08201dd6bfe2725931ca8c415e4e46f4489c3a986c1d135a4a88408b503b": {
             "name": "Trakia University Stara Zagora",
             "url": "http:\/\/www.uni-sz.bg\/"
@@ -21023,7 +21131,7 @@
         },
         "ecc79059f429d80a671135ca55b56180c90b6f8753ee4b31f12635510271834845a6a8769a9a76e324f41de11cae477a7d8f73bc5dc6b9f9f190bbaf799576df": {
             "name": "Universidad Central",
-            "url": "http:\/\/www.universidadcentral.com\/"
+            "url": "http:\/\/www.ucentral.edu.co\/"
         },
         "cb34c7b19082fe7d3d8c9b323e9f1e5dd54e0dc5dd6dd696b73768d51945f2215785589f7594a7b78fd6dfbe5392380aadb2d602b70c836a24669db718419288": {
             "name": "Universidad Central de Bayam\u00f3n",
@@ -21303,7 +21411,7 @@
         },
         "b00ee9cda9b135272a079e6d7c9c3b0f599077944e850ad8e6ce2923fc85fc6e685ea3d8a30b2ec5f60eb974fb54954e3f00ca26054f49c8c7fbc15d646263e9": {
             "name": "Universidad de C\u00f3rdoba",
-            "url": "http:\/\/www.uco.es\/"
+            "url": "http:\/\/www.unicordoba.edu.co\/"
         },
         "0b35b127afe1c4e9d66ae0b86aa4ee597d84f9026e23bcd91c261219ab08281e0a09c44271efaf09141340e7ed8d8765825edd9c12bf9c2b050abcf1d04073a8": {
             "name": "Universidad de Costa Rica",
@@ -21563,7 +21671,7 @@
         },
         "86a65f53fee6d6395311f29a150c9bb401898e549238d23d703b433e337eb8e843e9c0235cd151055eb5d93a432f3baa5bf50b33753f2b0e92923a987c266e33": {
             "name": "Universidad del Istmo",
-            "url": "http:\/\/unis.edu.gt\/"
+            "url": "http:\/\/www.udi.edu\/"
         },
         "42574605a6ad8ce161bc1a858df7f321007cb91844a98f703c9ce26187367b119224ad1d47ec5e2b2df41bc6f1b6c6ce525cc8c580864c220e20723029ac7926": {
             "name": "Universidad del Magdalena",
@@ -21571,7 +21679,7 @@
         },
         "d2f651907d8e00ac32707b482b9d925daaf0721ddcaba37fd0ff596de07b13ba3888f3336a20cdc7e8b0e47efeb426a2d6db1b32d98ae2dfe8a61e7a2da83525": {
             "name": "Universidad del Mar",
-            "url": "http:\/\/www.udelmar.cl\/"
+            "url": "http:\/\/www.umar.mx\/"
         },
         "354e49ea2b7a7602714ca41f0c5fe4d8cbf73972b66ebf0051cf6f1452485b97962704e073aca2fa9077c29b5a888ef108bf155cb9672d25c0d29578f99f32a3": {
             "name": "Universidad del Museo Social Argentino",
@@ -21595,7 +21703,7 @@
         },
         "12b1ae7f62a72b264b48b15b26e4937972bcf3cddd97325e7396dbfdd61fc7fc2bc04263d726caa0b9ac3d4c5fece32dec9393a1fc3b1b2ef68b41d389366e47": {
             "name": "Universidad de Los Andes",
-            "url": "http:\/\/www.uandes.cl\/"
+            "url": "https:\/\/uniandes.edu.co\/"
         },
         "1eeabc2d4bf1064444078cf1ba1d9057d91cbf026ff80b5a86b1d939d073c1f92d767a83294e5fbe28798a4e1cef038def84776ab96bdf913a0ecb6230955afe": {
             "name": "Universidad de Los Lagos",
@@ -21751,7 +21859,7 @@
         },
         "c758318358da87455496acf6775844ddf48ee1afaeb2c55455263521fa0a69960aeadea38b0f67197c0c2382b87ceb299f9d1e477d5cd7deac1ba6d8f0acc9dd": {
             "name": "Universidad de Oriente",
-            "url": "http:\/\/www.univo.edu.sv\/"
+            "url": "http:\/\/www.uo.edu.cu\/"
         },
         "734da457418ff46675a32662f4e04d760a12264c3798e0a8b3122de15aeaa9602a1fa5dd22e763af148bd730b52fc1207ceda317f61bb37835593b2c8dbc7c2e": {
             "name": "Universidad de Oviedo",
@@ -21839,7 +21947,7 @@
         },
         "7728462da916514558df180693c7381aa62c9f19c0245e3298b269332381b69fb956810992c398d2d5065fa906bc1d4944947ecb3461dfd0e7f499be6fb92ef4": {
             "name": "Universidad de San Andres",
-            "url": "http:\/\/www.udesa.edu.ar\/"
+            "url": "http:\/\/www.usanandres.cl\/"
         },
         "c4f97931109cae77e777e0691b96b780af137b264a32eb2b9ae9b61db89c67ca5d002425eb706969356f77dcb4697cb62ec0a16d896bc7da82bcd6aa80465248": {
             "name": "Universidad de San Buenaventura",
@@ -21992,6 +22100,10 @@
         "b43f6ca9957a1d35d05741b49a20da0947c0f44d00e878f0652b7ff8e8a9c2a9f1ae4c0aa877570adc737141ad0806926b885e926432684272f981ebb5b6c414": {
             "name": "Universidade Anhanguera de An\u00e1polis",
             "url": "http:\/\/www.anhanguera.com\/graduacao\/localidades\/anapolisgo.php"
+        },
+        "656828066779c740553c0f15229e15e80c2746cf80a2a33dd95d509250379ee8ec47f7fc0852bdff5ff91e3915eb3df6255f4e85b478bdd96bce6f5fc1f93585": {
+            "name": "Universidade Anhanguera de S\u00e3o Paulo",
+            "url": "https:\/\/www.anhanguera.com"
         },
         "c1b46a150e52f57ebd6e3b480a9a0adb111c1f7b106312c55ff09338ec8b40852ebca497e9c9c4b4fdaf12c1841802e9f4b31aa9e626480df3bbbf958ea3d199": {
             "name": "Universidade Anhembi Morumbi",
@@ -22617,6 +22729,10 @@
             "name": "Universidade Metodista de Piracicaba",
             "url": "http:\/\/unimep.edu.br\/"
         },
+        "0d7a32fd0a96104f9ad6b140cb62734cddf8c1cdab114dd455a350d9c44e4ffc75254822085e73b0c70faf27bfc6800809507ce1b5934f3ffab35638a6926ac2": {
+            "name": "Universidade Metodista de S\u00c3o Paulo",
+            "url": "https:\/\/metodista.br"
+        },
         "07e5c727776c6620a0b3118442630a2e0b5035c8281f0dca789cf498dd2ce11af8ecb642799044c35a69ae79aea6159ee991ba8302b1771245b76daf9abfef58": {
             "name": "Universidade Metropolitana de Santos",
             "url": "http:\/\/www.unimes.com.br\/"
@@ -22975,7 +23091,7 @@
         },
         "f53cb275077259cf6afdc527b1047e6301e4333b9ba9dcd42011301099cb99050d15130bf95e2249103a94ba270218e23ae1e5b64c2e0df1a3d2359254aef538": {
             "name": "Universidad Isaac Newton",
-            "url": "http:\/\/uin.cr\/"
+            "url": "http:\/\/www.usin.edu.sv\/"
         },
         "a493b18489f3eaa5521d3dd95a60674decc7b80f5034a8fcbd52c4780434e0313237d52b6b439bb0a0921aced11e0988cabf95ef0d68b5a239dde9cc3f4a08e4": {
             "name": "Universidad ISALUD",
@@ -23155,7 +23271,7 @@
         },
         "ba60d0df085e05c905a33d43af70d514d27db6234b298e174add1af5aec92e8cc67f4ec60dac4392526fcb583efadbc45d4f97272f926616460e19330da1d451": {
             "name": "Universidad Metropolitana",
-            "url": "http:\/\/www.unimetro.edu.co\/"
+            "url": "http:\/\/www.unimet.edu.ve\/"
         },
         "3567149f6b2a4bf202d869353737cc87f1fa3639e4b39d828fde5ace8295ce811fb780175d5b712ddeed71a4125c2864a72f6c142d170dace38e3863ef184da1": {
             "name": "Universidad Metropolitana Castro Carazo",
@@ -23647,7 +23763,7 @@
         },
         "6b2ee0bf32055c1ed1a372d9c129aefa95f867abab21c2abb60edea5b435c6d81b2da2b8dac029d3d147efa131bbd4cd906b7807321a5cb55713c812e2020c2a": {
             "name": "Universidad Panamericana",
-            "url": "http:\/\/www.upana.edu.gt\/"
+            "url": "http:\/\/www.up.edu.mx\/"
         },
         "3282cb1a613b341c6cdbff48078d0779a1bdb1b5f3c2eca581f73850f682f36279d1de8378ae5da2d87551130f8fc92984e973b4a6ceb86c4e34d686832ff424": {
             "name": "Universidad Panamericana de San Salvador",
@@ -23951,7 +24067,7 @@
         },
         "b21f5dabf83ab9e288dfd5ef3d5f1a7069c0f5e176ba277a96fef8123857555b9b2356412879a051df8ed4209222f047a910baee56ceffe2f9ba049b44d05785": {
             "name": "Universidad Santo Tom\u00e1s",
-            "url": "http:\/\/www.usta.edu.co\/"
+            "url": "http:\/\/www.ust.cl\/"
         },
         "eb6da782418e2e6995b782414bc286e14dd1052d34b004284c1372e39ea221eb4165e2b6f2a6cd1289c9985c2c91195ff81434f0c23b2cdcb5f68608ce145bef": {
             "name": "Universidad Se\u00f1or de Sip\u00e1n",
@@ -23963,7 +24079,7 @@
         },
         "4a22e5d0a9af6486e2fe633728a6ff68c858371791b0d958ab397986107f063434a50c5e39a12de36f861f09f4017b9305eced666fd0cbdde5521aaaadf89f70": {
             "name": "Universidad Sim\u00f3n Bolivar",
-            "url": "http:\/\/www.usb.ve\/"
+            "url": "http:\/\/www.usb.edu.mx\/"
         },
         "a3d29d28658a6b118274a62835c7648ff8d98e050d88ba9dd9b81356f04cc3815a6d3a997af88a420fbbc830d32946e619534c247a7413f042adf2305d3a1c4b": {
             "name": "Universidad Surcolombiana",
@@ -26298,8 +26414,8 @@
             "url": "http:\/\/www.uitm.edu.my\/"
         },
         "14ee3846b26089387a2bb2d60fc9199a0c100360bd1aeef79d7b0af0ca3217f91e6d63c6534ff7b56b7467f171e80c9f5f92d0f9edb2514c4738d1b5f2488627": {
-            "name": "Universiti Teknologi Petronas",
-            "url": "http:\/\/www.utp.edu.my\/"
+            "name": "Universiti Teknologi PETRONAS",
+            "url": "https:\/\/www.utp.edu.my\/"
         },
         "9f3fd867416286eba41d4bb100f7d6571175736eb5e3a88f37804f4eba45f13df0900f97bca5ec3bfc5f4b6eb18a8452d923b888f35b87bbcd366a1f134003f3": {
             "name": "Universiti Tenaga Nasional",
@@ -27041,6 +27157,10 @@
             "name": "University of Finance and Management in Bialystok",
             "url": "http:\/\/www.wsfiz.edu.pl\/"
         },
+        "b7ce5ebc0baffb7185ec882604b79e770a8d6366f91bad703eaba06a4a25ec687625b5d30d80735301d70b184f0572e3aa5a166fab19cd47e3b0f150679ee4ed": {
+            "name": "University of Finance and Marketing",
+            "url": "https:\/\/uis.ufm.edu.vn"
+        },
         "b84cd648512282495fa8c0d317667f8ce56409f2217d9e7de0df713988d8471cec6c69bd443d31f3bc4297a7fd6815eefd2d07fa57d3ecc1340d4908acee7e2c": {
             "name": "University of Fine Arts Belgrade",
             "url": "http:\/\/www.arts.bg.ac.rs\/"
@@ -27056,6 +27176,10 @@
         "7eec00d1299b9e200d7486d789b1acdb634d90aba635007faf9edf8be63722e180b111342e597b9694ccd85aa8369889cad8aa9f3d38d58686bb83df8ec38cf1": {
             "name": "University of Fort Hare",
             "url": "http:\/\/www.ufh.ac.za\/"
+        },
+        "65b5402188ab9a7e243bffec9ca9692d1a7a8bca7abf405256fa420d4072a6d02d38e5bf916ee1c711c54ba7b347c885c7f8edb1b8d3e27a902694bc9a05c8fd": {
+            "name": "University of Fredericton",
+            "url": "https:\/\/ufred.ca"
         },
         "dbd9fe26b25b46ccfa6a30875d5c8216bedcdf835ca9d7b983596a93c0576e26b29067e96556e31a914e97209e3fdbe9b661d9aac3411af5e1f6ff551cd1d4df": {
             "name": "University of Fribourg",
@@ -27953,6 +28077,10 @@
             "name": "University of Petrosani",
             "url": "http:\/\/www.upet.ro\/"
         },
+        "4065b0ab1d70e69a9ad0fa9cf5a73f87c41b92a99d5c4249f214a44c3b67a8df0fa58e8ed35eb616a12b10949b6b15de2a532b0c080df109afddb7f7b754a715": {
+            "name": "University of Phoenix",
+            "url": "http:\/\/www.phoenix.edu\/"
+        },
         "c35d415cfc2429faaadf3d67213c9b6bb09093d3e103e22cc04b400084b3e6632e7ea4ba2975b3a27a6c99e773c6f5989299159d9c20ecf057f6bd115a1e2edf": {
             "name": "University of Piraeus",
             "url": "http:\/\/www.unipi.gr\/"
@@ -28036,6 +28164,10 @@
         "f2d30494bba0114e9855706dcebc7156ff4e91ded493a1f76458afd6c56692872bbfeafb710d097055cd60cd8e3a02bb551f81b52b32e7caca18360f5e632b5d": {
             "name": "University of Rajshahi",
             "url": "http:\/\/www.ru.ac.bd\/"
+        },
+        "11e1dee12400f009a4a701bbd05af69f88aabd8f513cde6bdbae3bb00b411028bb69c2aeadadcc953eeebf92bd56c368e58cb57abe5e582518ea119830727ad7": {
+            "name": "University of Raparin",
+            "url": "https:\/\/www.uor.edu.krd\/"
         },
         "613299e919f66d7769dc735af3c935e34019be29f384d5c9965cf20edd150cf5045bebcfe0fdaaf0ce7ec547e8ca88c8adcd0713f28a1a07e6357b63297ab91e": {
             "name": "University of Raparin (Kurdistan Region)",
@@ -28127,7 +28259,7 @@
         },
         "581cc34c7fe44af5d0d50ee10ba89d807ff45f21af7ae10122a38d5540b9be205b74b7cf8e52be9b6af2c662f503ee39e857d1044c200fd5cb9d688dfc0c16db": {
             "name": "University of Science and Technology",
-            "url": "http:\/\/www.ust.edu.sd\/"
+            "url": "http:\/\/www.ust.ac.kr\/"
         },
         "371ea6b6e32d8c1878f80c498511786604f276da5cd062a0e388fa8f0d2e9058d365d72b8be742a51eca288b5ed9a1d68b9c51b062c4ec15cd4d60b3168fb52f": {
             "name": "University of Science and Technology Beijing",
@@ -29053,6 +29185,10 @@
             "name": "Veer Surendra Sai University of Technology",
             "url": "http:\/\/www.vssut.ac.in\/"
         },
+        "8d2a8a03f34de057076a70df5a200b5f07a87f4977efefe013091245cc6a1aaa11bdb108e71713ef52b647b7fd9d04417a8d57f4867bb4f653ea73e99043c2bb": {
+            "name": "Velalar College of Engineering and Technology",
+            "url": "https:\/\/velalarengg.ac.in\/"
+        },
         "23f7874fa6cdc7b0839c68bc7f24969e35e5e6e342a7e27412cdc4142089581f42766c402f7ba20ebb588bd03fcc48e1c47d443e9cbb91b813f3f73081000a1d": {
             "name": "Veliko Turnovo University &quot;Cyril and Methodius&quot;",
             "url": "http:\/\/www.uni-vt.bg\/"
@@ -29144,6 +29280,10 @@
         "ff904556e61926538fa5e3e77e9a11540521393752f17573123b8f9ef1acb3a274a79a562d99b02cce2cf19b2cddf86b5ec611066623e508b9828e7b3ef46e33": {
             "name": "Vinayaka Mission's Research Foundation-Deemed University",
             "url": "http:\/\/www.vinayakamission.com\/"
+        },
+        "14b1f6626f4db6ca6ee4749c4f5867ce00c5c14efa0465d5975e4faa173fce3b112bfee638881d955b7851987171fcb743ad94630b1f315d61d376098175d2a3": {
+            "name": "Vinh University",
+            "url": "http:\/\/vinhuni.edu.vn\/"
         },
         "fd35dce05a6580fa5aa22bb84a8f5d5279940969a15ebafac80d64a0f773c0d1e60ea3fcfb29085f377fedc49ae2149e0adebf6375de47ff1b67c46bcb720578": {
             "name": "Vinnica National Technical University",
@@ -29505,13 +29645,17 @@
             "name": "Wolaita Sodo University",
             "url": "http:\/\/www.wsu.edu.et\/"
         },
+        "1ae1f9b906e9b0b66629f56b4aaada3df152eeee3b3a9d6b3e0abccc554cb938d1466fa39e849dc99f6d34d5390965e261ae9fae256162a2cee08c39f8ffe9c1": {
+            "name": "Woldia University",
+            "url": "https:\/\/www.wldu.edu.et"
+        },
         "1d368eb026215b195b6596cd331079a94ac82cf5905e5965820aa7de24d93c7708e91c027d5a7f8e0f420caeeb0d92ca285fc13b888fdb1ba10410bf224d4f85": {
             "name": "Wolkite University",
             "url": "http:\/\/www.wku.edu.et\/"
         },
         "cba8a2de37e0f0c3e60465d3ad2cbcf320b1c275da1ea234fb366634e486097919a04da4cd5b315151cee6e04f55b3474013c9757891063169619d7aed3bda3f": {
             "name": "Wollega University",
-            "url": "http:\/\/www.wuni.edu.et\/"
+            "url": "https:\/\/www.wollegauniversity.edu.et"
         },
         "ac6d2286420741610c89a9fd0505a3ea7e46db9d5ecea2811a04ca1a96fc2cce5ee3a55c2ee1a690518d1aa79cf941a166d90693af1b735ee788c22b805ff12e": {
             "name": "Wollo University",
@@ -30163,7 +30307,7 @@
         },
         "0c8e0b49debd73cd3190753e6d9237d1cb1c031cac1006c10aa409d47aea5e4acde21a5290614179e9d28a6f618613cf42ebe51d46db68082f0e8e1b1a96b14f": {
             "name": "Albright College",
-            "url": "http:\/\/www.albright.edu\/"
+            "url": "https:\/\/www.albright.edu\/"
         },
         "14b040b7c8337502b39478d51e91300cc5f3f33c3f4367d532d6785c08b7f7c64eaa949a33eefe1064df4e20f020df5093869df8f0e04d6add75dbfd27e6ad59": {
             "name": "Alcorn State University",
@@ -30503,7 +30647,7 @@
         },
         "7c9b2417d2a32ad95442eb2007667ed5cac31533d60fae1af7c4618efd3ace1e34fc25c8137ffe4d3c2b89bd50118431a0d876b669b60258e062476d8d3de82c": {
             "name": "Augustana College",
-            "url": "http:\/\/www.augie.edu\/"
+            "url": "http:\/\/www.augustana.edu\/"
         },
         "9e400915a6d22e9ed0db5691a075abdf81ee5e0c8dbc1e327f0227fa365573a2e7c9ea2b90426c5631ba487da5a494070e1ddffa6460791387dd9dc1fb5c3be0": {
             "name": "Augusta State University",
@@ -32665,9 +32809,9 @@
             "name": "Gustavus Adolphus College",
             "url": "http:\/\/www.gac.edu\/"
         },
-        "2a744fd26f0e4a64dd7ea1b7743714a9ba31bfe6b4ff678052291c8625dea7ac89538ddeadfc5afe513bb468bb9054c8024be3935153edbb9f16c47c36a05f89": {
-            "name": "Gwynedd-Mercy College",
-            "url": "http:\/\/www.gmc.edu\/"
+        "3024495ecaab0f178ccd09acc09ec05054e07d1deab2af71de36e008c8be17a04ad7f0de71d175aae4ca9d27d102cceb35eab56f1fce86bd0522f451573437ce": {
+            "name": "Gwynedd Mercy University",
+            "url": "https:\/\/www.gmercyu.edu\/"
         },
         "077fff4dc432513bbafbf7235f29f6421d2e60a54683ae40d3e3586865b40dee9835043b90b2a525a92e130cd76860cbd1ecbb697dc551856ec7f1e2def3bb26": {
             "name": "Hagerstown Community College",
@@ -34567,7 +34711,7 @@
         },
         "7cafd727234a34c426f6a9ea984940658bb9351d3e82515e0be379a040872478c1ec0a38134d1d8688ac0e85a60e464ed3bd9bb34f69be2877a6fd768aa19542": {
             "name": "Notre Dame de Namur University",
-            "url": "http:\/\/www.ndnu.edu\/"
+            "url": "https:\/\/www.ndnu.edu\/"
         },
         "0dcdfc374a25c22e2c884ed733834e2dbfb8747e430186963d73ee9c094a5b1645ac76437a4f3df4536bd1038a8c722e81401d0a3e8068b36522c5425e7d8ce1": {
             "name": "Nova Southeastern University",
@@ -37253,10 +37397,6 @@
             "name": "University Of Pennsylvania, The Wharton School",
             "url": "https:\/\/www.wharton.upenn.edu\/"
         },
-        "4065b0ab1d70e69a9ad0fa9cf5a73f87c41b92a99d5c4249f214a44c3b67a8df0fa58e8ed35eb616a12b10949b6b15de2a532b0c080df109afddb7f7b754a715": {
-            "name": "University of Phoenix",
-            "url": "http:\/\/www.phoenix.edu\/"
-        },
         "89ff0add3a97e7ca063050a740e592f6ea82fc040e70351b948cd25a1f8059a58a72ff95c1494022a7c304212e96941cc19fc80f730adfe624a8688cc9dedc48": {
             "name": "University of Pittsburgh",
             "url": "http:\/\/www.pitt.edu\/"
@@ -38103,7 +38243,7 @@
         },
         "b5857a5c4f41c19885f69ce73e79ac90cb808fc78a8137a7ad38fd82b1ad2285b837f6f2ecd3bd8fea3cdf1819ea394a82043a96dcc9dc5c7eb94261311bc7ff": {
             "name": "Wilmington College",
-            "url": "https:\/\/www.wilmington.edu\/"
+            "url": "http:\/\/www.wilmcoll.edu\/"
         },
         "b76ffccb6192fc4f480e436ddeefa45cde1b509b9e637ec921e41c90c46ac7079cbdbdaae88430fe922797bfc48eaf553113bb7a1a7424c9784e3c22a301449d": {
             "name": "Wilson College",
