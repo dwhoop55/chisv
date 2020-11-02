@@ -45,19 +45,19 @@
             v-if="canChangeFormWeights"
             aria-role="listitem"
             @click="showEnrollmentFormWeightsSettings()"
-            >Adjust form weights
+            >Adjust enrollment form weights
           </b-dropdown-item>
           <b-dropdown-item
             v-if="canRunLottery"
             aria-role="listitem"
             @click="runLottery()"
-            >Run lottery & Accept
+            >Run lottery to accept/waitlist SVs
           </b-dropdown-item>
           <b-dropdown-item
             v-if="canUpdatePermission"
             aria-role="listitem"
             @click="resetEnrolled()"
-            >Reset <b>all</b> SVs to 'enrolled'
+            >Reset <b>all</b> SVs to <i>enrolled</i>
           </b-dropdown-item>
         </b-dropdown>
       </b-field>
@@ -81,6 +81,7 @@
     >
       <b-table-column
         :visible="columns.includes('firstname')"
+        cell-class="is-vertical-center-column"
         field="firstname"
         label="First name"
         sortable
@@ -335,7 +336,7 @@
           <b-tag v-if="svs" type="is-light">
             Showing {{ svs.length }} SV{{ svs.length > 1 ? "s" : "" }}
           </b-tag>
-          <b-tag v-if="!userIs('sv', conference.key)" type="is-success">
+          <b-tag v-if="canUpdatePermission" type="is-success">
             {{ conference.number_accepted_svs }}/{{ conference.volunteer_max }}
             SVs are accepted
           </b-tag>
@@ -386,6 +387,7 @@ export default {
         component: ConferenceSvsSettingsModalVue,
         parent: this,
         props: { conference: this.conference },
+        hasModalCard: true,
       });
     },
     addNote(user) {
@@ -435,7 +437,6 @@ export default {
         type: "is-danger",
         hasIcon: true,
         onConfirm: () => {
-          this.setIsLoading(true);
           api
             .updateConferenceResetEnrollmentsToEnrolled(this.conference.key)
             .then(({ data }) => {
@@ -447,31 +448,26 @@ export default {
               });
             })
             .finally(() => {
-              this.setIsLoading(false);
               this.fetchSvs();
+              this.fetchAcceptedCount();
             });
         }, // onConfirm
       });
     },
     runLottery() {
-      api
-        .runLottery(this.conference.key)
-        .then(({ data }) => {
-          let jobId = data.result;
-          this.$buefy.modal.open({
-            parent: this,
-            props: { id: jobId },
-            component: JobModalVue,
-            hasModalCard: true,
-            onCancel: () => {
-              this.fetchSvs();
-            },
-          });
-        })
-        .finally(() => {
-          this.fetchSvs();
-          this.fetchAcceptedCount();
+      api.runLottery(this.conference.key).then(({ data }) => {
+        let jobId = data.result;
+        this.$buefy.modal.open({
+          parent: this,
+          props: { id: jobId },
+          component: JobModalVue,
+          hasModalCard: true,
+          onCancel: () => {
+            this.fetchSvs();
+            this.fetchAcceptedCount();
+          },
         });
+      });
     },
     templateSettingsChanged(newSettings) {
       var weights = {};
@@ -504,7 +500,6 @@ export default {
     },
     updateSvState(user, state) {
       var vform = new Form({
-        id: user.permission.id,
         state_id: state.id,
       });
 
@@ -512,8 +507,11 @@ export default {
       api
         .updatePermission(vform, user.permission.id)
         .then(({ data }) => {
-          user.permission.state.id = state.id;
           user.permission.state.name = state.name;
+          user.permission.state.id = state.id;
+          user.permission.state.description = state.description;
+          user.permission.lottery_position = data.lottery_position;
+          user.permission.waitlist_position = data.waitlist_position;
           this.fetchAcceptedCount();
         })
         .catch(() => this.fetchSvs())

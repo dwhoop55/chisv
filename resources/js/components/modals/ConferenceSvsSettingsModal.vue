@@ -1,9 +1,7 @@
 <template>
-  <div class="modal-card" style="height: 600px; width: 800; max-width: 100%">
-    <header class="modal-card-head">
-      <p class="modal-card-title">SVs View Settings</p>
-    </header>
-    <section class="modal-card-body">
+  <modal :show-footer="false" :show-close="true" @close="$emit('close')">
+    <template v-slot:title> SVs View Settings </template>
+    <template>
       <b-field label="Visible columns">
         <b-taginput
           :value="activeColumns"
@@ -20,7 +18,6 @@
 
       <b-field label="Limit SV states">
         <b-dropdown
-          expanded
           @input="statesChange($event)"
           :value="states"
           multiple
@@ -48,31 +45,41 @@
       </b-field>
 
       <b-field label="SVs per page">
-        <b-dropdown @change="perPageChange" :value="perPage" aria-role="list">
-          <button class="button" slot="trigger">
-            <span>{{ perPage }} per page</span>
-            <b-icon icon="menu-down"></b-icon>
-          </button>
-
-          <b-dropdown-item value="5" aria-role="listitem"
-            >5 per page
-          </b-dropdown-item>
-          <b-dropdown-item value="10" aria-role="listitem"
-            >10 per page
-          </b-dropdown-item>
-          <b-dropdown-item value="20" aria-role="listitem"
-            >20 per page
-          </b-dropdown-item>
-          <b-dropdown-item value="50" aria-role="listitem"
-            >50 per page
-          </b-dropdown-item>
-        </b-dropdown>
+        <b-slider
+          :max="100"
+          :min="1"
+          tooltip-always
+          size="is-large"
+          :type="sliderType"
+          :value="perPage"
+          lazy
+          @input="perPageChange($event)"
+        >
+          <template v-for="val in [1, 25, 50, 75, 100]">
+            <b-slider-tick :value="val" :key="val">{{ val }}</b-slider-tick>
+          </template></b-slider
+        >
       </b-field>
-    </section>
-    <section class="modal-card-foot">
-      <b-button @click="$parent.close()">Close</b-button>
-    </section>
-  </div>
+
+      <b-field label="UI Preferences">
+        <b-field>
+          <b-switch
+            v-if="userIs('admin') || userIs('chair') || userIs('captain')"
+            :value="showWaitlistPosition"
+            @input="setShowWaitlistPosition"
+          >
+            Show waitlist position on SV state toggle
+          </b-switch>
+        </b-field>
+
+        <b-field>
+          <b-switch :value="showSvAvatar" @input="setShowSvAvatar">
+            Show images for SVs
+          </b-switch>
+        </b-field>
+      </b-field>
+    </template>
+  </modal>
 </template>
 
 <script>
@@ -86,9 +93,6 @@ export default {
         {
           display: "First name",
           name: "firstname",
-          match: (v) => {
-            console.log(v);
-          },
         },
         { display: "Last name", name: "lastname" },
         { display: "University", name: "university" },
@@ -116,6 +120,15 @@ export default {
     });
   },
   computed: {
+    sliderType() {
+      if (this.perPage >= 75) {
+        return "is-danger";
+      } else if (this.perPage >= 50) {
+        return "is-warning";
+      } else {
+        return "is-success";
+      }
+    },
     allStates() {
       return this.statesFor("App\\User");
     },
@@ -137,7 +150,13 @@ export default {
         return !exists && (!c.restricted || liftsRestriction);
       });
     },
-    ...mapGetters("svs", ["columns", "states", "perPage"]),
+    ...mapGetters("svs", [
+      "columns",
+      "states",
+      "perPage",
+      "showWaitlistPosition",
+      "showSvAvatar",
+    ]),
     ...mapGetters("defines", ["statesFor"]),
   },
 
@@ -151,8 +170,15 @@ export default {
     },
     columnsChange(columns) {
       this.setColumns(columns.map((c) => c.name));
+      this.fetchSvs(true);
     },
-    ...mapMutations("svs", ["setColumns", "setStates", "setPerPage"]),
+    ...mapMutations("svs", [
+      "setColumns",
+      "setStates",
+      "setPerPage",
+      "setShowWaitlistPosition",
+      "setShowSvAvatar",
+    ]),
     ...mapGetters("auth", ["userIs"]),
     ...mapActions("svs", ["fetchSvs"]),
   },

@@ -37,7 +37,7 @@ const getters = {
 
 const actions = {
     async fetchSvs({ commit, rootGetters, getters }, hideLoading) {
-        !hideLoading && commit('setIsLoading', true);
+        if (!hideLoading) commit('setIsLoading', true);
 
         var params = [];
         if (getters.search) {
@@ -61,7 +61,7 @@ const actions = {
                 commit('setSvs', null);
             })
             .finally(() => {
-                !hideLoading && commit('setIsLoading', false);
+                if (!hideLoading) commit('setIsLoading', false);
             })
     }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal-card" style="min-width:300px; min-height:200px">
+  <div class="modal-card" style="min-width: 300px; min-height: 200px">
     <header class="modal-card-head">
       <p class="modal-card-title">Job: {{ jobName }}</p>
     </header>
@@ -15,7 +15,7 @@
         format="percent"
         size="is-medium"
       ></b-progress>
-      <p>Handler: {{ job.handler.replace("App\\Jobs\\", '') }}</p>
+      <p>Handler: {{ job.handler.replace("App\\Jobs\\", "") }}</p>
       <p>
         Status:
         <state-tag :state="job.state" size="is-normal" />
@@ -26,8 +26,14 @@
         <span class="has-text-weight-bold" v-html="jobStatusMessage"></span>
       </p>
       <p v-if="job.status_message">&nbsp;</p>
-      <p>Started at: {{ momentize(job.start_at, {format:'lll', fromTz: 'UTC'}) }}</p>
-      <p v-if="job.ended_at">Ended at: {{ momentize(job.ended_at, {format:'lll', fromTz: 'UTC'}) }}</p>
+      <p>
+        Started at:
+        {{ momentize(job.start_at, { format: "lll", fromTz: "UTC" }) }}
+      </p>
+      <p v-if="job.ended_at">
+        Ended at:
+        {{ momentize(job.ended_at, { format: "lll", fromTz: "UTC" }) }}
+      </p>
       <p v-if="formattedJobResult">
         <br />
         <strong>Result</strong>
@@ -67,7 +73,7 @@ export default {
       this.error = null;
       api
         .getJob(this.id)
-        .then(data => {
+        .then((data) => {
           this.job = data.data;
 
           // When the modal is shown and the state is
@@ -82,7 +88,7 @@ export default {
             setTimeout(this.getJob, 1000);
           }
         })
-        .catch(error => {
+        .catch((error) => {
           this.error = error;
         })
         .finally(() => (this.isLoading = false));
@@ -93,7 +99,7 @@ export default {
       } else {
         return undefined;
       }
-    }
+    },
   },
 
   data() {
@@ -101,7 +107,7 @@ export default {
       job: null,
       isLoading: true,
       error: null,
-      active: false
+      active: false,
     };
   },
 
@@ -154,7 +160,7 @@ export default {
           case "App\\Jobs\\Auction":
             var $msg = `Created assignments: ${r.created_assignments}<br>
                     Tasks which could not be filled: ${r.tasks_free_slots.length}<br>`;
-            r.tasks_free_slots.forEach(task => {
+            r.tasks_free_slots.forEach((task) => {
               $msg += `<li><b>${task.name}</b> ${this.hoursFromTime(
                 task.start_at
               )}–${this.hoursFromTime(task.end_at)}</li>`;
@@ -192,7 +198,7 @@ export default {
       } else {
         return JSON.parse(this.job?.result) || "no result yet";
       }
-    }
-  }
+    },
+  },
 };
 </script>

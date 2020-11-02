@@ -1,25 +1,14 @@
 <template>
   <div>
     <b-field v-if="userIs('admin') || userIs('chair') || userIs('captain')">
-      <b-switch
-        :value="showWaitlistPosition"
-        @input="setShowWaitlistPosition"
-      >Show waitlist position on SV state toggle in the SV view</b-switch>
-    </b-field>
-    <b-field v-if="userIs('admin') || userIs('chair') || userIs('captain')">
-      <b-switch
-        :value="showAssignmentsAvatar"
-        @input="setShowAssignmentsAvatar"
-      >Show image for SVs on assignments tab</b-switch>
+      <b-switch :value="showAssignmentsAvatar" @input="setShowAssignmentsAvatar"
+        >Show image for SVs on assignments tab</b-switch
+      >
     </b-field>
     <b-field>
-      <b-switch :value="showSvAvatar" @input="setShowSvAvatar">Show image for SVs on SV tab</b-switch>
-    </b-field>
-    <b-field>
-      <b-switch
-        :value="warnBeforeMultiBid"
-        @input="setWarnBeforeMultiBid"
-      >Warn before sending off a multi-bid</b-switch>
+      <b-switch :value="warnBeforeMultiBid" @input="setWarnBeforeMultiBid"
+        >Warn before sending off a multi-bid</b-switch
+      >
     </b-field>
     <!-- <b-field>
       <b-button type="is-danger" @click="removeUiPreferences()">Reset all UI preferences</b-button>
@@ -59,26 +48,26 @@ export default {
             duration: 5000,
             message: `Preferences reset`,
             type: "is-success",
-            hasIcon: true
+            hasIcon: true,
           });
           // This will actually reset the vuex store in memory
           window.location.href = "/";
-        }
+        },
       });
     },
     ...mapActions("auth", {
-      resetStore: "resetStore"
+      resetStore: "resetStore",
     }),
     ...mapMutations("svs", ["setShowWaitlistPosition", "setShowSvAvatar"]),
     ...mapMutations("tasks", ["setWarnBeforeMultiBid"]),
-    ...mapMutations("assignments", ["setShowAssignmentsAvatar"])
+    ...mapMutations("assignments", ["setShowAssignmentsAvatar"]),
   },
 
   computed: {
     ...mapGetters("svs", ["showWaitlistPosition", "showSvAvatar"]),
     ...mapGetters("assignments", ["showAssignmentsAvatar"]),
     ...mapGetters("tasks", ["warnBeforeMultiBid"]),
-    ...mapGetters("auth", ["userIs"])
-  }
+    ...mapGetters("auth", ["userIs"]),
+  },
 };
 </script>
